@@ -1,14 +1,27 @@
 
-import { StyledContainer } from './style'
+import { StyledBox, StyledContainer, StyledLogo, StyledText } from './style'
 
 const LandingPage = () => {
+  const text = 'Welcome to Virtual Coin'
   return (
     <StyledContainer>
-        <div className='text-black bg-black'>
+      <StyledBox>
+        <StyledLogo>
+          <img src="alpha.png" alt="logo" />
+        </StyledLogo>
 
-            LandingPage
+        <StyledText>
+          {text.split('').map((char, i) => (
+            <span key={i} style={{ '--i': i}}>
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          ))}
+        </StyledText>
+        <div>
+          login
         </div>
-        hi
+      </StyledBox>
+
     </StyledContainer>
   )
 }
