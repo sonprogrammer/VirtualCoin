@@ -6,13 +6,14 @@ export const StyledContainer = styled.div`
         h-screen
         `}
         background: linear-gradient(
-      rgba(255, 255, 255, 0.3), /* 50% 투명 흰색 */
+      rgba(255, 255, 255, 0.3),
       rgba(255, 255, 255, 0.5)
     ),
     url('/landingbg.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.1);
 
 `
 
@@ -50,18 +51,25 @@ export const StyledText = styled.div`
             font-bold
             text-white
             text-3xl
+            
         `}
-        span {
-     opacity: 0; /* 초기 상태는 숨김 */
-        animation: fadeIn 0.5s ease-in forwards;
-        animation-delay: calc(var(--i) * 0.1s); /* 각 글자에 딜레이 적용 */
-  }
-        @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
+      
+`
+
+export const StyledLoginBtn = styled.div`
+    ${tw`
+        bg-red-500
+        px-5
+        py-2
+        rounded-xl
+        mt-10
+        font-bold
+      `}
+      &:hover{
+      cursor: pointer;
+      color: white;
+      animation: all 0.7s;
+      transform: scale(1.1);
+      transition: transform 0.3s;
+      }
 `

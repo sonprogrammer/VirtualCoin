@@ -1,8 +1,34 @@
 
-import { StyledBox, StyledContainer, StyledLogo, StyledText } from './style'
+import { useEffect, useState } from 'react'
+import { StyledBox, StyledContainer, StyledLoginBtn, StyledLogo, StyledText } from './style'
+import { LoginModal } from '../../components';
 
 const LandingPage = () => {
+  const [context, setContext] = useState<string>('')
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false)
   const text = 'Welcome to Virtual Coin'
+
+  const modalOpenClicked = () => {
+    setLoginModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setLoginModalOpen(false)
+  }
+
+  useEffect(() =>{
+    if(currentIndex >= text.length) return;
+
+    const interval = setInterval(() => {
+        setContext(prev => prev + text[currentIndex])
+        setCurrentIndex(prev => prev+1)
+    }, 200);
+
+    return () => clearInterval(interval)
+  }, [currentIndex])
+  
+  
   return (
     <StyledContainer>
       <StyledBox>
@@ -11,15 +37,12 @@ const LandingPage = () => {
         </StyledLogo>
 
         <StyledText>
-          {text.split('').map((char, i) => (
-            <span key={i} style={{ '--i': i}}>
-              {char === ' ' ? '\u00A0' : char}
-            </span>
-          ))}
+          {context}
         </StyledText>
-        <div>
-          login
-        </div>
+        <StyledLoginBtn onClick={modalOpenClicked}>
+          login / singup
+        </StyledLoginBtn>
+        { loginModalOpen ? (<LoginModal closeModal={closeModal}/>) : ''}
       </StyledBox>
 
     </StyledContainer>
