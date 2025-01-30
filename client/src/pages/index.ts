@@ -1,1 +1,7 @@
 export * from './LandingPage'
+export * from './LayoutPage'
+export * from './MainPage'
+export * from './AssetPage'
+export * from './BankPage'
+export * from './NewsPage'
+export * from './NotfoundPage'

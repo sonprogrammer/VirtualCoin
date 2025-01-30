@@ -1,14 +1,18 @@
 import React from 'react'
 import { NavbarComponent } from '../../components'
+import { Outlet } from 'react-router-dom'
+import { StyledContaier, StyledNavbarWrapper, StyledOutletWrapper } from './style'
 
 const LayoutPage = () => {
   return (
-    <div>
-      <div>
+    <StyledContaier>
+      <StyledNavbarWrapper>
         <NavbarComponent />
-      </div>
-      <div>outlet</div>
-    </div>
+      </StyledNavbarWrapper>
+      <StyledOutletWrapper>
+        <Outlet />
+      </StyledOutletWrapper>
+    </StyledContaier>
   )
 }
 

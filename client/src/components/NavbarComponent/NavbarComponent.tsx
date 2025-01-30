@@ -3,19 +3,33 @@ import { StyledAngle, StyledBurgerMenu, StyledContainer, StyledLogo, StyledLogou
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons"
 import { LogoutModal } from '../LogoutModal'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 const NavbarComponent = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [page, setPage] = useState<string>('')
+    const [page, setPage] = useState<string>('/browse')
     const menuRef = useRef<HTMLDivElement | null>(null)
     const burgerRef = useRef<HTMLDivElement | null>(null)
     const [logoutModal, setLogoutModal] = useState<boolean>(false)
 
-   const menus = ['거래소', '자산', '입출금', '시장동향']
+    const navigate = useNavigate()
+    
+    const menus = [
+      { name: '거래소', path: '/browse' },
+      { name: '자산', path: '/asset' },
+      { name: '입출금', path: '/bank' },
+      { name: '시장동향', path: '/news' }
+  ];
 
-   const handlePageClick = (page: string) => {
-        setPage(page)
+//   useEffect(() => {
+//     setPage('/browse'); // 처음에 거래소 페이지로 설정
+//     navigate('/browse');  // 거래소 페이지로 이동
+// }, [navigate]);
+
+   const handlePageClick = (path: string) => {
+        setPage(path)
+        navigate(path)
    }
 
    const handleLogoutClick = (e: React.MouseEvent) => {
@@ -50,13 +64,18 @@ const NavbarComponent = () => {
     
   return (
     <StyledContainer>
+      <Link to={'/browse'}>
         <img src="/alpha.png" alt="logo" />
+      </Link>
       <StyledMenus>
         {menus.map(item => (
-            <h2 key={item} onClick={() => handlePageClick(item)}
-            style={{fontWeight: page === item ? 'bold' : 'normal'}}>
-                {item}
-            </h2>
+              <Link to={item.path} key={item.name} 
+              onClick={() => handlePageClick(item.path)} 
+              style={{fontWeight: page === item.path ? 'bold' : 'normal'}}>
+                <h2>
+                  {item.name}
+                </h2>
+            </Link>
         ))}
       </StyledMenus>
 
@@ -72,9 +91,9 @@ const NavbarComponent = () => {
         <StyledMobileMenu ref={menuRef}>
         <StyledAngle></StyledAngle>
         {menus.map(item => (
-            <p key={item} onClick={() => handlePageClick(item)}
-            style={{fontWeight: page === item ? 'bold' : 'normal'}}>
-                {item}
+            <p key={item.name} onClick={() => handlePageClick(item.path)}
+            style={{fontWeight: page === item.path ? 'bold' : 'normal'}}>
+                {item.name}
             </p>
         ))}
         <p onClick={handleLogoutClick}>Logout</p>

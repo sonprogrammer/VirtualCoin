@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import { LandingPage } from "./pages"
-import LayoutPage from "./pages/LayoutPage/LayoutPage"
+import { AssetPage, BankPage, LandingPage, LayoutPage, MainPage, NewsPage, NotfoundPage } from "./pages"
 
 function App() {
 
@@ -10,9 +9,25 @@ function App() {
           <Route path="/" element={
             <LandingPage />    
           } />
-          <Route path="browse" element={
+          <Route element={
             <LayoutPage />
-          } />
+          }>
+            <Route path="/browse" element={
+              <MainPage />
+            }  />
+            <Route path="/asset" element={
+              <AssetPage />
+            }  />
+            <Route path="/bank" element={
+              <BankPage />
+            }  />
+            <Route path="/news" element={
+              <NewsPage />
+            }  />
+            <Route path="*" element={
+              <NotfoundPage />
+            }/>
+          </Route>
         </Routes> 
     </>
   )
