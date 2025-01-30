@@ -6,11 +6,11 @@ export const StyledContainer = styled.div`
         flex
         items-center
         gap-10
-        // justify-between
         px-5
         py-2
         border-b-2
         relative
+        w-full
     `}
     h2{
         ${tw`
@@ -24,57 +24,50 @@ export const StyledContainer = styled.div`
 
     @media (max-width: 630px) {
         gap: 10px;
+        justify-content: center;
     }
 
     @media (max-width: 390px) {
         gap: 5px;
     }
+    
        
 `
 
 export const StyledLogo = styled.div`
     ${tw`
-
+        flex
+        items-center
     `}
-    img{
-     @media (max-width: 730px) {
-
-    }
 
     @media (max-width: 630px) {
-
+        flex
+        justify-center
+        mx-auto
+        img{
+        max-width: 100%;}
     }
 
-    @media (max-width: 390px) { 
-    }
-      }
 `
 
 
 export const StyledMenus = styled.div`
     ${tw`
         flex
-        gap-5
+        gap-10
     `}
-    @media (max-width: 730px) {
-      font-size: 1.7rem; 
-      gap: 10px;
-    }
-
+    
     @media (max-width: 630px) {
-      font-size: 1.5rem; 
-      gap: 7px;
+        display:none;
     }
-
-    @media (max-width: 390px) {
-      font-size: 0.7rem; 
-      gap: 3px;
-    }
+    
     h2{
         cursor:pointer;
         font-size: 2rem;
-
+    }
     
+    @media(max-width: 730px){
+        gap: 10px;
     }
 `
 
@@ -82,20 +75,70 @@ export const StyledLogout = styled.div`
     ${tw`
         absolute
         right-5
+        cursor-pointer
     `}
-    &:hover{
-        cursor: pointer;
-    }
+    
        
     h2{
-    font-size: 2rem;
-    
-        @media (max-width: 730px) {
-            font-size: 1.7rem; 
-        }
-        
-        @media (max-width: 630px) {
-      font-size: 1.5rem; 
+        font-size: 2rem;
     }
+
+    @media (max-width: 630px) {
+        display: none;
     }
+`
+
+export const StyledBurgerMenu = styled.div`
+    ${tw`
+        cursor-pointer
+        // text-black
+    `}
+    display: none;
+    @media(max-width: 630px){
+        display: block;
+        position: absolute;
+        right: 20px;
+    }
+`
+
+export const StyledMobileMenu = styled.div`
+    ${tw`
+        absolute
+        top-20
+        right-3
+        w-[30%]
+        bg-gray-800
+        text-white
+        flex
+        flex-col
+        items-center
+        rounded-xl
+        `}
+        p{
+            ${tw`
+                w-full
+                text-center
+                py-4
+                rounded-xl
+                cursor-pointer
+    `}
+        &:hover{
+            ${tw`
+                bg-gray-700
+                `}
+            }
+    }
+`
+
+export const StyledAngle = styled.div`
+    ${tw`
+        absolute
+        top-[-8px]
+        right-2
+        `}
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid rgb(31, 41, 55);
 `
