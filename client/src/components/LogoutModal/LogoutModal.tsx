@@ -19,8 +19,8 @@ const LogoutModal = ({handleCloseModal, handleLogout} : LogoutModalProps) => {
                     로그아웃 하시겠습니까?
                 </StyeldTitle>
                 <StyeldBtns>
-                <StyeldYesBtn onClick={handleLogout}>YES</StyeldYesBtn>
-                <StyeldNoBtn onClick={handleCloseModal}>NO</StyeldNoBtn>
+                    <StyeldYesBtn onClick={handleLogout}>YES</StyeldYesBtn>
+                    <StyeldNoBtn onClick={handleCloseModal}>NO</StyeldNoBtn>
                 </StyeldBtns>
             </StyeldBox>
         </StyeldContainer>

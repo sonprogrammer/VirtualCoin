@@ -19,7 +19,7 @@ export const StyeldBox = styled.div`
         w-[50%]
         bg-gray-600
         rounded-xl
-        p-10
+        p-5
         flex
         flex-col
         gap-5
@@ -35,8 +35,8 @@ export const StyeldTitle = styled.div`
 export const StyeldBtns = styled.div`
     ${tw`
         flex
-        justify-around
         items-center
+        justify-center
     `}
 `
 export const StyeldYesBtn = styled.div`

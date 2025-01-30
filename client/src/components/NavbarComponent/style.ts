@@ -17,6 +17,10 @@ export const StyledContainer = styled.div`
             text-3xl
         `}
     }
+    
+    @media(max-width:1024px){
+        padding: 10px 10px 0 10px;
+    }
 
     @media (max-width: 730px) {
         gap: 20px;
@@ -38,6 +42,7 @@ export const StyledLogo = styled.div`
     ${tw`
         flex
         items-center
+        w-[64px]
     `}
 
     @media (max-width: 630px) {
@@ -63,7 +68,7 @@ export const StyledMenus = styled.div`
     
     h2{
         cursor:pointer;
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
     
     @media(max-width: 730px){
@@ -80,7 +85,7 @@ export const StyledLogout = styled.div`
     
        
     h2{
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
 
     @media (max-width: 630px) {
@@ -91,7 +96,6 @@ export const StyledLogout = styled.div`
 export const StyledBurgerMenu = styled.div`
     ${tw`
         cursor-pointer
-        // text-black
     `}
     display: none;
     @media(max-width: 630px){

@@ -22,11 +22,6 @@ const NavbarComponent = () => {
       { name: '시장동향', path: '/news' }
   ];
 
-//   useEffect(() => {
-//     setPage('/browse'); // 처음에 거래소 페이지로 설정
-//     navigate('/browse');  // 거래소 페이지로 이동
-// }, [navigate]);
-
    const handlePageClick = (path: string) => {
         setPage(path)
         navigate(path)
@@ -64,9 +59,12 @@ const NavbarComponent = () => {
     
   return (
     <StyledContainer>
+      <StyledLogo>
+
       <Link to={'/browse'}>
         <img src="/alpha.png" alt="logo" />
       </Link>
+      </StyledLogo>
       <StyledMenus>
         {menus.map(item => (
               <Link to={item.path} key={item.name} 
