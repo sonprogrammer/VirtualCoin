@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 const NavbarComponent = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
-    const [page, setPage] = useState<string>('/browse')
+    const [page, setPage] = useState<string>('')
     const menuRef = useRef<HTMLDivElement | null>(null)
     const burgerRef = useRef<HTMLDivElement | null>(null)
     const [logoutModal, setLogoutModal] = useState<boolean>(false)
@@ -16,7 +16,7 @@ const NavbarComponent = () => {
     const navigate = useNavigate()
     
     const menus = [
-      { name: '거래소', path: '/browse' },
+      { name: '거래소', path: '/market' },
       { name: '자산', path: '/asset' },
       { name: '입출금', path: '/bank' },
       { name: '시장동향', path: '/news' }

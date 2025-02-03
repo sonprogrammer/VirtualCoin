@@ -24,6 +24,9 @@ export const StyeldBox = styled.div`
         flex-col
         gap-5
     `}
+    @media(min-width:1000px){
+        width: 30%;
+    }
 `
 export const StyeldTitle = styled.div`
     ${tw`

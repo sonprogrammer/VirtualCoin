@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { StyledContainer, StyledMoreBtn } from './style'
 import { InfoModal } from '../../components'
 
