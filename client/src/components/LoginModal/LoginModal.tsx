@@ -22,7 +22,6 @@ const LoginModal = ({closeModal} : LoginModalProps) => {
                     <StyledText>
                         로그인 종류<br />
                         카카오톡<br />
-                        구글 <br />
                         x
                     </StyledText>
                 </StyledModalContent>

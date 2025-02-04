@@ -1,0 +1,1 @@
+export { default as CoinListComponent } from './CoinListComponent'
