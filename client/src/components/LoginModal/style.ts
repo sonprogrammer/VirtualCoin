@@ -20,11 +20,8 @@ export const StyledModalContent = styled.div`
     bg-white
     p-8
     rounded-xl
-    shadow-lg
-    max-w-lg
     w-full
-    h-[70%]
-    relative
+    h-[50%]
   `}
   h1{
     ${tw`

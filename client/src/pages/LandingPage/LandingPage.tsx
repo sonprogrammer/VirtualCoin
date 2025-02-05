@@ -1,34 +1,39 @@
 
 import { useEffect, useState } from 'react'
-import { StyledBox, StyledContainer, StyledLoginBtn, StyledLogo, StyledText } from './style'
-import { LoginModal } from '../../components';
+import { StyledBox, StyledBtns, StyledContainer, StyledGuestBtn, StyledLoginBtn, StyledLogo, StyledText } from './style'
+import { GuidComponent } from '../../components';
+
 
 const LandingPage = () => {
   const [context, setContext] = useState<string>('')
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false)
+  const [guestModal, setGuestModal] = useState<boolean>(false)
+
+
+    const handleCloseModal = () => {
+        setGuestModal(false)
+    }
+
   const text = 'Welcome to Virtual Coin'
 
-  const modalOpenClicked = () => {
-    setLoginModalOpen(true)
+
+  const handleModalClick = () => {
+    setGuestModal(true)
   }
 
-  const closeModal = () => {
-    setLoginModalOpen(false)
-  }
 
-  useEffect(() =>{
-    if(currentIndex >= text.length) return;
+  useEffect(() => {
+    if (currentIndex >= text.length) return;
 
     const interval = setInterval(() => {
-        setContext(prev => prev + text[currentIndex])
-        setCurrentIndex(prev => prev+1)
+      setContext(prev => prev + text[currentIndex])
+      setCurrentIndex(prev => prev + 1)
     }, 200);
 
     return () => clearInterval(interval)
   }, [currentIndex])
-  
-  
+
+
   return (
     <StyledContainer>
       <StyledBox>
@@ -39,10 +44,18 @@ const LandingPage = () => {
         <StyledText>
           {context}
         </StyledText>
-        <StyledLoginBtn onClick={modalOpenClicked}>
-          login / singup
-        </StyledLoginBtn>
-        { loginModalOpen ? (<LoginModal closeModal={closeModal}/>) : ''}
+
+        <StyledBtns>
+          <StyledGuestBtn onClick={handleModalClick}>
+              Guest
+          </StyledGuestBtn>
+          <StyledLoginBtn>
+            <img src="./kakao.png" alt="카톡아이콘" /><p>Login</p>
+          </StyledLoginBtn>
+        </StyledBtns>
+
+        { guestModal && <GuidComponent handleCloseModal={handleCloseModal} />} 
+
       </StyledBox>
 
     </StyledContainer>

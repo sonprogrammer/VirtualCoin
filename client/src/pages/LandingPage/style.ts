@@ -30,6 +30,7 @@ export const StyledBox = styled.div`
     `}
 `
 
+
 export const StyledLogo = styled.div`
         ${tw`
             w-[35%]
@@ -56,6 +57,14 @@ export const StyledText = styled.div`
       
 `
 
+export const StyledBtns = styled.div`
+    ${tw`
+        flex
+        gap-10
+    `}
+`
+
+
 export const StyledLoginBtn = styled.div`
     ${tw`
         bg-red-500
@@ -64,8 +73,36 @@ export const StyledLoginBtn = styled.div`
         rounded-xl
         mt-10
         font-bold
+        flex
+        items-center
+        justify-center
+        gap-3
       `}
       &:hover{
+      cursor: pointer;
+      color: white;
+      animation: all 0.7s;
+      transform: scale(1.1);
+      transition: transform 0.3s;
+      }
+      img{
+        width: 32px;
+      }
+`
+export const StyledGuestBtn = styled.div`
+    ${tw`
+        bg-gray-700
+        px-5
+        py-2
+        rounded-xl
+        mt-10
+        font-bold
+        text-white
+        flex
+        items-center
+        justify-center
+    `}
+    &:hover{
       cursor: pointer;
       color: white;
       animation: all 0.7s;
