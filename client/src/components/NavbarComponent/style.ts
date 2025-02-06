@@ -5,7 +5,7 @@ export const StyledContainer = styled.div`
     ${tw`
         flex
         items-center
-        gap-10
+        gap-5
         px-5
         py-2
         border-b-2
@@ -18,23 +18,12 @@ export const StyledContainer = styled.div`
         `}
     }
     
-    @media(max-width:1024px){
-        padding: 10px 10px 10px 10px;
-    }
-
-    @media (max-width: 730px) {
-        gap: 20px;
-    }
 
     @media (max-width: 630px) {
         gap: 10px;
         justify-content: center;
     }
 
-    @media (max-width: 390px) {
-        gap: 5px;
-    }
-    
        
 `
 
@@ -49,32 +38,158 @@ export const StyledLogo = styled.div`
         flex
         justify-center
         mx-auto
-        img{
-        max-width: 100%;}
     }
 
 `
 
 
-export const StyledMenus = styled.div`
+export const StyledDeskMenus = styled.div`
     ${tw`
         flex
         gap-10
+        items-center
+        w-full
+
     `}
-    
-    @media (max-width: 630px) {
-        display:none;
-    }
     
     h2{
         cursor:pointer;
         font-size: 1.5rem;
-    }
+        }
+
+    // @media(max-width: 730px){
+    //    display:none;
+    // }
     
-    @media(max-width: 730px){
+    @media(max-width:1024px){
         gap: 10px;
     }
 `
+
+export const StyledDeskInput = styled.div`
+    ${tw`
+        flex
+        flex-1
+    `}
+    input{
+        width: 50%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        font-size: 16px;
+        padding-left: 20px;
+    }
+    //     @media(max-width: 730px){
+    //    display:none;
+    // }
+`
+
+
+export const StyledTablet = styled.div`
+    ${tw`
+        hidden
+    `}
+     @media(max-width: 730px){
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+     }
+    // @media(max-width: 630px){
+    //     display: none;
+    // }
+`
+
+export const StyledTabletInput = styled.div`
+    ${tw`
+        flex-1
+        flex
+        justify-center
+    `}
+    input{
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        font-size: 16px;
+        padding-left: 20px;
+    }
+`
+
+export const StyledTabletTab = styled.div`
+    ${tw`
+        cursor-pointer
+    `}
+`
+
+export const StyledTabletMenu = styled.div`
+    ${tw`
+        absolute
+        bg-white
+        right-0
+        border-2
+        top-[72px]
+    `}
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    p{
+        padding: 15px 20px;
+    }
+    
+    p:hover{
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+    
+
+    a:not(:last-child) p {
+        border-bottom: 1px solid #ccc;
+  }
+`
+
+
+
+
+
+export const StyledSearchIcon = styled.div`
+    ${tw`
+        absolute
+        right-20
+        p-1
+        cursor-pointer
+    `}
+`
+
+export const StyledMobileMenu = styled.div`
+    ${tw`
+        fixed
+        bottom-0
+        left-0
+        w-full
+        flex
+        justify-around
+        items-center
+        border-t-2
+        bg-red-500
+        text-white
+    `}
+    
+    a{
+        ${tw`
+            w-full
+        `}
+    }
+
+    p{
+        padding: 16px;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+    }
+  
+    p:hover{
+        background-color: rgb(255,154,154);
+    }
+`
+
+
 
 export const StyledUserIcon = styled.div`
     ${tw`
@@ -83,10 +198,16 @@ export const StyledUserIcon = styled.div`
         cursor-pointer
         w-12
     `}
+
+    @media(max-width:730px){
+        right: 76px;
+    }
     
 
     @media (max-width: 630px) {
-        display: none;
+        position: fixed;
+        top: 16px;
+        right: 16px;
     }
 `
 
@@ -98,7 +219,7 @@ export const StyledUserInfo = styled.div`
         rounded-xl
         p-5
         right-6
-        top-[80px]
+        top-[72px]
         w-[250px]
     `}
         box-shadow: 0px 4px 6px rgba(0,0,0, 0.3);
@@ -117,6 +238,13 @@ export const StyledUserInfo = styled.div`
         }
         span{
             font-weight: bold;
+        }
+        @media(max-width: 730px){
+            right: 84px;
+        }
+        @media(max-width: 630px){
+            top: 76px;
+            right: 24px;
         }
 `
 
@@ -137,7 +265,6 @@ export const StyledBurgerMenu = styled.div`
     ${tw`
         cursor-pointer
     `}
-    display: none;
     @media(max-width: 630px){
         display: block;
         position: absolute;
@@ -145,34 +272,6 @@ export const StyledBurgerMenu = styled.div`
     }
 `
 
-export const StyledMobileMenu = styled.div`
-    ${tw`
-        absolute
-        top-20
-        right-3
-        w-[30%]
-        bg-gray-800
-        text-white
-        flex
-        flex-col
-        items-center
-        rounded-xl
-        `}
-        p{
-            ${tw`
-                w-full
-                text-center
-                py-4
-                rounded-xl
-                cursor-pointer
-    `}
-        &:hover{
-            ${tw`
-                bg-gray-700
-                `}
-            }
-    }
-`
 
 export const StyledAngle = styled.div`
     ${tw`

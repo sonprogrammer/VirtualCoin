@@ -13,7 +13,7 @@ const LogoutModal = ({handleCloseModal, handleLogout} : LogoutModalProps) => {
         e.stopPropagation(); 
     };
     return (
-        <StyeldContainer>
+        <StyeldContainer onClick={handleCloseModal}>
             <StyeldBox onClick={stopPropagation}>
                 <StyeldTitle>
                     로그아웃 하시겠습니까?
