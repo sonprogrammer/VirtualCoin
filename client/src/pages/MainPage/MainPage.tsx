@@ -1,3 +1,4 @@
+import { TradeComponent } from '../../components'
 import { StyledContainer } from './style'
 
 const MainPage = () => {
@@ -8,6 +9,7 @@ const MainPage = () => {
   return (
     <StyledContainer>
       거래소, 실시간 코인
+      <TradeComponent />
     </StyledContainer>
   )
 }

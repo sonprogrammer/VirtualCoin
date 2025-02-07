@@ -130,7 +130,7 @@ const NavbarComponent = () => {
                         {menus.map(item => (
                             <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)}
                                 style={{ fontWeight: page === item.path ? 'bold' : 'normal' }}>
-                                <h2>{item.name}</h2>
+                                <h3>{item.name}</h3>
                             </Link>
                         ))}
                         <StyledDeskInput>

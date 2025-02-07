@@ -53,9 +53,9 @@ export const StyledDeskMenus = styled.div`
 
     `}
     
-    h2{
+    h3{
         cursor:pointer;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         }
     
     @media(max-width:1024px){
