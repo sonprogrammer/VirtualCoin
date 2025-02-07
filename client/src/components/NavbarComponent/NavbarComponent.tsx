@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { StyledAngle, StyledCloseBtn, StyledContainer, StyledDeskInput, StyledDeskMenus, StyledLogo, StyledLogout, StyledMobileMenu, StyledNoneLogo, StyledSearchIcon, StyledSearchWrapper, StyledTablet, StyledTabletInput, StyledTabletMenu, StyledTabletTab, StyledUserIcon, StyledUserInfo } from './style'
+import { StyledAngle, StyledCloseBtn, StyledCoins, StyledContainer, StyledDeskInput, StyledDeskMenus, StyledLogo, StyledLogout, StyledMobileMenu, StyledSearchIcon, StyledSearchWrapper, StyledTablet, StyledTabletInput, StyledTabletMenu, StyledTabletTab, StyledUserIcon, StyledUserInfo } from './style'
 import { LogoutModal } from '../LogoutModal'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faBars } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { InterestedCoin } from '../InterestedCoin';
+import { RecentCoin } from '../RecentCoin';
 
 const NavbarComponent = () => {
     const [page, setPage] = useState<string>('/browse');
@@ -13,7 +15,10 @@ const NavbarComponent = () => {
     const [info, setInfo] = useState<boolean>(false);
     const [burgerTab, setBurgerTab] = useState<boolean>(false);
     const [searchIcon, setSearchIcon] = useState<boolean>(false)
+    const [interestedCoin, setInterestedCoin] = useState<boolean>(false)
+    const [recentCoin, setRecentCoin] = useState<boolean>(false)
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
 
     const userRef = useRef<HTMLDivElement | null>(null);
     const iconRef = useRef<HTMLDivElement | null>(null);
@@ -44,6 +49,19 @@ const NavbarComponent = () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
+    const handleOutsideClick =() => {
+        setInterestedCoin(false)
+        setRecentCoin(false)
+    }
+
+    const handleInterstedClick = () => {
+        setInterestedCoin(true)
+    }
+
+    const handleRecentClick = () => {
+        setRecentCoin(true)
+    }
 
     const handleSearchClick = () => {
         setSearchIcon(!searchIcon);
@@ -160,15 +178,22 @@ const NavbarComponent = () => {
                 <StyledUserInfo ref={userRef}>
                     <StyledAngle />
                     <p><strong>보유 현금</strong> <span>10,000,000</span></p>
+                    {/* //TODO : 수익이면 빨강, 손익이면 파랑으로 색상조절*/}
                     <p><strong>총 평가 손익</strong> <span style={{ color: 'red' }}>+3,000,000</span></p>
                     <hr />
-                    <p><span>관심 코인</span> <span>최근 본 코인</span></p>
+                    <StyledCoins>
+                        <span onClick={handleInterstedClick}>관심 코인</span>
+                        <span onClick={handleRecentClick}>최근 본 코인</span>
+                    </StyledCoins>
                     <hr />
                     <StyledLogout onClick={handleLogoutClick}>
                         <p>로그아웃</p>
                     </StyledLogout>
+                    { interestedCoin && <InterestedCoin handleOutsideClick={handleOutsideClick}/>}
+                    { recentCoin && <RecentCoin handleOutsideClick={handleOutsideClick}/>}
                 </StyledUserInfo>
             )}
+
 
 
 

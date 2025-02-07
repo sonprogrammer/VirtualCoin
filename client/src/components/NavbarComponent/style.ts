@@ -104,6 +104,11 @@ export const StyledTabletInput = styled.div`
         font-size: 16px;
         padding-left: 20px;
     }
+
+    input:focus{
+        outline: none;
+        border: 2px solid red;
+    }
 `
 
 export const StyledTabletTab = styled.div`
@@ -194,7 +199,7 @@ export const StyledMobileMenu = styled.div`
         flex
         justify-around
         items-center
-        border-t-2
+        // border-t-2
         bg-red-500
         text-white
     `}
@@ -255,8 +260,7 @@ export const StyledUserInfo = styled.div`
             ${tw`
                 flex
                 justify-between
-                py-2
-                px-2
+                p-2
             `}
         }
 
@@ -266,7 +270,13 @@ export const StyledUserInfo = styled.div`
         }
         span{
             font-weight: bold;
+            cursor: pointer;
         }
+        
+        span:first-child:hover{
+            background-color: red;
+        }
+        
         @media(max-width: 730px){
             right: 84px;
         }
@@ -274,6 +284,24 @@ export const StyledUserInfo = styled.div`
             top: 76px;
             right: 24px;
         }
+`
+
+export const StyledCoins = styled.div`
+    ${tw`
+        flex
+        justify-between
+        p-2
+    `}
+    span{
+        padding: 4px 12px;
+        border-radius: 10%;
+    }
+    span:first-child:hover{
+        background-color: orange;
+    }
+    span:last-child:hover{
+        background-color: white;
+    }
 `
 
 export const StyledLogout = styled.div`
