@@ -11,6 +11,7 @@ export const StyledContainer = styled.div`
         border-b-2
         relative
         w-full
+        h-[82px]
     `}
     h2{
         ${tw`
@@ -56,10 +57,6 @@ export const StyledDeskMenus = styled.div`
         cursor:pointer;
         font-size: 1.5rem;
         }
-
-    // @media(max-width: 730px){
-    //    display:none;
-    // }
     
     @media(max-width:1024px){
         gap: 10px;
@@ -79,9 +76,6 @@ export const StyledDeskInput = styled.div`
         font-size: 16px;
         padding-left: 20px;
     }
-    //     @media(max-width: 730px){
-    //    display:none;
-    // }
 `
 
 
@@ -95,9 +89,6 @@ export const StyledTablet = styled.div`
         justify-content: space-between;
         width: 100%;
      }
-    // @media(max-width: 630px){
-    //     display: none;
-    // }
 `
 
 export const StyledTabletInput = styled.div`
@@ -156,6 +147,43 @@ export const StyledSearchIcon = styled.div`
         cursor-pointer
     `}
 `
+
+
+export const StyledSearchWrapper = styled.div`
+    ${tw`
+        flex
+        w-full
+        relative
+        justify-center
+        items-center
+        p-2
+    `}
+    input{
+        border: 2px solid black;
+        border-radius: 20px;
+        padding: 10px;
+
+        &:focus{
+            border-color: red;
+            outline: none;
+        }
+    }
+`
+
+export const StyledCloseBtn = styled.div`
+    ${tw`
+        absolute
+        left-3
+        cursor-pointer
+        p-3
+    `}
+    &:hover{
+        background-color: rgba(140, 140, 140, 0.7);
+        border-radius: 50%;
+    }
+`
+
+
 
 export const StyledMobileMenu = styled.div`
     ${tw`

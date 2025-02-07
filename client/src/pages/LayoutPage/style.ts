@@ -11,7 +11,6 @@ export const StyledContaier = styled.div`
 export const StyledNavbarWrapper = styled.div`
     ${tw`
         w-full
-        // bg-gray-100
     `}
 `
 export const StyledOutletWrapper = styled.div`

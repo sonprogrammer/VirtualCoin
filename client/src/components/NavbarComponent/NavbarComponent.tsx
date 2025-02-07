@@ -1,18 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
-import { StyledAngle, StyledContainer, StyledDeskInput, StyledDeskMenus, StyledLogo, StyledLogout, StyledMobileMenu, StyledSearchIcon, StyledTablet, StyledTabletInput, StyledTabletMenu, StyledTabletTab, StyledUserIcon, StyledUserInfo } from './style'
+import { StyledAngle, StyledCloseBtn, StyledContainer, StyledDeskInput, StyledDeskMenus, StyledLogo, StyledLogout, StyledMobileMenu, StyledNoneLogo, StyledSearchIcon, StyledSearchWrapper, StyledTablet, StyledTabletInput, StyledTabletMenu, StyledTabletTab, StyledUserIcon, StyledUserInfo } from './style'
 import { LogoutModal } from '../LogoutModal'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const NavbarComponent = () => {
     const [page, setPage] = useState<string>('/browse');
     const location = useLocation();
     const [logoutModal, setLogoutModal] = useState<boolean>(false);
-    const [info, setInfo ] = useState<boolean>(false);
+    const [info, setInfo] = useState<boolean>(false);
     const [burgerTab, setBurgerTab] = useState<boolean>(false);
-    const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth); // 윈도우 크기 상태 추가
+    const [searchIcon, setSearchIcon] = useState<boolean>(false)
+    const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
     const userRef = useRef<HTMLDivElement | null>(null);
     const iconRef = useRef<HTMLDivElement | null>(null);
@@ -28,8 +29,8 @@ const NavbarComponent = () => {
     ];
 
     useEffect(() => {
-      setPage(location.pathname); 
-  }, [location.pathname]);
+        setPage(location.pathname);
+    }, [location.pathname]);
 
 
     useEffect(() => {
@@ -38,11 +39,15 @@ const NavbarComponent = () => {
         };
 
         window.addEventListener('resize', handleResize);
-        
+
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
+    const handleSearchClick = () => {
+        setSearchIcon(!searchIcon);
+    }
 
     const handleBurgerClick = () => {
         setBurgerTab(!burgerTab);
@@ -91,59 +96,64 @@ const NavbarComponent = () => {
 
     return (
         <StyledContainer>
+        {!searchIcon && (
             <StyledLogo>
                 <Link to={'/browse'}>
                     <img src="/alpha.png" alt="logo" onClick={() => handlePageClick('/browse')} />
                 </Link>
             </StyledLogo>
+            )}
+
 
             {/* //*데스크탑 (730 ~ 1024px) */}
-            {windowWidth >= 730  && (
-              <>
-                <StyledDeskMenus>
-                    {menus.map(item => (
-                        <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)} 
-                        style={{ fontWeight: page === item.path ? 'bold' : 'normal' }}>
-                            <h2>{item.name}</h2>
-                        </Link>
-                    ))}
-                    <StyledDeskInput>
-                        <input type="text" placeholder="코인을 검색하세요" />
-                    </StyledDeskInput>
-                </StyledDeskMenus>
-                <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
-                  <img src="./user.png" alt="userIcon" />
-                </StyledUserIcon>
-              </>
-            )}
-            
-            {/* //*테블릿 (630 ~ 730px) */}
-            {windowWidth >= 630 && windowWidth < 730 && (
-              <>
-                <StyledTablet>
-                    <StyledTabletInput>
-                        <input type="text" placeholder="코인을 검색하세요" />
-                    </StyledTabletInput>
-                    <StyledTabletTab onClick={handleBurgerClick} ref={tabRef}>
-                        <FontAwesomeIcon icon={faBars} size="2xl" />
-                    </StyledTabletTab>
-                </StyledTablet>
-                <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
-                  <img src="./user.png" alt="userIcon" />
-                </StyledUserIcon>
-                {burgerTab && (
-                    <StyledTabletMenu ref={tabMenuRef}>
+            {windowWidth >= 730 && (
+                <>
+                    <StyledDeskMenus>
                         {menus.map(item => (
-                            <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)} 
-                            style={{ fontWeight: page === item.path ? 'bold' : 'normal', 
-                                    color: page === item.path ? 'red' : 'black' }}>
-                                <p>{item.name}</p>
+                            <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)}
+                                style={{ fontWeight: page === item.path ? 'bold' : 'normal' }}>
+                                <h2>{item.name}</h2>
                             </Link>
                         ))}
-                    </StyledTabletMenu>
-                )}
+                        <StyledDeskInput>
+                            <input type="text" placeholder="코인을 검색하세요" />
+                        </StyledDeskInput>
+                    </StyledDeskMenus>
+                    <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
+                        <img src="./user.png" alt="userIcon" />
+                    </StyledUserIcon>
                 </>
-                
+            )}
+
+            {/* //*테블릿 (630 ~ 730px) */}
+            {windowWidth >= 630 && windowWidth < 730 && (
+                <>
+                    <StyledTablet>
+                        <StyledTabletInput>
+                            <input type="text" placeholder="코인을 검색하세요" />
+                        </StyledTabletInput>
+                        <StyledTabletTab onClick={handleBurgerClick} ref={tabRef}>
+                            <FontAwesomeIcon icon={faBars} size="2xl" />
+                        </StyledTabletTab>
+                    </StyledTablet>
+                    <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
+                        <img src="./user.png" alt="userIcon" />
+                    </StyledUserIcon>
+                    {burgerTab && (
+                        <StyledTabletMenu ref={tabMenuRef}>
+                            {menus.map(item => (
+                                <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)}
+                                    style={{
+                                        fontWeight: page === item.path ? 'bold' : 'normal',
+                                        color: page === item.path ? 'red' : 'black'
+                                    }}>
+                                    <p>{item.name}</p>
+                                </Link>
+                            ))}
+                        </StyledTabletMenu>
+                    )}
+                </>
+
             )}
 
             {info && (
@@ -160,29 +170,42 @@ const NavbarComponent = () => {
                 </StyledUserInfo>
             )}
 
-            
 
 
-             {/* //* 모바일 (630px 이하) */}
-             {windowWidth < 630 && (
-              <>
-                <StyledSearchIcon>
-                    <FontAwesomeIcon icon={faMagnifyingGlass} size='2xl' />
-                </StyledSearchIcon>
-                <StyledMobileMenu>
-                {menus.map(item => (
-                        <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)} 
-                        style={{ fontWeight: page === item.path ? 'bold' : 'normal',
-                                color: page === item.path ? 'black' : 'white' }}
-                        >
-                            <p>{item.name}</p>
-                        </Link>
-                    ))}
-                </StyledMobileMenu>
+
+            {/* //* 모바일 (630px 이하) */}
+            {windowWidth < 630 && (
+                <>     
+                    {/*//* 돋보기 클릭시 로고 왼쪽 끝으로 이동하고 검색창 생김  */}
+                    {searchIcon ?
+                        <StyledSearchWrapper>
+                            <StyledCloseBtn onClick={() => setSearchIcon(false)}>
+                                <FontAwesomeIcon icon={faArrowLeft} size='2xl'/>
+                            </StyledCloseBtn>
+                            <input type="text" placeholder='코인을 검색하세요' />
+                        </StyledSearchWrapper>
+                        :
+                        <StyledSearchIcon onClick={handleSearchClick}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} size='2xl' />
+                    </StyledSearchIcon>
+                    }
+
+                    <StyledMobileMenu>
+                        {menus.map(item => (
+                            <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)}
+                                style={{
+                                    fontWeight: page === item.path ? 'bold' : 'normal',
+                                    color: page === item.path ? 'black' : 'white'
+                                }}
+                            >
+                                <p>{item.name}</p>
+                            </Link>
+                        ))}
+                    </StyledMobileMenu>
                     <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
-                      <img src="./user.png" alt="userIcon" />
+                        <img src="./user.png" alt="userIcon" />
                     </StyledUserIcon>
-              </>
+                </>
             )}
 
             {/* //* 로그아웃 모달 */}
