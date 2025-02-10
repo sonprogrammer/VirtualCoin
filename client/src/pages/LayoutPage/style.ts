@@ -11,10 +11,13 @@ export const StyledContaier = styled.div`
 export const StyledNavbarWrapper = styled.div`
     ${tw`
         w-full
+        sticky
+        top-0
     `}
 `
 export const StyledOutletWrapper = styled.div`
     ${tw`
-        flex-grow
+        grow
+        overflow-auto
     `}
 `

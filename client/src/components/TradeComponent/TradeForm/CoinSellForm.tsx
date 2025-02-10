@@ -1,10 +1,10 @@
-import React from 'react'
+import CoinTradeForm from './CoinTradeForm'
 
 const CoinSellForm = () => {
   return (
-    <div>
-      CoinSellForm
-    </div>
+    <>
+      <CoinTradeForm />
+    </>
   )
 }
 

@@ -8,6 +8,8 @@ export const Styledcontainer = styled.div`
         h-full
         bg-gray-300
         rounded-2xl
+        flex
+        flex-col
     `}
 `
 
@@ -30,11 +32,7 @@ export const StyledNavbar = styled.div`
 export const StyledTradeSection = styled.div`
     ${tw`
         flex-1
-    `}
-`
-
-export const StyledButtons = styled.div`
-    ${tw`
-
+        grow
+        overflow-y-auto
     `}
 `

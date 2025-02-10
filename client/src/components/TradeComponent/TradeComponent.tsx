@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { StyledButtons, Styledcontainer, StyledNavbar, StyledTradeSection } from "./style"
+import { Styledcontainer, StyledNavbar, StyledTradeSection } from "./style"
 import { CoinBuyForm, CoinSellForm, CoinBookForm } from './TradeForm';
 
 
