@@ -4,9 +4,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
 
 
-const CoinTradeForm = () => {
+interface CoinTradeFormProps{
+    name: string;
+}
+
+const mockData = {
+    userBalance: 500000, 
+    coins: [
+      { name: '비트코인', price: 72000000, availableAmount: 0.01 },
+      { name: '이더리움', price: 3500000, availableAmount: 1.5 },
+      { name: '리플', price: 950, availableAmount: 1000 },
+    ],
+  };
+  
+
+
+const CoinTradeForm = ({name} : CoinTradeFormProps) => {
     //*coinPrice의 초기값은 업비트 api에서 코인별로 불러와야함
-    const [coinPrice, setCoinPrice] = useState<number>(0)
+    const [coinPrice, setCoinPrice] = useState<number>(mockData.coins[0].price)
 
 
     const handleMinusClick = () => {
@@ -23,15 +38,15 @@ const CoinTradeForm = () => {
       <StyledAsset>
         <p>주문가능</p>
         {/*//* 현재 로그인한 사람의 보유 현금  */}
-        <p><strong>현재보유자산</strong> 원</p>
+        <p><strong>{mockData.userBalance} 원</strong></p>
       </StyledAsset>
       <StyledCoinPrice>
-        <p>매수가격(KRW)</p>
+        <p>{name}가격(KRW)</p>
         <StyledTradeInput>
             {/* //*인풋창에 코인의 가격이 들어가고 거기서 더 낮은 금액에
             //* 사고 싶으면 그가격에 예약을 걸어놈
              */}
-          <input type="number" placeholder={coinPrice.toString()}/>
+          <input type="number" value={coinPrice.toString()} />
           <button onClick={handleMinusClick}>-</button>
           <button onClick={handlePlusClick}>+</button>
         </StyledTradeInput>
@@ -40,7 +55,7 @@ const CoinTradeForm = () => {
       <StyledCoinAmount>
         <StyledAmountInput>
             <p>주문수량</p>
-            <input type="number" placeholder='0'/>
+            <input type="number" value={mockData.coins[0].availableAmount.toString()}/>
         </StyledAmountInput>
         <StyledAmountRate>
           <button>10%</button>
@@ -61,7 +76,9 @@ const CoinTradeForm = () => {
             <FontAwesomeIcon icon={faRotateRight} />
             초기화
         </button>
-        <button>매수</button>
+        <button 
+            className={`${name === '매도' ? 'bg-blue-600 text-white' : 'bg-red-600 text-white'} px-4 py-2 rounded`}
+        >{name}</button>
       </StyledBtns>
       
     </StyledContainer>

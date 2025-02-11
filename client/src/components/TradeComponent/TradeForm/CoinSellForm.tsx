@@ -3,7 +3,7 @@ import CoinTradeForm from './CoinTradeForm'
 const CoinSellForm = () => {
   return (
     <>
-      <CoinTradeForm />
+      <CoinTradeForm name='매도'/>
     </>
   )
 }

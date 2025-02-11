@@ -1,9 +1,10 @@
+import { useState } from 'react'
 import CoinTradeForm from './CoinTradeForm'
 
 const CoinBuyForm = () => {
   return (
     <>
-      <CoinTradeForm />
+      <CoinTradeForm name='매수'/>
     </>
   )
 }

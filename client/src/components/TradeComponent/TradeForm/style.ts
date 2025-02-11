@@ -121,6 +121,7 @@ export const StyledBtns = styled.div`
     ${tw`
         flex
         gap-2
+        font-bold
     `}
     button:first-child{
         width: 30%;
@@ -136,7 +137,6 @@ export const StyledBtns = styled.div`
 
     button:last-child{
         width: 70%;
-        background-color: red;
         border-radius: 8px;
         color: white;
     }
@@ -202,6 +202,14 @@ export const StyledContent = styled.div`
 `
 
 
+export const StyledDivider = styled.div`
+    ${tw`
+        h-[90%]
+        overflow-y-auto
+    `}
+`
+
+
 export const StyledBookBoxTitle = styled.div`
     ${tw`
         flex
@@ -235,10 +243,7 @@ export const StyledAllCancleBtn = styled.div`
         py-3
         text-white
         cursor-pointer
-        absolute
-        bottom-4
-        w-[90%]
-        right-5
+        mt-8
     `}
 
     &:hover{
