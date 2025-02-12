@@ -221,6 +221,7 @@ export const StyledBookBoxTitle = styled.div`
 export const StyledAmount = styled.div`
     ${tw`
         flex
+        text-[12px]
     `}
 `
 
@@ -235,18 +236,52 @@ export const StyledCancleBtn = styled.div`
     `}
 `
 
+export const StyledDate = styled.div`
+    ${tw`
+        flex
+        flex-col
+    `}
+    h1{
+        ${tw`
+            font-bold
+        `}
+    }
+    p{
+        ${tw`
+            text-[12px]    
+        `}
+    }
+`
+
 
 export const StyledAllCancleBtn = styled.div`
     ${tw`
-        bg-gray-500
-        rounded-lg
-        py-3
-        text-white
-        cursor-pointer
-        mt-8
+        flex
+        gap-2
+        font-bold
+        mt-9
     `}
+    button:first-child{
+        width: 30%;
+        background-color: gray;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        color: white;
+        padding: 5px 0;
+    }
 
-    &:hover{
-        background-color:rgb(107, 114, 128, 0.9)
+    button:last-child{
+        width: 70%;
+        border-radius: 8px;
+        color: white;
+        ${tw`
+            bg-gray-500
+        `}
+        &:hover{
+            background-color:rgb(107, 114, 128, 0.9)
+        }
     }
 `
