@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { StyledAmountInput, StyledAmountRate, StyledAsset, StyledBtns, StyledCoinAmount, StyledCoinPrice, StyledContainer, StyledTotalOrder, StyledTradeInput } from './style'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 interface CoinTradeFormProps{
@@ -25,6 +27,22 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
     const [userBalance, setUserBalance] = useState<number>(mockData.userBalance)
     const [orderAmount, setOrderAmount] = useState<number>(mockData.coins[0].availableAmount);
 
+  
+    const handleSubmit = () => {
+      // 알림 띄우기
+      if (name === '매도') {
+        toast.success(`매도 성공!`,{
+          autoClose: 1000, 
+        hideProgressBar: true,
+        });
+      } else if (name === '매수') {
+        toast.success(`매수 성공!`,{
+          autoClose: 1000, 
+          hideProgressBar: true,
+        });
+      }
+    };
+    
 
     const handleMinusClick = () => {
         if (coinPrice > 0) {
@@ -89,8 +107,11 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
         </button>
         <button 
             className={`${name === '매도' ? 'bg-blue-600 text-white' : 'bg-red-600 text-white'} px-4 py-2 rounded`}
+            onClick={handleSubmit}
         >{name}</button>
       </StyledBtns>
+      <ToastContainer position="top-center" />
+
       
     </StyledContainer>
   )

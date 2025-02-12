@@ -5,7 +5,6 @@ import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import dayjs from 'dayjs';
 
 
-
 interface Order {
   id: number;
   name: string;
@@ -37,7 +36,7 @@ const CoinBookForm = () => {
   // *목업데이터임
   const [mockDataState, setMockDataState] = useState<{ 미체결: Order[]; 체결: Order[] }>(mockData);
 
-
+  
   const handleCheckboxChange = (id: number) => {
     setCheckedItems(prev => ({
       ...prev,
