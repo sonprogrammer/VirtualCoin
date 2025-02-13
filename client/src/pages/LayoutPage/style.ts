@@ -19,5 +19,6 @@ export const StyledOutletWrapper = styled.div`
     ${tw`
         grow
         overflow-auto
+        flex-1
     `}
 `

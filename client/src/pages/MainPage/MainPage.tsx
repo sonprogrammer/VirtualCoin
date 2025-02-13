@@ -1,4 +1,4 @@
-import { TradeComponent } from '../../components'
+import { CoinChartComponent } from '../../components'
 import { StyledContainer } from './style'
 
 const MainPage = () => {
@@ -8,8 +8,7 @@ const MainPage = () => {
   
   return (
     <StyledContainer>
-
-      <TradeComponent />
+      <CoinChartComponent />
     </StyledContainer>
   )
 }
