@@ -1,0 +1,1 @@
+export { default as RankingComponent } from './RankingComponent'

@@ -1,9 +1,10 @@
 import React from 'react'
+import { RankingComponent } from '../../components'
 
 const RankingPage = () => {
   return (
-    <div>
-      랭킹 페이지 30명까지
+    <div className='rankingpage'>
+      <RankingComponent />
     </div>
   )
 }

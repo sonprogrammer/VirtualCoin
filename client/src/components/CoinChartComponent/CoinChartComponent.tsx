@@ -13,7 +13,18 @@ const CoinChartComponent = () => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [star, setStar] = useState<string[]>([]) //*관심코인 관리 수월
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
 
+
+  const sortCoinByVolume = (order: 'asc' | 'desc') =>{
+    const sortedCoins = [...coins].sort((a, b) => {
+      const tradeVolumeA = prices[a.market]?.acc_price || 0;
+      const tradeVolumeB = prices[b.market]?.acc_price || 0;
+      return order === 'asc' ? tradeVolumeA - tradeVolumeB : tradeVolumeB - tradeVolumeA
+    })
+    setCoins(sortedCoins)
+    setSortOrder(order)
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -43,14 +54,15 @@ const CoinChartComponent = () => {
 
   const isStar = (coinMarket: string) => star.includes(coinMarket)
 
-  const CoinPage = 10;
+  
+
   //*코인 데이터 가져오기(100개) - rest api로 (고정된 값이니깐 변할일 없어서 )
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get('https://api.upbit.com/v1/market/all')
         console.log('res', res)
-        const krwCoins = res.data.filter((coin: any) => coin.market.startsWith("KRW-")).slice(0, 100);
+        const krwCoins = res.data.filter((coin: any) => coin.market.startsWith("KRW-"));
         setCoins(krwCoins);
       } catch (error) {
         console.log(error)
@@ -94,6 +106,8 @@ const CoinChartComponent = () => {
 
   }, [coins])
 
+  const CoinPage = 10;
+
   const firstPage = (page - 1) * CoinPage
   const coinPerPage = coins.slice(firstPage, firstPage + CoinPage)
 
@@ -109,13 +123,16 @@ const CoinChartComponent = () => {
       <StyledTable>
         <StyledTableHead>
           <tr>
-            {/* <th className="text-center"  style={{ width: '70px' }}>관심</th> */}
             <th className="text-center" style={{ width: windowWidth > 570 ? '70px' : '40px' }}>관심</th>
             <th className="text-left">코인</th>
             <th className="text-right">현재가</th>
             <th className="text-right">전일대비</th>
             {windowWidth > 570 ? (
-              <th className="text-right">거래대금(24H)</th>
+              <th className="text-right">
+                <button onClick={() => sortCoinByVolume(sortOrder === 'asc' ? 'desc' : 'asc')}>
+                  {sortOrder === 'asc' ? '▲' : '▼'} 거래대금(24H)
+                </button>
+              </th>
             ) : (
               <th className="text-right">거래대금</th>
             )
@@ -217,10 +234,9 @@ const CoinChartComponent = () => {
             key={i + 1}
             onClick={() => {
               setPage(i + 1);
-              setSelectedPage(i + 1)
             }
             }
-            className={`${selectedPage === i + 1 ?
+            className={`${page === i + 1 ?
               'bg-red-500 text-white flex items-center justify-center'
               :
               'bg-white text-black flex items-center justify-center'} p-2 rounded`}

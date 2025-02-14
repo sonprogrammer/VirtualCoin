@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 
+
 export const StyledContainer = styled.div`
     ${tw`
         h-full
@@ -10,13 +11,6 @@ export const StyledContainer = styled.div`
         px-5
         items-center
     `}
-
-    @media(max-width: 630px){
-        margin-bottom: 60px;
-    }
-    @media(max-width: 570px){
-        padding: 0;
-    }
 `
 
 export const StyledTitle = styled.div`
@@ -27,34 +21,37 @@ export const StyledTitle = styled.div`
         w-full
         p-5
     `}
-    h2{
-        ${tw`
-            text-xl
-            font-bold    
-        `}
+    h1{
+        font-size: 20px;
+        font-weight: bold;
     }
     p{
-        ${tw`
-            text-[12px]
-        `}
+        font-size: 12px;
+        color: gray;
     }
 `
+
+export const StyledBox = styled.div`
+    ${tw`
+
+    `}
+`
+
 
 export const StyledTable = styled.table`
     ${tw`
         border-2
         w-full    
         table-fixed
-        border-separate
-        border-2 
-        rounded-lg
-        `}
-            border-collapse: collapse;
+        border-separate 
+        border-2
+         rounded-lg
+    `}
+        border-collapse: collapse;
 
-    th{
+        th{
         ${tw`
             p-2
-            w-full
             bg-gray-200
         `}
         @media(max-width: 570px){
@@ -62,15 +59,18 @@ export const StyledTable = styled.table`
         }
     }
 `
-
 export const StyledTableHead = styled.thead`
+
+th {
     ${tw`
-    
+        p-2
+        bg-gray-200
+        text-center
     `}
+}
 `
 
 export const StyledTableBody = styled.tbody`
-
     tr{
         ${tw`
             border-b-2
@@ -84,17 +84,18 @@ export const StyledTableBody = styled.tbody`
     }
     td{
         padding: 10px 8px;
+        text-align: center;
     }
 `
 
-export const StyledPageBtns = styled.div`
+export const StyledBtns = styled.div`
     ${tw`
         flex
         w-full
         justify-center
+        gap-10
         mt-4
         pb-5
-        gap-3
     `}
     button{
         width: 24px;
