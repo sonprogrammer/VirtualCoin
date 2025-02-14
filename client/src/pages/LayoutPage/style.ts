@@ -21,4 +21,5 @@ export const StyledOutletWrapper = styled.div`
         overflow-auto
         flex-1
     `}
+    
 `

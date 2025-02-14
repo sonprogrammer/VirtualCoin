@@ -7,13 +7,15 @@ export const StyledContainer = styled.div`
         flex
         flex-col
         w-full
+        px-5
         items-center
     `}
 
-    @media(max-width: 730px){
-        ${tw`
-    
-        `}
+    @media(max-width: 630px){
+        margin-bottom: 60px;
+    }
+    @media(max-width: 570px){
+        padding: 0;
     }
 `
 
@@ -50,7 +52,10 @@ export const StyledTable = styled.table`
             p-2
             w-full
             bg-gray-200
-            `}
+        `}
+        @media(max-width: 570px){
+            padding: 5px;
+        }
     }
 `
 
@@ -86,9 +91,9 @@ export const StyledPageBtns = styled.div`
     ${tw`
         flex
         w-[50%]
-        justify-around
+        justify-center
         mt-4
-        pb-4
+        pb-5
     `}
     button{
         width: 24px;

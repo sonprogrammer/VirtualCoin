@@ -9,7 +9,7 @@ const LayoutPage = () => {
       <StyledNavbarWrapper>
         <NavbarComponent />
       </StyledNavbarWrapper>
-      <StyledOutletWrapper>
+      <StyledOutletWrapper className='outlet'>
         <Outlet />
       </StyledOutletWrapper>
     </StyledContaier>

@@ -75,6 +75,10 @@ export const StyledDeskInput = styled.div`
         border-radius: 12px;
         font-size: 16px;
         padding-left: 20px;
+        &:focus{
+            border: 1px solid red;
+            outline: none;
+        }
     }
 `
 

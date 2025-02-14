@@ -2,12 +2,8 @@ import { CoinChartComponent } from '../../components'
 import { StyledContainer } from './style'
 
 const MainPage = () => {
-
-
-
-  
   return (
-    <StyledContainer>
+    <StyledContainer className='main'>
       <CoinChartComponent />
     </StyledContainer>
   )
