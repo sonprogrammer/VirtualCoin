@@ -3,6 +3,11 @@ import { useState } from 'react'
 import data from './mockupData'
 import { StyledBox, StyledBtns, StyledContainer, StyledTable, StyledTableBody, StyledTableHead, StyledTitle } from './style'
 const RankingComponent = () => {
+    const [page, setPage] = useState<number>(1)
+
+    const perPage = 10
+    const firstPage = (page-1) * perPage
+    const EachPage = data.slice(firstPage, perPage + firstPage)
  
 
     return (
@@ -21,7 +26,7 @@ const RankingComponent = () => {
                         <th>수익률</th>
                     </StyledTableHead>
                     <StyledTableBody>
-                        {data.map(a => (
+                        {EachPage.map(a => (
                             <tr>
                                 <td>{a.rank}</td>
                                 <td>{a.name}</td>
@@ -32,6 +37,16 @@ const RankingComponent = () => {
                         ))}
                     </StyledTableBody>
                 </StyledTable>
+                <StyledBtns>
+                    {Array.from({length: Math.ceil(data.length / perPage)}, (_, i) => (
+                        <button 
+                            onClick={() => setPage(i+1)}
+                            className={`${page === i + 1 ? 'bg-red-500' : ''}`}
+                            >
+                            {i + 1}
+                        </button>
+                    ))}
+                </StyledBtns>
                
             </StyledBox>
         </StyledContainer>
