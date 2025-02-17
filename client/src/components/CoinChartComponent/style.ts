@@ -45,17 +45,14 @@ export const StyledTable = styled.table`
         border-2
         w-full    
         table-fixed
-        border-separate
-        border-2 
-        rounded-lg
+        // border-separate
         `}
-            border-collapse: collapse;
+            // border-collapse: collapse;
 
     th{
         ${tw`
             p-2
             w-full
-            bg-gray-200
         `}
         @media(max-width: 570px){
             padding: 5px;
@@ -65,7 +62,7 @@ export const StyledTable = styled.table`
 
 export const StyledTableHead = styled.thead`
     ${tw`
-    
+        bg-gray-200
     `}
 `
 
