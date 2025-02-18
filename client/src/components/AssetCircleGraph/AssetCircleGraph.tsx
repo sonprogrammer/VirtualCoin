@@ -1,59 +1,110 @@
-import React from 'react';
-import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import coinData from './mockupData'
 
-// chart.js의 기본 구성 요소 등록
-ChartJS.register(ArcElement, Tooltip, Legend);
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Colors,
+  TooltipItem,
+} from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+import { coins, total_bid } from './mockupData'
+import {  StyledContainer, StyledText } from './style';
 
-const AssetCircleGraph = () => {
-  // 전체 자산 비율을 계산하는 함수
-  const totalValue = coinData.reduce((acc, coin) => acc + coin.value, 0);
 
-  // Chart.js에 사용할 데이터 준비
+// 필요한 컴포넌트들을 등록
+ChartJS.register(ArcElement, Tooltip, Legend, Colors);
+
+
+function AssetCircleGraph() {
+
+  const coinsRates = coins.map(coin => {
+    return {
+      market: coin.market,
+      value: Number(((coin.price / total_bid) * 100).toFixed(2))
+    }
+  })
+
+  const sortedCoinsRates = [...coinsRates].sort((a, b) => b.value - a.value)
+
+
+  const generatedColors = (count: number) => {
+    const colors = []
+    const hueStep = 360 / count
+
+    for (let i = 0; i < count; i++) {
+      const hue = i * hueStep
+      colors.push(`hsl${hue}, 70%, 50%`)
+    }
+    return colors
+  }
+
   const data = {
-    labels: coinData.map(coin => coin.name), // 코인 이름
+    labels: sortedCoinsRates.map(coin => coin.market),
     datasets: [
       {
-        data: coinData.map(coin => coin.value), // 코인의 자산 값
-        backgroundColor: ['#FF8042', '#00C49F', '#0088FE', '#FFBB28', '#FF00FF'], // 각 파이 조각의 색상
-        hoverOffset: 4,
-      },
-    ],
-  };
+        data: sortedCoinsRates.map(coin => coin.value),
+        backgroundColor: generatedColors(sortedCoinsRates.length),
+        hoverOffset: 3
+      }
+    ]
+  }
 
-  // Chart.js 옵션 (툴팁, 레전드 등)
   const options = {
-    responsive: true,
     plugins: {
-      tooltip: {
-        callbacks: {
-          label: (context) => {
-            const value = context.raw;
-            return `${context.label}: ${value} KRW`;
+      colors: {
+        forceOverride: true,
+      },
+      legend: {
+        position: 'left' as const,
+        onClick: () => { },
+        labels: {
+          generateLabels: (chart: ChartJS) => {
+            const data = chart.data;
+            const dataset = data.datasets[0];
+            const colors = dataset.backgroundColor as string[];
+
+            return (
+              data.labels?.map((label, index) => ({
+                text: `${label}: ${dataset.data[index]}%`,
+                fillStyle: colors?.[index] || '#000000',
+                hidden: false,
+                index: index,
+              })) || []
+            );
           },
         },
       },
-      legend: {
-        position: 'top',
+      tooltip: {
+        position: 'nearest' as const,
+        callbacks: {
+          label: function (context: TooltipItem<'doughnut'>) {
+            const label = context.label;
+            const value = context.raw;
+            return ` ${label}: ${value}%`;
+          },
+        },
+        yAlign: 'top' as const,
+        xAlign: 'center' as const,
       },
     },
+    responsive: true,
+    maintainAspectRatio: false,
   };
 
-  return (
-    <div>
-      <h3>자산 비율</h3>
-      <Pie data={data} options={options} />
 
-      <div>
-        {coinData.map((coin, index) => (
-          <div key={index}>
-            <p>{coin.name}: {((coin.value / totalValue) * 100).toFixed(2)}%</p>
-          </div>
-        ))}
-      </div>
-    </div>
+  return (
+    <StyledContainer className='graph있는쪽'>
+
+        <Doughnut data={data} options={options} className='w-full h-full ' />
+        <StyledText>
+          <p>보유 비중</p>
+          <p>(%)</p>
+        </StyledText>
+
+
+    </StyledContainer>
   );
-};
+}
 
 export default AssetCircleGraph;

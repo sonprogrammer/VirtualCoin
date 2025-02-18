@@ -11,7 +11,7 @@ const TransactionComponent = () => {
         // TransactionComponent(거래내역 | 미체결)
 
         <div>
-            
+            hi
         </div>
     )
 }

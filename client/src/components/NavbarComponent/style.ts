@@ -234,6 +234,7 @@ export const StyledUserIcon = styled.div`
         right-4
         cursor-pointer
         w-12
+    
     `}
 
     @media(max-width:730px){
@@ -258,6 +259,7 @@ export const StyledUserInfo = styled.div`
         right-6
         top-[72px]
         w-[250px]
+        z-10
     `}
         box-shadow: 0px 4px 6px rgba(0,0,0, 0.3);
         p{

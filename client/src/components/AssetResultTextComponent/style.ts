@@ -7,8 +7,8 @@ export const StyledContainer = styled.div`
         w-full
         flex
         flex-col
-        border-r-2
         p-5
+        h-full
     `}
 `
 
@@ -18,6 +18,7 @@ export const StyledTopBox = styled.div`
         flex
         pb-3
         justify-between
+        px-5
     `}
 `
 
@@ -39,7 +40,9 @@ export const StyledTopBoxContents = styled.div`
 
     h1{
         ${tw`
-            font-bold    
+            font-bold
+            flex
+            items-center    
         `}
     }
     p{
@@ -63,6 +66,7 @@ export const StyledBottomBox = styled.div`
         flex
         flex-wrap
         pt-3
+        items-center
     `}
 `
 
@@ -103,4 +107,34 @@ export const StyledBottomContentBox = styled.div`
         flex
         gap-2
     `}
+`
+export const StyledRestOfMoney = styled.div`
+    ${tw`
+        flex
+        w-[50%]
+        px-5
+        py-1
+        justify-between
+    `}
+    h2{
+        ${tw`
+            text-stone-800
+            text-sm
+            flex
+            items-center
+        `}
+    }
+
+    h1{
+        ${tw`
+            font-bold    
+        `}
+    }
+    p{
+        ${tw`
+            text-xs
+            flex
+            items-end
+        `}
+    }
 `

@@ -10,7 +10,6 @@ const CoinChartComponent = () => {
   const [coins, setCoins] = useState<any[]>([])
   const [page, setPage] = useState(1)
   const [prices, setPrices] = useState<{ [key: string]: { trade_price: number, change_rate: number, acc_price: number, change_price: number } }>({})
-  const [selectedPage, setSelectedPage] = useState(1);
   const [star, setStar] = useState<string[]>([]) //*관심코인 관리 수월
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 

@@ -1,11 +1,11 @@
 import { mockupData as data } from './mockupdata'
-import { StyledBottomBox, StyledBottomBoxContents, StyledBottomContentBox, StyledContainer, StyledDivider, StyledTopBox, StyledTopBoxContents } from './style'
+import { StyledBottomBox, StyledBottomBoxContents, StyledBottomContentBox, StyledContainer, StyledDivider, StyledRestOfMoney, StyledTopBox, StyledTopBoxContents } from './style'
 
 
 const AssetResultTextComponent = () => {
     
     return (
-        <StyledContainer>
+        <StyledContainer className='Assettext'>
             <StyledTopBox>
                 <StyledTopBoxContents>
                     <h2>보유 KRW</h2>
@@ -23,14 +23,14 @@ const AssetResultTextComponent = () => {
 
             <StyledBottomBox>
                 <StyledBottomBoxContents>
-                    <h2>총매수금액</h2>
+                    <h2>총 매수금액</h2>
                     <StyledBottomContentBox>
                         <h1>{data.totalBuyAmount.toLocaleString()}</h1>
                         <p>KRW</p>
                     </StyledBottomContentBox>
                 </StyledBottomBoxContents>
                 <StyledBottomBoxContents>
-                    <h2>총평가손익</h2>
+                    <h2>총 평가손익</h2>
                     <StyledBottomContentBox>
                         <h1
                             className={`${data.totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}
@@ -40,14 +40,14 @@ const AssetResultTextComponent = () => {
                 </StyledBottomBoxContents>
                 
                 <StyledBottomBoxContents>
-                    <h2>총평가금액</h2>
+                    <h2>총 평가금액</h2>
                     <StyledBottomContentBox>
                         <h1>{data.totalEvaluationAmount.toLocaleString()}</h1>
                         <p>KRW</p>
                     </StyledBottomContentBox>
                 </StyledBottomBoxContents>
                 <StyledBottomBoxContents>
-                    <h2>총평가수익률</h2>
+                    <h2>총 평가수익률</h2>
                     <StyledBottomContentBox>
                         <h1
                             className={`${data.totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}
@@ -55,6 +55,14 @@ const AssetResultTextComponent = () => {
                         <p>%</p>
                     </StyledBottomContentBox>
                 </StyledBottomBoxContents>
+
+                <StyledRestOfMoney>
+                    <h2>주문가능</h2>
+                    <StyledBottomContentBox>
+                        <h1>{data.totalProfitLoss.toLocaleString()}</h1>
+                        <p>KRW</p>
+                    </StyledBottomContentBox>
+                </StyledRestOfMoney>
             </StyledBottomBox>
 
         </StyledContainer>

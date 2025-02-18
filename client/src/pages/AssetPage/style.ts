@@ -20,8 +20,14 @@ export const StyledBox = styled.div`
         items-center
         //!border는 삭제
         border 
-        
+        w-full
     `}
+    @media(max-width: 630px){
+        margin-bottom: 60px;
+    }
+    @media(max-width: 570px){
+        padding: 0;
+    }
 `
 
 export const StyledTabs = styled.div`
@@ -44,5 +50,6 @@ export const StyledTabs = styled.div`
 export const StyledContents = styled.div`
     ${tw`
         w-full
+        h-full
     `}
 `
