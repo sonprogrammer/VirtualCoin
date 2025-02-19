@@ -10,11 +10,12 @@ const CoinChartComponent = () => {
   const [coins, setCoins] = useState<any[]>([])
   const [page, setPage] = useState(1)
   const [prices, setPrices] = useState<{ [key: string]: { trade_price: number, change_rate: number, acc_price: number, change_price: number } }>({})
-  const [star, setStar] = useState<string[]>([]) //*관심코인 관리 수월
+  const [star, setStar] = useState<string[]>([]) //*관심코인 관리 
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
 
 
+  
   const sortCoinByVolume = (order: 'asc' | 'desc') =>{
     const sortedCoins = [...coins].sort((a, b) => {
       const tradeVolumeA = prices[a.market]?.acc_price || 0;
@@ -37,6 +38,8 @@ const CoinChartComponent = () => {
 
 
 
+
+
   const handleStarClick = (coinMarket: string) => {
     setStar(prev => {
       if (prev.includes(coinMarket)) {
@@ -48,7 +51,6 @@ const CoinChartComponent = () => {
   }
 
   useEffect(() => {
-    console.log('star', star)
   }, [star])
 
   const isStar = (coinMarket: string) => star.includes(coinMarket)
@@ -60,7 +62,6 @@ const CoinChartComponent = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get('https://api.upbit.com/v1/market/all')
-        console.log('res', res)
         const krwCoins = res.data.filter((coin: any) => coin.market.startsWith("KRW-"));
         setCoins(krwCoins);
       } catch (error) {
@@ -69,6 +70,8 @@ const CoinChartComponent = () => {
     }
     fetchData()
   }, [])
+
+  
 
   // *웹소켓 연결 -> 실시간 코인 가격등 데이터 받아옴
   useEffect(() => {
@@ -126,20 +129,16 @@ const CoinChartComponent = () => {
             <th className="text-left">코인</th>
             <th className="text-right">현재가</th>
             <th className="text-right">전일대비</th>
-            {windowWidth > 570 ? (
               <th className="text-right">
                 <button onClick={() => sortCoinByVolume(sortOrder === 'asc' ? 'desc' : 'asc')}>
                   {sortOrder === 'asc' ? '▲' : '▼'} 거래대금(24H)
                 </button>
               </th>
-            ) : (
-              <th className="text-right">거래대금</th>
-            )
-            }
           </tr>
         </StyledTableHead>
         <StyledTableBody>
-          {coinPerPage.map(coin => {
+
+          {(windowWidth > 600 ? coinPerPage : coins).map(coin => {
             const priceData = prices[coin.market]
             const coinUnit = coin.market.split('-')[1]
             const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
@@ -208,8 +207,6 @@ const CoinChartComponent = () => {
                     "Loading..."
                   )}
                 </td>
-
-
                 {/* //*거래대금 */}
                 <td className="text-right">
                   {priceData ?
@@ -225,23 +222,28 @@ const CoinChartComponent = () => {
               </tr>
             )
           })}
+
         </StyledTableBody>
       </StyledTable>
-      <StyledPageBtns >
+      { 
+        windowWidth > 600 && (
+
+          <StyledPageBtns >
         {Array.from({ length: Math.ceil(coins.length / CoinPage) }, (_, i) => (
           <button
-            key={i + 1}
-            onClick={() => {
-              setPage(i + 1);
-            }
-            }
-            className={`${page === i + 1 ?
-              'bg-red-500 text-white flex items-center justify-center'
-              :
-              'bg-white text-black flex items-center justify-center'} p-2 rounded`}
+          key={i + 1}
+          onClick={() => {
+            setPage(i + 1);
+          }
+        }
+        className={`${page === i + 1 ?
+          'bg-red-500 text-white flex items-center justify-center'
+          :
+          'bg-white text-black flex items-center justify-center'} p-2 rounded`}
           >{i + 1}</button>
         ))}
       </StyledPageBtns>
+      )}
 
     </StyledContainer>
   )
