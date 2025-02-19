@@ -13,6 +13,7 @@ export const StyledContainer = styled.div`
         w-full
         h-[82px]
     `}
+
     h2{
         ${tw`
             text-3xl
@@ -128,6 +129,7 @@ export const StyledTabletMenu = styled.div`
         right-0
         border-2
         top-[72px]
+        z-10
     `}
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
     p{
@@ -259,8 +261,8 @@ export const StyledUserInfo = styled.div`
         right-6
         top-[72px]
         w-[250px]
-        z-10
     `}
+    z-index: 1000;
         box-shadow: 0px 4px 6px rgba(0,0,0, 0.3);
         p{
             ${tw`

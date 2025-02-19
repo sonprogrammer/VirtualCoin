@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 
-
 export const StyledContainer = styled.div`
     ${tw`
         w-full
@@ -10,6 +9,9 @@ export const StyledContainer = styled.div`
         p-5
         h-full
     `}
+    p, h3{
+        color: gray;
+    }
 `
 
 export const StyledTopBox = styled.div`
@@ -21,7 +23,6 @@ export const StyledTopBox = styled.div`
         px-5
     `}
 `
-
 
 export const StyledTopBoxContents = styled.div`
     ${tw`
@@ -52,6 +53,18 @@ export const StyledTopBoxContents = styled.div`
             items-end
         `}
     }
+
+    @media(max-width: 550px){
+        ${tw`
+            flex
+            flex-col
+            flex-1
+            items-center
+        `}
+        p{
+            display: none;
+        }
+    }
 `
 
 export const StyledDivider = styled.div`
@@ -68,8 +81,19 @@ export const StyledBottomBox = styled.div`
         pt-3
         items-center
     `}
+    @media(max-width: 550px){
+        h1, h3{
+            ${tw`
+                text-sm
+            `}
+        }
+    }
+    @media(max-width: 450px){
+        ${tw`
+            text-xs
+        `}
+    }
 `
-
 
 export const StyledBottomBoxContents = styled.div`
     ${tw`
@@ -100,6 +124,21 @@ export const StyledBottomBoxContents = styled.div`
         `}
     }
     flex: 1 1 calc(50% - 10px);
+    @media(max-width: 550px){
+        p{
+            display: none;
+        }
+    }
+    @media(max-width: 450px){
+        h2{
+            ${tw`
+                text-xs
+            `}
+        }
+        ${tw`
+            px-2
+        `}
+    }
 `
 
 export const StyledBottomContentBox = styled.div`
@@ -107,7 +146,15 @@ export const StyledBottomContentBox = styled.div`
         flex
         gap-2
     `}
+    @media(max-width: 450px){
+        h1, h3{
+            ${tw`
+                text-xs
+            `}
+        }
+    }
 `
+
 export const StyledRestOfMoney = styled.div`
     ${tw`
         flex
@@ -137,4 +184,19 @@ export const StyledRestOfMoney = styled.div`
             items-end
         `}
     }
+    @media(max-width: 550px){
+        p{
+            display: none;
+        }
+    }
+    @media(max-width: 450px){
+        h2{
+            ${tw`
+                text-xs
+            `}
+        }
+        ${tw`  
+            px-2  
+        `}
+    } 
 `

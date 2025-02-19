@@ -6,6 +6,7 @@ import {
   Legend,
   Colors,
   TooltipItem,
+  Chart,
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { coins, total_bid } from './mockupData'

@@ -8,8 +8,9 @@ export const StyledContainer = styled.div`
         relative 
         flex
         py-1
-        z-[-1]
     `}
+    position: relative;
+    z-index: 0;
 `
 
 export const StyledText = styled.div`

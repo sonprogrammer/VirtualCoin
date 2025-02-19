@@ -3,6 +3,7 @@ import { AssetCircleGraph } from "../AssetCircleGraph"
 import { AssetList } from "../AssetList"
 import { AssetResultTextComponent } from "../AssetResultTextComponent"
 import { StyledAssetGraph, StyledAssetGraphToggle, StyledAssetList, StyledAssetResultText, StyledContainer, StyledTotalAsset } from "./style"
+import AssetListTb from "../AssetList/AssetListTb"
 
 
 
@@ -33,8 +34,6 @@ const MyAsset = () => {
       setShowGraph(true)
     }
   },[windowWidth])
-
-  // '▲' : '▼'
   
   return (
     <StyledContainer className="myAsset">
@@ -76,7 +75,13 @@ const MyAsset = () => {
 
       <StyledAssetList>
         <div className="border-t-2 py-2 pl-5">보유자산 목록</div>
-        <AssetList />
+        {
+          windowWidth > 700 ? (
+            <AssetList />
+          ): (
+            <AssetListTb />
+          )
+        }
       </StyledAssetList>
     </StyledContainer>
   )

@@ -1,5 +1,7 @@
+
 import data from './mockupData'
 import { StyledContainer, StyledImage, StyledTable, StyledTableBody, StyledTableHead, StyledTableTr } from './style';
+
 
 const AssetList = () => {
 
@@ -19,7 +21,7 @@ const AssetList = () => {
                         const evaluationAmount = coin.quantity * coin.currentPrice;
                         const profitLoss = evaluationAmount - (coin.quantity * coin.averageBuyPrice);
                         const profitLossPercentage = ((profitLoss / (coin.quantity * coin.averageBuyPrice)) * 100).toFixed(2);
-                        console.log('image', coin.coinImage)
+
                         return (
 
                             <StyledTableTr key={coin.id}>
@@ -30,6 +32,7 @@ const AssetList = () => {
                                     </StyledImage>
                                 </td>
                                 <td>{coin.quantity}</td>
+
                                 <td>{coin.averageBuyPrice.toLocaleString()}KRW</td>
                                 <td>{coin.currentPrice.toLocaleString()}KRW</td>
                                 <td>

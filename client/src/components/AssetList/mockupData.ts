@@ -1,5 +1,3 @@
-// https://static.upbit.com/logos/${coinUnit}.png
-
 export default [
     {
         id: 1,

@@ -23,14 +23,14 @@ const AssetResultTextComponent = () => {
 
             <StyledBottomBox>
                 <StyledBottomBoxContents>
-                    <h2>총 매수금액</h2>
+                    <h2>총 매수</h2>
                     <StyledBottomContentBox>
                         <h1>{data.totalBuyAmount.toLocaleString()}</h1>
                         <p>KRW</p>
                     </StyledBottomContentBox>
                 </StyledBottomBoxContents>
                 <StyledBottomBoxContents>
-                    <h2>총 평가손익</h2>
+                    <h2>평가손익</h2>
                     <StyledBottomContentBox>
                         <h1
                             className={`${data.totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}
@@ -40,19 +40,19 @@ const AssetResultTextComponent = () => {
                 </StyledBottomBoxContents>
                 
                 <StyledBottomBoxContents>
-                    <h2>총 평가금액</h2>
+                    <h2>총 평가</h2>
                     <StyledBottomContentBox>
                         <h1>{data.totalEvaluationAmount.toLocaleString()}</h1>
                         <p>KRW</p>
                     </StyledBottomContentBox>
                 </StyledBottomBoxContents>
                 <StyledBottomBoxContents>
-                    <h2>총 평가수익률</h2>
+                    <h2>수익률</h2>
                     <StyledBottomContentBox>
                         <h1
                             className={`${data.totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}
                         >{data.totalProfitPercentage}</h1>
-                        <p>%</p>
+                        <h3>%</h3>
                     </StyledBottomContentBox>
                 </StyledBottomBoxContents>
 

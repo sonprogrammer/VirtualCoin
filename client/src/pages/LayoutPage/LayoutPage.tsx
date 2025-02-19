@@ -6,7 +6,7 @@ import { StyledContaier, StyledNavbarWrapper, StyledOutletWrapper } from './styl
 const LayoutPage = () => {
   return (
     <StyledContaier>
-      <StyledNavbarWrapper>
+      <StyledNavbarWrapper className='nabarwrapper'>
         <NavbarComponent />
       </StyledNavbarWrapper>
       <StyledOutletWrapper className='outlet'>

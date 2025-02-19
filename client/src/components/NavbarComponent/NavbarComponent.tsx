@@ -113,7 +113,7 @@ const NavbarComponent = () => {
     }, []);
 
     return (
-        <StyledContainer>
+        <StyledContainer className='nabar'>
         {!searchIcon && (
             <StyledLogo>
                 <Link to={'/browse'}>
