@@ -28,5 +28,6 @@ export default [
     { rank: 27, name: '양서영', totalAssets: 320000, totalProfit: 36000, returnRate: 11.29 },
     { rank: 28, name: '허윤호', totalAssets: 310000, totalProfit: 34000, returnRate: 11.29 },
     { rank: 29, name: '이용욱', totalAssets: 300000, totalProfit: 33000, returnRate: 11.00 },
+    { rank: 30, name: '이용욱', totalAssets: 300000, totalProfit: 33000, returnRate: 11.00 },
 
   ]

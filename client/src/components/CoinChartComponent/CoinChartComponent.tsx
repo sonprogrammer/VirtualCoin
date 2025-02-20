@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import axios from 'axios'
 import { StyledContainer, StyledPageBtns, StyledTable, StyledTableBody, StyledTableHead, StyledTitle } from "./style"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,17 +15,20 @@ const CoinChartComponent = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
 
 
-  
-  const sortCoinByVolume = (order: 'asc' | 'desc') =>{
-    const sortedCoins = [...coins].sort((a, b) => {
-      const tradeVolumeA = prices[a.market]?.acc_price || 0;
-      const tradeVolumeB = prices[b.market]?.acc_price || 0;
-      return order === 'asc' ? tradeVolumeA - tradeVolumeB : tradeVolumeB - tradeVolumeA
-    })
-    setCoins(sortedCoins)
-    setSortOrder(order)
-  }
 
+  const sortCoinByVolume = (order: 'asc' | 'desc') => {
+    setCoins(prevCoins => 
+      [...prevCoins].sort((a, b) => {
+        const tradeVolumeA = prices[a.market]?.acc_price || 0;
+        const tradeVolumeB = prices[b.market]?.acc_price || 0;
+        return order === 'asc' ? tradeVolumeA - tradeVolumeB : tradeVolumeB - tradeVolumeA;
+      })
+    );
+    setSortOrder(order);
+  };
+  
+  
+  
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -50,8 +53,6 @@ const CoinChartComponent = () => {
     })
   }
 
-  useEffect(() => {
-  }, [star])
 
   const isStar = (coinMarket: string) => star.includes(coinMarket)
 
@@ -75,6 +76,9 @@ const CoinChartComponent = () => {
 
   // *웹소켓 연결 -> 실시간 코인 가격등 데이터 받아옴
   useEffect(() => {
+
+    if(coins.length === 0) return;
+    
     const ws = new WebSocket('wss://api.upbit.com/websocket/v1')
 
     ws.onopen = () => {

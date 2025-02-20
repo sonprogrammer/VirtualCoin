@@ -11,6 +11,17 @@ export const StyledContainer = styled.div`
         px-5
         items-center
     `}
+    @media(max-width: 530px){
+        ${tw`
+            text-sm
+            px-0
+        `}
+    }
+    @media(max-width: 430px){
+        ${tw`
+            text-xs
+        `}
+    }
 `
 
 export const StyledTitle = styled.div`
@@ -35,6 +46,9 @@ export const StyledBox = styled.div`
     ${tw`
 
     `}
+    @media(max-width:530px){
+        padding-bottom: 60px;
+    }
 `
 
 
@@ -55,7 +69,7 @@ export const StyledTable = styled.table`
             bg-gray-200
         `}
         @media(max-width: 570px){
-            padding: 5px;
+            // padding: 5px;
         }
     }
 `
@@ -67,6 +81,7 @@ th {
         bg-gray-200
         text-center
     `}
+   
 }
 `
 
@@ -85,6 +100,12 @@ export const StyledTableBody = styled.tbody`
     td{
         padding: 10px 8px;
         text-align: center;
+     
+        @media(max-width: 550px){
+            ${tw`
+                p-2
+            `}
+    }
     }
 `
 
@@ -108,6 +129,9 @@ export const StyledBtns = styled.div`
             ${tw`
                 bg-red-300
                 text-white
+                flex
+                justify-center
+                items-center
             `}
         }
     }
