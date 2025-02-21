@@ -92,13 +92,7 @@ export const StyledPeriodBurgerMenu = styled.div`
             `}
         }
     }
-    @media(max-width: 370px){
-        p{
-            ${tw`
-                // text-[10px]
-            `}
-        }
-    }
+   
 `
 
 export const StyledTypeMenu = styled.div`
@@ -140,7 +134,7 @@ export const StyledTable = styled.table`
         table-fixed
     `}
     @media (max-width: 530px) {
-        min-width: 600px; // 테이블 최소 너비 설정 (스크롤 유도)
+        min-width: 600px; 
     }
 `
 

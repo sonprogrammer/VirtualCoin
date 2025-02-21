@@ -44,5 +44,95 @@ export default [
       amount: 3500000, // KRW
       orderTime: "2025-02-19 17:45",
     },
+    {
+      transactionTime: "2025-02-19 18:00",
+      coinName: "도지코인",
+      type: "매수",
+      quantity: 10000,
+      price: 350, // KRW
+      amount: 3500000, // KRW
+      orderTime: "2025-02-19 17:45",
+    },
+    {
+      transactionTime: "2025-02-19 18:00",
+      coinName: "도지코인",
+      type: "매수",
+      quantity: 10000,
+      price: 350, // KRW
+      amount: 3500000, // KRW
+      orderTime: "2025-02-19 17:45",
+    },
+    {
+      transactionTime: "2025-02-19 18:00",
+      coinName: "도지코인",
+      type: "매수",
+      quantity: 10000,
+      price: 350, // KRW
+      amount: 3500000, // KRW
+      orderTime: "2025-02-19 17:45",
+    },
+    {
+      transactionTime: "2025-02-19 18:00",
+      coinName: "도지코인",
+      type: "매수",
+      quantity: 10000,
+      price: 350, // KRW
+      amount: 3500000, // KRW
+      orderTime: "2025-02-19 17:45",
+    },
+    {
+      transactionTime: "2025-02-19 18:00",
+      coinName: "도지코인",
+      type: "매수",
+      quantity: 10000,
+      price: 350, // KRW
+      amount: 3500000, // KRW
+      orderTime: "2025-02-19 17:45",
+    },
+    {
+      transactionTime: "2025-02-19 18:00",
+      coinName: "도지코인",
+      type: "매수",
+      quantity: 10000,
+      price: 350, // KRW
+      amount: 3500000, // KRW
+      orderTime: "2025-02-19 17:45",
+    },
+    {
+      transactionTime: "2025-02-19 18:00",
+      coinName: "도지코인",
+      type: "매수",
+      quantity: 10000,
+      price: 350, // KRW
+      amount: 3500000, // KRW
+      orderTime: "2025-02-19 17:45",
+    },
+    {
+      transactionTime: "2025-02-19 18:00",
+      coinName: "도지코인",
+      type: "매수",
+      quantity: 10000,
+      price: 350, // KRW
+      amount: 3500000, // KRW
+      orderTime: "2025-02-19 17:45",
+    },
+    {
+      transactionTime: "2025-02-19 18:00",
+      coinName: "도지코인",
+      type: "매수",
+      quantity: 10000,
+      price: 350, // KRW
+      amount: 3500000, // KRW
+      orderTime: "2025-02-19 17:45",
+    },
+    {
+      transactionTime: "2025-02-19 18:00",
+      coinName: "도지코인",
+      type: "매수",
+      quantity: 10000,
+      price: 350, // KRW
+      amount: 3500000, // KRW
+      orderTime: "2025-02-19 17:45",
+    },
   ];
   

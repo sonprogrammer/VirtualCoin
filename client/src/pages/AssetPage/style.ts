@@ -11,6 +11,9 @@ export const StyledContainer = styled.div`
         w-full
         p-5
     `}
+    @media(max-width: 450px){
+        padding: 0;
+    }
 `
 
 export const StyledBox = styled.div`
@@ -26,7 +29,7 @@ export const StyledBox = styled.div`
         margin-bottom: 60px;
     }
     @media(max-width: 570px){
-        padding: 0;
+        // padding: 0;
     }
 `
 

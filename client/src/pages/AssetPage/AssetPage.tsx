@@ -1,12 +1,11 @@
 import { useState } from "react"
 import { StyledBox, StyledContainer, StyledContents, StyledTabs } from "./style"
-import { MyAsset } from "../../components/MyAsset"
-import { TransactionComponent } from "../../components/TransactionComponent"
+import { MyAsset, PendingComponent, TransactionComponent } from "../../components"
 
 
 const AssetPage = () => {
   // TODO 기본 값 보유자산으로 바꾸기
-  const [tabs, setTabs ] = useState<'보유자산' | '거래내역' | '미체결'>('거래내역')
+  const [tabs, setTabs ] = useState<'보유자산' | '거래내역' | '미체결'>('보유자산')
   
 
   const handelTabClick = (tab: '보유자산' | '거래내역' | '미체결') => {
@@ -40,7 +39,7 @@ const AssetPage = () => {
         <StyledContents className="content">
           {tabs === '보유자산' && <MyAsset />}
           {tabs === '거래내역' && <TransactionComponent />}
-          {tabs === '미체결' && <TransactionComponent />}
+          {tabs === '미체결' && <PendingComponent />}
         </StyledContents>
       </StyledBox>
 
