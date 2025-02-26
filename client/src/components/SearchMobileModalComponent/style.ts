@@ -29,7 +29,7 @@ export const StyledBox = styled.div`
 
         flex
         flex-col
-        max-h-[700px]
+        max-h-[600px]
         overflow-y-auto
         relative
     `}
@@ -72,7 +72,6 @@ export const StyledNoResult = styled.div`
 
 export const StyledCoinContainer = styled.div`
     ${tw`
-        // border-2
         m-5
         mt-0
     `}

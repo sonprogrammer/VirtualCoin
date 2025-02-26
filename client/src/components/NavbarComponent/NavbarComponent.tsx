@@ -146,8 +146,8 @@ const NavbarComponent = () => {
                                 <h3>{item.name}</h3>
                             </Link>
                         ))}
-                        <StyledDeskInput onClick={handleClickSearch}>
-                            <input type="text" placeholder="코인을 검색하세요" />
+                        <StyledDeskInput>
+                            <input type="text" placeholder="코인을 검색하세요" onClick={handleClickSearch}/>
                         </StyledDeskInput>
                     </StyledDeskMenus>
                     <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
@@ -160,8 +160,8 @@ const NavbarComponent = () => {
             {windowWidth >= 630 && windowWidth < 730 && (
                 <>
                     <StyledTablet>
-                        <StyledTabletInput onClick={handleClickSearch}>   
-                            <input type="text" placeholder="코인을 검색하세요" />
+                        <StyledTabletInput>   
+                            <input type="text" placeholder="코인을 검색하세요"  onClick={handleClickSearch}/>
                         </StyledTabletInput>
                         <StyledTabletTab onClick={handleBurgerClick} ref={tabRef}>
                             <FontAwesomeIcon icon={faBars} size="2xl" />

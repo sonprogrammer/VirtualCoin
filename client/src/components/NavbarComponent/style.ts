@@ -69,6 +69,7 @@ export const StyledDeskInput = styled.div`
     ${tw`
         flex
         flex-1
+        block
     `}
     input{
         width: 50%;
