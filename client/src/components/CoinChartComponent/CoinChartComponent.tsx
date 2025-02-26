@@ -4,18 +4,53 @@ import { StyledContainer, StyledPageBtns, StyledTable, StyledTableBody, StyledTa
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
+import useWebSocket from "../../hooks/useWebSocket";
+import useGetCoins from "../../hooks/useGetCoins";
 
 
 const CoinChartComponent = () => {
   const [coins, setCoins] = useState<any[]>([])
   const [page, setPage] = useState(1)
-  const [prices, setPrices] = useState<{ [key: string]: { trade_price: number, change_rate: number, acc_price: number, change_price: number } }>({})
+  // const [prices, setPrices] = useState<{ [key: string]: { trade_price: number, change_rate: number, acc_price: number, change_price: number } }>({})
   const [star, setStar] = useState<string[]>([]) //*관심코인 관리 
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
 
+  //*코인 데이터 가져오기(100개) - rest api로 (고정된 값이니깐 변할일 없어서 )
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get('https://api.upbit.com/v1/market/all')
+        const krwCoins = res.data.filter((coin: any) => coin.market.startsWith("KRW-"));
+        setCoins(krwCoins);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchData()
+  }, [])
+  const prices = useWebSocket(coins);
+
+  
+  // const { data: coinData, isLoading, isError } = useGetCoins()
+
+  // if (isLoading) {
+  //   return <p>Loading...</p>;
+  // }
+  
+  // if (isError) {
+  //   return <p>Error occurred while fetching coin data.</p>;
+  // }
+  
+  // console.log('price', prices)
 
 
+  // useEffect(() => {
+  //   if(coinData){
+  //     setCoins(coinData)
+  //   }
+  // },[coinData])
+  
   const sortCoinByVolume = (order: 'asc' | 'desc') => {
     setCoins(prevCoins => 
       [...prevCoins].sort((a, b) => {
@@ -56,62 +91,6 @@ const CoinChartComponent = () => {
 
   const isStar = (coinMarket: string) => star.includes(coinMarket)
 
-  
-
-  //*코인 데이터 가져오기(100개) - rest api로 (고정된 값이니깐 변할일 없어서 )
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get('https://api.upbit.com/v1/market/all')
-        const krwCoins = res.data.filter((coin: any) => coin.market.startsWith("KRW-"));
-        setCoins(krwCoins);
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchData()
-  }, [])
-
-  
-
-  // *웹소켓 연결 -> 실시간 코인 가격등 데이터 받아옴
-  useEffect(() => {
-
-    if(coins.length === 0) return;
-    
-    const ws = new WebSocket('wss://api.upbit.com/websocket/v1')
-
-    ws.onopen = () => {
-      console.log('websocket connected')
-      ws.send(JSON.stringify([
-        { ticket: 'coin_list' },
-        { type: 'ticker', codes: coins.map(c => c.market) }
-      ]))
-    }
-
-    ws.onmessage = (e) => {
-      const reader = new FileReader()
-      reader.onload = () => {
-        const data = JSON.parse(reader.result as string)
-
-        setPrices(prev => ({
-          ...prev,
-          [data.code]: {
-            trade_price: data.trade_price, //*현재가
-            change_rate: data.signed_change_rate, //*전일대비 퍼센트
-            acc_price: data.acc_trade_price_24h, //* 거래대금
-            change_price: data.signed_change_price
-          }
-        }))
-      }
-      reader.readAsText(e.data)
-    }
-    return () => {
-      ws.close()
-    }
-
-  }, [coins])
-
   const CoinPage = 10;
 
   const firstPage = (page - 1) * CoinPage
@@ -142,12 +121,12 @@ const CoinChartComponent = () => {
         </StyledTableHead>
         <StyledTableBody>
 
-          {(windowWidth > 600 ? coinPerPage : coins).map(coin => {
+          {(windowWidth > 630 ? coinPerPage : coins).map(coin => {
             const priceData = prices[coin.market]
             const coinUnit = coin.market.split('-')[1]
             const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
             return (
-              <tr>
+              <tr key={coin.market}>
                 {/* //*관심 */}
                 <td className="text-center" >
                   {isStar(coin.market) ? (
@@ -230,7 +209,7 @@ const CoinChartComponent = () => {
         </StyledTableBody>
       </StyledTable>
       { 
-        windowWidth > 600 && (
+        windowWidth > 630 && (
 
           <StyledPageBtns >
         {Array.from({ length: Math.ceil(coins.length / CoinPage) }, (_, i) => (

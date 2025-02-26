@@ -11,6 +11,7 @@ export const StyledContaier = styled.div`
 export const StyledNavbarWrapper = styled.div`
     ${tw`
         w-full
+
     `}
 `
 export const StyledOutletWrapper = styled.div`

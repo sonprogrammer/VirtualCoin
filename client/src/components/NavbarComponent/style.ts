@@ -12,6 +12,7 @@ export const StyledContainer = styled.div`
         relative
         w-full
         h-[82px]
+
     `}
 
     h2{
@@ -184,7 +185,7 @@ export const StyledSearchWrapper = styled.div`
 export const StyledCloseBtn = styled.div`
     ${tw`
         absolute
-        left-3
+        left-0
         cursor-pointer
         p-3
     `}
@@ -236,7 +237,7 @@ export const StyledUserIcon = styled.div`
         right-4
         cursor-pointer
         w-12
-    
+        
     `}
 
     @media(max-width:730px){
@@ -245,7 +246,7 @@ export const StyledUserIcon = styled.div`
     
 
     @media (max-width: 630px) {
-        position: fixed;
+        // position: fixed;
         top: 16px;
         right: 16px;
     }
@@ -348,4 +349,10 @@ export const StyledAngle = styled.div`
         border-left: 10px solid transparent;
         border-right: 10px solid transparent;
         border-bottom: 10px solid rgb(209, 212, 217);
+`
+
+export const StyledSearchModalBox = styled.div`
+    ${tw`
+        
+    `}
 `

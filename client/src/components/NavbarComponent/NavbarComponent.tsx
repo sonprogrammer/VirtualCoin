@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
-import { StyledAngle, StyledCloseBtn, StyledCoins, StyledContainer, StyledDeskInput, StyledDeskMenus, StyledLogo, StyledLogout, StyledMobileMenu, StyledSearchIcon, StyledSearchWrapper, StyledTablet, StyledTabletInput, StyledTabletMenu, StyledTabletTab, StyledUserIcon, StyledUserInfo } from './style'
+import { StyledAngle, StyledCoins, StyledContainer, StyledDeskInput, StyledDeskMenus, StyledLogo, StyledLogout, StyledMobileMenu, StyledSearchIcon, StyledTablet, StyledTabletInput, StyledTabletMenu, StyledTabletTab, StyledUserIcon, StyledUserInfo } from './style'
 import { LogoutModal } from '../LogoutModal'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { InterestedCoin } from '../InterestedCoin';
 import { RecentCoin } from '../RecentCoin';
+import { SearchMobileModalComponent } from '../SearchMobileModalComponent';
 
 const NavbarComponent = () => {
     const [page, setPage] = useState<string>('/browse');
@@ -15,9 +16,14 @@ const NavbarComponent = () => {
     const [info, setInfo] = useState<boolean>(false);
     const [burgerTab, setBurgerTab] = useState<boolean>(false);
     const [searchIcon, setSearchIcon] = useState<boolean>(false)
+    const [searchModal, setSearchModal] = useState<boolean>(false)
     const [interestedCoin, setInterestedCoin] = useState<boolean>(false)
     const [recentCoin, setRecentCoin] = useState<boolean>(false)
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  const handleSearchModalClose = () => {
+    setSearchModal(false)
+  }
 
 
     const userRef = useRef<HTMLDivElement | null>(null);
@@ -38,17 +44,25 @@ const NavbarComponent = () => {
     }, [location.pathname]);
 
 
+    const handleClickSearch = () => {
+        setSearchModal(prev => !prev)
+    }
+
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
+        
+        // if (window.innerWidth >= 630) {
+        //     setSearchIcon(false);
+        // }
 
         window.addEventListener('resize', handleResize);
 
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []);
+    }, [windowWidth]);
 
     const handleOutsideClick =() => {
         setInterestedCoin(false)
@@ -63,9 +77,9 @@ const NavbarComponent = () => {
         setRecentCoin(true)
     }
 
-    const handleSearchClick = () => {
-        setSearchIcon(!searchIcon);
-    }
+    // const handleSearchIconClick = () => {
+    //     setSearchIcon(!searchIcon);
+    // }
 
     const handleBurgerClick = () => {
         setBurgerTab(!burgerTab);
@@ -114,13 +128,12 @@ const NavbarComponent = () => {
 
     return (
         <StyledContainer className='nabar'>
-        {!searchIcon && (
+
             <StyledLogo>
                 <Link to={'/browse'}>
                     <img src="/alpha.png" alt="logo" onClick={() => handlePageClick('/browse')} />
                 </Link>
             </StyledLogo>
-            )}
 
 
             {/* //*데스크탑 (730 ~ 1024px) */}
@@ -133,7 +146,7 @@ const NavbarComponent = () => {
                                 <h3>{item.name}</h3>
                             </Link>
                         ))}
-                        <StyledDeskInput>
+                        <StyledDeskInput onClick={handleClickSearch}>
                             <input type="text" placeholder="코인을 검색하세요" />
                         </StyledDeskInput>
                     </StyledDeskMenus>
@@ -147,7 +160,7 @@ const NavbarComponent = () => {
             {windowWidth >= 630 && windowWidth < 730 && (
                 <>
                     <StyledTablet>
-                        <StyledTabletInput>
+                        <StyledTabletInput onClick={handleClickSearch}>   
                             <input type="text" placeholder="코인을 검색하세요" />
                         </StyledTabletInput>
                         <StyledTabletTab onClick={handleBurgerClick} ref={tabRef}>
@@ -157,6 +170,7 @@ const NavbarComponent = () => {
                     <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
                         <img src="./user.png" alt="userIcon" />
                     </StyledUserIcon>
+
                     {burgerTab && (
                         <StyledTabletMenu ref={tabMenuRef}>
                             {menus.map(item => (
@@ -201,19 +215,14 @@ const NavbarComponent = () => {
             {/* //* 모바일 (630px 이하) */}
             {windowWidth < 630 && (
                 <>     
-                    {/*//* 돋보기 클릭시 로고 왼쪽 끝으로 이동하고 검색창 생김  */}
-                    {searchIcon ?
-                        <StyledSearchWrapper>
-                            <StyledCloseBtn onClick={() => setSearchIcon(false)}>
-                                <FontAwesomeIcon icon={faArrowLeft} size='2xl'/>
-                            </StyledCloseBtn>
-                            <input type="text" placeholder='코인을 검색하세요' />
-                        </StyledSearchWrapper>
-                        :
-                        <StyledSearchIcon onClick={handleSearchClick}>
+                    <StyledSearchIcon onClick={handleClickSearch}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} size='2xl' />
                     </StyledSearchIcon>
-                    }
+
+                    <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
+                        <img src="./user.png" alt="userIcon" />
+                    </StyledUserIcon>
+
 
                     <StyledMobileMenu>
                         {menus.map(item => (
@@ -227,11 +236,18 @@ const NavbarComponent = () => {
                             </Link>
                         ))}
                     </StyledMobileMenu>
-                    <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
-                        <img src="./user.png" alt="userIcon" />
-                    </StyledUserIcon>
+                    
                 </>
             )}
+
+            {/* //*검색 모달 */}
+            { searchModal &&
+                    <div>
+                        <SearchMobileModalComponent handleSearchModalClose={handleSearchModalClose}/>
+                    </div>
+
+
+                    }
 
             {/* //* 로그아웃 모달 */}
             {logoutModal && <LogoutModal handleLogout={handleLogout} handleCloseModal={handleCloseModal} />}

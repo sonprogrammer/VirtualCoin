@@ -13,8 +13,6 @@ export const StyledContainer = styled.div`
 
     @media(max-width: 630px){
         margin-bottom: 60px;
-    }
-    @media(max-width: 570px){
         padding: 0;
     }
 `
