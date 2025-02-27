@@ -8,6 +8,7 @@ export default defineConfig({
   define: {
     'process.env': {}, // process.env가 비어 있는 객체로 설정됩니다.
   },
+
   plugins: [
     react(),
     macrosPlugin(),

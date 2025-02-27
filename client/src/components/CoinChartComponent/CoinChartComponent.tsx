@@ -6,6 +6,7 @@ import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
 import useWebSocket from "../../hooks/useWebSocket";
 import useGetCoins from "../../hooks/useGetCoins";
+import { useNavigate } from "react-router-dom";
 
 
 const CoinChartComponent = () => {
@@ -16,6 +17,14 @@ const CoinChartComponent = () => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
 
+  const navigate = useNavigate()
+
+  const handleCoinClick = (coinId: string) => {
+    navigate(`/coin/${coinId}`)
+  }
+
+
+  // TODO useGetCoins훅으로 교체하기
   //*코인 데이터 가져오기(100개) - rest api로 (고정된 값이니깐 변할일 없어서 )
   useEffect(() => {
     const fetchData = async () => {
@@ -126,7 +135,7 @@ const CoinChartComponent = () => {
             const coinUnit = coin.market.split('-')[1]
             const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
             return (
-              <tr key={coin.market}>
+              <tr key={coin.market} onClick={()=>handleCoinClick(coin.market)}>
                 {/* //*관심 */}
                 <td className="text-center" >
                   {isStar(coin.market) ? (

@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import { AssetPage, LandingPage, LayoutPage, MainPage, NotfoundPage, RankingPage } from "./pages"
+import { AssetPage, CoinDetailPage, LandingPage, LayoutPage, MainPage, NotfoundPage, RankingPage } from "./pages"
 
 function App() {
 
@@ -15,6 +15,9 @@ function App() {
             <Route path="/browse" element={
               <MainPage />
             }  />
+            <Route path="/coin/:coinId" element={
+              <CoinDetailPage />
+            }/>
             <Route path="/asset" element={
               <AssetPage />
             }  />

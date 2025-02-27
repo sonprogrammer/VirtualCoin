@@ -10,4 +10,7 @@ export * from './RankingComponent'
 export * from './PendingComponent'
 export * from './TransactionComponent'
 export * from './MyAsset'
-export * from './SearchMobileModalComponent'
+export * from './SearchComponent'
+export * from './CoinChartGraphComponent'
+export * from './CoinVoiceComponent'
+

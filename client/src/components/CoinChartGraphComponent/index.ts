@@ -1,0 +1,1 @@
+export { default as CoinChartGraphComponent } from './CoinChartGraphComponent'

@@ -1,14 +1,14 @@
 
 import { useEffect, useState } from 'react'
-import useWebSocket from '../../hooks/useWebSocket'
 import { StyledBox, StyledCoin, StyledCoinBox, StyledCoinContainer, StyledCoinContent, StyledCoinNameAndImg, StyledCoinNumber, StyledContainer, StyledInput, StyledNoResult } from './style'
 import useGetCoins from '../../hooks/useGetCoins'
+import useWebSocket from '../../hooks/useWebSocket'
 
-interface SearchMobileModalComponentProps {
+interface SearchComponentProps {
   handleSearchModalClose: () => void
 }
 
-const SearchMobileModalComponent = ({ handleSearchModalClose }: SearchMobileModalComponentProps) => {
+const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
   const [coins, setCoins] = useState<any[]>([])
   const [searchQuery, setSearchQuery] = useState<string>('')
 
@@ -103,4 +103,4 @@ const SearchMobileModalComponent = ({ handleSearchModalClose }: SearchMobileModa
   )
 }
 
-export default SearchMobileModalComponent
+export default SearchComponent

@@ -26,6 +26,7 @@ export const StyledNavbar = styled.div`
             &:hover{
                 background-color: rgba(125, 125, 125, 0.5);
             }
+            text-align: center;
         }
     
 `

@@ -70,19 +70,31 @@ export const StyledDeskInput = styled.div`
         flex
         flex-1
         block
+        pl-5
     `}
-    input{
-        width: 50%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 12px;
-        font-size: 16px;
-        padding-left: 20px;
-        &:focus{
-            border: 1px solid red;
-            outline: none;
+    p{
+        ${tw`
+            text-gray-400
+            border-2
+            px-20
+            pl-3
+            py-2
+            rounded-xl
+            text-left
+            w-[60%]
+        `}
+
+        &:hover{
+            ${tw`
+                border-red-500
+            `}
         }
+        @media(min-width:1024px){
+            width: 50%;
+            }
     }
+      
+    
 `
 
 
@@ -104,17 +116,22 @@ export const StyledTabletInput = styled.div`
         flex
         justify-center
     `}
-    input{
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 12px;
-        font-size: 16px;
-        padding-left: 20px;
-    }
 
-    input:focus{
-        outline: none;
-        border: 2px solid red;
+    p{
+        ${tw`
+            text-gray-400
+            border-2
+            px-20
+            pl-3
+            py-2
+            rounded-xl
+            text-left
+        `}
+        &:hover{
+            ${tw`
+                border-red-500
+            `}
+        }
     }
 `
 
@@ -147,8 +164,6 @@ export const StyledTabletMenu = styled.div`
         border-bottom: 1px solid #ccc;
   }
 `
-
-
 
 
 

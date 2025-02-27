@@ -7,7 +7,9 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { InterestedCoin } from '../InterestedCoin';
 import { RecentCoin } from '../RecentCoin';
-import { SearchMobileModalComponent } from '../SearchMobileModalComponent';
+import { SearchComponent } from '../SearchComponent';
+
+
 
 const NavbarComponent = () => {
     const [page, setPage] = useState<string>('/browse');
@@ -15,7 +17,7 @@ const NavbarComponent = () => {
     const [logoutModal, setLogoutModal] = useState<boolean>(false);
     const [info, setInfo] = useState<boolean>(false);
     const [burgerTab, setBurgerTab] = useState<boolean>(false);
-    const [searchIcon, setSearchIcon] = useState<boolean>(false)
+    // const [searchIcon, setSearchIcon] = useState<boolean>(false)
     const [searchModal, setSearchModal] = useState<boolean>(false)
     const [interestedCoin, setInterestedCoin] = useState<boolean>(false)
     const [recentCoin, setRecentCoin] = useState<boolean>(false)
@@ -48,6 +50,23 @@ const NavbarComponent = () => {
         setSearchModal(prev => !prev)
     }
 
+    // const handleChangeSearchClose = (e: ReactElement)
+
+    useEffect(() => {
+        const handleKeydown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setSearchModal(false);
+            }
+        };
+
+        document.addEventListener('keydown', handleKeydown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeydown);
+        };
+    }, []);
+    
+    
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
@@ -147,11 +166,11 @@ const NavbarComponent = () => {
                             </Link>
                         ))}
                         <StyledDeskInput>
-                            <input type="text" placeholder="코인을 검색하세요" onClick={handleClickSearch}/>
+                            <p onClick={handleClickSearch}>코인을 검색하세요</p>
                         </StyledDeskInput>
                     </StyledDeskMenus>
                     <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
-                        <img src="./user.png" alt="userIcon" />
+                        <img src="/user.png" alt="userIcon" />
                     </StyledUserIcon>
                 </>
             )}
@@ -161,14 +180,14 @@ const NavbarComponent = () => {
                 <>
                     <StyledTablet>
                         <StyledTabletInput>   
-                            <input type="text" placeholder="코인을 검색하세요"  onClick={handleClickSearch}/>
+                            <p onClick={handleClickSearch}>코인을 검색하세요</p>
                         </StyledTabletInput>
                         <StyledTabletTab onClick={handleBurgerClick} ref={tabRef}>
                             <FontAwesomeIcon icon={faBars} size="2xl" />
                         </StyledTabletTab>
                     </StyledTablet>
                     <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
-                        <img src="./user.png" alt="userIcon" />
+                        <img src="/user.png" alt="userIcon" />
                     </StyledUserIcon>
 
                     {burgerTab && (
@@ -220,7 +239,7 @@ const NavbarComponent = () => {
                     </StyledSearchIcon>
 
                     <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
-                        <img src="./user.png" alt="userIcon" />
+                        <img src="/user.png" alt="userIcon" />
                     </StyledUserIcon>
 
 
@@ -243,7 +262,7 @@ const NavbarComponent = () => {
             {/* //*검색 모달 */}
             { searchModal &&
                     <div>
-                        <SearchMobileModalComponent handleSearchModalClose={handleSearchModalClose}/>
+                        <SearchComponent handleSearchModalClose={handleSearchModalClose}/>
                     </div>
 
 
