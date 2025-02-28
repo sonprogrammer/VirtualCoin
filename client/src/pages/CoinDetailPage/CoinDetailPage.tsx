@@ -12,12 +12,15 @@ const CoinDetailPage = () => {
       <div className="flex coingraph">
       <div>
       </div> */}
-        <CoinChartGraphComponent />
-      {/* <div className="호가창">
-        <CoinVoiceComponent />
-      </div>
+      {/* //*TODO 백엔드 서버에서 프록시 서버짜고 다시 만들기 (cors에러 뜸) */}
+        {/* <CoinChartGraphComponent /> */}
 
-      <div className="거래창 flex flex-col">
+
+      {/* <div className="호가창"> */}
+        <CoinVoiceComponent />
+      {/* </div> */}
+
+      {/* <div className="거래창 flex flex-col">
       <TradeComponent />
       </div> */}
 

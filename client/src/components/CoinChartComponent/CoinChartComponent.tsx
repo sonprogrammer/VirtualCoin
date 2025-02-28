@@ -19,6 +19,8 @@ const CoinChartComponent = () => {
 
   const navigate = useNavigate()
 
+
+
   const handleCoinClick = (coinId: string) => {
     navigate(`/coin/${coinId}`)
   }
@@ -38,6 +40,8 @@ const CoinChartComponent = () => {
     }
     fetchData()
   }, [])
+
+
   const prices = useWebSocket(coins);
 
   
