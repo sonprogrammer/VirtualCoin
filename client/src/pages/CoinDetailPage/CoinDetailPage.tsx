@@ -6,6 +6,7 @@ const CoinDetailPage = () => {
 
   return (
     <div className="디테일">
+      코인아이디
       {/* <div>
         <p>코인이름</p>
       </div>
@@ -16,9 +17,9 @@ const CoinDetailPage = () => {
         {/* <CoinChartGraphComponent /> */}
 
 
-      {/* <div className="호가창"> */}
+      <div className="호가창 w-[30%]">
         <CoinVoiceComponent />
-      {/* </div> */}
+      </div>
 
       {/* <div className="거래창 flex flex-col">
       <TradeComponent />

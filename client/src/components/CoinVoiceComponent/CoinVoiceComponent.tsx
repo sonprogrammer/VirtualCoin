@@ -1,49 +1,66 @@
 import { useParams } from "react-router-dom";
 import useGetOrderBook from "../../hooks/useGetOrderBook";
+import { QuantityBar, StyledAskBox, StyledAskContent, StyledBidBox, StyledBidContent, StyledContainer } from "./style";
 
 const CoinVoiceComponent = () => {
   const { coinId } = useParams<{ coinId: string }>();
-    // console.log(coinId);
-  const orderbook = useGetOrderBook(coinId || "");
-//   console.log('Orderbook', orderbook)
-  
 
-if (!orderbook || !orderbook.orderBook || !orderbook.orderBook.bids || !orderbook.orderBook.asks) {
+  const { orderBook } = useGetOrderBook(coinId || "");
+
+
+
+  if (!orderBook) {
     return <div>Loading...</div>;
   }
 
+  const totalBidQuantity = orderBook.bids.reduce((acc, bid) => acc + Number(bid.quantity), 0);
+  const totalAskQuantity = orderBook.asks.reduce((acc, ask) => acc + Number(ask.quantity), 0);
+
   return (
-    <div>
-      <h1>Coin ID: {coinId}</h1>
-      <h2>호가 갭: {orderbook.orderBook.spreadPercentage !== null ? `${orderbook.orderBook.spreadPercentage.toFixed(2)}%` : "N/A"}</h2>
+    <StyledContainer>
 
-      <h3>매수</h3>
-      {orderbook.orderBook?.bids && orderbook.orderBook.bids.length > 0 ? (
-        <ul>
-          {orderbook.orderBook.bids.map((bid, index) => (
-            <li key={index}>
-              Price: {bid.price.toLocaleString()}, Quantity: {bid.quantity}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No bids available</p>
-      )}
+      <StyledAskBox>
+        {orderBook.asks.reverse().map((ask, index) => (
+          <StyledAskContent key={index}>
+            <p>
+              {Number(ask.quantity).toFixed(3)}
+              <QuantityBar quantity={Number(ask.quantity)} totalQuantity={totalAskQuantity} type='ask'/>
+            </p>
+            <p className="border-x-[1px]">
+              {ask.price.toLocaleString()}
+            </p>
+            <p>
+              {ask.changeRate !== null ? `${ask.changeRate.toFixed(2)} %` : "error"}
+            </p>
 
-      <h3>매도</h3>
-      {orderbook.orderBook?.asks && orderbook.orderBook.asks.length > 0 ? (
-        <ul>
-          {orderbook.orderBook.asks.map((ask, index) => (
-            <li key={index}>
-              Price: {ask.price.toLocaleString()}, Quantity: {ask.quantity}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No asks available</p>
-      )}
-    </div>
-    
+          </StyledAskContent>
+        ))}
+      </StyledAskBox>
+      <div className="border-2"></div>
+
+      <StyledBidBox>
+        {orderBook.bids.map((bid, index) => (
+          <StyledBidContent key={index}>
+            <p>
+              {Number(bid.quantity).toFixed(3)}
+              <QuantityBar quantity={Number(bid.quantity)} totalQuantity={totalBidQuantity} type='bid'/>
+            </p>
+            <p className="border-x-[1px]">
+              {bid.price.toLocaleString()}
+            </p>
+            <p>
+              {/* //!호가당 전일대비 퍼센트 */}
+              {bid.changeRate !== null ? `${bid.changeRate.toFixed(2)} %` : "error"}
+            </p>
+
+
+          </StyledBidContent>
+        ))}
+      </StyledBidBox>
+
+
+    </StyledContainer>
+
   );
 };
 
