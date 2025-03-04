@@ -1,12 +1,11 @@
-import { useParams } from "react-router-dom";
-import useGetOrderBook from "../../hooks/useGetOrderBook";
+import  { OrderBook } from "../../hooks/useGetOrderBook";
 import { QuantityBar, StyledAskBox, StyledAskContent, StyledBidBox, StyledBidContent, StyledContainer } from "./style";
 
-const CoinVoiceComponent = () => {
-  const { coinId } = useParams<{ coinId: string }>();
 
-  const { orderBook } = useGetOrderBook(coinId || "");
-
+interface CoinVoiceComponentProps {
+  orderBook: OrderBook | null;  // orderBook은 null일 수 있기 때문에 nullable로 처리
+}
+const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
 
 
   if (!orderBook) {
@@ -18,7 +17,7 @@ const CoinVoiceComponent = () => {
 
   return (
     <StyledContainer>
-
+      <h1>호가</h1>
       <StyledAskBox>
         {orderBook.asks.reverse().map((ask, index) => (
           <StyledAskContent key={index}>

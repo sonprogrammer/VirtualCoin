@@ -6,19 +6,24 @@ export const StyledContaier = styled.div`
         flex
         flex-col
         h-screen
+        w-full
     `}
 `
 export const StyledNavbarWrapper = styled.div`
     ${tw`
         w-full
-
+        fixed
+        top-0
+        bg-white
+        z-10
     `}
 `
 export const StyledOutletWrapper = styled.div`
     ${tw`
+        mt-[82px]
         grow
-        overflow-auto
         flex-1
+        bg-stone-100
     `}
     
 `

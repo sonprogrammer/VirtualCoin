@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <App />
-      </RecoilRoot>,
+      </RecoilRoot>
     </QueryClientProvider>
   </BrowserRouter>
 )

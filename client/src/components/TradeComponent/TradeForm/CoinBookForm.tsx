@@ -19,6 +19,15 @@ const mockData = {
     { id: 1, name: '비트코인', type: '매수', amount: 2, price: 72000000 },
     { id: 2, name: '이더리움', type: '매도', amount: 5, price: 3500000 },
     { id: 3, name: '리플', type: '매수', amount: 100, price: 950 },
+    { id: 4, name: '비트코인', type: '매수', amount: 2, price: 72000000 },
+    { id: 5, name: '이더리움', type: '매도', amount: 5, price: 3500000 },
+    { id: 6, name: '리플', type: '매수', amount: 100, price: 950 },
+    { id: 7, name: '비트코인', type: '매수', amount: 2, price: 72000000 },
+    { id: 8, name: '이더리움', type: '매도', amount: 5, price: 3500000 },
+    { id: 9, name: '리플', type: '매수', amount: 100, price: 950 },
+    { id: 10, name: '비트코인', type: '매수', amount: 2, price: 72000000 },
+    { id: 11, name: '이더리움', type: '매도', amount: 5, price: 3500000 },
+    { id: 12, name: '리플', type: '매수', amount: 100, price: 950 },
   ],
   체결: [
     { id: 4, name: '비트코인', type: '매도', amount: 1, price: 73000000, date: '2025-02-12T10:00:00Z' },
@@ -29,7 +38,7 @@ const mockData = {
 
 
 const CoinBookForm = () => {
-  const [isChecked, setIsChecked] = useState<boolean>(false)
+  // const [isChecked, setIsChecked] = useState<boolean>(false)
   const [section, setSection] = useState<'미체결' | '체결'>('미체결')
   const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>({});
 
@@ -88,20 +97,20 @@ const CoinBookForm = () => {
 
   return (
     <StyledBookContainer>
-      <StyledDivider>
         <StyledBookTitle>
           <button
             onClick={() => handleSectionClick('미체결')}
             className={`${section === '미체결' ? 'bg-blue-700 text-white font-bold' : ''}`}
-          >미체결</button>
+            >미체결</button>
           <button
             onClick={() => handleSectionClick('체결')}
             className={`${section === '체결' ? 'bg-red-600 text-white font-bold' : ''}`}
-          >체결</button>
+            >체결</button>
         </StyledBookTitle>
 
+            <StyledDivider>
         {/* 여러개의 박스들 */}
-        <StyledBookContents>
+        <StyledBookContents className="bookcontent">
           {/* //TODO여기서 아무것도없으면 다른 애니메이션 넣기  */}
           {mockDataState[section].length === 0 && <p>아무것도 없음</p>}
 
@@ -138,7 +147,7 @@ const CoinBookForm = () => {
 
 
       {section === '미체결' ? (
-        <StyledAllCancleBtn onClick={() => setIsChecked(false)}>
+        <StyledAllCancleBtn>
         <button onClick={handleUnCheckBox}>
             <FontAwesomeIcon icon={faRotateRight} />
             초기화
@@ -146,7 +155,7 @@ const CoinBookForm = () => {
         <button onClick={handleDeleteAll}>예약 취소</button>
       </StyledAllCancleBtn>
       ) : (
-        <StyledAllCancleBtn onClick={() => setIsChecked(false)}>
+        <StyledAllCancleBtn>
         <button onClick={handleUnCheckBox}>
             <FontAwesomeIcon icon={faRotateRight} />
             초기화

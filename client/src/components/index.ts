@@ -13,4 +13,5 @@ export * from './MyAsset'
 export * from './SearchComponent'
 export * from './CoinChartGraphComponent'
 export * from './CoinVoiceComponent'
+export * from './DetailCoinInfoComponent'
 

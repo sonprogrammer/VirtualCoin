@@ -22,5 +22,5 @@ const useGetCoins = () => {
         refetchOnWindowFocus: false
     })
 }
-
+ 
 export default useGetCoins

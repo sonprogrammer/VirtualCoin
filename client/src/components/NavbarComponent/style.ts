@@ -12,7 +12,6 @@ export const StyledContainer = styled.div`
         relative
         w-full
         h-[82px]
-
     `}
 
     h2{

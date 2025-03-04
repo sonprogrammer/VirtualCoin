@@ -4,7 +4,7 @@ import tw from "twin.macro";
 
 export const Styledcontainer = styled.div`
     ${tw`
-        w-[50%]
+        w-full
         h-full
         bg-gray-300
         rounded-2xl
@@ -33,7 +33,7 @@ export const StyledNavbar = styled.div`
 export const StyledTradeSection = styled.div`
     ${tw`
         flex-1
-        grow
+        // grow
         overflow-y-auto
     `}
 `

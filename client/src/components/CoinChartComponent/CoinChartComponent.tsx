@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import axios from 'axios'
 import { StyledContainer, StyledPageBtns, StyledTable, StyledTableBody, StyledTableHead, StyledTitle } from "./style"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
 import useWebSocket from "../../hooks/useWebSocket";
-import useGetCoins from "../../hooks/useGetCoins";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { CoinPrice } from "../../context/CoinPrice";
 
 
 const CoinChartComponent = () => {
@@ -17,8 +18,8 @@ const CoinChartComponent = () => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
 
+  
   const navigate = useNavigate()
-
 
 
   const handleCoinClick = (coinId: string) => {
@@ -43,6 +44,7 @@ const CoinChartComponent = () => {
 
 
   const prices = useWebSocket(coins);
+
 
   
   // const { data: coinData, isLoading, isError } = useGetCoins()

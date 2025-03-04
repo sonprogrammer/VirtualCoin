@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-interface OrderBook {
+export interface OrderBook {
   bids: Array<{changeRate: number; price: string; quantity: string }>;
   asks: Array<{changeRate: number; price: string; quantity: string }>;
 }

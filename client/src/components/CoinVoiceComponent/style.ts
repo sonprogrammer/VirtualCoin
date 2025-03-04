@@ -6,10 +6,12 @@ export const StyledContainer = styled.div`
     ${tw`
         flex
         flex-col
+        h-full
         w-full
         border-2
         p-2
         gap-2
+        overflow-y-auto
     `}
 `
 export const StyledAskBox = styled.div`

@@ -14,7 +14,10 @@ export const StyledContainer = styled.div`
     background-position: center;
     background-repeat: no-repeat;
     box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.1);
+ overflow: hidden;
 
+    /* padding과 border 포함한 크기 계산 */
+    box-sizing: border-box;
 `
 
 export const StyledBox = styled.div`
@@ -41,7 +44,6 @@ export const StyledLogo = styled.div`
     ${tw`
             block
             w-[50%]
-            h-auto
     `}
     }
 `

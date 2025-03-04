@@ -3,7 +3,7 @@ import tw from "twin.macro";
 
 export const StyledContainer = styled.div`
     ${tw`
-        p-10
+        p-5
         flex
         flex-col
         gap-3
@@ -122,6 +122,7 @@ export const StyledBtns = styled.div`
         flex
         gap-2
         font-bold
+        pb-0
     `}
     button:first-child{
         width: 30%;
@@ -144,8 +145,7 @@ export const StyledBtns = styled.div`
 
 export const StyledBookContainer = styled.div`
     ${tw`
-        p-10
-        relative
+        p-5
         h-full
     `}
 `
@@ -204,7 +204,7 @@ export const StyledContent = styled.div`
 
 export const StyledDivider = styled.div`
     ${tw`
-        h-[90%]
+        max-h-[70%]
         overflow-y-auto
     `}
 `
@@ -259,7 +259,8 @@ export const StyledAllCancleBtn = styled.div`
         flex
         gap-2
         font-bold
-        mt-9
+        mt-5
+        mb-5
     `}
     button:first-child{
         width: 30%;
