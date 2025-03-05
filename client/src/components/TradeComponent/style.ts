@@ -28,7 +28,13 @@ export const StyledNavbar = styled.div`
             }
             text-align: center;
         }
-    
+    @media(max-width: 630px){
+        p{
+            ${tw`
+                text-sm
+                `}
+        }
+    }
 `
 export const StyledTradeSection = styled.div`
     ${tw`

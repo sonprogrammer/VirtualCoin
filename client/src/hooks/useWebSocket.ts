@@ -17,8 +17,8 @@ export interface PriceData {
 //*위 데이터 가져옴
 
 const useWebSocket = (coins: any[]) => {
-  const [prices, setPrices] = useState<{ [key: string]: PriceData }>({});
-
+  // const [prices, setPrices] = useState<{ [key: string]: PriceData }>({});
+  const [prices, setPrices] = useRecoilState(CoinPrice);
 
   useEffect(() => {
     if(!coins) return
@@ -53,14 +53,13 @@ const useWebSocket = (coins: any[]) => {
         }));
       };
       reader.readAsText(e.data);
-    };
-
-    
+    }
     
     return () => {
+
       ws.close();
     };
-  }, [coins,setPrices]);
+  }, [coins, setPrices]);
 
   return prices;
 };

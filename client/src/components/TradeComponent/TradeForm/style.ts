@@ -3,11 +3,16 @@ import tw from "twin.macro";
 
 export const StyledContainer = styled.div`
     ${tw`
-        p-5
+        p-4
         flex
         flex-col
         gap-3
     `}
+    @media(max-width: 450px){
+        ${tw`
+            p-2
+        `}
+    }
 `
 export const StyledAsset = styled.div`
     ${tw`
@@ -16,6 +21,13 @@ export const StyledAsset = styled.div`
         items-center
         mb-3
     `}
+    @media(max-width: 630px){
+            p{
+                ${tw`
+                    text-sm
+                `}
+            }
+    }
 `
 
 export const StyledCoinPrice = styled.div`
@@ -24,6 +36,13 @@ export const StyledCoinPrice = styled.div`
         flex
         flex-col
     `}
+    @media(max-width: 630px){
+        p{
+            ${tw`
+                text-sm
+            `}
+        }
+    }
     
 `
 
@@ -32,17 +51,24 @@ export const StyledTradeInput = styled.div`
         mt-2
         flex
         w-full
+        gap-1
     `}
     button{
         border: 1px solid black;
         padding: 0 12px;
         cursor: pointer;
-        border-radius: 10px;
-        background-color: gray;
+        border-radius: 50%;
+        ${tw`
+            bg-gray-500
+        `}
         &:hover{
-            background-color: lightgray;
+            ${tw`
+                bg-gray-400
+            `}
         }
+       
     }
+
     input{
         ${tw`
             w-full
@@ -59,6 +85,16 @@ export const StyledTradeInput = styled.div`
             color: black;
         }
     }
+    @media(max-width: 630px){
+        input{
+            ${tw`
+                text-sm
+            `}
+        }
+        button{
+            padding: 0 10px;
+        }
+    }
 `
 
 
@@ -67,7 +103,9 @@ export const StyledCoinAmount = styled.div`
         flex
         flex-col
     `}
-    
+    @media(max-width: 630px){
+        
+    }
 `
 
 
@@ -80,6 +118,7 @@ export const StyledAmountInput = styled.div`
     `}
     input{
         ${tw`
+            mt-2
             p-2
             w-full
             font-bold
@@ -89,6 +128,18 @@ export const StyledAmountInput = styled.div`
         `}
         &:focus{
             border: 1px solid red;
+        }
+    }
+    @media(max-width: 630px){
+        input{
+            ${tw`
+                text-sm
+                `}
+        }
+        p{
+            ${tw`
+                text-sm
+            `}
         }
     }
 `
@@ -106,6 +157,20 @@ export const StyledAmountRate = styled.div`
             rounded-lg
             px-2
         `}
+        &:hover{
+            ${tw`
+                bg-gray-200
+                `}
+        }
+    }
+    @media(max-width: 570px){
+        button{
+            ${tw`
+                text-xs
+                py-1
+                px-1
+            `}
+        }
     }
 `
 
@@ -115,6 +180,20 @@ export const StyledTotalOrder = styled.div`
         flex
         justify-between
     `}
+    @media(max-width: 630px){
+        p{
+            ${tw`
+                text-sm
+                `}
+        }
+    }
+    @media(max-width: 490px){
+        p{
+            ${tw`
+                text-xs
+            `}
+        }
+    }
 `
 
 export const StyledBtns = styled.div`
@@ -141,6 +220,13 @@ export const StyledBtns = styled.div`
         border-radius: 8px;
         color: white;
     }
+        @media(max-width: 630px){
+            button{
+                span{
+                    display:none;
+                }
+            }
+        }
 `
 
 export const StyledBookContainer = styled.div`
@@ -148,6 +234,11 @@ export const StyledBookContainer = styled.div`
         p-5
         h-full
     `}
+    @media(max-width: 630px){
+        ${tw`
+            p-2
+        `}
+    }
 `
 
 export const StyledBookTitle = styled.div`
@@ -162,6 +253,13 @@ export const StyledBookTitle = styled.div`
         flex: 1;
         padding: 8px 0;
         border-radius: 12px;
+    }
+    @media(max-width: 630px){
+        button{
+            ${tw`
+                text-sm
+                `}
+        }
     }
 `
 
@@ -184,14 +282,12 @@ export const StyledBookBox = styled.div`
         px-3
         w-full
     `}
+    @media(max-width: 490px){
+        ${tw`
+            px-1
+        `}
+    }
 `
-
-export const StyledBookInput = styled.div`
-    ${tw`
-        p-2
-    `}
-`
-
 export const StyledContent = styled.div`
     ${tw`
         flex    
@@ -199,6 +295,11 @@ export const StyledContent = styled.div`
         flex-1
         ml-4
     `}
+    @media(max-width: 630px){
+        ${tw`
+            ml-2
+        `}
+    }
 `
 
 
@@ -215,25 +316,67 @@ export const StyledBookBoxTitle = styled.div`
         flex
         gap-3
     `}
-    
+    @media(max-width: 630px){
+        p,h1{
+            ${tw`
+                text-sm
+            `}
+        }
+    }
+    @media(max-width: 490px){
+        p,h1{
+            ${tw`
+            gap-1
+            text-xs
+        `}
+        }
+    }
 `
 
 export const StyledAmount = styled.div`
     ${tw`
         flex
-        text-[12px]
+        text-xs
     `}
+    @media(max-width: 760px){
+        ${tw`
+            flex-col
+        `}
+    }
+    @media(max-width: 630px){
+        p{
+            font-size: 10px;
+        }
+    }
+    @media(max-width: 490px){
+        p:last-child{
+            display: flex;
+            flex-direction: column;
+        }
+    }
 `
 
 export const StyledCancleBtn = styled.div`
     ${tw`
         px-3
         py-2
-        bg-black
+        bg-gray-950
         text-white
         rounded-xl
         cursor-pointer
     `}
+        &:hover{
+            ${tw`
+                bg-gray-700
+            `}
+        }
+    @media(max-width: 760px){
+        ${tw`
+            text-xs
+            px-2
+            py-1
+        `}
+    }
 `
 
 export const StyledDate = styled.div`
@@ -283,6 +426,11 @@ export const StyledAllCancleBtn = styled.div`
         `}
         &:hover{
             background-color:rgb(107, 114, 128, 0.9)
+        }
+    }
+    @media(max-width: 630px){
+        span{
+            display: none;
         }
     }
 `

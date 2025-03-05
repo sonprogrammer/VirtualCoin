@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { StyledAllCancleBtn, StyledAmount, StyledBookBox, StyledBookBoxTitle, StyledBookContainer, StyledBookContents, StyledBookInput, StyledBookTitle, StyledCancleBtn, StyledContent, StyledDate, StyledDivider } from "./style"
+import { StyledAllCancleBtn, StyledAmount, StyledBookBox, StyledBookBoxTitle, StyledBookContainer, StyledBookContents, StyledBookTitle, StyledCancleBtn, StyledContent, StyledDate, StyledDivider } from "./style"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import dayjs from 'dayjs';
@@ -36,6 +36,7 @@ const mockData = {
   ],
 };
 
+// TODO 코인 개당 얼마에 주문 걸어놨는지도 해야함
 
 const CoinBookForm = () => {
   // const [isChecked, setIsChecked] = useState<boolean>(false)
@@ -115,10 +116,11 @@ const CoinBookForm = () => {
           {mockDataState[section].length === 0 && <p>아무것도 없음</p>}
 
           {mockDataState[section].map((order) => (
-            <StyledBookBox key={order.id} onClick={() => handleCheckboxChange(order.id)}>
-              <StyledBookInput >
-                <input type="checkbox" name="booked" checked={checkedItems[order.id] || false} onChange={() => handleCheckboxChange(order.id)} />
-              </StyledBookInput>
+            <StyledBookBox 
+              key={order.id} 
+              onClick={() => handleCheckboxChange(order.id)}
+              className={`${checkedItems[order.id] ? 'bg-gray-400 cursor-pointer' : 'cursor-pointer'}`}
+              >
               <StyledContent>
                 <StyledBookBoxTitle>
                   <p ><strong>{order.name}</strong></p>
@@ -126,7 +128,12 @@ const CoinBookForm = () => {
                 </StyledBookBoxTitle>
                 <StyledAmount>
                   <p><strong>{order.amount}개</strong> 주문</p>
-                  <p>(개당 <strong>{order.price.toLocaleString()}원</strong>)</p>
+                  <p>
+                    <span>개당</span>
+                    <span> 
+                      <strong>{order.price.toLocaleString()}원</strong>
+                    </span>
+                  </p>
                 </StyledAmount>
               </StyledContent>
               {section === '미체결' ? (
@@ -150,7 +157,7 @@ const CoinBookForm = () => {
         <StyledAllCancleBtn>
         <button onClick={handleUnCheckBox}>
             <FontAwesomeIcon icon={faRotateRight} />
-            초기화
+            <span>초기화</span>
         </button>
         <button onClick={handleDeleteAll}>예약 취소</button>
       </StyledAllCancleBtn>
@@ -158,7 +165,7 @@ const CoinBookForm = () => {
         <StyledAllCancleBtn>
         <button onClick={handleUnCheckBox}>
             <FontAwesomeIcon icon={faRotateRight} />
-            초기화
+            <span>초기화</span>
         </button>
         <button onClick={handleDeleteAll}>선택 삭제</button>
       </StyledAllCancleBtn>

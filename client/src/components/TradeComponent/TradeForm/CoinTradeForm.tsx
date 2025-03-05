@@ -87,15 +87,15 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
                />
         </StyledAmountInput>
         <StyledAmountRate>
-          <button onClick={() => handleOrderClick(10)}>10%</button>
-          <button onClick={() => handleOrderClick(25)}>25%</button>
-          <button onClick={() => handleOrderClick(50)}>50%</button>
-          <button onClick={() => handleOrderClick(100)}>100%</button>
+            <button onClick={() => handleOrderClick(10)}>10%</button>
+            <button onClick={() => handleOrderClick(25)}>25%</button>
+            <button onClick={() => handleOrderClick(50)}>50%</button>
+            <button onClick={() => handleOrderClick(100)}>100%</button>
         </StyledAmountRate>
       </StyledCoinAmount>
 
       <StyledTotalOrder>
-        <p>주문총액 (KRW)</p>
+        <p>주문총액</p>
         {/* //*데이터 받아와야함 */}
         <p><strong>{(orderAmount * coinPrice).toLocaleString()}</strong> 원</p>
       </StyledTotalOrder>
@@ -103,7 +103,7 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
       <StyledBtns>
         <button>
             <FontAwesomeIcon icon={faRotateRight} />
-            초기화
+            <span>초기화</span>
         </button>
         <button 
             className={`${name === '매도' ? 'bg-blue-600 text-white' : 'bg-red-600 text-white'} px-4 py-2 rounded`}

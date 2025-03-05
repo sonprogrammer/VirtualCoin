@@ -6,7 +6,7 @@ import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
 import useWebSocket from "../../hooks/useWebSocket";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { CoinPrice } from "../../context/CoinPrice";
 
 
@@ -20,6 +20,10 @@ const CoinChartComponent = () => {
 
   
   const navigate = useNavigate()
+
+  const [prices] = useRecoilState(CoinPrice); 
+
+  useWebSocket(coins)
 
 
   const handleCoinClick = (coinId: string) => {
@@ -43,7 +47,7 @@ const CoinChartComponent = () => {
   }, [])
 
 
-  const prices = useWebSocket(coins);
+  // const prices = useWebSocket(coins);
 
 
   
@@ -140,6 +144,7 @@ const CoinChartComponent = () => {
             const priceData = prices[coin.market]
             const coinUnit = coin.market.split('-')[1]
             const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
+            // const rate = Number(priceData.change_rate) * 100
             return (
               <tr key={coin.market} onClick={()=>handleCoinClick(coin.market)}>
                 {/* //*관심 */}
@@ -176,7 +181,7 @@ const CoinChartComponent = () => {
                       className={`${priceData.change_rate > 0 ? "text-red-500" : "text-blue-600"
                         } ${windowWidth <= 570 ? "text-[12px] font-bold" : ""}`}
                     >
-                      {priceData.trade_price.toLocaleString()}
+                      {priceData.trade_price?.toLocaleString()}
                       {windowWidth > 570 && "krw"}
                     </p>
                   ) : (
@@ -194,11 +199,11 @@ const CoinChartComponent = () => {
                     >
                       <p>
                         {priceData.change_rate > 0 ? "+" : ""}
-                        {priceData.change_rate.toLocaleString()}%
+                        {(priceData.change_rate * 100).toLocaleString()}%
                       </p>
                       <p>
                         {priceData.change_rate > 0 ? "+" : ""}
-                        {priceData.change_price.toLocaleString()}
+                        {priceData.change_price?.toLocaleString()}
                       </p>
                     </div>
                   ) : (

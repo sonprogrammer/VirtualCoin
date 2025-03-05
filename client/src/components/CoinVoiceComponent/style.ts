@@ -13,6 +13,12 @@ export const StyledContainer = styled.div`
         gap-2
         overflow-y-auto
     `}
+    
+    @media(max-width: 500px){
+        ${tw`
+            p-0
+        `}
+    }
 `
 export const StyledAskBox = styled.div`
     ${tw`
@@ -38,7 +44,41 @@ export const StyledAskContent = styled.div`
             align-items: center;
         }
     }
+    @media(max-width: 600px){
+        ${tw`
+            text-sm
+        `}
+    }
+    @media(max-width: 500px){
+        ${tw`
+            text-xs
+        `}
+
+    }
 `
+export const StyledRight = styled.div`
+    ${tw`
+        flex
+        flex-col
+        items-end
+    `}
+    p{
+        ${tw`
+            flex-1
+        `}
+    }
+    p:first-child{
+        ${tw`
+            font-bold
+        `}
+    }
+        @media(min-width: 630px){
+            ${tw`
+                flex-row
+            `}
+        }
+`
+
 export const StyledBidBox = styled.div`
     ${tw`
         text-red-500
@@ -62,6 +102,16 @@ export const StyledBidContent = styled.div`
             justify-content: end;
             align-items: center;
         }
+    }
+    @media(max-width: 600px){
+        ${tw`
+            text-sm
+        `}
+    }
+    @media(max-width: 500px){
+        ${tw`
+            text-xs    
+        `}
     }
 `
 

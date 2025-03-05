@@ -3,50 +3,68 @@ import { CoinChartGraphComponent, CoinVoiceComponent, DetailCoinInfoComponent, T
 
 import useGetOrderBook from "../../hooks/useGetOrderBook";
 import useWebSocket from "../../hooks/useWebSocket";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { CoinPrice } from "../../context/CoinPrice";
+import { useEffect, useState } from "react";
+import { StyledChart, StyledContainer, StyledOrderBook, StyledOrderBookAndTrade, StyledTrade } from "./style";
+
+
+interface PriceData {
+  trade_price: number;
+  change_rate: number;
+  acc_price: number;
+  change_price: number;
+  trade_volume: number;
+  high_price: number;
+  low_price: number;
+}
 
 
 
 const CoinDetailPage = () => {
   const { coinId } = useParams()
-  const { orderBook } = useGetOrderBook(coinId || "");
 
-  const ObjCoin = [{ market: coinId }];
-  const prices = useWebSocket(ObjCoin);
-  const coinInfo = prices[coinId || '']
+  const [coinInfo, setCoinInfo] = useState<PriceData | null>(null);
 
-  // const prices = useRecoilValue(CoinPrice)
+  const { orderBook, coinPrice } = useGetOrderBook(coinId || "");
+
+
+  useEffect(() => {
+    if (coinPrice) {
+      setCoinInfo(coinPrice);
+    }
+  }, [coinPrice]);
+
   
-
+// ! 790, 630, 450 반응형
 
   return (
-    <div className="디테일 flex flex-col w-full h-full gap-3 p-5 overflow-y-auto">
+    <StyledContainer className="디테일">
 
       <div className="맨위에 있어야함">
-        <DetailCoinInfoComponent coinId={coinId}  coinInfo={coinInfo}/>
+        <DetailCoinInfoComponent coinId={coinId || ''} coinInfo={coinInfo}/>
       </div>
 
+
+
+      <StyledChart className="차트 w-full">
       {/* //*TODO 백엔드 서버에서 프록시 서버짜고 다시 만들기 (cors에러 뜸) */}
       {/* <CoinChartGraphComponent /> */}
-
-
-      <div className="차트 w-full">
         차트
-      </div>
+      </StyledChart>
 
-      <div className="호가,거래창 flex justify-between  max-h-[700px]">
-        <div className="호가창 w-[50%]">
+      <StyledOrderBookAndTrade className="호가랑 거래창">
+        <StyledOrderBook className="호가창">
           <CoinVoiceComponent orderBook={orderBook}/>
-        </div>
+        </StyledOrderBook>
 
-        <div className="거래창 w-[45%]">
+        <StyledTrade className="거래창">
           <TradeComponent />
-        </div>
-      </div>
+        </StyledTrade>
+      </StyledOrderBookAndTrade>
 
 
-    </div>
+    </StyledContainer>
   )
 }
 
