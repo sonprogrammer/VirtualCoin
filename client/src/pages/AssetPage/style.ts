@@ -9,8 +9,19 @@ export const StyledContainer = styled.div`
         justify-center
         items-center
         w-full
-        p-5
+        px-5
+        relative
     `}
+    @media(min-width: 900px){
+        ${tw`
+            px-24
+        `}
+    }
+    @media(max-width: 630px){
+        padding: 0;
+        margin-bottom: 60px;
+    }
+    
     @media(max-width: 450px){
         padding: 0;
     }
@@ -21,16 +32,12 @@ export const StyledBox = styled.div`
         flex
         flex-col
         items-center
-        //!border는 삭제
-        border 
         w-full
     `}
     @media(max-width: 630px){
         margin-bottom: 60px;
     }
-    @media(max-width: 570px){
-        // padding: 0;
-    }
+
 `
 
 export const StyledTabs = styled.div`
@@ -39,7 +46,8 @@ export const StyledTabs = styled.div`
         w-full
         justify-around
         mt-5
-        border-solid
+        sticky
+        top-0
     `}
     p{
         flex:1;

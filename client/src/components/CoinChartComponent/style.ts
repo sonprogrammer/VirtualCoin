@@ -10,6 +10,11 @@ export const StyledContainer = styled.div`
         px-5
         items-center
     `}
+    @media(min-width: 900px){
+        ${tw`
+            px-24
+        `}
+    }
 
     @media(max-width: 630px){
         margin-bottom: 60px;

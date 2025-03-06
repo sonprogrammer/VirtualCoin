@@ -26,13 +26,15 @@ export const StyledBox = styled.div`
         w-[90%]
         bg-white
         rounded-xl
-
         flex
         flex-col
-        max-h-[600px]
+        h-[600px]
         overflow-y-auto
         relative
     `}
+    @media(min-width: 900px){
+        width: 50%;
+    }
 
 `
 export const StyledInput = styled.div`

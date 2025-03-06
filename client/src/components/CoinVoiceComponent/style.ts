@@ -30,6 +30,7 @@ export const StyledAskContent = styled.div`
     ${tw`
         flex
         justify-around
+        w-full
     `}
     p{
         ${tw`
@@ -40,10 +41,25 @@ export const StyledAskContent = styled.div`
         &:first-child{
             position: relative;
             display: flex;
-            justify-content: end;
+            justify-content: center;
             align-items: center;
         }
+
+
     }
+
+    @media(max-width:630px){
+        
+        p{
+            &:first-child{
+                ${tw`
+                    flex
+                    justify-start
+                `}
+            }
+        }
+    }
+    
     @media(max-width: 600px){
         ${tw`
             text-sm
@@ -59,12 +75,11 @@ export const StyledAskContent = styled.div`
 export const StyledRight = styled.div`
     ${tw`
         flex
-        flex-col
-        items-end
+        flex-auto
     `}
     p{
         ${tw`
-            flex-1
+            // flex-1
         `}
     }
     p:first-child{
@@ -72,9 +87,10 @@ export const StyledRight = styled.div`
             font-bold
         `}
     }
-        @media(min-width: 630px){
+        @media(max-width: 630px){
             ${tw`
-                flex-row
+                flex-col
+                items-end
             `}
         }
 `
@@ -86,10 +102,11 @@ export const StyledBidBox = styled.div`
     `}
 `
 export const StyledBidContent = styled.div`
-    ${tw`
+     ${tw`
         flex
         justify-around
-        `}
+        w-full
+    `}
     p{
         ${tw`
             flex-1
@@ -99,10 +116,25 @@ export const StyledBidContent = styled.div`
         &:first-child{
             position: relative;
             display: flex;
-            justify-content: end;
+            justify-content: center;
             align-items: center;
         }
+
+
     }
+
+    @media(max-width:630px){
+        
+        p{
+            &:first-child{
+                ${tw`
+                    flex
+                    justify-start
+                `}
+            }
+        }
+    }
+    
     @media(max-width: 600px){
         ${tw`
             text-sm
@@ -110,16 +142,15 @@ export const StyledBidContent = styled.div`
     }
     @media(max-width: 500px){
         ${tw`
-            text-xs    
+            text-xs
         `}
-    }
 `
 
 export const QuantityBar = styled.div<{ quantity: number; totalQuantity: number; type: "ask" | "bid"; }>`
   ${tw`
     absolute
     h-3
-    right-0
+    left-0
     h-[90%]
     rounded
     opacity-30

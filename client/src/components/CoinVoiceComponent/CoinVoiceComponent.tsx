@@ -32,12 +32,12 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
               <QuantityBar quantity={Number(ask.quantity)} totalQuantity={totalAskQuantity} type='ask'/>
             </p>
             <StyledRight>
-            <p className="border-x-[1px]">
-              {ask.price.toLocaleString()}
-            </p>
-            <p>
-              {ask.changeRate !== null ? `${ask.changeRate.toFixed(2)} %` : "error"}
-            </p>
+              <p>
+                {ask.price.toLocaleString()}
+              </p>
+              <p>
+                {ask.changeRate !== null ? `${ask.changeRate.toFixed(2)} %` : "error"}
+              </p>
             </StyledRight>
           </StyledAskContent>
         ))}

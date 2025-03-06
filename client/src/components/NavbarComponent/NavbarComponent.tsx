@@ -50,8 +50,6 @@ const NavbarComponent = () => {
         setSearchModal(prev => !prev)
     }
 
-    // const handleChangeSearchClose = (e: ReactElement)
-
     useEffect(() => {
         const handleKeydown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
@@ -210,6 +208,7 @@ const NavbarComponent = () => {
             {info && (
                 <StyledUserInfo ref={userRef}>
                     <StyledAngle />
+                    <h1 className='font-bold text-center pb-2'>Welcome 유저명</h1>
                     <p><strong>보유 현금</strong> <span>10,000,000</span></p>
                     {/* //TODO : 수익이면 빨강, 손익이면 파랑으로 색상조절*/}
                     <p><strong>총 평가 손익</strong> <span style={{ color: 'red' }}>+3,000,000</span></p>

@@ -1,8 +1,9 @@
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { StyledBox, StyledCoin, StyledCoinBox, StyledCoinContainer, StyledCoinContent, StyledCoinNameAndImg, StyledCoinNumber, StyledContainer, StyledInput, StyledNoResult } from './style'
 import useGetCoins from '../../hooks/useGetCoins'
 import useWebSocket from '../../hooks/useWebSocket'
+import { useNavigate } from 'react-router-dom'
 
 interface SearchComponentProps {
   handleSearchModalClose: () => void
@@ -11,8 +12,24 @@ interface SearchComponentProps {
 const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
   const [coins, setCoins] = useState<any[]>([])
   const [searchQuery, setSearchQuery] = useState<string>('')
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  const navigate = useNavigate()
 
 
+  useEffect(() => {
+    if(inputRef.current){
+      inputRef.current.focus()
+    }
+  },[])
+
+  const handleCoinClick = (coinId: string) => {
+    navigate(`/coin/${coinId}`)
+    handleSearchModalClose()
+  }
+
+  
+  
   const { data: coinData, isLoading, error } = useGetCoins()
   const coinInfo = useWebSocket(coinData)
 
@@ -50,6 +67,7 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
             placeholder='코인을 검색하세요'
             value={searchQuery}
             onChange={handleSearchInputChange}
+            ref={inputRef}
           />
         </StyledInput>
 
@@ -74,7 +92,7 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
               }
               return (
                 <>
-                  <StyledCoinBox>
+                  <StyledCoinBox onClick={() => handleCoinClick(coin.market)}>
                     <div className='flex gap-2'>
                       <StyledCoinNumber>
                         {i + 1}

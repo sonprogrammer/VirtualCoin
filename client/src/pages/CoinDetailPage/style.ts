@@ -12,6 +12,11 @@ export const StyledContainer = styled.div`
         p-5 
         overflow-y-auto
     `}
+    @media(min-width: 1024px){
+        ${tw`
+            px-24
+        `}
+    }
     @media(max-width: 630px){
         ${tw`
             p-0
@@ -55,11 +60,21 @@ export const StyledOrderBookAndTrade = styled.div`
 export const StyledOrderBook = styled.div`
     ${tw`
         w-[50%]
+    `}
+    @media(max-width: 630px){
+        ${tw`
+            w-[40%]
         `}
+    }
 `
 
 export const StyledTrade = styled.div`
     ${tw`
         w-[45%]
     `}
+    @media(max-width: 630px){
+        ${tw`
+            w-[55%]
+        `}
+    }
 `

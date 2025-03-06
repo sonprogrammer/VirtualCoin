@@ -2,9 +2,6 @@ import { useParams } from "react-router-dom"
 import { CoinChartGraphComponent, CoinVoiceComponent, DetailCoinInfoComponent, TradeComponent } from "../../components"
 
 import useGetOrderBook from "../../hooks/useGetOrderBook";
-import useWebSocket from "../../hooks/useWebSocket";
-import { useRecoilState } from "recoil";
-import { CoinPrice } from "../../context/CoinPrice";
 import { useEffect, useState } from "react";
 import { StyledChart, StyledContainer, StyledOrderBook, StyledOrderBookAndTrade, StyledTrade } from "./style";
 
