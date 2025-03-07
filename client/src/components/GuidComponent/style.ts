@@ -19,10 +19,9 @@ export const StyledModalBox = styled.div`
         bg-white
         p-8
         rounded-xl
-        h-[35%]
         relative
     `}
-    @media(max-width:390px){
+    @media(max-width:440px){
         width: 90%;
     }
     h1 {

@@ -56,7 +56,7 @@ function App() {
   
   return (
     <>
-          {checkedPassword && <div className=""><LoginDoubleCheckModalComponent /></div>}
+          {/* {checkedPassword && <div className=""><LoginDoubleCheckModalComponent /></div>} */}
         <Routes>
           <Route path="/" element={
             <LandingPage />    
