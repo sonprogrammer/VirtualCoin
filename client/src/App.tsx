@@ -49,6 +49,7 @@ function App() {
   // TODO 로그인 없이 바로 browse로 가려하면 랜딩페이지로 리다이렉션 됨
   // useEffect(() => {
   //   if (!isLoggedIn) {
+  //     alert('로그인을 먼저 해주세요')
   //     navigate('/'); 
   //   }
   // }, [isLoggedIn]);

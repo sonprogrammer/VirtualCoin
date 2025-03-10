@@ -8,6 +8,8 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { InterestedCoin } from '../InterestedCoin';
 import { RecentCoin } from '../RecentCoin';
 import { SearchComponent } from '../SearchComponent';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../context/userState';
 
 
 
@@ -22,6 +24,10 @@ const NavbarComponent = () => {
     const [interestedCoin, setInterestedCoin] = useState<boolean>(false)
     const [recentCoin, setRecentCoin] = useState<boolean>(false)
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+
+    const user = useRecoilValue(userState);
+
 
   const handleSearchModalClose = () => {
     setSearchModal(false)
@@ -70,10 +76,6 @@ const NavbarComponent = () => {
             setWindowWidth(window.innerWidth);
         };
         
-        // if (window.innerWidth >= 630) {
-        //     setSearchIcon(false);
-        // }
-
         window.addEventListener('resize', handleResize);
 
         return () => {
@@ -94,9 +96,6 @@ const NavbarComponent = () => {
         setRecentCoin(true)
     }
 
-    // const handleSearchIconClick = () => {
-    //     setSearchIcon(!searchIcon);
-    // }
 
     const handleBurgerClick = () => {
         setBurgerTab(!burgerTab);
@@ -208,10 +207,12 @@ const NavbarComponent = () => {
             {info && (
                 <StyledUserInfo ref={userRef}>
                     <StyledAngle />
-                    <h1 className='font-bold text-center pb-2'>Welcome 유저명</h1>
-                    <p><strong>보유 현금</strong> <span>10,000,000</span></p>
+                    <h1 className='font-bold text-center pb-2'>Welcome {user.name}</h1>
+                    <p><strong>보유 현금</strong> <span>{user.totalCash.toLocaleString()}</span></p>
                     {/* //TODO : 수익이면 빨강, 손익이면 파랑으로 색상조절*/}
-                    <p><strong>총 평가 손익</strong> <span style={{ color: 'red' }}>+3,000,000</span></p>
+                    <p><strong>총 평가 손익</strong> 
+                        <span style={{ color: 'red' }}>{user.totalAssets.toLocaleString()}</span>
+                    </p>
                     <hr />
                     <StyledCoins>
                         <span onClick={handleInterstedClick}>관심 코인</span>

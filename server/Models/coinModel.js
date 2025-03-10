@@ -1,5 +1,4 @@
-import mongoose from "mongoose"
-
+const mongoose = require('mongoose')
 
 const CoinSchema = new mongoose.Schema({
 
@@ -16,22 +15,18 @@ const CoinSchema = new mongoose.Schema({
         unique: true
     },
 
-    // 실시간 가겨
+    // 유저가 코인을 산 가격
     currentPrice:{
         type: Number,
         required: true
     },
-    //변동률
-    priceChange:{
-        type:Number,
-        default: 0
-    },
 
-    //거래량
+    //유저가 산 코인 거래량
     volume:{
         type: Number,
         default: 0
     }
 },{timestamps: true})
 
-export const Coin = mongoose.model('Coin', CoinSchema)
+const Coin = mongoose.model('Coin', CoinSchema)
+module.exports = Coin

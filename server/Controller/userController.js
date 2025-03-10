@@ -1,6 +1,5 @@
 const User =  require('../Models/userModel')
 
-console.log('user', User)
 
 const createGuestUser = async (req, res) => {
     const generateGuestName = () => {
@@ -17,11 +16,6 @@ const createGuestUser = async (req, res) => {
             userExist = await User.findOne({name: guestName})
         }
 
-      
-
-
-        
-        
         const newGuestUser = new User({
             name: guestName,
             isGuest: true,
@@ -31,11 +25,16 @@ const createGuestUser = async (req, res) => {
 
         await newGuestUser.save()
 
-        res.status(201).json({name: guestName})
+        res.status(201).json(newGuestUser)
     } catch (error) {
         console.error(error)
         res.status(500).json({message: 'Internal server error'})
     }
 }
+
+// * 관심코인 토글
+
+// *관심코인 가져오기
+
 
 module.exports =  {createGuestUser}

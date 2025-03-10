@@ -1,10 +1,9 @@
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { StyledBtn, StyledContainer, StyledImage, StyledModalBox, StyledModalContent } from "./style"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { StyledCloseBtn } from "../LoginModal/style";
 import useGuestLogin from "../../hooks/useGuestLogin";
-import axios from "axios";
 
 
 
@@ -13,39 +12,16 @@ interface GuidComponentProps{
 }
 
 const GuidComponent = ({ handleCloseModal } : GuidComponentProps) => {
-    // const { guestNickName,isLoading, isError  } = useGuestLogin();
-    // console.log('geust', guestNickName)
+    useGuestLogin();
     
     const navigate = useNavigate()
     
     const handleGuestLogin = async () => {
-        const res = await axios.post('http://localhost:3000/api/user/guest-login')
-        console.log('res', res)
-        // if (isLoading) return; 
-        // if (isError) return; 
         handleCloseModal()
-        
+        navigate('/browse')
     }
 
-    
-    // const generateGuestNickname = () => {
-    //     const randomName = Math.floor(Math.random()*10000).toString().padStart(4, '0')
-    //     return `VC_${randomName}`
-    // }
 
-    // const handleGuestLogin = () => {
-    //     const guestName = generateGuestNickname()
-
-    //     const guestData = {
-    //         nickname: guestName,
-    //         isGuest: true
-    //     }
-
-    //     localStorage.setItem('guestUser', JSON.stringify(guestData))
-
-    //     handleCloseModal()
-    //     navigate('/browse')
-    // }
     
     
     return (

@@ -8,18 +8,21 @@ import useWebSocket from "../../hooks/useWebSocket";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { CoinPrice } from "../../context/CoinPrice";
+import useLikeToggle from "../../hooks/useLikeToggle";
+import { userState } from "../../context/userState";
 
 
 const CoinChartComponent = () => {
   const [coins, setCoins] = useState<any[]>([])
   const [page, setPage] = useState(1)
-  // const [prices, setPrices] = useState<{ [key: string]: { trade_price: number, change_rate: number, acc_price: number, change_price: number } }>({})
   const [star, setStar] = useState<string[]>([]) //*관심코인 관리 
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
-
+  const [user, setUser] = useRecoilState(userState);
   
   const navigate = useNavigate()
+
+  useLikeToggle
 
   const [prices] = useRecoilState(CoinPrice); 
 
@@ -48,9 +51,6 @@ const CoinChartComponent = () => {
 
 
   // const prices = useWebSocket(coins);
-
-
-  
   // const { data: coinData, isLoading, isError } = useGetCoins()
 
   // if (isLoading) {
@@ -80,7 +80,9 @@ const CoinChartComponent = () => {
     );
     setSortOrder(order);
   };
-  
+  // const { toggleLike, likedCoins, isLoading, isError } = useLikeToggle();
+
+
   
   
   useEffect(() => {
@@ -93,20 +95,51 @@ const CoinChartComponent = () => {
     }
   }, [])
 
+  
 
 
 
 
-  const handleStarClick = (coinMarket: string) => {
-    setStar(prev => {
-      if (prev.includes(coinMarket)) {
-        return prev.filter(coin => coin !== coinMarket)
-      } else {
-        return [...prev, coinMarket]
-      }
-    })
+
+useEffect(() => {
+  if (user.isGuest) {
+    const storedUser = JSON.parse(localStorage.getItem('guestUser') || '{}');
+    setStar(storedUser?.interestedCoins || []); // interestedCoins 배열을 상태에 설정
   }
+}, [user.isGuest]); 
 
+const handleStarClick = (coinMarket: string) => {
+  setStar((prev) => {
+    let updatedLike;
+    if (prev.includes(coinMarket)) {
+      // 관심 목록에서 코인 제거
+      updatedLike = prev.filter((coin: string) => coin !== coinMarket);
+    } else {
+      // 관심 목록에 코인 추가
+      updatedLike = [...prev, coinMarket];
+    }
+
+    // 업데이트된 관심 코인 배열을 로컬스토리지에 저장
+    if (user.isGuest) {
+      // 로컬스토리지에서 기존 유저 데이터 가져오기
+      const storedUser = JSON.parse(localStorage.getItem('guestUser') || '{}');
+
+      // 기존 데이터를 유지하고 interestedCoins만 업데이트
+      const updatedUser = { 
+        ...storedUser,
+        interestedCoins: updatedLike 
+      };
+
+      // 로컬스토리지에 새로운 데이터 저장
+      localStorage.setItem('guestUser', JSON.stringify(updatedUser));
+    } else {
+      // 카카오 로그인인 경우 서버에 데이터 전송
+      axios.post(`http://localhost:3000/api/user/${coinMarket}/like`);
+    }
+
+    return updatedLike;
+  });
+};
 
   const isStar = (coinMarket: string) => star.includes(coinMarket)
 
@@ -144,11 +177,12 @@ const CoinChartComponent = () => {
             const priceData = prices[coin.market]
             const coinUnit = coin.market.split('-')[1]
             const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
-            // const rate = Number(priceData.change_rate) * 100
+
+
             return (
               <tr key={coin.market} onClick={()=>handleCoinClick(coin.market)}>
                 {/* //*관심 */}
-                <td className="text-center" >
+                <td className="text-center" onClick={(e) => e.stopPropagation()}>
                   {isStar(coin.market) ? (
                     <FontAwesomeIcon
                       icon={fullStar}

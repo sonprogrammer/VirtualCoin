@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    //30분동안 아무것도 하지 않으면 자동로그아웃되고 2차비밀번호 입력창 나옴
+    //30분동안 아무것도 하지 않으면 자동로그아웃되고 2차비밀번호 입력창 나옴 - 카카오계정에서만 
     secondPassword: {
         type: String,
     },
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     },
 
     //관심코인
-    intersetedCoins:[{
+    interestedCoins:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Coin'
     }],
@@ -35,13 +35,18 @@ const userSchema = new mongoose.Schema({
         ref: 'Coin'
     }],
 
+    totalCash: {
+        type: Number,
+        default: 10000000
+    },
+
     //총 자산 => 처음 로그인시 1000만원 있음
     totalAssets: {
         type: Number,
         default: 10000000
     },
 
-    //!주문 가능 금액 -> 이건 총자산에서 코인 1코당 얼마에사고 수량에서 빼도 됌 -> 삭제 가능
+    //!주문 가능 금액(보유현금)
     availableBalance:{
         type: Number,
         default:10000000
