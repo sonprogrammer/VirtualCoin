@@ -27,6 +27,7 @@ interface DetailCoinInfoComponentProps{
 const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProps) => {
     const [coinName, setCoinName] = useState<string>('');
     const { data: coinData, isLoading, error } = useGetCoins();
+    console.log('coindata', coinData)
 
     useEffect(() => {
         if (coinData && coinId) {

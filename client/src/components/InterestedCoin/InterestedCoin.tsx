@@ -1,5 +1,9 @@
 import { useState } from "react"
 import { CoinModal } from "../CoinModal";
+import useLikeToggle from "../../hooks/useLikeToggle";
+import { useRecoilState } from "recoil";
+import { CoinPrice } from "../../context/CoinPrice";
+import useGetCoins from "../../hooks/useGetCoins";
 
 
 interface InterestedCoinProps{
@@ -8,12 +12,22 @@ interface InterestedCoinProps{
 
 
 const InterestedCoin = ({handleOutsideClick} : InterestedCoinProps) => {
-    const [coinData, setCoinData] = useState([
-        { name: '비트코인', yester: '50000', current: '51000' },
-        { name: '이더리움', yester: '30000', current: '510000' },
-        
-      ]);
+
+    const { guestlikedCoins } = useLikeToggle()
+    const { data: coinName } = useGetCoins();    
+    const [prices] = useRecoilState(CoinPrice); 
+
     
+    
+    const guestlikedCoinsSet = new Set(guestlikedCoins);
+    const coinN = coinName?.filter((c:any) => guestlikedCoinsSet.has(c.market));
+    
+
+    const coinData = coinN?.map((name: any) => ({
+      coinKoreanName : name.korean_name,
+      coinMarket: name.market,
+      price: prices[name.market]
+    }))
     
       return(
          <CoinModal title="관심코인" coinData={coinData} onClickOutside={handleOutsideClick} />

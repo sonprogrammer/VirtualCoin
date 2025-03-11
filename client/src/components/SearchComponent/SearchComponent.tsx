@@ -4,6 +4,7 @@ import { StyledBox, StyledCoin, StyledCoinBox, StyledCoinContainer, StyledCoinCo
 import useGetCoins from '../../hooks/useGetCoins'
 import useWebSocket from '../../hooks/useWebSocket'
 import { useNavigate } from 'react-router-dom'
+import usePostRecentCoin from '../../hooks/usePostRecentCoin'
 
 interface SearchComponentProps {
   handleSearchModalClose: () => void
@@ -15,6 +16,7 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const navigate = useNavigate()
+  const { mutate: addRecentCoin } = usePostRecentCoin();
 
 
   useEffect(() => {
@@ -25,6 +27,7 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
 
   const handleCoinClick = (coinId: string) => {
     navigate(`/coin/${coinId}`)
+    addRecentCoin(coinId)
     handleSearchModalClose()
   }
 

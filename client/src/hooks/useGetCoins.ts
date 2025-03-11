@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { useRecoilState } from 'recoil'
+import { CoinName } from '../context/CoinName'
 
 
 //* 아래 형태로 가져옴 
@@ -19,8 +21,9 @@ const useGetCoins = () => {
         queryKey: ['coins'],
         queryFn: getCoins,
         staleTime: 1000 * 60 * 5,
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
     })
 }
+
  
 export default useGetCoins

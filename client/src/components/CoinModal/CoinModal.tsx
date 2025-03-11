@@ -1,39 +1,63 @@
-import React from 'react'
-import { StyledCoin, StyledContainer, StyledContent, StyledContentTitle, StyledModal } from './style';
+
+import usePostRecentCoin from '../../hooks/usePostRecentCoin';
+import { StyledCoin, StyledContainer, StyledContent, StyledContentTitle, StyledModal, StyledTable } from './style';
+import { useNavigate } from 'react-router-dom';
 
 type Coin = {
-    name: string;
-    yester: string;
-    current: string;
-  };
-  
-  interface CoinModalProps {
-    title: string;
-    coinData: Coin[];
-    onClickOutside: () => void;
+  coinKoreanName: string;
+  coinMarket: string;
+  price: {
+    trade_price: string;
+    change_rate: string;
   }
-const CoinModal = ({title, coinData, onClickOutside} : CoinModalProps) => {
+};
+
+interface CoinModalProps {
+  title: string;
+  coinData: Coin[];
+  onClickOutside: () => void;
+}
+const CoinModal = ({ title, coinData, onClickOutside }: CoinModalProps) => {
+
+  const navigate = useNavigate()
+
+  const { mutate: addRecentCoin } = usePostRecentCoin();
+
+  const handleCoinClick = (coinId: string) => {
+    navigate(`/coin/${coinId}`)
+    addRecentCoin(coinId)
+  }
+
+
   return (
     <StyledContainer onClick={onClickOutside}>
-    <StyledModal onClick={e => e.stopPropagation()}>
-      <p>{title}</p>
-      <StyledContentTitle>
-        <p>코인</p>
-        <p>현재가</p>
-        <p>전일대비</p>
-      </StyledContentTitle>
-      <StyledContent>
-      {/* // TODO: 태그 수정하기(현재는 목업데이터 들어와있음) 전일 대비 상승이면 빨강 하락이면 파랑으로 글자색넣기 */}
-        {coinData.map((a, index) => (
-          <StyledCoin key={index}>
-            <div>{a.name}</div>
-            <div>{a.yester}</div>
-            <div>{a.current}</div>
-          </StyledCoin>
-        ))}
-      </StyledContent>
-    </StyledModal>
-  </StyledContainer>
+      <StyledModal onClick={e => e.stopPropagation()}>
+        <p>{title}</p>
+          <StyledContentTitle>
+              <p>코인</p>
+              <p>현재가</p>
+              <p>전일대비</p>
+          </StyledContentTitle>
+          <StyledContent>
+            {coinData?.map((a, index) => (
+              <StyledCoin key={index} onClick={() => handleCoinClick(a.coinMarket)}>
+                <p>{a.coinKoreanName}</p>
+                <p
+                  className={`${Number(a.price.change_rate) > 0 ? 'text-red-500' : 'text-blue-600'}`}
+                >{a.price.trade_price.toLocaleString()}
+                </p>
+                <p
+                  className={`${Number(a.price.change_rate) > 0 ? 'text-red-500' : 'text-blue-600'}`}
+                >
+                  {`${Number(a.price.change_rate) > 0 ? '+' : ''}`}
+                  {a.price.change_rate.toLocaleString()}
+                </p>
+              </StyledCoin>
+            ))}
+          </StyledContent>
+
+      </StyledModal>
+    </StyledContainer>
   )
 }
 

@@ -25,9 +25,10 @@ export const StyledModal = styled.div`
         flex-col
         items-center
         justify-center
-        max-h-[50%]
-        overflow-auto
+        max-h-[60%]
+        text-center
     `}
+    
     @media(max-width: 730px){
         width: 80%;
     }
@@ -36,13 +37,22 @@ export const StyledModal = styled.div`
     }
 `
 
+
 export const StyledContentTitle = styled.div`
     ${tw`
         flex
+        justify-around
         w-full
-        justify-between
         border-b-2
-    `}
+        `}
+        p{
+            ${tw`
+                flex-1
+                flex
+                justify-center
+            `}
+        }
+        
 `
 
 export const StyledContent = styled.div`
@@ -51,15 +61,28 @@ export const StyledContent = styled.div`
         flex-col
         items-center
         w-full
-
+        overflow-y-auto
     `}
 `
-
-export const StyledCoin = styled.div`
+    
+    export const StyledCoin = styled.div`
     ${tw`
         flex
         justify-between
         w-full
-        py-1
-    `}
+        cursor-pointer
+        `}
+        p{
+            ${tw`
+                flex
+                justify-center
+                flex-1
+                py-2
+            `}
+        }
+            &:hover{
+                    ${tw`
+                        bg-gray-100
+                    `}
+                }
 `
