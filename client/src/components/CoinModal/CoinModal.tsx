@@ -1,6 +1,6 @@
 
 import usePostRecentCoin from '../../hooks/usePostRecentCoin';
-import { StyledCoin, StyledContainer, StyledContent, StyledContentTitle, StyledModal, StyledTable } from './style';
+import { StyledCoin, StyledContainer, StyledContent, StyledContentTitle, StyledModal } from './style';
 import { useNavigate } from 'react-router-dom';
 
 type Coin = {
@@ -50,7 +50,8 @@ const CoinModal = ({ title, coinData, onClickOutside }: CoinModalProps) => {
                   className={`${Number(a.price.change_rate) > 0 ? 'text-red-500' : 'text-blue-600'}`}
                 >
                   {`${Number(a.price.change_rate) > 0 ? '+' : ''}`}
-                  {a.price.change_rate.toLocaleString()}
+                  {(Number(a.price.change_rate) * 100).toLocaleString()}%
+                  {/* {(priceData.change_rate * 100).toLocaleString()}% */}
                 </p>
               </StyledCoin>
             ))}

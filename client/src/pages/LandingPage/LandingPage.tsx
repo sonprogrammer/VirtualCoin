@@ -6,6 +6,7 @@ import KakaoLogin from 'react-kakao-login';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
+import useKakaoLogin from '../../hooks/useKakaoLogin';
 
 
 const LandingPage = () => {
@@ -13,9 +14,10 @@ const LandingPage = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [guestModal, setGuestModal] = useState<boolean>(false)
 
-  const navigate = useNavigate()
 
   const kakaoClientId = import.meta.env.VITE_KAKAO_CLIENT_ID || '';
+
+  const { handleKakaoSuccess, handleKakaoFailure } = useKakaoLogin();
 
 
     const handleCloseModal = () => {
@@ -28,29 +30,6 @@ const LandingPage = () => {
   const handleModalClick = () => {
     setGuestModal(true)
   }
-
-
-  const resKakao = (data:any) => {
-    console.log('data', data)
-    const { id, kakao_account } =data.profile
-    const userName = kakao_account.profile.nickname
-
-    if (data) {
-      toast.success(`로그인 성공!`,{
-        autoClose: 1000, 
-        hideProgressBar: true,
-      });
-    } 
-    setTimeout(() => {
-      navigate('/browse');
-    }, 1000);
-  }
-  
-  const kakaoOnFailure = (error: any) => {
-    console.log('카톡 로그인 오류', error);
-};
-  
-
 
 
 
@@ -84,8 +63,8 @@ const LandingPage = () => {
           <StyledLoginBtn>
           <KakaoLogin
             token={kakaoClientId}
-            onSuccess={resKakao}
-            onFail={kakaoOnFailure}
+            onSuccess={handleKakaoSuccess}
+            onFail={handleKakaoFailure}
             render={(props) => (
                 <img
                   src="./kakao.png"

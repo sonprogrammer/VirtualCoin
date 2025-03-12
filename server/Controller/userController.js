@@ -32,9 +32,38 @@ const createGuestUser = async (req, res) => {
     }
 }
 
-// * 관심코인 토글
 
-// *관심코인 가져오기
+const kakaoLogin = async(req, res) => {
+    try {
+        const { kakaoId, name } = req.body;
+
+        let user = await User.findOne({kakaoId})
+
+        if(!user){
+            user = new User({
+                kakaoId,
+                name,
+                isGuest: false,
+                interestedCoins: [],
+                recentCoins: [],
+                transactions: [],
+                holdings: []
+            })
+            await user.save()
+        }
+        res.status(200).json({ user })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({error: '로그인 중 오류가 발생했습니다.'})
+    }
+} 
+
+// * 카카오로그인 관심코인 토글
+
+// * 카카오로그인 관심코인 가져오기
 
 
-module.exports =  {createGuestUser}
+
+
+
+module.exports =  {createGuestUser, kakaoLogin}

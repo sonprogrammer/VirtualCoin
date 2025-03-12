@@ -22,10 +22,6 @@ const useGetRecentCoin = (isKakaoUser: boolean) => {
         const guestUser = JSON.parse(localStorage.getItem('guestUser') || '{}')
         return { data: guestUser.recentCoins};
 
-        // const recentCoins = guestUser.recentCoins || [];
-
-        // console.log('guesuser', guestUser.recentCoins)
-        // return recentCoins
     }
 }
 

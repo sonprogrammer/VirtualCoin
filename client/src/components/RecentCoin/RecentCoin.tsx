@@ -1,10 +1,10 @@
-import { useState } from "react";
+
 import { CoinModal } from "../CoinModal";
 import useGetRecentCoin from "../../hooks/useGetRecentCoin";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { CoinPrice } from "../../context/CoinPrice";
 import useGetCoins from "../../hooks/useGetCoins";
-import useGetCoinData from "../../hooks/useGetCoinData";
+
 
 
 
@@ -18,27 +18,17 @@ const RecentCoin = ({handleOutsideClick} : RecentCoinProps) => {
     const [prices] = useRecoilState(CoinPrice);
     const { data: coinName } = useGetCoins();
 
-    const recentCoinSet = new Set(recentCoin)
-    const coinN = coinName?.filter((c: any) => recentCoinSet.has(c.market))
-    console.log('coinN', recentCoin)
+    const coinMap = coinName?.reduce((acc: { [key: string]: any }, coin: any) => {
+        acc[coin.market] = coin.korean_name;
+    return acc;
+}, {});
 
-    const coinData = coinN?.map((name: any)=> ({
-        coinKoreanName: name.korean_name,
-        coinMarket: name.market,
-        price: prices[name.market]
+    const coinData = recentCoin?.map((market: string)=> ({
+        coinKoreanName: coinMap?.[market] || market,
+        coinMarket: market,
+        price: prices[market]
     }) )
 
-
-    const coinMap = coinName?.reduce((acc: { [key: string]: any }, coin: any) => {
-            acc[coin.market] = coin.korean_name;
-        return acc;
-    }, {});
-    console.log('coinmap', coinMap)
-
-
-
-
-    console.log('coindata', coinData)
    
     
     

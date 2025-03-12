@@ -24,8 +24,8 @@ export const StyledModal = styled.div`
         flex
         flex-col
         items-center
-        justify-center
-        max-h-[60%]
+        // justify-center
+        h-[50%]
         text-center
     `}
     
@@ -69,6 +69,7 @@ export const StyledContent = styled.div`
     ${tw`
         flex
         justify-between
+        items-center
         w-full
         cursor-pointer
         `}

@@ -1,4 +1,4 @@
-import { useState } from "react"
+
 import { CoinModal } from "../CoinModal";
 import useLikeToggle from "../../hooks/useLikeToggle";
 import { useRecoilState } from "recoil";

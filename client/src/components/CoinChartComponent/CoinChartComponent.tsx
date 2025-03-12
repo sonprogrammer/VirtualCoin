@@ -108,7 +108,7 @@ const CoinChartComponent = () => {
         return [...prev, coinMarket]
       }
     })
-    console.log('star', star)
+
   }
 
 
