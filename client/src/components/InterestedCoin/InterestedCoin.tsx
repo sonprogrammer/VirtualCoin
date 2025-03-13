@@ -1,9 +1,11 @@
 
 import { CoinModal } from "../CoinModal";
 import useLikeToggle from "../../hooks/useLikeToggle";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { CoinPrice } from "../../context/CoinPrice";
 import useGetCoins from "../../hooks/useGetCoins";
+import useGetLikedCoins from "../../hooks/useGetLikeCoins";
+import { userState } from "../../context/userState";
 
 
 interface InterestedCoinProps{
@@ -12,15 +14,18 @@ interface InterestedCoinProps{
 
 
 const InterestedCoin = ({handleOutsideClick} : InterestedCoinProps) => {
+  const user = useRecoilValue(userState);
 
-    const { guestlikedCoins } = useLikeToggle()
+
+    // const { guestlikedCoins } = useLikeToggle()
+    const { likedCoins } = useGetLikedCoins()
     const { data: coinName } = useGetCoins();    
     const [prices] = useRecoilState(CoinPrice); 
 
     
     
-    const guestlikedCoinsSet = new Set(guestlikedCoins);
-    const coinN = coinName?.filter((c:any) => guestlikedCoinsSet.has(c.market));
+    const coinSet = new Set(likedCoins);
+    const coinN = coinName?.filter((c:any) => coinSet.has(c.market));
     
 
     const coinData = coinN?.map((name: any) => ({

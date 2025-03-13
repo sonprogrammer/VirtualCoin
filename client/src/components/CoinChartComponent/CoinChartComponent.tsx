@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import axios from 'axios'
 import { StyledContainer, StyledPageBtns, StyledTable, StyledTableBody, StyledTableHead, StyledTitle } from "./style"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,17 +10,22 @@ import { useRecoilState } from "recoil";
 import { CoinPrice } from "../../context/CoinPrice";
 import useLikeToggle from "../../hooks/useLikeToggle";
 import usePostRecentCoin from "../../hooks/usePostRecentCoin";
+import useGetLikedCoins from "../../hooks/useGetLikeCoins";
 
 
 const CoinChartComponent = () => {
-  const {  guestlikedCoins, likeToggle } = useLikeToggle();
+  const { likeToggle } = useLikeToggle();
+  const { likedCoins } = useGetLikedCoins()
+
   const [coins, setCoins] = useState<any[]>([])
   const [page, setPage] = useState(1)
-  const [star, setStar] = useState<string[]>(guestlikedCoins) //*관심코인 관리 
+  const [star, setStar] = useState<string[]>([]) //*관심코인 관리 
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
   // const [user, setUser] = useRecoilState(userState);
-  
+  // console.log('star', likedCoins)
+
+
   const navigate = useNavigate()
 
   const { mutate: addRecentCoin } = usePostRecentCoin();
@@ -96,20 +101,26 @@ const CoinChartComponent = () => {
     }
   }, [])
 
+  useEffect(() => {
+    setStar(likedCoins||[])
+  },[likedCoins])
+
   
 
 
   const handleStarClick = (coinMarket: string) => {
     likeToggle(coinMarket);
     setStar((prev) => {
+      if (!Array.isArray(prev)) return []; 
       if(prev.includes(coinMarket)){
-        return prev.filter(coin => coin !== coinMarket)
-      }else{
-        return [...prev, coinMarket]
+          return prev.filter(coin => coin !== coinMarket)
+        }else{
+            return [...prev, coinMarket]
+          }
+        })
+      
       }
-    })
-
-  }
+      
 
 
 
@@ -191,7 +202,6 @@ const CoinChartComponent = () => {
             const priceData = prices[coin.market]
             const coinUnit = coin.market.split('-')[1]
             const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
-
 
             return (
               <tr key={coin.market} onClick={()=>handleCoinClick(coin.market)}>

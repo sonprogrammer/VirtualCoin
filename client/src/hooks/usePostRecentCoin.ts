@@ -5,7 +5,9 @@ import { userState } from '../context/userState';
 
 
 const postRecentCoin = async (coinId: string) => {
-    const res = await axios.post('http://localhost:3000/api/coin/recentCoin', { coinId })
+    const res = await axios.post('http://localhost:3000/api/coin/recentCoin', { coinId },
+        { withCredentials: true }
+    )
     return res.data
 }
 

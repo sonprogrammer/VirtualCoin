@@ -27,6 +27,7 @@ const NavbarComponent = () => {
 
 
     const user = useRecoilValue(userState);
+    console.log('user', user)
 
 
   const handleSearchModalClose = () => {

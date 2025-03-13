@@ -11,18 +11,19 @@ const useKakaoLogin = () => {
   // 🔥 카카오 로그인 성공 시 실행되는 함수
   const handleKakaoSuccess = async (data: any) => {
     console.log('카카오 로그인 성공', data);
-    const { id, kakao_account } = data.profile;
-    const userName = kakao_account.profile.nickname;
+    const accessToken = data.response.access_token
 
     try {
       localStorage.removeItem('guestUser');
-      const response = await axios.post(`http://localhost:3000/api/user/kakao-login`, {
-        kakaoId: id,
-        name: userName,
-      });
+      const res = await axios.post(`http://localhost:3000/api/user/kakao-login`, {
+        accessToken,
+      },
+      { withCredentials: true }
+    );
 
-      if (response.status === 200) {
-        const userData = response.data
+      if (res.status === 200) {
+        const userData = res.data.user
+        console.log('userData', userData)
         setUser(userData)
 
         toast.success('로그인 성공!', {

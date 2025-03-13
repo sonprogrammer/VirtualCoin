@@ -8,19 +8,31 @@ const userRouter = require('./Routes/userRouter')
 const coinRouter = require('./Routes/coinRouter')
 const transactionRouter = require('./Routes/transactionRouter')
 const holdingRouter = require('./Routes/holdingRouter')
-
+const authenticateJWT = require('./middleware/authenticateJWT')
+const cookieParser = require('cookie-parser');
 const app = express();
 const port = 3000;
 
 // CORS 설정
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json())
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: {maxAge: 1800000} 
+  cookie: {
+    maxAge: 1800000,
+    httpOnly: true,
+    //TODO배포할때 secure: true로 바꾸기
+    secure: false,
+    sameSite: 'strict' 
+  } 
 }))
+app.use(cookieParser()); 
 
 mongoose.connect(process.env.MONGO_URI,{
   useNewUrlParser: true,

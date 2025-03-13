@@ -14,7 +14,7 @@ interface RecentCoinProps{
 const RecentCoin = ({handleOutsideClick} : RecentCoinProps) => {
 
     // TODO여기 밑에 false자리에는 카카오유저인지 확인하는거임 카카오유저 로그인이면 true임 아니면 false
-    const { data: recentCoin } = useGetRecentCoin(false);
+    const { data: recentCoin } = useGetRecentCoin(true);
     const [prices] = useRecoilState(CoinPrice);
     const { data: coinName } = useGetCoins();
 

@@ -1,4 +1,6 @@
 const User =  require('../Models/userModel')
+const axios = require('axios')
+const jwt = require('jsonwebtoken')
 
 
 const createGuestUser = async (req, res) => {
@@ -35,7 +37,16 @@ const createGuestUser = async (req, res) => {
 
 const kakaoLogin = async(req, res) => {
     try {
-        const { kakaoId, name } = req.body;
+        const { accessToken } = req.body;
+        console.log('kakaologinreq', req.user)
+        const userInfoRes = await axios.get('https://kapi.kakao.com/v2/user/me', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        console.log('userInfo', userInfoRes.data)
+        const kakaoId = userInfoRes.data.id; 
+        const name = userInfoRes.data.kakao_account.profile.nickname;
 
         let user = await User.findOne({kakaoId})
 
@@ -51,7 +62,25 @@ const kakaoLogin = async(req, res) => {
             })
             await user.save()
         }
-        res.status(200).json({ user })
+
+        const token = jwt.sign({ kakaoId: user.kakaoId, name: user.name }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const refreshToken = jwt.sign({ kakaoId: user.kakaoId }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+
+        res.cookie('token', token, {
+            httpOnly: true, 
+            // TODO 배포할때 true로 바꾸기
+            secure: false, 
+            maxAge: 3600000,
+        });
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            // TODO 배포할때 true로 바꾸기
+            secure: false, 
+            maxAge: 7 * 24 * 60 * 60 * 1000, 
+        });
+        
+        res.status(200).json({ token, user, refreshToken })
     } catch (error) {
         console.error(error)
         res.status(500).json({error: '로그인 중 오류가 발생했습니다.'})
@@ -59,11 +88,111 @@ const kakaoLogin = async(req, res) => {
 } 
 
 // * 카카오로그인 관심코인 토글
+const kakaoLikeToggle = async(req, res) => {
+    try {
+        const kakaoId = req.user.kakaoId
+        const { coinId } = req.params
+        console.log('userKakaoId', kakaoId)
+        console.log('coinId', coinId)
+
+        const user = await User.findOne({kakaoId})
+        if(!user){
+            return res.status(404).json({message: 'user not found'})
+        }
+
+        const isAlreadyIn = user.interestedCoins.indexOf(coinId)
+
+        if(isAlreadyIn === -1){
+            user.interestedCoins.push(coinId)
+        }else{
+            user.interestedCoins.splice(isAlreadyIn, 1)
+        }
+        await user.save()
+
+        res.status(200).json({interestedCoins: user.interestedCoins})
+
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({message: 'internal server errror'})
+    }
+
+}
 
 // * 카카오로그인 관심코인 가져오기
+const kakaoGetLikeCoins = async (req, res) => {
+    try {
+        const kakaoId = req.user.kakaoId
+        console.log('getuser', req.user)
+        const user = await User.findOne({kakaoId})
+        if(!user){
+            return res.status(404).json({message: 'user not found'})
+        }
+        const likedCoins = user.interestedCoins|| []
+        if(!likedCoins){
+            return res.status(402).json({message:"there is no interested coins"})
+        }
+        res.status(200).json({ likedCoins })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({error: 'errorrorororo'})
+    }
+}
+
+
+// *최근 본 코인 가져오기 최대 10개
+const getRecentCoins = async(req, res) =>{
+    try {
+        const kakaoId = req.user.kakaoId
+    
+        const user = await User.findOne({kakaoId})
+    
+        if(!user){
+            return res.status(401).json({message: 'user not found'})
+        }
+        const recentCoins = user.recentCoins || []
+
+        res.status(200).json({ recentCoins})
+        
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({error: 'error message 500'})
+    }
+}
+
+// *최근 본 코인 추가하기
+const postRecentCoins = async(req, res) => {
+    try {
+        const { coinId } = req.body
+        const kakaoId = req.user.kakaoId
+    
+        const user = await User.findOne({kakaoId})
+        if(!user){
+            return res.status(401).json({message: 'user not found'})
+        }
+    
+        const isAlreadyIn = user.recentCoins.indexOf(coinId)
+    
+        if(isAlreadyIn === -1){
+            user.recentCoins.unshift(coinId)
+        }else{
+            user.recentCoins.splice(isAlreadyIn, 1)
+            user.recentCoins.unshift(coinId)
+        }
+    
+        if(user.recentCoins.length > 10){
+            user.recentCoins.pop()
+        }
+        await user.save()
+
+        res.status(200).json({recentCoins: user.recentCoins})
+        
+    } catch (error) {
+        console.error(errro)
+        res.status(500).json({message: 'internal server errro'})
+    }
+
+}
 
 
 
-
-
-module.exports =  {createGuestUser, kakaoLogin}
+module.exports =  {createGuestUser, kakaoLogin, kakaoGetLikeCoins,kakaoLikeToggle, getRecentCoins}
