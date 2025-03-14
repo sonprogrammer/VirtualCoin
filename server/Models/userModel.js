@@ -39,11 +39,14 @@ const userSchema = new mongoose.Schema({
 ],
 
     //최근 본 코인 - 카톡이면 디비에 저장, 게스트면 로컬스토리지에 저장
-    recentCoins:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Coin'
-    }],
-
+    recentCoins:[
+    //     {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Coin'
+    // }
+    String
+],
+    //!없애도 될듯
     totalCash: {
         type: Number,
         default: 10000000

@@ -10,14 +10,12 @@ const useGetLikedCoins = () => {
 
     const fetchLikedCoins = async() => {
         if(userData.isGuest){
-            const storedUser = JSON.parse(localStorage.getItem('guestUser') || '{}')
-            console.log('storeduser', storedUser)
+            const storedUser = JSON.parse(localStorage.getItem('user') || '{}')
             return storedUser.interestedCoins || []
         }else{
             const res = await axios.get(`http://localhost:3000/api/user/liked-coins`, {
                 withCredentials: true, 
               })
-            console.log('server', res.data.likedCoins)
             return res.data.likedCoins
         }
     }
@@ -27,7 +25,7 @@ const useGetLikedCoins = () => {
     const { data: likedCoins, isLoading, isError} = useQuery({
         queryKey: ['likedCoins', userData.isGuest],
         queryFn: fetchLikedCoins,
-        staleTime: Infinity
+        // staleTime: Infinity
     })
 
     return { likedCoins, isLoading, isError}

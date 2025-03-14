@@ -5,7 +5,7 @@ import { userState } from '../context/userState';
 import { useEffect } from 'react';
 
 
-const guestUser = 'guestUser'
+const guestUser = 'user'
 
 
 
@@ -16,7 +16,6 @@ const fetchGuest = async(): Promise<any> => {
     if(StoredGuest) return JSON.parse(StoredGuest)
 
     try {
-        //TODO api만들어야함 여기서 랜덤 이름지어주어야함
         const res = await axios.post('http://localhost:3000/api/user/guest-login')
         const guestUserData = res.data
         localStorage.setItem(guestUser, JSON.stringify(guestUserData));

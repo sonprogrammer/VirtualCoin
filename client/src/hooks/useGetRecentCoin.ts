@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userState } from "../context/userState";
 
 
 // !카카오유저는 서버에 최대 10개만 보여주자
@@ -9,19 +11,19 @@ const getRecentCoin = async() => {
     const res = await axios.get('http://localhost:3000/api/user/recentCoin',
         { withCredentials: true }
     )
-    return res.data
+    return res.data.recentCoins
 }
 
-const useGetRecentCoin = (isKakaoUser: boolean) => {
-    if(isKakaoUser){
+const useGetRecentCoin = () => {
+    const userData = useRecoilValue(userState)
 
+    if(!userData.isGuest){
         return useQuery({
             queryKey: ['recentCoin'],
             queryFn: getRecentCoin,
-            staleTime: 1000 * 60 * 5, 
         })
     }else{
-        const guestUser = JSON.parse(localStorage.getItem('guestUser') || '{}')
+        const guestUser = JSON.parse(localStorage.getItem('user') || '{}')
         return { data: guestUser.recentCoins};
 
     }

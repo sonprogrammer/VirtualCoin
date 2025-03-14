@@ -16,7 +16,8 @@ const LogoutModal = ({handleCloseModal, handleLogout} : LogoutModalProps) => {
         <StyeldContainer onClick={handleCloseModal}>
             <StyeldBox onClick={stopPropagation}>
                 <StyeldTitle>
-                    로그아웃 하시겠습니까?
+                    <h1>로그아웃 하시겠습니까?</h1>
+                    <p className='text-sm mt-3 text-gray-100'>⛔️ 게스트 계정은 계정이 삭제됩니다. ⛔️</p>
                 </StyeldTitle>
                 <StyeldBtns>
                     <StyeldYesBtn onClick={handleLogout}>YES</StyeldYesBtn>

@@ -13,20 +13,19 @@ interface RecentCoinProps{
 }
 const RecentCoin = ({handleOutsideClick} : RecentCoinProps) => {
 
-    // TODO여기 밑에 false자리에는 카카오유저인지 확인하는거임 카카오유저 로그인이면 true임 아니면 false
-    const { data: recentCoin } = useGetRecentCoin(true);
+    const { data: recentCoin } = useGetRecentCoin();
     const [prices] = useRecoilState(CoinPrice);
     const { data: coinName } = useGetCoins();
 
-    const coinMap = coinName?.reduce((acc: { [key: string]: any }, coin: any) => {
-        acc[coin.market] = coin.korean_name;
-    return acc;
-}, {});
 
-    const coinData = recentCoin?.map((market: string)=> ({
-        coinKoreanName: coinMap?.[market] || market,
-        coinMarket: market,
-        price: prices[market]
+    const sortedCoins = recentCoin?.map((market: string) => {
+        return coinName?.find((c: any)=> c.market === market)
+    })
+
+    const coinData = sortedCoins?.map((name: any)=> ({
+        coinKoreanName: name.korean_name,
+        coinMarket: name.market,
+        price: prices[name.market]
     }) )
 
    

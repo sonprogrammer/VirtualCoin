@@ -1,11 +1,13 @@
 import { atom } from "recoil";
 import { getUserFromLocalStorage } from "./localStorage";
 
-const guestUser = getUserFromLocalStorage()
+const user = getUserFromLocalStorage()
+
 
 export const userState = atom({
     key: 'userState',
-    default: guestUser ? guestUser : {
+    default: user ? user : 
+    {
         _id: null,
         name: "",
         isGuest: false,

@@ -21,8 +21,9 @@ const createGuestUser = async (req, res) => {
         const newGuestUser = new User({
             name: guestName,
             isGuest: true,
-            totalAssets: 10000000,
-            availableBalance: 10000000,
+            // TODO 10000000으로 바꿔야함 
+            totalAssets: 90000000,
+            availableBalance: 90000000,
         })
 
         await newGuestUser.save()
@@ -162,7 +163,7 @@ const getRecentCoins = async(req, res) =>{
 // *최근 본 코인 추가하기
 const postRecentCoins = async(req, res) => {
     try {
-        const { coinId } = req.body
+        const { coinId } = req.params
         const kakaoId = req.user.kakaoId
     
         const user = await User.findOne({kakaoId})
@@ -187,12 +188,24 @@ const postRecentCoins = async(req, res) => {
         res.status(200).json({recentCoins: user.recentCoins})
         
     } catch (error) {
-        console.error(errro)
+        console.error(error)
         res.status(500).json({message: 'internal server errro'})
     }
 
 }
 
 
+// *랭킹 가져오기
+const getRankingData = async (req, res) => {
+    try {
+        const ranking = await User.find({})
+        ranking.sort((a, b) => b.totalAssets - a.totalAssets)
+        res.status(200).json(ranking)
+        
+    } catch (error) {
+        res.status(500).json({message: 'internal sever error'})
+    }
+}
 
-module.exports =  {createGuestUser, kakaoLogin, kakaoGetLikeCoins,kakaoLikeToggle, getRecentCoins}
+
+module.exports =  {createGuestUser, kakaoLogin, kakaoGetLikeCoins,kakaoLikeToggle, getRecentCoins, postRecentCoins, getRankingData}

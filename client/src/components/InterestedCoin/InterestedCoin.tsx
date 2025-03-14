@@ -14,10 +14,9 @@ interface InterestedCoinProps{
 
 
 const InterestedCoin = ({handleOutsideClick} : InterestedCoinProps) => {
-  const user = useRecoilValue(userState);
 
 
-    // const { guestlikedCoins } = useLikeToggle()
+
     const { likedCoins } = useGetLikedCoins()
     const { data: coinName } = useGetCoins();    
     const [prices] = useRecoilState(CoinPrice); 

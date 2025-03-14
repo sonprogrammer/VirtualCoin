@@ -37,7 +37,8 @@ const GuidComponent = ({ handleCloseModal } : GuidComponentProps) => {
                     </StyledImage>
                     <h2>
                     ⛔️본 계정은 현재 기기에서만 게스트
-                        유지가 가능합니다.⛔️
+                        유지가 가능합니다. 또한 로그아웃시 해당 계정은 삭제됩니다.
+                        ⛔️
                     </h2>
                 </StyledModalContent>
                 <StyledBtn onClick={handleGuestLogin}>

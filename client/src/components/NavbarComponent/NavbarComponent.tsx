@@ -19,7 +19,6 @@ const NavbarComponent = () => {
     const [logoutModal, setLogoutModal] = useState<boolean>(false);
     const [info, setInfo] = useState<boolean>(false);
     const [burgerTab, setBurgerTab] = useState<boolean>(false);
-    // const [searchIcon, setSearchIcon] = useState<boolean>(false)
     const [searchModal, setSearchModal] = useState<boolean>(false)
     const [interestedCoin, setInterestedCoin] = useState<boolean>(false)
     const [recentCoin, setRecentCoin] = useState<boolean>(false)
@@ -27,7 +26,6 @@ const NavbarComponent = () => {
 
 
     const user = useRecoilValue(userState);
-    console.log('user', user)
 
 
   const handleSearchModalClose = () => {
@@ -118,8 +116,9 @@ const NavbarComponent = () => {
     }
 
     const handleLogout = () => {
-        // TODO: 백엔드 로그아웃 처리
+        localStorage.removeItem('user')
         setLogoutModal(false);
+        navigate('/')
     }
 
     const handleCloseModal = () => {

@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { RankingComponent } from '../../components'
 
 const RankingPage = () => {
