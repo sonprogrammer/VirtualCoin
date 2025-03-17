@@ -1,6 +1,5 @@
 
 import { useEffect, useState } from 'react'
-import data from './mockupData'
 import { StyledBox, StyledBtns, StyledContainer, StyledTable, StyledTableBody, StyledTableHead, StyledTitle } from './style'
 import useGetRankData from '../../hooks/useGetRankData'
 

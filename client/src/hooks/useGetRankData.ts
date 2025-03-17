@@ -5,7 +5,6 @@ const useGetRankData = () => {
 
     const fetchRanking = async () => {
         const res = await axios.get('http://localhost:3000/api/user/rank')
-        console.log('res', res.data)
         return res.data
         
     }

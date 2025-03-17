@@ -3,15 +3,14 @@ import mongoose from "mongoose";
 const TransactionSchema = new mongoose.Schema({
 
     // 거래한 유저 
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
     //거래한 코인
-    coin:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Coin",
+    coinMarket:{
+        type: String,
         required: true
     },
 
@@ -32,21 +31,20 @@ const TransactionSchema = new mongoose.Schema({
         required: true
     },
 
-    //!총 거래 금액 -> 거래가격이랑  거래수량 곱하면됨 -> 삭제가능 
-    total:{
-        type: Number,
-        required: true
-    },
-
     //체결 상태
     status:{
         type: String,
         enum: ['COMPLETED', 'PENDING'],
         default: 'COMPLETED'
     },
-
     //주문시간
-    createAt:{
+    orderTime: {
+        type: Date,
+        required: true
+    },
+
+    //체결시간
+    completedTime:{
         type: Date,
         default: Date.now
     }

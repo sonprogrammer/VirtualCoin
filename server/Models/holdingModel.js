@@ -3,53 +3,46 @@ import mongoose from "mongoose";
 const HoldingSchema = new mongoose.Schema({
 
     //유저
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        requried: true
+        required: true
     },
     //코인
-    coin:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Coin',
+    coinMarket:{
+        type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        enum: ['BUY', 'SELL'],
         required: true
     },
 
-    //보유 수량 
-    quantity: {
+    //주문수량 
+    orderQuantity: {
         type:Number,
-        requried: true
+        required: true
     },
 
-    // 평균 매수가격
-    averagePrice: {
+    // 주문 가격
+    orderPrice: {
         type:Number,
-        requried: true
+        required: true
     },
-
-    //총 매수 금액
-    totalInvestment: {
+    //미체결량
+    reamainQuantity: {
         type: Number,
         required: true
     },
 
-    //!현재 평가 금액 - 실시간 가격 *수량 -> 삭제 가능 
-    currentValue:{
-        type: Number,
-        required: true
-    },
-
-    //!평가 손익 - 현재 평가금액 - 총 매수 금액 -> 삭제가능
-    profitLoss:{
-        type: Number,
-        required: true
-    },
-
-    //!수익률 - ((평가 손익 / 총 매수 금액) * 100) -> 삭제 가능
-    profitLossPercentage:{
-        type: Number,
+    // 주문 시간
+    orderTime: {
+        type: Date,
         required: true
     }
+
+   
 }, { timestamps: true})
 
 export const Holding = mongoose.model("Holding", HoldingSchema);
