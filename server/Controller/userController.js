@@ -22,7 +22,6 @@ const createGuestUser = async (req, res) => {
             name: guestName,
             isGuest: true,
             // TODO 10000000으로 바꿔야함 
-            totalAssets: 90000000,
             availableBalance: 90000000,
         })
 
@@ -58,8 +57,7 @@ const kakaoLogin = async(req, res) => {
                 isGuest: false,
                 interestedCoins: [],
                 recentCoins: [],
-                transactions: [],
-                holdings: []
+
             })
             await user.save()
         }

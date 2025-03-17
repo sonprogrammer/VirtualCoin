@@ -8,6 +8,7 @@ const RankingComponent = () => {
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
 
     const {rankingData} = useGetRankData() || { rankingData: [] };
+    console.log('reankikg', rankingData)
 
     const safeRankingData = Array.isArray(rankingData) ? rankingData : [];
 
@@ -46,9 +47,10 @@ const RankingComponent = () => {
                             <tr key={i}>
                                 <td>{firstPage + i+1}</td>
                                 <td>{a.name}</td>
-                                <td>{a.totalAssets.toLocaleString()}원</td>
-                                <td>{a.totalAssets.toLocaleString()}원</td>
-                                <td>{a.totalAssets.toFixed(2)}%</td>
+                                {/* //TODO  밑에 계산해서 총 자산, 총손익, 수익률 별로 계산해줘야함 */}
+                                <td>{a.availableBalance.toLocaleString()}원</td>
+                                <td>{a.availableBalance.toLocaleString()}원</td>
+                                <td>{a.availableBalance.toFixed(2)}%</td>
                             </tr>
                         ))}
                     </StyledTableBody>

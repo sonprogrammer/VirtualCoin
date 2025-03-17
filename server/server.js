@@ -5,7 +5,7 @@ const { default: mongoose } = require('mongoose');
 const session = require('express-session');
 require('dotenv').config();
 const userRouter = require('./Routes/userRouter')
-const coinRouter = require('./Routes/coinRouter')
+const assetRouter = require('./Routes/assetRouter')
 const transactionRouter = require('./Routes/transactionRouter')
 const holdingRouter = require('./Routes/holdingRouter')
 const authenticateJWT = require('./middleware/authenticateJWT')
@@ -41,7 +41,7 @@ mongoose.connect(process.env.MONGO_URI,{
 .catch(err=> console.error('error mongoDb connection error'))
 
 app.use('/api/user', userRouter);  
-// app.use('/api/coin', coinRouter);
+app.use('/api/asset', assetRouter);
 // app.use('/api/transaction', transactionRouter);
 // app.use('/api/holding', holdingRouter);
 

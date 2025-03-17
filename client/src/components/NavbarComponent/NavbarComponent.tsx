@@ -208,10 +208,10 @@ const NavbarComponent = () => {
                 <StyledUserInfo ref={userRef}>
                     <StyledAngle />
                     <h1 className='font-bold text-center pb-2'>Welcome {user.name}</h1>
-                    <p><strong>보유 현금</strong> <span>{user.totalCash.toLocaleString()}</span></p>
+                    <p><strong>보유 현금</strong> <span>{user.availableBalance.toLocaleString()}</span></p>
                     {/* //TODO : 수익이면 빨강, 손익이면 파랑으로 색상조절*/}
                     <p><strong>총 평가 손익</strong> 
-                        <span style={{ color: 'red' }}>{user.totalAssets.toLocaleString()}</span>
+                        <span style={{ color: 'red' }}>{user.availableBalance.toLocaleString()}</span>
                     </p>
                     <hr />
                     <StyledCoins>

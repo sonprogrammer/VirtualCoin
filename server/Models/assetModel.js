@@ -11,10 +11,6 @@ const AssetSchema = new mongoose.Schema({
         default: 10000000
     },
   
-    availableCash:{
-        type: Number,
-        default: 10000000
-    },
     coins: [{
         market: {
             type: String,
@@ -35,5 +31,6 @@ const AssetSchema = new mongoose.Schema({
     }]
 })
 
-export const Asset = mongoose.model('Asset', AssetSchema)
+const Asset = mongoose.model('Asset', AssetSchema)
+module.exports = Asset
 

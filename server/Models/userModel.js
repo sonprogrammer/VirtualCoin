@@ -19,10 +19,6 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
 
-    sessionExpires:{
-        type: Date,
-        default: null
-    },
     //게스트인지 여부 확인
     isGuest: {
         type: Boolean,
@@ -30,33 +26,13 @@ const userSchema = new mongoose.Schema({
     },
 
     //관심코인
-    interestedCoins:[
-        // {
-        // type: mongoose.Schema.Types.ObjectId,
-        // ref: 'Coin'
-        String
-    // }
-],
+    interestedCoins:[String]
+    ,
 
     //최근 본 코인 - 카톡이면 디비에 저장, 게스트면 로컬스토리지에 저장
-    recentCoins:[
-    //     {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Coin'
-    // }
-    String
-],
-    //!없애도 될듯
-    totalCash: {
-        type: Number,
-        default: 10000000
-    },
+    recentCoins:[String]
+    ,
 
-    //총 자산 => 처음 로그인시 1000만원 있음
-    totalAssets: {
-        type: Number,
-        default: 10000000
-    },
 
     //!주문 가능 금액(보유현금)
     availableBalance:{
@@ -64,17 +40,6 @@ const userSchema = new mongoose.Schema({
         default:10000000
     },
 
-    //거래내역
-    transactions:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Transaction'
-    }],
-
-    //미체결
-    holdings:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Holding'
-    }],
 },{timestamps: true})
 
 const User = mongoose.model('User',userSchema)

@@ -45,4 +45,5 @@ const HoldingSchema = new mongoose.Schema({
    
 }, { timestamps: true})
 
-export const Holding = mongoose.model("Holding", HoldingSchema);
+const Holding = mongoose.model("Holding", HoldingSchema);
+module.exports = Holding
