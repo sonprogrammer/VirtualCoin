@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useGetCoins from "./useGetCoins";
 import useWebSocket from "./useWebSocket";
 
+// TODO안쓰는거임
 
 export interface PriceData {
     trade_price: number;

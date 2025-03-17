@@ -2,35 +2,30 @@ import { useRecoilValue } from 'recoil'
 import { StyledBottomBox, StyledBottomBoxContents, StyledBottomContentBox, StyledContainer, StyledDivider, StyledRestOfMoney, StyledTopBox, StyledTopBoxContents } from './style'
 import useGetAssetData from '../../hooks/useGetAssetData'
 import { calculatedAssetState } from '../../context/calculatedAssetState'
+import useCalculateAsset from '../../hooks/useCalculateAsset'
 
 
 const AssetResultTextComponent = () => {
-    const assetData = useGetAssetData()
-    const caclulatedAsset = useRecoilValue(calculatedAssetState)
-    console.log('calcul', calculatedAssetState)
-    // console.log('asse', assetData)
+    const {data} = useGetAssetData()
+    const calculatedData = useCalculateAsset(data)
+    // console.log('asse', calculatedData)
 
     const {
+        // *총 자산
         totalAssets,
+        // *총 평가
         totalValuationAmount,
+        // *주문 가능 = 보유 현금
         availableOrder,
+        // * 평가손익
         totalProfitLoss,
+        // *수익률
         totalProfitRate,
+        // *총 매수
         totalBuy,
-    } = assetData.caculatedAsset || {};
+    } =  calculatedData || {};
 
-    // // *총 자산
-    // const totalAssets = assetData.caculatedAsset?.totalAssets
-    // // *총 평가
-    // const totalValuationAmount = assetData.caculatedAsset?.totalValuationAmount
-    // // * 평가손익
-    // const totalProfitLoss = assetData.caculatedAsset?.totalProfitLoss
-    // // *주문 가능 = 보유 현금
-    // const availableOrder = assetData.caculatedAsset?.availableOrder
-    // // *수익률
-    // const totalProfitRate = assetData.caculatedAsset?.totalProfitRate
-    // // *총 매수
-    // const totalBuy = assetData.caculatedAsset?.totalBuy
+   
     return (
         <StyledContainer className='Assettext'>
             <StyledTopBox>

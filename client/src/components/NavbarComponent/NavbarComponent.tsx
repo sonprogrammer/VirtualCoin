@@ -10,6 +10,8 @@ import { RecentCoin } from '../RecentCoin';
 import { SearchComponent } from '../SearchComponent';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../context/userState';
+import useGetAssetData from '../../hooks/useGetAssetData';
+import useCalculateAsset from '../../hooks/useCalculateAsset';
 
 
 
@@ -27,6 +29,16 @@ const NavbarComponent = () => {
 
     const user = useRecoilValue(userState);
 
+    const {data} = useGetAssetData()
+    const calculatedData = useCalculateAsset(data)
+    // console.log('asse', calculatedData)
+
+    const {
+        // *총 자산
+        totalAssets,
+        // * 평가손익
+        totalProfitLoss,
+    } =  calculatedData || {};
 
   const handleSearchModalClose = () => {
     setSearchModal(false)
@@ -209,9 +221,10 @@ const NavbarComponent = () => {
                     <StyledAngle />
                     <h1 className='font-bold text-center pb-2'>Welcome {user.name}</h1>
                     <p><strong>보유 현금</strong> <span>{user.availableBalance.toLocaleString()}</span></p>
-                    {/* //TODO : 수익이면 빨강, 손익이면 파랑으로 색상조절*/}
-                    <p><strong>총 평가 손익</strong> 
-                        <span style={{ color: 'red' }}>{user.availableBalance.toLocaleString()}</span>
+                    <p><strong>보유 자산</strong> <span>{totalAssets?.toLocaleString()}</span></p>
+                    {/* //TODO : 수익이면 빨강, 손익이면 파랑으로 색상조절, 평가손익으로 바꿔주기*/}
+                    <p><strong>평가 손익</strong> 
+                        <span style={{ color: 'red' }}>{totalProfitLoss?.toLocaleString()}</span>
                     </p>
                     <hr />
                     <StyledCoins>

@@ -4,6 +4,7 @@ import { userState } from "../context/userState"
 import { useQuery } from "@tanstack/react-query"
 import useCalculateAsset from "./useCalculateAsset"
 import { useEffect, useState } from "react"
+import { calculatedAssetState } from "../context/calculatedAssetState"
 
 
 interface AssetCalculation  {
@@ -25,7 +26,6 @@ const useGetAssetData =  () => {
             return savedAssetData ? JSON.parse(savedAssetData) : null
         }else{
             const res = await axios(`http://localhost:3000/api/asset?userId=${user._id}`)
-            // console.log('res', res.data)
             return res.data
 
         }
@@ -36,18 +36,10 @@ const useGetAssetData =  () => {
         queryFn: fetchData,
         enabled: !!user._id
     })
+    // console.log('data', data)
 
-    const [caculatedAsset, setCalculatedAsset] = useState<AssetCalculation | null>(null);
-
-
-    useEffect(() => {
-        if (data) {
-            const asset = useCalculateAsset(data);
-            setCalculatedAsset(asset);
-        }
-    }, [data]);
     
-    return { caculatedAsset, isLoading, error}
+    return { data, isLoading, error}
 
     
 }

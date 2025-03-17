@@ -12,7 +12,7 @@ const getAssetData = async(req, res) => {
         }
 
         let asset = await Asset.findOne({userId}).populate('userId',  'name')
-        console.log('asset', asset)
+        console.log('assetdsfd', asset)
         if(!asset){
             asset = new Asset({
                 userId: userId,
