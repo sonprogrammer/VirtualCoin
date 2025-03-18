@@ -31,14 +31,17 @@ const NavbarComponent = () => {
 
     const {data} = useGetAssetData()
     const calculatedData = useCalculateAsset(data)
-    // console.log('asse', calculatedData)
 
     const {
         // *총 자산
         totalAssets,
         // * 평가손익
         totalProfitLoss,
+        //*보유 현금
+        availableOrder
     } =  calculatedData || {};
+
+    // console.log('totalasset, totalprofitloss', totalAssets, totalProfitLoss)
 
   const handleSearchModalClose = () => {
     setSearchModal(false)
@@ -129,6 +132,7 @@ const NavbarComponent = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('user')
+        localStorage.removeItem('asset')
         setLogoutModal(false);
         navigate('/')
     }
@@ -220,7 +224,7 @@ const NavbarComponent = () => {
                 <StyledUserInfo ref={userRef}>
                     <StyledAngle />
                     <h1 className='font-bold text-center pb-2'>Welcome {user.name}</h1>
-                    <p><strong>보유 현금</strong> <span>{user.availableBalance.toLocaleString()}</span></p>
+                    <p><strong>보유 현금</strong> <span>{availableOrder?.toLocaleString()}</span></p>
                     <p><strong>보유 자산</strong> <span>{totalAssets?.toLocaleString()}</span></p>
                     {/* //TODO : 수익이면 빨강, 손익이면 파랑으로 색상조절, 평가손익으로 바꿔주기*/}
                     <p><strong>평가 손익</strong> 

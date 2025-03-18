@@ -18,7 +18,15 @@ const fetchGuest = async(): Promise<any> => {
     try {
         const res = await axios.post('http://localhost:3000/api/user/guest-login')
         const guestUserData = res.data
+        //*게스트 유저정보 저장
         localStorage.setItem(guestUser, JSON.stringify(guestUserData));
+        // *게스트 자산 정보 버장
+        const assetData = {
+            name: guestUserData.name,
+            cash: 10000000,
+            coins: []
+        }
+        localStorage.setItem('asset', JSON.stringify(assetData))
         return guestUserData
     } catch (error) {
         console.error('게스트 로그인 실패:', error);
@@ -29,6 +37,7 @@ const fetchGuest = async(): Promise<any> => {
 
 const logoutGuest = async () => {
     localStorage.removeItem(guestUser)
+    localStorage.removeItem('asset')
 }
 
 const useGuestLogin = () => {
@@ -50,6 +59,7 @@ const useGuestLogin = () => {
         mutationFn: logoutGuest,
         onSuccess: () => {
             localStorage.removeItem(guestUser);
+            localStorage.removeItem('asset');
         },
     });
 

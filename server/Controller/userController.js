@@ -21,8 +21,7 @@ const createGuestUser = async (req, res) => {
         const newGuestUser = new User({
             name: guestName,
             isGuest: true,
-            // TODO 10000000으로 바꿔야함 
-            availableBalance: 90000000,
+            availableBalance: 10000000,
         })
 
         await newGuestUser.save()

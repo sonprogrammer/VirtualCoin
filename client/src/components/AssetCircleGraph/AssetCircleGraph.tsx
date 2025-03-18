@@ -9,8 +9,9 @@ import {
   Chart,
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import { coins, total_bid } from './mockupData'
+// import { coins, total_bid } from './mockupData'
 import {  StyledContainer, StyledText } from './style';
+import useGetAssetData from '../../hooks/useGetAssetData';
 
 
 // 필요한 컴포넌트들을 등록
@@ -18,38 +19,67 @@ ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 
 
 function AssetCircleGraph() {
+  const assetData = useGetAssetData()
+  
+  if (!assetData || !assetData.data) {
+    return <div>Loading...</div>; 
+  }
+  
+  const coins = assetData.data.coins || []
 
-  const coinsRates = coins.map(coin => {
-    return {
-      market: coin.market,
-      value: Number(((coin.price / total_bid) * 100).toFixed(2))
-    }
-  })
+  // *코인별 평가금액
+  const coinValue = coins.map((coin: any) => ({
+    market: coin.market,
+    value: coin.amount * coin.avgBuyPrice
+  }))
 
-  const sortedCoinsRates = [...coinsRates].sort((a, b) => b.value - a.value)
+  const totalCoinValue = coinValue.reduce((sum: number, coin:any) => sum+coin.value, 0)
 
+  const coinsRate = totalCoinValue > 0 ? coinValue.map((coin: any) => ({
+    market: coin.market,
+    value: Number(((coin.value / totalCoinValue) * 100).toFixed(2))
+  })) : []
+
+  
+
+  const sortedCoinsRates = coinsRate.sort((a:any, b: any) => b.value - a.value)
+
+
+
+  // const generatedColors = (count: number) => {
+  //   const colors = []
+  //   const hueStep = 360 / count
+
+  //   for (let i = 0; i < count; i++) {
+  //     const hue = i * hueStep
+  //     colors.push(`hsl${hue}, 70%, 50%`)
+  //   }
+  //   return colors
+  // }
 
   const generatedColors = (count: number) => {
-    const colors = []
-    const hueStep = 360 / count
-
-    for (let i = 0; i < count; i++) {
-      const hue = i * hueStep
-      colors.push(`hsl${hue}, 70%, 50%`)
-    }
-    return colors
+    return Array.from({length: count}, (_, i) => `hsl(${(i* 40) % 360}, 70%, 50%)`)
   }
 
-  const data = {
-    labels: sortedCoinsRates.map(coin => coin.market),
+  const data = coins.length === 0 ? {
+    labels: ['No Coin'],
     datasets: [
       {
-        data: sortedCoinsRates.map(coin => coin.value),
-        backgroundColor: generatedColors(sortedCoinsRates.length),
+        data: [100],
+        backgroundColor: ['#d3d3d3'],
         hoverOffset: 3
       }
     ]
-  }
+  } : {
+    labels: sortedCoinsRates.map((coin:any) => coin.market),
+    datasets: [
+    {
+      data: sortedCoinsRates.map((coin: any) => coin.value),
+      backgroundColor: generatedColors(sortedCoinsRates.length),
+      hoverOffset: 3
+    }
+  ]
+}
 
   const options = {
     plugins: {
@@ -66,11 +96,11 @@ function AssetCircleGraph() {
             const colors = dataset.backgroundColor as string[];
 
             return (
-              data.labels?.map((label, index) => ({
-                text: `${label}: ${dataset.data[index]}%`,
-                fillStyle: colors?.[index] || '#000000',
+              data.labels?.map((label, i) => ({
+                text: `${label}: ${dataset.data[i]}%`,
+                fillStyle: colors?.[i] || '#000000',
                 hidden: false,
-                index: index,
+                index: i,
               })) || []
             );
           },

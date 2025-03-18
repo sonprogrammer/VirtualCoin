@@ -16,6 +16,13 @@ const getAssetData = async(req, res) => {
         if(!asset){
             asset = new Asset({
                 userId: userId,
+                // TODO 밑에 삭제 해야함
+                coins: [{
+                    market: 'KRW-BTC',
+                    name: '비트코인',
+                    amount: 1.5,
+                    avgBuyPrice: 10000000
+            }]
             })
             await asset.save()
             console.log('new asset created', asset)

@@ -1,7 +1,9 @@
-import React from 'react'
+
 import { StyledDivider, StyledTbBox, StyledTbContainer, StyledTbContent, StyledTbContentSmBox, StyledTbTitle, StyledTbTitleCoinName, StyledTbTitleContents } from './style'
 import coinData from './mockupData'
 
+
+// !테블릿버전
 const AssetListTb = () => {
   return (
     <StyledTbContainer className='tbcontainer'>   

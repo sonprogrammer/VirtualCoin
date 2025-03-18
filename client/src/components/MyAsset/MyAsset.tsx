@@ -28,7 +28,7 @@ const MyAsset = () => {
   }
   
   useEffect(() => {
-    if(windowWidth <= 950){
+    if(windowWidth <= 1014){
       setShowGraph(false)
     }else{
       setShowGraph(true)

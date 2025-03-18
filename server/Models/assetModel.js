@@ -24,6 +24,7 @@ const AssetSchema = new mongoose.Schema({
             type: Number,
             required: true
         },
+        // *매수금액
         avgBuyPrice: {
             type: Number,
             required: true

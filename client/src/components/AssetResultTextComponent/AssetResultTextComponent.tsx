@@ -1,7 +1,6 @@
-import { useRecoilValue } from 'recoil'
+
 import { StyledBottomBox, StyledBottomBoxContents, StyledBottomContentBox, StyledContainer, StyledDivider, StyledRestOfMoney, StyledTopBox, StyledTopBoxContents } from './style'
 import useGetAssetData from '../../hooks/useGetAssetData'
-import { calculatedAssetState } from '../../context/calculatedAssetState'
 import useCalculateAsset from '../../hooks/useCalculateAsset'
 
 

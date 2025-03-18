@@ -1,21 +1,44 @@
-import { assetState } from './../context/assetSate';
-import { calculatedAssetState } from '../context/calculatedAssetState';
+
 import { useRecoilState } from "recoil"
 import { CoinPrice } from "../context/CoinPrice"
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
+import { calculatedAssetState } from "../context/calculatedAssetState";
+import useWebSocket from "./useWebSocket";
 
 interface AssetData {
     cash: number;
     coins: any[];
 }
-
+interface CalculateAssets {
+    totalAssets: number;
+    totalValuationAmount: number;
+    availableOrder: number;
+    totalProfitLoss: number;
+    totalProfitRate: number;
+    totalBuy: number;
+    currentCoinPrice: number[];
+}
 const useCalculateAsset = (assetData: AssetData) => {
     const [prices] = useRecoilState(CoinPrice); 
+    // const prices = useWebSocket(assetData.coins);
+    // const realTimePrices = assetData?.coins ? useWebSocket(assetData.coins) : {};
+ 
+    // console.log('realTimePrices', realTimePrices) 
 
-    const calculateAssets = useMemo(() => {
-        if (!assetData) return null;
+
+    const calculateAssets = useMemo<CalculateAssets>(() => {
+        if (!assetData || !assetData.coins) return {
+            totalAssets: 0,
+            totalValuationAmount: 0,
+            availableOrder: 0,
+            totalProfitLoss: 0,
+            totalProfitRate: 0,
+            totalBuy: 0,
+            currentCoinPrice: []
+        };
 
         const { cash, coins } = assetData
+        // console.log('coinsssCAalll', coins)
 
         //* 총매수 금액
         const totalBuy = coins.reduce((acc: number, coin: any) => {
@@ -33,6 +56,12 @@ const useCalculateAsset = (assetData: AssetData) => {
             return acc + (currentPrice * quantity)
         }, 0)
 
+        // *코인 현재 가격
+        const currentCoinPrice = coins.map((coin: any) => {
+            return prices[coin.market]?.trade_price}
+        )
+
+
         // *총 자산 = 보유 현금 + 코인 평가 손익
         const totalAssets = cash + totalValuationAmount
 
@@ -43,17 +72,18 @@ const useCalculateAsset = (assetData: AssetData) => {
         const totalProfitLoss = totalValuationAmount - totalBuy
 
         //* 수익률 = (투자 평가액 - 투자 원금) / 투자 원금 * 100
-        const totalProfitRate = totalBuy !== 0 ? ((totalProfitLoss / totalBuy) * 100).toFixed(2) : "0.00"
+        const totalProfitRate = totalBuy !== 0 ? parseFloat(((totalProfitLoss / totalBuy) * 100).toFixed(2)) : 0.00
 
-
-        return{
+        return {
             totalAssets,
             totalValuationAmount,
             availableOrder,
             totalProfitLoss,
             totalProfitRate,
-            totalBuy
+            totalBuy,
+            currentCoinPrice
         }
+
     },[assetData, prices])
 
     return calculateAssets

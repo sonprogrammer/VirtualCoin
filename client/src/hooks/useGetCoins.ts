@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { useRecoilState } from 'recoil'
-import { CoinName } from '../context/CoinName'
+
+
 
 
 //* 아래 형태로 가져옴 
