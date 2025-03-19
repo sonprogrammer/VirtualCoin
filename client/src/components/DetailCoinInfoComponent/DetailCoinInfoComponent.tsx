@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import useGetCoins from "../../hooks/useGetCoins"
 import { StyledCLogoImg, StyledCoinInfo, StyledConInfoWrapper, StyledContainer, StyledLeftInfo, StyledPrices, StyledRateNumbers, StyledRates, StyledTitlePrice } from "./style";
+import { useRecoilState } from "recoil";
+import { coinKName } from "../../context/coinKName";
 
 
 interface CoinName {
@@ -27,12 +29,15 @@ interface DetailCoinInfoComponentProps{
 const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProps) => {
     const [coinName, setCoinName] = useState<string>('');
     const { data: coinData, isLoading, error } = useGetCoins();
+    const [kName , setKName] = useRecoilState(coinKName)
+
 
     useEffect(() => {
         if (coinData && coinId) {
             const thisCoin = coinData.find((c: CoinName) => coinId === c.market);
             if (thisCoin) {
                 setCoinName(thisCoin.korean_name);
+                setKName(thisCoin.korean_name)
             }
         }
     }, [coinId, coinData]);

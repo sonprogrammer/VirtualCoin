@@ -1,9 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StyledAmountInput, StyledAmountRate, StyledAsset, StyledBtns, StyledCoinAmount, StyledCoinPrice, StyledContainer, StyledTotalOrder, StyledTradeInput } from './style'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useGetAssetData from '../../../hooks/useGetAssetData';
+import { useParams } from 'react-router-dom';
+import useGetOrderBook from '../../../hooks/useGetOrderBook';
+import { useRecoilValue } from 'recoil';
+import { CoinPrice } from '../../../context/CoinPrice';
+import { coinKName } from '../../../context/coinKName';
+import { userState } from '../../../context/userState';
+import usePostBuyTrade from '../../../hooks/usePostBuyTrade';
 
 
 interface CoinTradeFormProps{
@@ -22,40 +30,97 @@ const mockData = {
 
 
 const CoinTradeForm = ({name} : CoinTradeFormProps) => {
-    //*coinPrice의 초기값은 업비트 api에서 코인별로 불러와야함
-    const [coinPrice, setCoinPrice] = useState<number>(mockData.coins[0].price)
-    const [userBalance, setUserBalance] = useState<number>(mockData.userBalance)
-    const [orderAmount, setOrderAmount] = useState<number>(mockData.coins[0].availableAmount);
+  const {data, isLoading} = useGetAssetData()
+  const { coinId } = useParams()
+  const coin = useRecoilValue(CoinPrice)
+  const user = useRecoilValue(userState)
+  if(isLoading && !coin && !coinId){
+    return <div>loading...</div>
+  }
+const { mutate: postBuyTrade} = usePostBuyTrade()
 
+
+  const cash = data?.cash || 0
+
+
+    //*coinPrice의 초기값은 업비트 api에서 코인별로 불러와야함
+    const [tradePrice, setTradePrice] = useState<number | null>(null)
+    const [orderAmount, setOrderAmount] = useState<number>(0);
+    // *매도용
+    const [availableAmount, setAvailableAmount] = useState<number>(0)
+
+    //*코인 한국이름
+    const kName = useRecoilValue(coinKName)
+    // console.log('kname', kName)
+    // console.log('kname', tradePrice)
+
+
+    useEffect(() => {
+      if (coinId && coin[coinId] && coin[coinId].trade_price !== 0 && tradePrice === null) {
+        setTradePrice(coin[coinId].trade_price);  
+      }
+    }, [coinId, coin, tradePrice]);
+
+    if(tradePrice === null){
+      return <div>loading...</div>
+    }
+
+    
   
     const handleSubmit = () => {
+      const total = orderAmount * tradePrice
       // 알림 띄우기
       if (name === '매도') {
+        if(availableAmount < orderAmount){
+          toast.error('보유 코인 수량이 부족합니다')
+          return
+        }
         toast.success(`매도 성공!`,{
           autoClose: 1000, 
         hideProgressBar: true,
         });
+        setAvailableAmount(prv=> prv - orderAmount)
       } else if (name === '매수') {
+        if(cash < total){
+          toast.error('잔액이 부족합니다')
+          return
+        }
         toast.success(`매수 성공!`,{
           autoClose: 1000, 
           hideProgressBar: true,
         });
+        setAvailableAmount(prv=> prv + orderAmount)
+        if (coinId && kName && user._id) {
+          postBuyTrade({
+            market: coinId,
+            name: kName.kName,
+            amount: orderAmount,
+            avgBuyPrice: tradePrice,
+            userId: user._id,
+          });
+        } else {
+          toast.error('필요한 데이터가 부족합니다.');
+        }
       }
     };
     
 
     const handleMinusClick = () => {
-        if (coinPrice > 0) {
-            setCoinPrice(coinPrice - 1);
+        if (tradePrice > 0) {
+          setTradePrice(tradePrice - 1);
         }
     }
     const handlePlusClick = () => {
-        setCoinPrice(coinPrice + 1 )
+      setTradePrice(tradePrice + 1 )
     }
 
     const handleOrderClick = (percentage: number) => {
-      const calculatedAmount = (userBalance * (percentage / 100)) / coinPrice;
-      setOrderAmount(calculatedAmount);
+      if (cash > 0) {
+        const calculatedAmount = (cash * (percentage / 100)) / tradePrice;
+        setOrderAmount(calculatedAmount);
+      } else {
+        toast.error('잔액이 부족합니다.');
+      }
   };
 
     
@@ -64,7 +129,7 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
       <StyledAsset>
         <p>주문가능</p>
         {/*//* 현재 로그인한 사람의 보유 현금  */}
-        <p><strong>{mockData.userBalance.toLocaleString()} 원</strong></p>
+        <p><strong>{cash.toLocaleString()} 원</strong></p>
       </StyledAsset>
       <StyledCoinPrice>
         <p>{name}가격(KRW)</p>
@@ -72,7 +137,11 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
             {/* //*인풋창에 코인의 가격이 들어가고 거기서 더 낮은 금액에
             //* 사고 싶으면 그가격에 예약을 걸어놈
              */}
-          <input type="number" value={coinPrice.toString()} onChange={(e) => setCoinPrice(Number(e.target.value))}/>
+          <input type="string" 
+            value={tradePrice.toLocaleString()} 
+            onChange={(e) => setTradePrice(Number(e.target.value))}
+            // onBlur={(e) => setTradePrice(Number(e.target.value))}
+            />
           <button onClick={handleMinusClick}>-</button>
           <button onClick={handlePlusClick}>+</button>
         </StyledTradeInput>
@@ -97,7 +166,7 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
       <StyledTotalOrder>
         <p>주문총액</p>
         {/* //*데이터 받아와야함 */}
-        <p><strong>{(orderAmount * coinPrice).toLocaleString()}</strong> 원</p>
+        <p><strong>{(orderAmount * tradePrice).toLocaleString()}</strong> 원</p>
       </StyledTotalOrder>
 
       <StyledBtns>

@@ -19,16 +19,16 @@ const useGetAssetData =  () => {
     const user = useRecoilValue(userState)
 
     const fetchData = async () => {
-        if(user.isGuest){
-            const savedAssetData = localStorage.getItem('asset')
-            // console.log('savedAsset', savedAssetData)
-            return savedAssetData ? JSON.parse(savedAssetData) : null
-        }else{
+        // if(user.isGuest){
+        //     const savedAssetData = localStorage.getItem('asset')
+        //     // console.log('savedAsset', savedAssetData)
+        //     return savedAssetData ? JSON.parse(savedAssetData) : null
+        // }else{
             const res = await axios(`http://localhost:3000/api/asset?userId=${user._id}`)
             // console.log('res', res.data)
             return res.data
 
-        }
+        // }
         
     }
     const { data, isLoading, error } = useQuery({

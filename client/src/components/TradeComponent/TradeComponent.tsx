@@ -1,9 +1,13 @@
 import { useState } from "react"
 import { Styledcontainer, StyledNavbar, StyledTradeSection } from "./style"
 import { CoinBuyForm, CoinSellForm, CoinBookForm } from './TradeForm';
+import useGetAssetData from "../../hooks/useGetAssetData";
 
 
 const TradeComponent = () => {
+  
+
+
   const [selection, setSelection] = useState<'buy' | 'sell' | 'book'>('buy')
 
   const handleTabClick = (type: 'buy' | 'sell' | 'book') => {

@@ -26,6 +26,7 @@ const CoinDetailPage = () => {
   const { orderBook, coinPrice } = useGetOrderBook(coinId || "");
 
 
+
   useEffect(() => {
     if (coinPrice) {
       setCoinInfo(coinPrice);

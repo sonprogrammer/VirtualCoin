@@ -1,10 +1,10 @@
 
-import { useRecoilState, useRecoilValue } from 'recoil';
+
 import useCalculateAsset from '../../hooks/useCalculateAsset';
 import useGetAssetData from '../../hooks/useGetAssetData';
 
 import { StyledContainer, StyledImage, StyledTable, StyledTableBody, StyledTableHead, StyledTableTr } from './style';
-import { CoinPrice } from '../../context/CoinPrice';
+
 
 
 
@@ -19,6 +19,7 @@ const AssetList = () => {
     
     const coins = assetData?.coins || []
     // console.log('asse', calculatedData)
+    // console.log('asse', assetData)
 
     const {
         // * 평가손익

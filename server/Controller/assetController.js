@@ -2,17 +2,18 @@ const Asset = require("../Models/assetModel");
 const User = require("../Models/userModel");
 
 
+//*자산 정보 가져오기
 const getAssetData = async(req, res) => {
     try {
         const { userId } = req.query
-        console.log('userId', userId)
+        // console.log('userId', userId)
 
         if(!userId){
             return res.status(400).json({error: 'there is no userId'})
         }
 
         let asset = await Asset.findOne({userId}).populate('userId',  'name')
-        console.log('assetdsfd', asset)
+        // console.log('assetdsfd', asset)
         if(!asset){
             asset = new Asset({
                 userId: userId,
@@ -25,7 +26,7 @@ const getAssetData = async(req, res) => {
             }]
             })
             await asset.save()
-            console.log('new asset created', asset)
+            // console.log('new asset created', asset)
         }
         return res.status(200).json(asset)
     } catch (error) {
@@ -34,5 +35,39 @@ const getAssetData = async(req, res) => {
     }
 }
 
+// *매수하기
+const postBuyCoins = async(req, res) => {
+    try {
+        const { name, amount, avgBuyPrice, userId} = req.body
+        const market = req.params.coinId
+        console.log('req', avgBuyPrice)
 
-module.exports = { getAssetData}
+        const userAsset = await Asset.findOne({userId}).populate('userId')
+        if(!userAsset){
+            return res.status(404).json({message: 'no asset'})
+        }
+
+        const isAlreadyCheck = userAsset.coins.findIndex(c=> c.market === market)
+
+        if(isAlreadyCheck === -1){
+            userAsset.coins.push({
+                market,
+                name,
+                amount,
+                avgBuyPrice
+            })
+        }else{
+            const isAlreadyIn = userAsset.coins[isAlreadyCheck]
+            isAlreadyIn.amount += amount
+            isAlreadyIn.avgBuyPrice = ((isAlreadyIn.avgBuyPrice * isAlreadyIn.amount) + (avgBuyPrice * amount) / (isAlreadyIn.amount + amount))
+        }
+
+        await userAsset.save()
+        return res.status(200).json({message: 'success', userAsset})
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({message: 'internal server eerorororr'})
+    }
+}
+
+module.exports = { getAssetData,postBuyCoins}

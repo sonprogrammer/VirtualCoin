@@ -2,8 +2,8 @@
 import { NavbarComponent } from '../../components'
 import { Outlet } from 'react-router-dom'
 import { StyledContaier, StyledNavbarWrapper, StyledOutletWrapper } from './style'
-import { useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+
+import { useRecoilValue } from 'recoil'
 import { CoinPrice } from '../../context/CoinPrice'
 import useGetCoins from '../../hooks/useGetCoins'
 import useWebSocket from '../../hooks/useWebSocket'
