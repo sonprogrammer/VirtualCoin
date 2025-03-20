@@ -29,7 +29,7 @@ function AssetCircleGraph() {
 
   // *코인별 평가금액
   const coinValue = coins.map((coin: any) => ({
-    market: coin.market,
+    market: coin.market.split('-')[1],
     value: coin.amount * coin.avgBuyPrice
   }))
 

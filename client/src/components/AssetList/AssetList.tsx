@@ -9,6 +9,8 @@ import { StyledContainer, StyledImage, StyledTable, StyledTableBody, StyledTable
 
 
 // ! 컴퓨터 버전
+// !필요한거 : 코인 이름, 코인 로고, 코인 보유 수량, 매수평균가(코인 하나당 산 금액), 평가금액(현재코인 하나당 가격 * 보유수량)
+        // ! 평가손익((현재가격*보유수량) - (산가격*보유수량)), 수익률((현재가격 - 산가격) / 산가격 * 100)
 const AssetList = () => {
     const {data: assetData} = useGetAssetData()
     const calculatedData = useCalculateAsset(assetData)
@@ -18,18 +20,10 @@ const AssetList = () => {
     
     
     const coins = assetData?.coins || []
-    // console.log('asse', calculatedData)
-    // console.log('asse', assetData)
-
-    const {
-        // * 평가손익
-        totalProfitLoss,
-        // *수익률
-        totalProfitRate,
-        // *코인 현재가격
-        currentCoinPrice
-
-    } =  calculatedData || {};
+    // console.log('asse', coins.avgBuyPrice)
+    
+    const {coinDetailPrice} =  calculatedData || {};
+    // console.log('calculate', coinDetailPrice)
 
     return (
         <StyledContainer className='listContainer'>
@@ -42,7 +36,7 @@ const AssetList = () => {
                     <th>평가손익(%)</th>
                 </StyledTableHead>
                 <StyledTableBody>
-                    {coins.map((coin: any) => {
+                    {coins.map((coin: any, i: number) => {
                         const market = coin.market.split('-')[1]
                         const coinImage = `https://static.upbit.com/logos/${market}.png`
 
@@ -57,17 +51,17 @@ const AssetList = () => {
                                 </td>
                                 <td>{coin.amount}</td>
                                 <td>{coin.avgBuyPrice.toLocaleString()}</td>
-                                <td>{currentCoinPrice?.toLocaleString()}</td>
+                                <td>{coinDetailPrice[i].coinValue?.toLocaleString()}</td>
                                 <td>
                                     <div>
                                         <p
-                                            className={`${Number(totalProfitRate) < 0 ? 'text-blue-600' : 'text-red-500'}`}
+                                            className={`${Number(coinDetailPrice[i].profitLoss) < 0 ? 'text-blue-600' : 'text-red-500'}`}
                                         >
-                                            {Number(totalProfitRate) > 0 && '+'}
-                                            {totalProfitRate}%</p>
+                                            {Number(coinDetailPrice[i].profitRate) > 0 && '+'}
+                                            {coinDetailPrice[i].profitRate}%</p>
                                         <p
-                                            className={`${Number(totalProfitRate) < 0 ? 'text-blue-600' : 'text-red-500'}`}
-                                        >{totalProfitLoss?.toLocaleString()}KRW</p>
+                                            className={`${Number(coinDetailPrice[i].profitLoss) < 0 ? 'text-blue-600' : 'text-red-500'}`}
+                                        >{coinDetailPrice[i].profitLoss?.toLocaleString()}KRW</p>
                                     </div>
                                 </td>
 

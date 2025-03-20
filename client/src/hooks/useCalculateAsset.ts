@@ -9,6 +9,12 @@ interface AssetData {
     cash: number;
     coins: any[];
 }
+
+interface CoinDetailPrice {
+    coinValue: number;
+    profitLoss: number;
+    profitRate: number;
+}
 interface CalculateAssets {
     totalAssets: number;
     totalValuationAmount: number;
@@ -17,6 +23,7 @@ interface CalculateAssets {
     totalProfitRate: number;
     totalBuy: number;
     currentCoinPrice: number[];
+    coinDetailPrice: CoinDetailPrice[]
 }
 const useCalculateAsset = (assetData: AssetData) => {
     const [prices] = useRecoilState(CoinPrice); 
@@ -34,7 +41,8 @@ const useCalculateAsset = (assetData: AssetData) => {
             totalProfitLoss: 0,
             totalProfitRate: 0,
             totalBuy: 0,
-            currentCoinPrice: []
+            currentCoinPrice: [],
+            coinDetailPrice: []
         };
 
         const { cash, coins } = assetData
@@ -56,24 +64,40 @@ const useCalculateAsset = (assetData: AssetData) => {
             return acc + (currentPrice * quantity)
         }, 0)
 
-        // *코인 현재 가격
-        const currentCoinPrice = coins.map((coin: any) => {
-            return prices[coin.market]?.trade_price}
-        )
-
-
         // *총 자산 = 보유 현금 + 코인 평가 손익
         const totalAssets = cash + totalValuationAmount
 
         // *주문 가능 금액 = 보유 현금
         const availableOrder = cash
 
-        //* 평가 손익 = 총 자산에서 현금 부분을 제외한 부분
+        //* 총 평가 손익 = 총 자산에서 현금 부분을 제외한 부분
         const totalProfitLoss = totalValuationAmount - totalBuy
 
-        //* 수익률 = (투자 평가액 - 투자 원금) / 투자 원금 * 100
+        //* 총 수익률 = (투자 평가액 - 투자 원금) / 투자 원금 * 100
         const totalProfitRate = totalBuy !== 0 ? parseFloat(((totalProfitLoss / totalBuy) * 100).toFixed(2)) : 0.00
 
+
+        // *코인 현재 가격
+        const currentCoinPrice = coins.map((coin: any) => {
+            return prices[coin.market]?.trade_price}
+        )
+
+        // * 코인별 평가금액, 평가 손익
+        const coinDetailPrice = coins.map((coin: any) => {
+            const currentPrice = prices[coin.market]?.trade_price || 0
+            const coinValue = currentPrice * coin.amount // *평가금액
+            const profitLoss = coinValue - (coin.avgBuyPrice * coin.amount) //*평가손익
+            const profitRate = ((currentPrice - coin.avgBuyPrice) / (coin.avgBuyPrice * coin.amount)) * 100
+
+            return {
+                ...coin,
+                coinValue,
+                profitLoss,
+                profitRate: parseFloat(profitRate.toFixed(2))
+            }
+        })
+        
+        
         return {
             totalAssets,
             totalValuationAmount,
@@ -81,7 +105,8 @@ const useCalculateAsset = (assetData: AssetData) => {
             totalProfitLoss,
             totalProfitRate,
             totalBuy,
-            currentCoinPrice
+            currentCoinPrice,
+            coinDetailPrice
         }
 
     },[assetData, prices])

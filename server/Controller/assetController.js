@@ -38,9 +38,10 @@ const getAssetData = async(req, res) => {
 // *매수하기
 const postBuyCoins = async(req, res) => {
     try {
-        const { name, amount, avgBuyPrice, userId} = req.body
+        const { name, amount, avgBuyPrice, userId, cash} = req.body
         const market = req.params.coinId
-        console.log('req', avgBuyPrice)
+
+console.log('cash', cash)
 
         const userAsset = await Asset.findOne({userId}).populate('userId')
         if(!userAsset){
@@ -59,7 +60,7 @@ const postBuyCoins = async(req, res) => {
         }else{
             const isAlreadyIn = userAsset.coins[isAlreadyCheck]
             isAlreadyIn.amount += amount
-            isAlreadyIn.avgBuyPrice = ((isAlreadyIn.avgBuyPrice * isAlreadyIn.amount) + (avgBuyPrice * amount) / (isAlreadyIn.amount + amount))
+            isAlreadyIn.avgBuyPrice = (((isAlreadyIn.avgBuyPrice * isAlreadyIn.amount) + (avgBuyPrice * amount)) / (isAlreadyIn.amount + amount))
         }
 
         await userAsset.save()

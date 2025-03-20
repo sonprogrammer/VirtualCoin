@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query"
 
 
 
-const postCoinBuy = async({ market, name, amount, avgBuyPrice, userId }: { market: string, name: string, amount: number, avgBuyPrice: number, userId: string }) => {
+const postCoinBuy = async({ market, name, amount, avgBuyPrice, userId, cash }: { market: string, name: string, amount: number, avgBuyPrice: number, userId: string, cash: number }) => {
     const res = await axios.post(`http://localhost:3000/api/asset/${market}/buy`,{
         // market, 
         amount,
@@ -17,8 +17,8 @@ const postCoinBuy = async({ market, name, amount, avgBuyPrice, userId }: { marke
 }
 const usePostBuyTrade = () => {
     return useMutation({
-        mutationFn: ({ market, name, amount, avgBuyPrice, userId }: { market: string; name: string; amount: number; avgBuyPrice: number, userId: string })=> {
-                return postCoinBuy({market, name, amount, avgBuyPrice, userId})
+        mutationFn: ({ market, name, amount, avgBuyPrice, userId, cash }: { market: string; name: string; amount: number; avgBuyPrice: number, userId: string, cash: number })=> {
+                return postCoinBuy({market, name, amount, avgBuyPrice, userId, cash})
             
         },
         onSuccess: (data) => {

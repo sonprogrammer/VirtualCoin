@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useGetAssetData from '../../../hooks/useGetAssetData';
 import { useParams } from 'react-router-dom';
-import useGetOrderBook from '../../../hooks/useGetOrderBook';
+// import useGetOrderBook from '../../../hooks/useGetOrderBook';
 import { useRecoilValue } from 'recoil';
 import { CoinPrice } from '../../../context/CoinPrice';
 import { coinKName } from '../../../context/coinKName';
@@ -17,16 +17,6 @@ import usePostBuyTrade from '../../../hooks/usePostBuyTrade';
 interface CoinTradeFormProps{
     name: string;
 }
-
-const mockData = {
-    userBalance: 500000, 
-    coins: [
-      { name: '비트코인', price: 72000000, availableAmount: 0.01 },
-      { name: '이더리움', price: 3500000, availableAmount: 1.5 },
-      { name: '리플', price: 950, availableAmount: 1000 },
-    ],
-  };
-  
 
 
 const CoinTradeForm = ({name} : CoinTradeFormProps) => {
@@ -43,16 +33,17 @@ const { mutate: postBuyTrade} = usePostBuyTrade()
   const cash = data?.cash || 0
 
 
-    //*coinPrice의 초기값은 업비트 api에서 코인별로 불러와야함
+    //* 코인 현재가격
     const [tradePrice, setTradePrice] = useState<number | null>(null)
+    // * 주문수량
     const [orderAmount, setOrderAmount] = useState<number>(0);
-    // *매도용
+    // * 팔수 있는양(갖고 있는 코인수량) - 매도용
+    // TODO 이것도 디비에서 가져와야함
     const [availableAmount, setAvailableAmount] = useState<number>(0)
 
     //*코인 한국이름
     const kName = useRecoilValue(coinKName)
     // console.log('kname', kName)
-    // console.log('kname', tradePrice)
 
 
     useEffect(() => {
@@ -93,10 +84,11 @@ const { mutate: postBuyTrade} = usePostBuyTrade()
         if (coinId && kName && user._id) {
           postBuyTrade({
             market: coinId,
-            name: kName.kName,
+            name: kName,
             amount: orderAmount,
             avgBuyPrice: tradePrice,
             userId: user._id,
+            cash: cash
           });
         } else {
           toast.error('필요한 데이터가 부족합니다.');
