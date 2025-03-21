@@ -18,12 +18,8 @@ const getAssetData = async(req, res) => {
             asset = new Asset({
                 userId: userId,
                 // TODO 밑에 삭제 해야함
-                coins: [{
-                    market: 'KRW-BTC',
-                    name: '비트코인',
-                    amount: 1.5,
-                    avgBuyPrice: 10000000
-            }]
+                // cash: 10000000,
+                coins: []
             })
             await asset.save()
             // console.log('new asset created', asset)
@@ -40,8 +36,6 @@ const postBuyCoins = async(req, res) => {
     try {
         const { name, amount, avgBuyPrice, userId, cash} = req.body
         const market = req.params.coinId
-
-console.log('cash', cash)
 
         const userAsset = await Asset.findOne({userId}).populate('userId')
         if(!userAsset){
@@ -62,6 +56,8 @@ console.log('cash', cash)
             isAlreadyIn.amount += amount
             isAlreadyIn.avgBuyPrice = (((isAlreadyIn.avgBuyPrice * isAlreadyIn.amount) + (avgBuyPrice * amount)) / (isAlreadyIn.amount + amount))
         }
+        const coinPrice = avgBuyPrice * amount
+        userAsset.cash = userAsset.cash - coinPrice
 
         await userAsset.save()
         return res.status(200).json({message: 'success', userAsset})
@@ -70,5 +66,7 @@ console.log('cash', cash)
         return res.status(500).json({message: 'internal server eerorororr'})
     }
 }
+
+// *매도 하기
 
 module.exports = { getAssetData,postBuyCoins}

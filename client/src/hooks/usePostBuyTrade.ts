@@ -10,7 +10,8 @@ const postCoinBuy = async({ market, name, amount, avgBuyPrice, userId, cash }: {
         amount,
         avgBuyPrice,
         name,
-        userId
+        userId,
+        cash
     })
     console.log('postby hook res', res.data)
     return res.data
