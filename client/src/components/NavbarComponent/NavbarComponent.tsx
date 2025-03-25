@@ -228,7 +228,7 @@ const NavbarComponent = () => {
                     <p><strong>보유 자산</strong> <span>{totalAssets?.toLocaleString()}</span></p>
                     {/* //TODO : 수익이면 빨강, 손익이면 파랑으로 색상조절, 평가손익으로 바꿔주기*/}
                     <p><strong>평가 손익</strong> 
-                        <span style={{ color: 'red' }}>{totalProfitLoss?.toLocaleString()}</span>
+                        <span className={`${totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}>{totalProfitLoss > 0 && '+'}{totalProfitLoss?.toLocaleString()}</span>
                     </p>
                     <hr />
                     <StyledCoins>

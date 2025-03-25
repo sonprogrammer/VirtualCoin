@@ -8,7 +8,7 @@ const RankingComponent = () => {
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
 
     const {rankingData} = useGetRankData() || { rankingData: [] };
-    console.log('reankikg', rankingData)
+    // console.log('reankikg', rankingData)
 
     const safeRankingData = Array.isArray(rankingData) ? rankingData : [];
 

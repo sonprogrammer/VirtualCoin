@@ -12,6 +12,8 @@ import { CoinPrice } from '../../../context/CoinPrice';
 import { coinKName } from '../../../context/coinKName';
 import { userState } from '../../../context/userState';
 import usePostBuyTrade from '../../../hooks/usePostBuyTrade';
+import usePostSellTrade from '../../../hooks/usePostSellTrade';
+
 
 
 interface CoinTradeFormProps{
@@ -28,31 +30,45 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
     return <div>loading...</div>
   }
 const { mutate: postBuyTrade} = usePostBuyTrade()
+const { mutate: postSellTrade} = usePostSellTrade()
 
 
   const cash = data?.cash || 0
 
 
     //* 코인 현재가격
-    const [tradePrice, setTradePrice] = useState<number | null>(null)
+    const [currentPrice, setCurrentPrice] = useState<number | null>(null)
+    //*트레이드 가격(매도/매수)
+    const [tradePrice, setTradePrice] = useState<number>(0)
     // * 주문수량
     const [orderAmount, setOrderAmount] = useState<number>(0);
     // * 팔수 있는양(갖고 있는 코인수량) - 매도용
     // TODO 이것도 디비에서 가져와야함
     const [availableAmount, setAvailableAmount] = useState<number>(0)
 
+
     //*코인 한국이름
     const kName = useRecoilValue(coinKName)
     // console.log('kname', kName)
 
+    useEffect(() => {
+      if(data?.coins){
+        const coinData = data.coins.find((c:any)=> c.market === coinId)
+        if(coinData){
+          setAvailableAmount(coinData.amount)
+        }
+      }
+    },[data, coinId])
+    // console.log('data' ,currentPrice)
 
     useEffect(() => {
-      if (coinId && coin[coinId] && coin[coinId].trade_price !== 0 && tradePrice === null) {
-        setTradePrice(coin[coinId].trade_price);  
+      if (coinId && coin[coinId] && coin[coinId].trade_price !== 0 && currentPrice === null) {
+        setCurrentPrice(coin[coinId].trade_price);  
+        setTradePrice(coin[coinId].trade_price)
       }
-    }, [coinId, coin, tradePrice]);
+    }, [coinId, coin, currentPrice]);
 
-    if(tradePrice === null){
+    if(currentPrice === null){
       return <div>loading...</div>
     }
 
@@ -71,6 +87,16 @@ const { mutate: postBuyTrade} = usePostBuyTrade()
         hideProgressBar: true,
         });
         setAvailableAmount(prv=> prv - orderAmount)
+        if(coinId && kName && user._id){
+          postSellTrade({
+            market: coinId,
+            name: kName,
+            amount: orderAmount,
+            avgSellPrice: tradePrice,
+            userId: user._id,
+            cash: cash
+          })
+        }
       } else if (name === '매수') {
         if(cash < total){
           toast.error('잔액이 부족합니다')
@@ -98,12 +124,16 @@ const { mutate: postBuyTrade} = usePostBuyTrade()
     
 
     const handleMinusClick = () => {
-        if (tradePrice > 0) {
-          setTradePrice(tradePrice - 1);
-        }
+        setTradePrice(prev => prev-1)
     }
     const handlePlusClick = () => {
-      setTradePrice(tradePrice + 1 )
+      setTradePrice(prev=> prev + 1 )
+      console.log('trade', tradePrice)
+    }
+
+    const handleResetClick = () => {
+      setOrderAmount(0)
+      setTradePrice(currentPrice)
     }
 
     const handleOrderClick = (percentage: number) => {
@@ -131,7 +161,11 @@ const { mutate: postBuyTrade} = usePostBuyTrade()
              */}
           <input type="string" 
             value={tradePrice.toLocaleString()} 
-            onChange={(e) => setTradePrice(Number(e.target.value))}
+            onChange={(e) => {
+              const value = e.target.value.replace(/,/g, '')
+              setTradePrice(Number(value))
+          }}
+            // onChange={(e) => setTradePrice(Number(e.target.value))}
             // onBlur={(e) => setTradePrice(Number(e.target.value))}
             />
           <button onClick={handleMinusClick}>-</button>
@@ -162,7 +196,7 @@ const { mutate: postBuyTrade} = usePostBuyTrade()
       </StyledTotalOrder>
 
       <StyledBtns>
-        <button>
+        <button onClick={handleResetClick}>
             <FontAwesomeIcon icon={faRotateRight} />
             <span>초기화</span>
         </button>

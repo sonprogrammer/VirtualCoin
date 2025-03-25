@@ -68,5 +68,45 @@ const postBuyCoins = async(req, res) => {
 }
 
 // *매도 하기
+const postSellCoins = async(req,res) =>{
+    try {
+        
+    
+    const { name, amount, avgSellPrice, userId} = req.body
+    console.log('req.body', req.body)
+    const market = req.params.coinId
 
-module.exports = { getAssetData,postBuyCoins}
+    const userAsset = await Asset.findOne({userId}).populate('userId')
+    if(!userAsset){
+        return res.status(404).json({message: 'user not found'})
+    }
+
+    //*코인 보유여부확인
+    const coinIndex = userAsset.coins.findIndex(c => c.market === market && c.name === name)
+    
+    if(coinIndex === -1){
+        return res.status(404).json({message: 'you do not have this coin'})
+    }
+    const coin = userAsset.coins[coinIndex]
+
+    if(coin.amount < amount){
+        return res.status(400).json({message: 'not enough coin'})
+    }
+    const totalSellPrice = avgSellPrice * amount
+    coin.amount -= amount
+
+    if(coin.amount === 0){
+        userAsset.coins.splice(coinIndex, 1)
+    }
+
+    userAsset.cash += totalSellPrice
+    await userAsset.save()
+    return res.status(200).json({message: 'success', userAsset})
+    } catch (error) {
+        console.error(error)    
+        return res.status(500).json({message: 'internal sever errror'})
+    }
+}
+
+
+module.exports = { getAssetData,postBuyCoins, postSellCoins}

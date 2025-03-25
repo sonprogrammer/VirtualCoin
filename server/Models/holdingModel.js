@@ -13,6 +13,10 @@ const HoldingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    coinKName: {
+        type: String,
+        required: true
+    },
     type: {
         type: String,
         enum: ['BUY', 'SELL'],
@@ -31,7 +35,7 @@ const HoldingSchema = new mongoose.Schema({
         required: true
     },
     //미체결량
-    reamainQuantity: {
+    remainQuantity: {
         type: Number,
         required: true
     },
