@@ -82,12 +82,13 @@ const { mutate: postSellTrade} = usePostSellTrade()
           toast.error('보유 코인 수량이 부족합니다')
           return
         }
-        toast.success(`매도 성공!`,{
-          autoClose: 1000, 
-        hideProgressBar: true,
-        });
-        setAvailableAmount(prv=> prv - orderAmount)
-        if(coinId && kName && user._id){
+        if(coinId && kName && user._id && orderAmount <= availableAmount){
+          toast.success(`매도 성공!`,{
+            autoClose: 1000, 
+          hideProgressBar: true,
+          });
+          setAvailableAmount(prv=> prv - orderAmount)
+
           postSellTrade({
             market: coinId,
             name: kName,
@@ -102,12 +103,12 @@ const { mutate: postSellTrade} = usePostSellTrade()
           toast.error('잔액이 부족합니다')
           return
         }
-        toast.success(`매수 성공!`,{
-          autoClose: 1000, 
-          hideProgressBar: true,
-        });
-        setAvailableAmount(prv=> prv + orderAmount)
-        if (coinId && kName && user._id) {
+        if (coinId && kName && user._id && orderAmount > 0) {
+          toast.success(`매수 성공!`,{
+            autoClose: 1000, 
+            hideProgressBar: true,
+          });
+          setAvailableAmount(prv=> prv + orderAmount)
           postBuyTrade({
             market: coinId,
             name: kName,
@@ -117,7 +118,7 @@ const { mutate: postSellTrade} = usePostSellTrade()
             cash: cash
           });
         } else {
-          toast.error('필요한 데이터가 부족합니다.');
+          toast.error('수량을 확인하세요.');
         }
       }
     };
@@ -137,11 +138,17 @@ const { mutate: postSellTrade} = usePostSellTrade()
     }
 
     const handleOrderClick = (percentage: number) => {
-      if (cash > 0) {
-        const calculatedAmount = (cash * (percentage / 100)) / tradePrice;
-        setOrderAmount(calculatedAmount);
-      } else {
-        toast.error('잔액이 부족합니다.');
+      if(name ==='매수'){
+
+        if (cash > 0) {
+          const calculatedAmount = (cash * (percentage / 100)) / tradePrice;
+          setOrderAmount(calculatedAmount);
+        } else {
+          toast.error('잔액이 부족합니다.');
+        }
+      }else{
+        const calculatedAmount = availableAmount * (percentage / 100)
+        setOrderAmount(calculatedAmount)
       }
   };
 

@@ -11,10 +11,9 @@ interface SellOrder {
     avgSellPrice: number;
     userId: string;
     cash: number;
-    limitPrice?: number;
   }
 
-const postCoinSell = async({ market, name, amount, avgSellPrice, userId, cash, limitPrice }: SellOrder) => {
+const postCoinSell = async({ market, name, amount, avgSellPrice, userId, cash  }: SellOrder) => {
     const res = await axios.post(`http://localhost:3000/api/asset/${market}/sell`,{
         name,
         amount,
@@ -24,6 +23,17 @@ const postCoinSell = async({ market, name, amount, avgSellPrice, userId, cash, l
         // limitPrice: type === 'limit' ? limitPrice : undefined
     })
     console.log('usePostSellTrade', res.data)
+    return res.data
+}
+
+const postHolding = async({market, name, amount, avgSellPrice, userId}: {market: string, name: string, amount: number, avgSellPrice: number, userId: string}) => {
+    const res = await axios.post(`http://localhost:3000/api/holding/${market}/sell-reserve`,{
+        amount,
+        avgSellPrice,
+        name,
+        userId
+    })
+    console.log('sellReserve', res.data)
     return res.data
 }
 
@@ -37,15 +47,17 @@ const usePostSellTrade = () => {
             if(!curPrice){ 
                 throw new Error('can not find current price')
             }
-            if(curPrice=== order.avgSellPrice){
+            if(curPrice >= order.avgSellPrice){
                 return postCoinSell(order)
+            }else{
+                return postHolding(order)
             }
         },
         onSuccess: (data) => {
-            console.log('usePostBuyTrade훅 성공')
+            console.log('usePostBuyTrade훅 성공',data)
         },
         onError: (error) => {
-            console.error('usePostBuyTrade훅 실패')
+            console.error('usePostBuyTrade훅 실패', error)
         }
     })
     return mutation

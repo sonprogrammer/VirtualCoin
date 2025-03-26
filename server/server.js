@@ -7,9 +7,9 @@ require('dotenv').config();
 const userRouter = require('./Routes/userRouter')
 const assetRouter = require('./Routes/assetRouter')
 const transactionRouter = require('./Routes/transactionRouter')
-const holdingRouter = require('./Routes/holdingRouter')
 const authenticateJWT = require('./middleware/authenticateJWT')
 const cookieParser = require('cookie-parser');
+const holdRouter = require('./Routes/holdingRouter');
 const app = express();
 const port = 3000;
 
@@ -43,7 +43,7 @@ mongoose.connect(process.env.MONGO_URI,{
 app.use('/api/user', userRouter);  
 app.use('/api/asset', assetRouter);
 // app.use('/api/transaction', transactionRouter);
-// app.use('/api/holding', holdingRouter);
+app.use('/api/holding', holdRouter);
 
 // 서버 실행
 app.listen(port, () => {

@@ -73,7 +73,6 @@ const postSellCoins = async(req,res) =>{
         
     
     const { name, amount, avgSellPrice, userId} = req.body
-    console.log('req.body', req.body)
     const market = req.params.coinId
 
     const userAsset = await Asset.findOne({userId}).populate('userId')

@@ -1,15 +1,7 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
-const HoldingSchema = new mongoose.Schema({
-
-    //유저
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
-    //코인
-    coinMarket:{
+const OrderSchema = new mongoose.Schema({
+    coinMarket: {
         type: String,
         required: true
     },
@@ -22,32 +14,29 @@ const HoldingSchema = new mongoose.Schema({
         enum: ['BUY', 'SELL'],
         required: true
     },
-
-    //주문수량 
     orderQuantity: {
-        type:Number,
+        type: Number,
         required: true
     },
-
-    // 주문 가격
     orderPrice: {
-        type:Number,
-        required: true
-    },
-    //미체결량
-    remainQuantity: {
         type: Number,
         required: true
     },
 
-    // 주문 시간
     orderTime: {
         type: Date,
         required: true
     }
+});
 
-   
-}, { timestamps: true})
+const HoldingSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    orders: [OrderSchema] 
+}, { timestamps: true });
 
-const Holding = mongoose.model("Holding", HoldingSchema);
-module.exports = Holding
+const Hold = mongoose.model('Hold', HoldingSchema);
+module.exports = Hold;
