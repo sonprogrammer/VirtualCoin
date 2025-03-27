@@ -22,10 +22,21 @@ const OrderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-
+    //*주문시간
     orderTime: {
         type: Date,
         required: true
+    },
+    //*체결 상태
+    status:{
+        type: String,
+        enum: ['COMPLETED', 'PENDING'],
+        default: 'PENDING'
+    },
+    //*체결시간
+    completedTime:{
+        type: Date,
+        default: null
     }
 });
 

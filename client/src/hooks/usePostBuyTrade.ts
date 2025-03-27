@@ -1,6 +1,6 @@
 
 import axios from "axios"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { CoinPrice } from "../context/CoinPrice"
 import { useRecoilState } from "recoil"
 
@@ -30,6 +30,7 @@ const postHolding = async({market, name, amount, avgBuyPrice, userId}: {market: 
 }
 const usePostBuyTrade = () => {
     const [prices] = useRecoilState(CoinPrice)
+    const queryClient = useQueryClient()
 
     return useMutation({
         mutationFn: ({ market, name, amount, avgBuyPrice, userId, cash }: { market: string; name: string; amount: number; avgBuyPrice: number, userId: string, cash: number })=> {
@@ -44,8 +45,10 @@ const usePostBuyTrade = () => {
             }
             
         },
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
             console.log('usePostBuyTrade훅 성공', data)
+            await queryClient.invalidateQueries({ queryKey : ['holdingOrders']})
+            await queryClient.invalidateQueries({queryKey :['userAssets']})
         },
         onError: (error) => {
             console.error('usePostBuyTrade훅 실패', error)
