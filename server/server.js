@@ -42,7 +42,7 @@ mongoose.connect(process.env.MONGO_URI,{
 
 app.use('/api/user', userRouter);  
 app.use('/api/asset', assetRouter);
-// app.use('/api/transaction', transactionRouter);
+app.use('/api/transaction', transactionRouter);
 app.use('/api/holding', holdRouter);
 
 // 서버 실행

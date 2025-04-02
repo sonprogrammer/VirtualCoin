@@ -1,4 +1,5 @@
 const Asset = require("../Models/assetModel");
+const Transaction = require("../Models/transactionModel");
 const User = require("../Models/userModel");
 
 
@@ -60,6 +61,28 @@ const postBuyCoins = async(req, res) => {
         userAsset.cash = userAsset.cash - coinPrice
 
         await userAsset.save()
+
+        const transaction = await Transaction.findOne({userId})
+
+        if(!transaction){
+            transaction = new Transaction({ userId, coins: []})
+        }
+
+        
+
+        transaction.coins.push({
+                market,
+                type: "BUY",
+                amount,
+                price: avgBuyPrice,
+                kName: name,
+                orderTime: new Date(),
+                completedTime: new Date(),
+          });
+      
+          await transaction.save();
+        
+
         return res.status(200).json({message: 'success', userAsset})
     } catch (error) {
         console.error(error)
@@ -100,12 +123,33 @@ const postSellCoins = async(req,res) =>{
 
     userAsset.cash += totalSellPrice
     await userAsset.save()
+
+    const transaction = await Transaction.findOne({userId})
+
+    if(!transaction){
+        transaction = new Transaction({ userId, coins: []})
+    }
+
+    transaction.coins.push({
+            market,
+            type: "SELL",
+            amount,
+            price: avgSellPrice,
+            kName: name,
+            orderTime: new Date(),
+            completedTime: new Date(),
+
+      });
+  
+      await transaction.save();
+    
     return res.status(200).json({message: 'success', userAsset})
     } catch (error) {
         console.error(error)    
         return res.status(500).json({message: 'internal sever errror'})
     }
 }
+
 
 
 module.exports = { getAssetData,postBuyCoins, postSellCoins}

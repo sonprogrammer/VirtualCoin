@@ -1,6 +1,9 @@
 import { useState } from 'react'
-import data from './mockupData'
 import { StyledBody, StyledContainer, StyledDate, StyledDetail, StyledHead, StyledPeriodAndType, StyledPeriodBurgerMenu, StyledSelect, StyledTable, StyledTableContainer, StyledTypeMenu } from './style'
+import useGetTransaction from '../../hooks/useGetTransaction'
+import { userState } from '../../context/userState'
+import { useRecoilValue } from 'recoil'
+import dayjs from 'dayjs'
 
 
 const TransactionComponent = () => {
@@ -12,6 +15,21 @@ const TransactionComponent = () => {
     const [startDate, setStartDate] = useState<string>('')
     const [endDate, setEndDate] = useState<string>('')
 
+    const user = useRecoilValue(userState);
+    const userId = user._id
+
+    const { data, isLoading, error } = useGetTransaction(userId);
+
+    if (isLoading) return <p>Loading...</p>;
+    if (error) return <p>{error.message}</p>;
+    const coins = data.coins
+    
+
+    
+const formatDateTime = (dateString: string) => {
+    return dayjs(dateString).format('YY.MM.DD HH:mm');
+};
+    
     const formatDate = (date: Date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -36,6 +54,7 @@ const TransactionComponent = () => {
         setEndDate('')
 
         const now = new Date();
+        console.log('now', now)
 
         let startingDate: Date = new Date(now)
         let endingDate: Date = new Date(now)
@@ -52,40 +71,28 @@ const TransactionComponent = () => {
             return
         }
         setStartDate(formatDate(startingDate))
+        endingDate.setHours(now.getHours() + 23)
         setEndDate(formatDate(endingDate))
     }
-
+    
     const handleTypeSelect = (selectedType: '매도' | '매수' | '전체') => {
         setType(selectedType)
         setShowTypeMenu(false)
     }
-
+    
     const filterByPeriod = (transactionTime: string) => {
-        const now = new Date()
-
-        let periodStart = new Date(startDate)
-        let periodEnd = new Date(endDate)
-
-        if (period === '1주일') {
-            periodStart.setDate(now.getDate() - 7)
-        } else if (period === '1개월') {
-            periodStart.setMonth(now.getMonth() - 1)
-        } else if (period === '6개월') {
-            periodStart.setMonth(now.getMonth() - 6)
-        } else {
-            return true
-        }
-        const transactionDate = new Date(transactionTime)
-        return transactionDate >= periodStart && transactionDate <= periodEnd
-    }
-
-    const filteredData = data.filter(item => {
-        const periodMatch = filterByPeriod(item.transactionTime)
-
-        const typeMatch = type === '전체' || item.type === type
-
-        return periodMatch && typeMatch
-    })
+        if (period === '전체') return true;
+        if (!startDate || !endDate) return false;
+        
+        const transactionDate = new Date(transactionTime);
+        return transactionDate >= new Date(startDate) && transactionDate <= new Date(endDate);
+    };
+    
+    const filteredData = coins.filter((item:any) => {
+        const periodMatch = filterByPeriod((item.completedTime));
+        const typeMatch = type === '전체' || item.type === (type === '매수' ? 'BUY' : 'SELL');
+        return periodMatch && typeMatch;
+    });
 
     return (
 
@@ -144,19 +151,22 @@ const TransactionComponent = () => {
                     </StyledHead>
                     <StyledBody>
                         {
-                            filteredData.map((a, i) => (
+                            filteredData.map((a: any, i:number) => {
+                                const totalCost = Math.floor(a.amount * a.price)
+
+                                return(
                                 <tr key={i}>
-                                    <td>{a.transactionTime}</td>
-                                    <td>{a.coinName}</td>
+                                    <td>{formatDateTime(a.completedTime)}</td>
+                                    <td>{a.kName}</td>
                                     <td
-                                        className={`${a.type === '매도' ? 'text-blue-700' : 'text-red-500'}`}
-                                    >{a.type}</td>
-                                    <td>{a.quantity}</td>
-                                    <td>{a.price}</td>
-                                    <td>{a.amount}</td>
-                                    <td>{a.orderTime}</td>
+                                        className={`${a.type === 'SELL' ? 'text-blue-700' : 'text-red-500'}`}
+                                    >{a.type === 'BUY' ? '매수' : '매도'}</td>
+                                    <td>{a.amount.toFixed(3)}</td>
+                                    <td>{a.price.toLocaleString()}</td>
+                                    <td>{totalCost.toLocaleString()}</td>
+                                    <td>{formatDateTime(a.orderTime)}</td>
                                 </tr>
-                            ))
+                            )})
                         }
                     </StyledBody>
                 </StyledTable>

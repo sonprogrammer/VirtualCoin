@@ -16,11 +16,11 @@ const AssetList = () => {
     const calculatedData = useCalculateAsset(assetData)
     if (!assetData) {
         return <div>Loading...</div>; 
-      }
+    }
     
     
-    const coins = assetData?.coins || []
-    // console.log('asse', coins.avgBuyPrice)
+    const coins = assetData?.coins.filter((c:any) => c.amount !== 0) || []
+    // console.log('coins', assetData)
     
     const {coinDetailPrice} =  calculatedData || {};
     // console.log('calculate', coinDetailPrice)

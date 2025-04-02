@@ -8,46 +8,37 @@ const TransactionSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    //거래한 코인
-    coinMarket:{
-        type: String,
-        required: true
-    },
-
-    // 매수 또는 매도 타입
-    type: {
-        type: String,
-        enum: ["BUY", "SELL"],
-        required: true
-    },
-    // 거래한 가격
-    price: {
-        type: Number,
-        required: true
-    },
-    //거래한 수량 
-    quantity: {
-        type: Number,
-        required: true
-    },
-
-    //체결 상태
-    status:{
-        type: String,
-        enum: ['COMPLETED', 'PENDING'],
-        default: 'COMPLETED'
-    },
-    //주문시간
-    orderTime: {
-        type: Date,
-        required: true
-    },
-
-    //체결시간
-    completedTime:{
-        type: Date,
-        default: Date.now
-    }
+    coins: [{
+        market: {
+            type: String,
+            required: true
+        },
+        type: {
+            type: String,
+            enum: ["BUY", "SELL"],
+            required: true
+        },
+        amount: {
+            type: Number,
+            required: true
+        },
+        price: {
+            type: Number,
+            required: true
+        },
+        kName: {
+            type: String,
+            required: true
+        },
+        orderTime: {
+            type: Date,
+            default: Date.now
+        },
+        completedTime: {
+            type: Date,
+            default: null
+        }
+    }],
 })
 
 const Transaction = mongoose.model("Transaction", TransactionSchema);
