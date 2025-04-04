@@ -3,6 +3,10 @@ import { StyledAllCancleBtn, StyledAmount, StyledBookBox, StyledBookBoxTitle, St
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import dayjs from 'dayjs';
+import { userState } from "../../../context/userState";
+import { useRecoilValue } from "recoil";
+import usePostDeleteOrder from "../../../hooks/usePostDeleteOrder";
+import useGetAllTransaction from "../../../hooks/useGetAllTransaction";
 
 
 interface Order {
@@ -36,16 +40,21 @@ const mockData = {
   ],
 };
 
-// TODO 코인 개당 얼마에 주문 걸어놨는지도 해야함
 
 const CoinBookForm = () => {
-  // const [isChecked, setIsChecked] = useState<boolean>(false)
   const [section, setSection] = useState<'미체결' | '체결'>('미체결')
   const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>({});
 
   // *목업데이터임
   const [mockDataState, setMockDataState] = useState<{ 미체결: Order[]; 체결: Order[] }>(mockData);
 
+  const user = useRecoilValue(userState);
+
+    
+  const {data =[]} = useGetAllTransaction(user._id)
+  const coins = data.allTransaction.orders
+
+  const { mutate: deleteOrder} = usePostDeleteOrder()
   
   const handleCheckboxChange = (id: number) => {
     setCheckedItems(prev => ({

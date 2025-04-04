@@ -1,5 +1,5 @@
 const express = require('express')
-const { getTransactions } = require('../Controller/transactionController')
+const { getTransactions, getPendingCoins } = require('../Controller/transactionController')
 
 const transactionRouter = express.Router()
 

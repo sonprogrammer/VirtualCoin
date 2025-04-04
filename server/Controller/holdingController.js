@@ -153,27 +153,27 @@ const checkOrder = async(userId, market, avgTradePrice, amount, type) => {
 }
 
 // *미체결 내용 전체 가져오기
-const getHoldingOrder = async(req, res)=> {
-    try {
-        const { userId } = req.params
+// const getHoldingOrder = async(req, res)=> {
+//     try {
+//         const { userId } = req.params
 
-        if(!userId){
-          return res.status(404).json({message: 'userId is required'})
-        }
-        const holdingOrders = await Hold.findOne({userId})
+//         if(!userId){
+//           return res.status(404).json({message: 'userId is required'})
+//         }
+//         const holdingOrders = await Hold.findOne({userId})
 
-        if (!holdingOrders) {
-          return res.status(404).json({ error: "No orders found" });
-        }
+//         if (!holdingOrders) {
+//           return res.status(404).json({ error: "No orders found" });
+//         }
 
-        const filteredOrders = holdingOrders.orders.filter(order => order.status === "PENDING");
+//         const filteredOrders = holdingOrders.orders.filter(order => order.status === "PENDING");
 
-        return res.status(200).json({message: 'success', filteredOrders})
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({message: 'internal server error'})
-    }
-}
+//         return res.status(200).json({message: 'success', filteredOrders})
+//     } catch (error) {
+//         console.error(error)
+//         return res.status(500).json({message: 'internal server error'})
+//     }
+// }
 
 // * 주문처리
 const processOrder = async(userId, market, orderPrice, amount, type, currentPrice) => {
@@ -448,5 +448,82 @@ const postSellReserve = async (req, res) => {
   }
 };
 
-module.exports = { postBuyReserve, postSellReserve, getHoldingOrder };
+// *미체결 내역 가져오기 
+const getPendingCoins = async(req, res) => {
+  try {
+      const userId = req.params.userId
+      // console.log('userId' ,userId)
+      const pending = await Hold.findOne({userId})
+
+      if(!pending){
+          return res.status(404).json({message: 'there is no pendingCoins'})
+      }
+
+      const pendingCoins = pending.orders.filter(order => order.status === 'PENDING')
+
+      return res.status(200).json(pendingCoins)
+
+
+      
+  } catch (error) {
+      console.error(error)
+      return res.status(500).json({message: 'internal server error'})
+  }
+}
+
+
+// *미체결 내역 주문 취소
+const postDeleteOrder = async(req, res) => {
+    try {
+      const { orderId } = req.body
+      const userId = req.params.userId
+      console.log('orderId', orderId)
+
+      if (!Array.isArray(orderId)) {
+        return res.status(400).json({ message: "orderId must be an array" });
+    }
+      
+      const pending = await Hold.findOne({userId})
+      
+
+
+      if(!pending){
+        return res.status(404).json({message: 'there is nno pending coins'})
+      }
+
+      const orderIds = new Set(orderId.map(id => id.toString()))
+
+      pending.orders = pending.orders.filter(order => !orderIds.has(order._id.toString()));
+      await pending.save();
+
+      return res.status(200).json({message: 'success', pending})
+      
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({message: 'internal server errro'})
+    }
+
+}
+
+
+// * 코인 거래내역 다 가져오기 - 체결이든 미체결이든 -> 디테일페이지내 예약확인에서 확인
+const getTransactionCoins = async(req, res) => {
+    try {
+      const userId = req.params.userId
+
+      const allTransaction = await Hold.findOne({userId})
+
+      if(!allTransaction){
+        return res.status(404).json({message: 'there is any transaction'})
+      }
+
+      return res.status(200).json({message:'succes',allTransaction})
+      
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({message: 'internal server error'})
+    }
+}
+
+module.exports = { postBuyReserve, postSellReserve, getPendingCoins, postDeleteOrder, getTransactionCoins };
 

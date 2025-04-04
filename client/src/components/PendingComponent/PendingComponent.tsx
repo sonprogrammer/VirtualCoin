@@ -1,46 +1,65 @@
 
 import dayjs from 'dayjs'
-import data from './mockupData'
+// import data from './mockupData'
 import { StyledContainer, StyledTable, StyledTableBody, StyledTableHead, StyledTop } from './style'
 import { useCallback, useMemo, useState } from 'react'
+import useGetPendingCoins from '../../hooks/useGetPendingCoins'
+import { useRecoilValue } from 'recoil'
+import { userState } from '../../context/userState'
+import usePostDeleteOrder from '../../hooks/usePostDeleteOrder'
 
 const PendingComponent = () => {
-    const [selectedOrder, setSelectedOrder] = useState<string[]>([])
+    const [selectedOrder, setSelectedOrder] = useState<Set<string>>(new Set())
     // TODO데이터 타입 바꿔야함 지금은 목업꺼라 아래가 가능
-    const [cancleOrder, setCancleOrder] = useState<string[]>([])
+    const [cancleOrder, setCancleOrder] = useState<Set<string>>(new Set())
     const [selectedAll, setSelectedAll] = useState<boolean>(false)
 
+    const user = useRecoilValue(userState);
 
-    // TODO ordertime으로 하는게 아니라 objectId로 하기
-    const handleRadioChange = useCallback((orderTime: string) => {
+    
+    const {data =[]} = useGetPendingCoins(user._id)
+    const { mutate: deleteOrder} = usePostDeleteOrder()
+
+
+    const handleRadioChange = useCallback((orderId: string) => {
         setSelectedOrder(prev => {
-            if(prev.includes(orderTime)){
-                return prev.filter(a => a !== orderTime)
-            }else{
-                return [...prev, orderTime]
-            }
+            const newSet = new Set(prev)
+            newSet.has(orderId) ? newSet.delete(orderId) : newSet.add(orderId)
+            return newSet
         })
     },[])
 
     const handleCancleClick = useCallback(() => {
-        setCancleOrder(prev => [...prev, ...selectedOrder])
-    },[selectedOrder])
+        if(selectedOrder.size === 0) return
+            deleteOrder({userId: user._id, orderId: Array.from(selectedOrder)}, {
+                onSuccess: () => {
+                    setCancleOrder(prev => new Set([...prev, ...selectedOrder]))
+                    setSelectedOrder(new Set())
+                }
+            })
+    },[selectedOrder,deleteOrder, user._id])
 
-    const handleCancleBtnClick = useCallback((orderTime: string, e: React.MouseEvent) => {
-        setCancleOrder(prev => [...prev, orderTime]); 
+    const handleCancleBtnClick = useCallback((orderId: string, e: React.MouseEvent) => {
+        deleteOrder({userId: user._id, orderId: [orderId]},{
+            onSuccess: () => {
+                setCancleOrder(prev => new Set([...prev, orderId]))
+            }
+        })
         e.stopPropagation(); 
-    }, []);
+    }, [deleteOrder, user._id]);
 
-    const filteredData = useMemo(() => data.filter(a => !cancleOrder.includes(a.orderTime)), [cancleOrder, data]);
+    const filteredData = useMemo(() => {
+
+        return data.filter((a:any) => !cancleOrder.has(a._id))
+    }, [cancleOrder, data]);
 
 
     const handleAllClick = useCallback(() =>{
-        const allOrders = filteredData.map(a => a.orderTime)
         if(selectedAll){
-            setSelectedOrder([])
+            setSelectedOrder(new Set())
             setSelectedAll(false)
         }else{
-            setSelectedOrder(allOrders)
+            setSelectedOrder(new Set(filteredData.map((a:any) => a._id)))
             setSelectedAll(true)
         }
     },[selectedAll, filteredData])
@@ -69,19 +88,19 @@ const PendingComponent = () => {
                         </tr>
                     </StyledTableHead>
                     <StyledTableBody>
-                        {filteredData.map((a, i) => {
+                        {filteredData?.map((a:any) => {
                             const formattedDays = dayjs(a.orderTime).format('YY.MM.DD'); 
                             const formattedTime = dayjs(a.orderTime).format('HH:mm'); 
                             return(
-                            <tr key={i} 
-                                onClick={() => handleRadioChange(a.orderTime)}
-                                className={`${selectedOrder.includes(a.orderTime) ? 'bg-gray-100' : ''}`}
+                            <tr key={a._id} 
+                                onClick={() => handleRadioChange(a._id)}
+                                className={`${selectedOrder.has(a.orderTime) ? 'bg-gray-100' : ''}`}
                                 >
                                 <td>
                                 <input type="checkbox"
-                                    checked={selectedOrder.includes(a.orderTime)}
+                                    checked={selectedOrder.has(a._id)}
                                     onChange={(e) => {
-                                        handleRadioChange(a.orderTime)
+                                        handleRadioChange(a._id)
                                         e.stopPropagation()}}
                                         onClick={(e) => e.stopPropagation()}
                                     />
@@ -90,16 +109,16 @@ const PendingComponent = () => {
                                     <p>{formattedDays}</p>    
                                     <p>{formattedTime}</p>
                                 </td>
-                                <td>{a.coin}</td>
+                                <td>{a.coinKName}</td>
                                 <td
-                                    className={`${a.tradeType === '매도' ? 'text-blue-600' : 'text-red-500'}`}
-                                >{a.tradeType}</td>
-                                <td>{a.orderPrice}</td>
-                                <td>{a.orderQuantity}</td>
-                                <td>{a.unfilledQuantity}</td>
+                                    className={`${a.type === 'SELL' ? 'text-blue-600' : 'text-red-500'}`}
+                                >{a.type === 'BUY' ? '매수' : '매도'}</td>
+                                <td>{a.orderPrice.toLocaleString()}</td>
+                                <td>{a.orderQuantity.toLocaleString()}</td>
+                                <td>{a.orderQuantity.toLocaleString()}</td>
                                 <td>
                                     <button 
-                                        onClick={(e) => {handleCancleBtnClick(a.orderTime, e)
+                                        onClick={(e) => {handleCancleBtnClick(a._id, e)
                                         }}>주문취소</button>
                                 </td>
                             </tr>

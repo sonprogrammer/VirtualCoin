@@ -1,6 +1,5 @@
 
 import { StyledDivider, StyledTbBox, StyledTbContainer, StyledTbContent, StyledTbContentSmBox, StyledTbTitle, StyledTbTitleCoinName, StyledTbTitleContents } from './style'
-import coinData from './mockupData'
 import useGetAssetData from '../../hooks/useGetAssetData'
 import useCalculateAsset from '../../hooks/useCalculateAsset'
 
