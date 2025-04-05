@@ -11,7 +11,7 @@ const getTransaction = async(userId:string) => {
 
 const useGetAllTransaction = (userId: string) => {
     return useQuery({
-        queryKey: ['allTransaction'],
+        queryKey: ['allTransaction', userId],
         queryFn: () => getTransaction(userId)
     })
 }

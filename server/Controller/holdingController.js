@@ -510,8 +510,10 @@ const postDeleteOrder = async(req, res) => {
 const getTransactionCoins = async(req, res) => {
     try {
       const userId = req.params.userId
+      console.log('userasdfasd', userId)
 
       const allTransaction = await Hold.findOne({userId})
+      console.log('alltran', allTransaction)
 
       if(!allTransaction){
         return res.status(404).json({message: 'there is any transaction'})
