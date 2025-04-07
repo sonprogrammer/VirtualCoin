@@ -20,8 +20,10 @@ const usePostDeleteOrder = () => {
         mutationFn: ({userId, orderId}: {userId: string; orderId: string[]}) => {
             return deleteOrder(userId, orderId)
         },
-        onSuccess: async(data) => {
-            await queryClient.invalidateQueries({queryKey: ["pendingOrders"]})
+        onSuccess: async(data, variable) => {
+            const userId = variable.userId
+            await queryClient.invalidateQueries({queryKey: ["pendingCoins", userId]})
+            await queryClient.refetchQueries({ queryKey: ['pendingCoins', userId] });
             console.log('미체결 내용 삭제 성공', data)
         },
         onError: (error) => {

@@ -22,7 +22,7 @@ interface CoinTradeFormProps{
 
 
 const CoinTradeForm = ({name} : CoinTradeFormProps) => {
-  const {data, isLoading} = useGetAssetData()
+  const {data, isLoading, refetch} = useGetAssetData()
   const { coinId } = useParams()
   const coin = useRecoilValue(CoinPrice)
   const user = useRecoilValue(userState)
@@ -32,8 +32,11 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
 const { mutate: postBuyTrade} = usePostBuyTrade()
 const { mutate: postSellTrade} = usePostSellTrade()
 
+// console.log('data', data)
+
 
   const cash = data?.cash || 0
+  // console.log('cash', cash)
 
 
     //* 코인 현재가격
@@ -43,7 +46,6 @@ const { mutate: postSellTrade} = usePostSellTrade()
     // * 주문수량
     const [orderAmount, setOrderAmount] = useState<number>(0);
     // * 팔수 있는양(갖고 있는 코인수량) - 매도용
-    // TODO 이것도 디비에서 가져와야함
     const [availableAmount, setAvailableAmount] = useState<number>(0)
 
 
@@ -97,6 +99,7 @@ const { mutate: postSellTrade} = usePostSellTrade()
             userId: user._id,
             cash: cash
           })
+          refetch()
         }
       } else if (name === '매수') {
         if(cash < total){
@@ -117,6 +120,7 @@ const { mutate: postSellTrade} = usePostSellTrade()
             userId: user._id,
             cash: cash
           });
+          refetch()
         } else {
           toast.error('수량을 확인하세요.');
         }

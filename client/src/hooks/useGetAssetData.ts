@@ -31,15 +31,14 @@ const useGetAssetData =  () => {
         // }
         
     }
-    const { data, isLoading, error } = useQuery({
+    const { data, isLoading, error, refetch } = useQuery({
         queryKey: ['asset', user._id],
         queryFn: fetchData,
-        enabled: !!user._id
     })
     // console.log('data', data) --> cash랑 코인배열들어옴
 
     
-    return { data, isLoading, error}
+    return { data, isLoading, error, refetch}
 
     
 }

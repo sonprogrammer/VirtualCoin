@@ -41,7 +41,6 @@ const NavbarComponent = () => {
         availableOrder
     } =  calculatedData || {};
 
-    // console.log('totalasset, totalprofitloss', totalAssets, totalProfitLoss)
 
   const handleSearchModalClose = () => {
     setSearchModal(false)

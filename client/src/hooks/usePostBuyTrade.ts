@@ -45,10 +45,13 @@ const usePostBuyTrade = () => {
             }
             
         },
-        onSuccess: async (data) => {
+        onSuccess: async (data,variable) => {
             console.log('usePostBuyTrade훅 성공', data)
+
+            const { userId} = variable
+
             await queryClient.invalidateQueries({ queryKey : ['holdingOrders']})
-            await queryClient.invalidateQueries({queryKey :['userAssets']})
+            await queryClient.invalidateQueries({queryKey :['asset', userId]})
         },
         onError: (error) => {
             console.error('usePostBuyTrade훅 실패', error)

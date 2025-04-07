@@ -19,43 +19,23 @@ interface Order {
   completedTime?: string; 
 };
 
-// const mockData = {
-//   미체결: [
-//     { id: 1, name: '비트코인', type: '매수', amount: 2, price: 72000000 },
-//     { id: 2, name: '이더리움', type: '매도', amount: 5, price: 3500000 },
-//     { id: 3, name: '리플', type: '매수', amount: 100, price: 950 },
-//     { id: 4, name: '비트코인', type: '매수', amount: 2, price: 72000000 },
-//     { id: 5, name: '이더리움', type: '매도', amount: 5, price: 3500000 },
-//     { id: 6, name: '리플', type: '매수', amount: 100, price: 950 },
-//     { id: 7, name: '비트코인', type: '매수', amount: 2, price: 72000000 },
-//     { id: 8, name: '이더리움', type: '매도', amount: 5, price: 3500000 },
-//     { id: 9, name: '리플', type: '매수', amount: 100, price: 950 },
-//     { id: 10, name: '비트코인', type: '매수', amount: 2, price: 72000000 },
-//     { id: 11, name: '이더리움', type: '매도', amount: 5, price: 3500000 },
-//     { id: 12, name: '리플', type: '매수', amount: 100, price: 950 },
-//   ],
-//   체결: [
-//     { id: 4, name: '비트코인', type: '매도', amount: 1, price: 73000000, date: '2025-02-12T10:00:00Z' },
-//     { id: 5, name: '이더리움', type: '매수', amount: 3, price: 3400000, date: '2025-02-11T14:30:00Z' },
-//     { id: 6, name: '리플', type: '매도', amount: 500, price: 970, date: '2025-02-10T09:00:00Z' },
-//   ],
-// };
 
 
 const CoinBookForm = () => {
   const [section, setSection] = useState<'미체결' | '체결'>('미체결')
-  const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>({});
+  const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
 
-  
+  // console.log('checkitem', checkedItems)
   const user = useRecoilValue(userState);
   
   
-  const {data =[]} = useGetAllTransaction(user._id)
+  const {data =[], refetch} = useGetAllTransaction(user._id)
   const coins = data?.allTransaction?.orders || [];
   // console.log('coins', coins)
 
   const [coinStatus, setCoinStatus] = useState<{ 미체결: Order[]; 체결: Order[] }>(coins);
 
+  // console.log('coinstatus', coinStatus)
   const { mutate: deleteOrder} = usePostDeleteOrder()
 
   useEffect(() => {
@@ -64,7 +44,7 @@ const CoinBookForm = () => {
     setCoinStatus({미체결: holding, 체결: completed})
   },[coins])
   
-  const handleCheckboxChange = (id: number) => {
+  const handleCheckboxChange = (id: string) => {
     setCheckedItems(prev => ({
       ...prev,
       [id]: !prev[id],
@@ -76,28 +56,30 @@ const CoinBookForm = () => {
   }
 
   const handleDeleteAll = () => {
-    setCoinStatus(prev => {
-      const newData = {
-        ...prev,
-        [section]: prev[section].filter(order => !checkedItems[order._id]) 
-      };
+    const selectedIds = Object.entries(checkedItems)
+      .filter(([_, checked]) => checked)
+      .map(([id]) => id)
 
-      return newData;
-    });
-  
-    setCheckedItems({});
+      if(selectedIds.length === 0) return
+
+      deleteOrder(
+        {userId: user._id, orderId: selectedIds},
+        {onSuccess: () => { 
+          refetch(); 
+          setCheckedItems({})
+        }}
+      )
+    
   }
 
   const handleDeleteClick = (id: string) => {
-    setCoinStatus(prev => {
-      const newData = {
-        ...prev,
-        [section]: prev[section].filter((order) => order._id !== id)
-      };
-      deleteOrder([id])
-      console.log(newData); 
-      return newData;
-    });
+      deleteOrder(
+        {userId: user._id, orderId:[id]},
+        {onSuccess: () => { 
+          refetch(); 
+          setCheckedItems({})
+        }}
+      )
   }
 
   
@@ -106,9 +88,9 @@ const CoinBookForm = () => {
     setSection(page)
   }
   useEffect(() => {
-    console.log('checking', checkedItems)
+    // console.log('checking', checkedItems)
 
-  }, [checkedItems, coinStatus]);
+  }, [checkedItems, coinStatus,deleteOrder]);
   
 
  
@@ -181,13 +163,9 @@ const CoinBookForm = () => {
         <button onClick={handleDeleteAll}>예약 취소</button>
       </StyledAllCancleBtn>
       ) : (
-        <StyledAllCancleBtn>
-        <button onClick={handleUnCheckBox}>
-            <FontAwesomeIcon icon={faRotateRight} />
-            <span>초기화</span>
-        </button>
-        <button onClick={handleDeleteAll}>선택 삭제</button>
-      </StyledAllCancleBtn>
+        <>
+
+      </>
       )
       }
 
