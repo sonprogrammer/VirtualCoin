@@ -478,23 +478,44 @@ const postDeleteOrder = async(req, res) => {
       const { orderId } = req.body
       const userId = req.params.userId
       console.log('orderId', orderId)
+      // orderId [ '67f5006e9590fc5178546676' ]
 
       if (!Array.isArray(orderId)) {
         return res.status(400).json({ message: "orderId must be an array" });
     }
       
       const pending = await Hold.findOne({userId})
+      const userAsset = await Asset.findOne({userId})
       
+      if(!userAsset){
+        return res.status(404).json({message: 'there is no user info'})
+      }
 
+      const orderIds = new Set(orderId.map(id => id.toString()))
+
+      // 현재 각각의 orderId의 orderPrice와 orderQuantity를 다시 캐쉬에 담아줘야함
+      //
+
+      const deleteOrders = pending.orders.filter(order => orderIds.has(order._id.toString()))
+
+      const refund = deleteOrders.reduce((acc, order) => {
+        return acc + order.orderPrice * order.orderQuantity
+      }, 0)
+
+      userAsset.cash += refund
+      await userAsset.save()
+      
 
       if(!pending){
         return res.status(404).json({message: 'there is nno pending coins'})
       }
 
-      const orderIds = new Set(orderId.map(id => id.toString()))
 
       pending.orders = pending.orders.filter(order => !orderIds.has(order._id.toString()));
       await pending.save();
+      console.log('pending', pending)
+
+      
 
       return res.status(200).json({message: 'success', pending})
       
