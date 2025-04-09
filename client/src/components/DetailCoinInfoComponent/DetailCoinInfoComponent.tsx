@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import useGetCoins from "../../hooks/useGetCoins"
-import { StyledCLogoImg, StyledCoinInfo, StyledConInfoWrapper, StyledContainer, StyledLeftInfo, StyledPrices, StyledRateNumbers, StyledRates, StyledTitlePrice } from "./style";
+import { StyledCLogoImg, StyledCoinInfo, StyledConInfoWrapper, StyledContainer, StyledLeftInfo, StyledLikedBtn, StyledPrices, StyledRateNumbers, StyledRates, StyledTitlePrice } from "./style";
 import { useRecoilState } from "recoil";
 import { coinKName } from "../../context/coinKName";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-regular-svg-icons';
+import { faS, faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
 
 interface CoinName {
     market: string;
@@ -108,6 +110,20 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
                      </div>
                  </StyledRates>
 
+                {/* TODO 즐겨찾기 추가 즐겨찾기 되어있으면 fullStar아니면 faStar */}
+                {/* <FontAwesomeIcon
+                      icon={fullStar}
+                      onClick={() => handleStarClick(coin.market)}
+                      className="text-yellow-400"
+                    />
+                  ) : (
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      onClick={() => handleStarClick(coin.market)}
+                    /> */}
+                <StyledLikedBtn>
+                    <FontAwesomeIcon icon={faStar} />
+                </StyledLikedBtn>
              </StyledCoinInfo>
              </StyledConInfoWrapper>
              </>

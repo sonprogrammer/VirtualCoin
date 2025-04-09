@@ -21,6 +21,7 @@
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "lightweight-charts": "^5.0.3",
+    "lodash": "^4.17.21",
     "postcss": "^8.5.1",
     "postcss-import": "^16.1.0",
     "randomcolor": "^0.6.2",
@@ -42,6 +43,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@types/lodash": "^4.17.16",
     "@types/node": "^22.13.9",
     "@types/randomcolor": "^0.5.9",
     "@types/react": "^18.3.18",

@@ -47,7 +47,7 @@ const CoinDetailPage = () => {
 
       <StyledChart className="차트 w-full">
       {/* //*TODO 백엔드 서버에서 프록시 서버짜고 다시 만들기 (cors에러 뜸) */}
-      {/* <CoinChartGraphComponent /> */}
+      <CoinChartGraphComponent />
         차트
       </StyledChart>
 

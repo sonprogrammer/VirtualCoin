@@ -240,3 +240,15 @@ export const StyledRateNumbers = styled.p`
         `}
     }
 `
+
+export const StyledLikedBtn = styled.div`
+    ${tw`
+        flex
+        items-center
+        border-2
+        p-1
+        rounded-md
+        w-[30px]
+        h-[30px]
+    `}
+`

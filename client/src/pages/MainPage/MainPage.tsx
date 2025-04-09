@@ -1,7 +1,6 @@
 
 
 import { CoinChartComponent } from '../../components'
-import { LoginDoubleCheckModalComponent } from '../../components/LoginDoubleCheckModalComponent'
 import { StyledContainer } from './style'
 
 const MainPage = () => {
