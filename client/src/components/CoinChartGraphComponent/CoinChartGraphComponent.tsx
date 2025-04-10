@@ -21,24 +21,25 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const CoinChartGraphComponent = () => {
-    const { coinId } = useParams()
+  const { coinId } = useParams()
 
-    const prevOldestTime = useRef<number | null>(null);
+  const prevOldestTime = useRef<number | null>(null)
 
-    const [unit, setUnit] = useState<number>(15)
-    const chartContainerRef = useRef<HTMLDivElement | null>(null);
-    const chartRef = useRef<IChartApi | null>(null); // ✅ 차트 객체 참조
-    const candleSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null); // ✅ 캔들 시리즈 참조
+  const [type, setType] = useState<'minutes' | 'days' | 'weeks' | 'months'>('minutes');
+  const [unit, setUnit] = useState<number>(15) //minute 용
+  const chartContainerRef = useRef<HTMLDivElement | null>(null)
+  const chartRef = useRef<IChartApi | null>(null)
+  const candleSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null)
 
 
-    const {
-      data,
-      fetchNextPage,
-      hasNextPage,
-      isFetchingNextPage,
-      isLoading,
-      isError,
-    } = useGetChartData(coinId ?? '', 'minutes', unit);
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  } = useGetChartData(coinId ?? '', type, unit);
 
 
 
@@ -78,39 +79,39 @@ const CoinChartGraphComponent = () => {
     chartRef.current = chart;
     candleSeriesRef.current = series;
 
-   const timeScale = chart.timeScale()
+    const timeScale = chart.timeScale()
 
-   const debouncedFetch = debounce(() => {
-    if (hasNextPage) {
-      fetchNextPage();
+    const debouncedFetch = debounce(() => {
+      if (hasNextPage) {
+        fetchNextPage();
+      }
+    }, 1000);
+
+    const onVisibleRangeChange = (range: IRange<Time> | null) => {
+      if (!range || !range.from || !hasNextPage) return
+
+      const minTime = range.from
+      const currentData = candleSeriesRef.current?.data() ?? []
+      if (currentData.length === 0) return
+
+      const oldestCandle = currentData[0]
+      if (Number(minTime) <= Number(oldestCandle.time) && prevOldestTime.current !== Number(oldestCandle.time)) {
+        debouncedFetch()
+        prevOldestTime.current = Number(oldestCandle.time)
+      }
     }
-  }, 1000);
-    
-   const onVisibleRangeChange = (range: IRange<Time> | null) => {
-    if(!range || !range.from || !hasNextPage) return
 
-    const minTime = range.from
-    const currentData = candleSeriesRef.current?.data() ?? []
-    if(currentData.length === 0) return
+    timeScale.subscribeVisibleTimeRangeChange(onVisibleRangeChange)
 
-    const oldestCandle = currentData[0]
-    if(Number(minTime) <=Number(oldestCandle.time) && prevOldestTime.current !== Number(oldestCandle.time)){
-      debouncedFetch()
-      prevOldestTime.current = Number(oldestCandle.time)
+    return () => {
+      timeScale.unsubscribeVisibleTimeRangeChange(onVisibleRangeChange)
+      chart.remove()
     }
-   }
-
-   timeScale.subscribeVisibleTimeRangeChange(onVisibleRangeChange)
-
-   return() => {
-    timeScale.unsubscribeVisibleTimeRangeChange(onVisibleRangeChange)
-    chart.remove()
-   }
   }, [hasNextPage]);
 
 
   useEffect(() => {
-    if(!candleSeriesRef.current || !data) return
+    if (!candleSeriesRef.current || !data) return
 
     const combinedData = data.pages.flat() as Candle[]
 
@@ -119,8 +120,8 @@ const CoinChartGraphComponent = () => {
     for (const candle of combinedData) {
       uniqueDataMap.set(candle.time, candle)
     }
-    
-  
+
+
 
 
     function convertToKSTTimestamp(originalTime: number): number {
@@ -130,50 +131,64 @@ const CoinChartGraphComponent = () => {
     }
 
     const filtered = Array.from(uniqueDataMap.values())
-    .map((candle) => {
-      const adjustedTime = convertToKSTTimestamp(candle.time) // ✅ KST로 조정
+      .map((candle) => {
+        const adjustedTime = convertToKSTTimestamp(candle.time)
 
-      const updatedCandle = {
-        ...candle,
-        time: adjustedTime,
-      };
+        const updatedCandle = {
+          ...candle,
+          time: adjustedTime,
+        };
 
-      return updatedCandle;
-    })
-    .sort((a, b) => a.time - b.time);
+        return updatedCandle;
+      })
+      .sort((a, b) => a.time - b.time);
 
-  // console.log('✅ Filtered data (KST 적용):', filtered);
+   
 
-      // 디버깅을 위한 로깅
-    // console.log('차트 데이터 샘플 (첫 3개):', filtered.slice(0, 3).map(candle => {
-    //   const date = new Date(candle.time * 1000);
-    //   return {
-    //     ...candle,
-    //     readableTime: date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
-    //   };
-    // }));
-  
     candleSeriesRef.current.setData(filtered)
-  },[data])
+  }, [data])
 
 
-  const handleChangeUnit = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedUnit = Number(e.target.value)
-    setUnit(selectedUnit)
-  }
+  const resizeChart = () => {
+    if (chartContainerRef.current && chartRef.current) {
+      chartRef.current.applyOptions({
+        width: chartContainerRef.current.clientWidth,
+      });
+    }
+  };
+  useEffect(() => {
+    window.addEventListener('resize', resizeChart);
+    return () => {
+      window.removeEventListener('resize', resizeChart);
+    };
+  }, []);
 
   return (
     <div>
       <div>
         <label htmlFor="unit">차트</label>
-        <select id="unit" value={unit} onChange={handleChangeUnit}>
-          <option value="1">1분</option>
-          <option value="15">15분</option>
-          <option value="30">30분</option>
-          <option value="60">1시간</option>
+        <select id="type" value={type}
+         onChange={(e) => setType(e.target.value as 'minutes' | 'days' | 'weeks' | 'months')}
+        >
+          <option value="minutes">분</option>
+          <option value="days">일</option>
+          <option value="weeks">주</option>
+          <option value="months">월</option>
+
         </select>
+        {type === 'minutes' && (
+          <>
+            <label htmlFor="unit">단위</label>
+            <select id="unit" value={unit} onChange={(e) => setUnit(Number(e.target.value))}>
+              <option value="1">1분</option>
+              <option value="15">15분</option>
+              <option value="30">30분</option>
+              <option value="60">1시간</option>
+            </select>
+          </>
+        )}
       </div>
-    <div ref={chartContainerRef} style={{ width: "100%", height: "500px" }} />
+      <div ref={chartContainerRef} style={{ width: "100%", height: "500px" }} />
 
     </div>
   );

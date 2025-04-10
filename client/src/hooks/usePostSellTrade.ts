@@ -13,18 +13,18 @@ interface SellOrder {
     cash: number;
   }
 
-const postCoinSell = async({ market, name, amount, avgSellPrice, userId, cash  }: SellOrder) => {
-    const res = await axios.post(`http://localhost:3000/api/asset/${market}/sell`,{
-        name,
-        amount,
-        avgSellPrice,
-        userId,
-        cash,
-        // limitPrice: type === 'limit' ? limitPrice : undefined
-    })
-    console.log('usePostSellTrade', res.data)
-    return res.data
-}
+// const postCoinSell = async({ market, name, amount, avgSellPrice, userId, cash  }: SellOrder) => {
+//     const res = await axios.post(`http://localhost:3000/api/asset/${market}/sell`,{
+//         name,
+//         amount,
+//         avgSellPrice,
+//         userId,
+//         cash,
+//         // limitPrice: type === 'limit' ? limitPrice : undefined
+//     })
+//     console.log('usePostSellTrade', res.data)
+//     return res.data
+// }
 
 const postHolding = async({market, name, amount, avgSellPrice, userId}: {market: string, name: string, amount: number, avgSellPrice: number, userId: string}) => {
     const res = await axios.post(`http://localhost:3000/api/holding/${market}/sell-reserve`,{
@@ -48,7 +48,7 @@ const usePostSellTrade = () => {
                 throw new Error('can not find current price')
             }
             if(curPrice >= order.avgSellPrice){
-                return postCoinSell(order)
+                return postHolding(order)
             }else{
                 return postHolding(order)
             }

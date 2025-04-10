@@ -35,6 +35,7 @@ const getAssetData = async(req, res) => {
 // *매수하기
 const postBuyCoins = async(req, res) => {
     try {
+        //name은 한국이름
         const { name, amount, avgBuyPrice, userId, cash} = req.body
         const market = req.params.coinId
 
@@ -63,6 +64,16 @@ const postBuyCoins = async(req, res) => {
         await userAsset.save()
 
         const transaction = await Transaction.findOne({userId})
+        let type = ''
+        if(avgBuyPrice) { type = 'BUY'}
+        const newTransaction = { 
+            market,
+            kName: name,
+            price: avgBuyPrice,
+            type: type,
+            amount,
+            // orderTime:
+        }
 
         if(!transaction){
             transaction = new Transaction({ userId, coins: []})

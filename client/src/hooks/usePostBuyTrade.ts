@@ -6,17 +6,17 @@ import { useRecoilState } from "recoil"
 
 
 
-const postCoinBuy = async({ market, name, amount, avgBuyPrice, userId, cash }: { market: string, name: string, amount: number, avgBuyPrice: number, userId: string, cash: number }) => {
-    const res = await axios.post(`http://localhost:3000/api/asset/${market}/buy`,{
-        amount,
-        avgBuyPrice,
-        name,
-        userId,
-        cash
-    })
-    console.log('postby hook res', res.data)
-    return res.data
-}
+// const postCoinBuy = async({ market, name, amount, avgBuyPrice, userId, cash }: { market: string, name: string, amount: number, avgBuyPrice: number, userId: string, cash: number }) => {
+//     const res = await axios.post(`http://localhost:3000/api/asset/${market}/buy`,{
+//         amount,
+//         avgBuyPrice,
+//         name,
+//         userId,
+//         cash
+//     })
+//     console.log('postby hook res', res.data)
+//     return res.data
+// }
 
 const postHolding = async({market, name, amount, avgBuyPrice, userId}: {market: string, name: string, amount: number, avgBuyPrice: number, userId: string}) => {
     const res = await axios.post(`http://localhost:3000/api/holding/${market}/buy-reserve`,{
@@ -39,7 +39,8 @@ const usePostBuyTrade = () => {
                 throw new Error('can not find current price')
             }
             if(curPrice <= avgBuyPrice){
-                return postCoinBuy({market, name, amount, avgBuyPrice, userId, cash})
+                return postHolding({market, name, amount, avgBuyPrice, userId})
+                // return postCoinBuy({market, name, amount, avgBuyPrice, userId, cash})
             }else{
                 return postHolding({market, name, amount, avgBuyPrice, userId})
             }

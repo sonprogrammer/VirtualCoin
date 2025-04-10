@@ -22,9 +22,9 @@ const TransactionComponent = () => {
 
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>{error.message}</p>;
-    const coins = data.coins
+    const coins = data?.coins
     
-
+ 
     
 const formatDateTime = (dateString: string) => {
     return dayjs(dateString).format('YY.MM.DD HH:mm');
@@ -88,7 +88,7 @@ const formatDateTime = (dateString: string) => {
         return transactionDate >= new Date(startDate) && transactionDate <= new Date(endDate);
     };
     
-    const filteredData = coins.filter((item:any) => {
+    const filteredData = coins?.filter((item:any) => {
         const periodMatch = filterByPeriod((item.completedTime));
         const typeMatch = type === '전체' || item.type === (type === '매수' ? 'BUY' : 'SELL');
         return periodMatch && typeMatch;
@@ -151,7 +151,7 @@ const formatDateTime = (dateString: string) => {
                     </StyledHead>
                     <StyledBody>
                         {
-                            filteredData.map((a: any, i:number) => {
+                            filteredData?.map((a: any, i:number) => {
                                 const totalCost = Math.floor(a.amount * a.price)
 
                                 return(

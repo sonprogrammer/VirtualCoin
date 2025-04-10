@@ -245,10 +245,12 @@ export const StyledLikedBtn = styled.div`
     ${tw`
         flex
         items-center
+        justify-center
         border-2
         p-1
         rounded-md
         w-[30px]
         h-[30px]
     `}
+    
 `

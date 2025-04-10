@@ -9,16 +9,17 @@ const Hold = require("../Models/holdingModel");
 const getTransactions = async(req, res) => {
     try {
         const userId = req.params.userId
+
+        
+        console.log('res', userId)
         if(!userId){
             return res.status(404).json({message: 'userId not found'})
         }
 
         const transaction = await Transaction.findOne({userId})
 
-        if(!transaction){
-            return res.status(404).json({message: 'there is no transaction'})
-        }
-        return res.status(200).json(transaction)
+       
+        return res.status(200).json({message: 'success', transaction})
     } catch (error) {
         console.error(error)
         return res.status(500).json({message: 'internal server error'})

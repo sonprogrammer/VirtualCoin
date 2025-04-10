@@ -93,6 +93,27 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
                 <StyledCLogoImg>
                  <img src={coinLogo} alt="CoinLogo" />
                  <p>{coinName}</p>
+                 <StyledLikedBtn>
+                {isStar() ? 
+                    (<>
+                        <FontAwesomeIcon
+                            icon={fullStar}
+                            onClick={() => handleLikedCoin()}
+                            className="text-yellow-400"
+                            size="xl"
+                        />
+                    </>
+                  ) : (
+                    <>
+                        <FontAwesomeIcon
+                            icon={faStar}
+                            onClick={() => handleLikedCoin()}
+                            size="xl"
+                        />
+                    </>
+                  )
+                    }
+                </StyledLikedBtn>
                 </StyledCLogoImg>
 
                 <StyledTitlePrice>
@@ -111,6 +132,7 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
                         <span>{coinInfo?.change_price.toLocaleString()}</span>
                     </p>
                 </StyledTitlePrice>
+                    
              </StyledLeftInfo>
 
 
@@ -146,30 +168,12 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
                  </StyledRates>
                 
                     
-                <StyledLikedBtn>
-                {isStar() ? 
-                    (<>
-                        <FontAwesomeIcon
-                            icon={fullStar}
-                            onClick={() => handleLikedCoin()}
-                            className="text-yellow-400"
-                        />
-                    </>
-                  ) : (
-                    <>
-                        <FontAwesomeIcon
-                            icon={faStar}
-                            onClick={() => handleLikedCoin()}
-                            className="text-red-400"
-                        />
-                    </>
-                  )
-                    }
-                </StyledLikedBtn>
+                
              </StyledCoinInfo>
              </StyledConInfoWrapper>
              </>
         )}
+        
          </StyledContainer>
   )
 }
