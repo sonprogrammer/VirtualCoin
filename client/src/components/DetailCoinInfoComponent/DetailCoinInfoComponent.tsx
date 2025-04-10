@@ -5,7 +5,9 @@ import { useRecoilState } from "recoil";
 import { coinKName } from "../../context/coinKName";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
-import { faS, faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
+import useLikeToggle from "../../hooks/useLikeToggle";
+import useGetLikedCoins from "../../hooks/useGetLikeCoins";
 
 interface CoinName {
     market: string;
@@ -32,6 +34,9 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
     const [coinName, setCoinName] = useState<string>('');
     const { data: coinData, isLoading, error } = useGetCoins();
     const [kName , setKName] = useRecoilState(coinKName)
+    const [liked, setLiked] = useState<string[]>([])
+    const { likeToggle } = useLikeToggle();
+    const { likedCoins } = useGetLikedCoins()
 
 
     useEffect(() => {
@@ -44,6 +49,36 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
         }
     }, [coinId, coinData]);
 
+    
+    // useEffect(() => {
+    //     //만약 좋아요한 코인에 현재 디테일페이지 코인이 있다면 setLiked를 true로 변환
+    //     if(likedCoins?.includes(coinId)){
+    //         console.log('likedCoins', likedCoins)
+    //         setLiked(true)
+    //         // console.log(liked)
+    //     }else{
+    //         setLiked(false)
+    //     }
+    // },[liked, likedCoins])
+
+    useEffect(() => {
+        setLiked(likedCoins || [])
+    },[likedCoins])
+    
+
+    // 좋아요 등록, 취소 -> 
+    const handleLikedCoin = () =>{
+        likeToggle(coinId)
+        setLiked((prev) => {
+            if(prev.includes(coinId)){
+                return prev.filter(coin => coin !== coinId)
+            }else{
+                return [...prev, coinId]
+            }
+        })
+    }
+
+    const isStar = () => liked.includes(coinId)
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
@@ -109,20 +144,27 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
                          </StyledRateNumbers>
                      </div>
                  </StyledRates>
-
-                {/* TODO 즐겨찾기 추가 즐겨찾기 되어있으면 fullStar아니면 faStar */}
-                {/* <FontAwesomeIcon
-                      icon={fullStar}
-                      onClick={() => handleStarClick(coin.market)}
-                      className="text-yellow-400"
-                    />
-                  ) : (
-                    <FontAwesomeIcon
-                      icon={faStar}
-                      onClick={() => handleStarClick(coin.market)}
-                    /> */}
+                
+                    
                 <StyledLikedBtn>
-                    <FontAwesomeIcon icon={faStar} />
+                {isStar() ? 
+                    (<>
+                        <FontAwesomeIcon
+                            icon={fullStar}
+                            onClick={() => handleLikedCoin()}
+                            className="text-yellow-400"
+                        />
+                    </>
+                  ) : (
+                    <>
+                        <FontAwesomeIcon
+                            icon={faStar}
+                            onClick={() => handleLikedCoin()}
+                            className="text-red-400"
+                        />
+                    </>
+                  )
+                    }
                 </StyledLikedBtn>
              </StyledCoinInfo>
              </StyledConInfoWrapper>

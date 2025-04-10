@@ -21,6 +21,7 @@ const usePostRecentCoin = () => {
             } else {
 
                 const guestData = JSON.parse(localStorage.getItem('user') || '{}');
+          
 
                 if(guestData && guestData.isGuest){
                     const recentCoins = guestData.recentCoins || []

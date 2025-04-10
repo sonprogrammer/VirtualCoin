@@ -132,6 +132,13 @@ const NavbarComponent = () => {
     const handleLogout = () => {
         localStorage.removeItem('user')
         localStorage.removeItem('asset')
+
+        Object.keys(localStorage).forEach((key) => {
+            if(key.startsWith('kakao')){
+                localStorage.removeItem(key)
+            }
+        })
+
         setLogoutModal(false);
         navigate('/')
     }

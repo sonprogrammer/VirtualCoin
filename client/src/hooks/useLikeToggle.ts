@@ -20,9 +20,10 @@ const useLikeToggle = () => {
     return res.data
   }
 
-  const {mutate } = useMutation({
+  const {mutate } = useMutation({ 
     mutationFn: likeToggleKakao,
     onSuccess: () => {
+      console.log('카카오유저 좋아요성공')
       queryClient.invalidateQueries({ queryKey: ['likeCoins', false] })
     },
     onError: (error) => { 
@@ -46,7 +47,6 @@ const useLikeToggle = () => {
     const updatedUser = { ...storedUser, interestedCoins: updatedLikeCoins}
     localStorage.setItem('user', JSON.stringify(updatedUser))
 
-    queryClient.invalidateQueries({queryKey: ['likeCoins', true]})
   }
 
   const likeToggle = (coinId: string) => {

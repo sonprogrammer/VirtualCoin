@@ -21,7 +21,7 @@ const useKakaoLogin = () => {
       { withCredentials: true }
     );
 
-      if (res.status === 200) {
+      if (res.status === 200) { 
         const userData = res.data.user
         console.log('userData', userData)
         setUser(userData)

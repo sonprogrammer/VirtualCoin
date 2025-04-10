@@ -3,9 +3,8 @@ import { useEffect, useState } from 'react'
 import { StyledBox, StyledBtns, StyledContainer, StyledGuestBtn, StyledLoginBtn, StyledLogo, StyledText } from './style'
 import { GuidComponent } from '../../components';
 import KakaoLogin from 'react-kakao-login';
-import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import useKakaoLogin from '../../hooks/useKakaoLogin';
 
 
