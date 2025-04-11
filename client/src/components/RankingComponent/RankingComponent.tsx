@@ -2,15 +2,28 @@
 import { useEffect, useState } from 'react'
 import { StyledBox, StyledBtns, StyledContainer, StyledTable, StyledTableBody, StyledTableHead, StyledTitle } from './style'
 import useGetRankData from '../../hooks/useGetRankData'
+import useGetAllUserAssetData from '../../hooks/useGetAllUserAssetData'
+import { useRecoilValue } from 'recoil'
+import { userState } from '../../context/userState'
+import useCalculateAsset from '../../hooks/useCalculateAsset'
+import { CoinPrice } from '../../context/CoinPrice'
+import calculateAllUserAsset from '../../utils/calculateAllUsersAsset'
 
 const RankingComponent = () => {
     const [page, setPage] = useState<number>(1)
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
+    const prices = useRecoilValue(CoinPrice)
 
-    const {rankingData} = useGetRankData() || { rankingData: [] };
-    // console.log('reankikg', rankingData)
+    const user = useRecoilValue(userState)
+    const userId = user._id
 
-    const safeRankingData = Array.isArray(rankingData) ? rankingData : [];
+    // *이거로 모든 유저의 정보를 가져옴
+    const { data } = useGetAllUserAssetData(userId)
+
+    const allUser = data?.allUser || []
+    const rankData = calculateAllUserAsset(allUser, prices)?.sort((a:any, b: any) => b.profitRate - a.profitRate)
+
+    const safeRankgData = Array.isArray(rankData) ? rankData : [];
 
     useEffect(() => {
         const handleResize = () => {
@@ -23,7 +36,7 @@ const RankingComponent = () => {
 
     const perPage = 10
     const firstPage = (page-1) * perPage
-    const EachPage = safeRankingData.slice(firstPage, perPage + firstPage)
+    const EachPage = safeRankgData.slice(firstPage, perPage + firstPage)
  
 
     return (
@@ -43,21 +56,29 @@ const RankingComponent = () => {
                         <th>수익률</th>
                     </StyledTableHead>
                     <StyledTableBody>
-                        {( windowWidth > 530 ? EachPage : safeRankingData).map((a:any, i:number) => (
+                        {( windowWidth > 530 ? EachPage : safeRankgData).map((a:any, i:number) => (
                             <tr key={i}>
                                 <td>{firstPage + i+1}</td>
                                 <td>{a.name}</td>
                                 {/* //TODO  밑에 계산해서 총 자산, 총손익, 수익률 별로 계산해줘야함 */}
-                                <td>{a.availableBalance.toLocaleString()}원</td>
-                                <td>{a.availableBalance.toLocaleString()}원</td>
-                                <td>{a.availableBalance.toFixed(2)}%</td>
+                                <td>
+                                    {a.totalAsset.toLocaleString()}원
+                                </td>
+                                <td className={`${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-600' : ''}`}>
+                                    {a.totalProfit > 0 && '+'}
+                                    {a.totalProfit.toLocaleString()}원
+                                </td>
+                                <td className={`${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-600' : ''}`}>
+                                    {a.totalProfit > 0 && '+'}
+                                    {a.profitRate === 0 ? 0 : a.profitRate.toFixed(2)}%
+                                </td>
                             </tr>
-                        ))}
+                        )).slice(0, 50)}
                     </StyledTableBody>
                 </StyledTable>
                 {windowWidth > 530 &&
                 <StyledBtns>
-                    {Array.from({length: Math.ceil(safeRankingData.length / perPage)}, (_, i) => (
+                    {Array.from({length: Math.ceil(safeRankgData.length / perPage)}, (_, i) => (
                         <button key={i}
                         onClick={() => setPage(i+1)}
                         className={`${page === i + 1 ? 'bg-red-500 flex items-center justify-center' : ''}`}

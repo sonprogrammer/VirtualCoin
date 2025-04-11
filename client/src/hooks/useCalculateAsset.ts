@@ -74,7 +74,7 @@ const useCalculateAsset = (assetData: AssetData) => {
         const totalProfitLoss = totalValuationAmount - totalBuy
 
         //* 총 수익률 = (투자 평가액 - 투자 원금) / 투자 원금 * 100
-        const totalProfitRate = totalBuy !== 0 ? parseFloat(((totalProfitLoss / totalBuy) * 100).toFixed(2)) : 0.00
+        const totalProfitRate = totalBuy !== 0 ? parseFloat(((totalProfitLoss / totalBuy) * 100).toFixed(2)) : 0
 
 
         // *코인 현재 가격

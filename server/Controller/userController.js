@@ -61,6 +61,8 @@ const kakaoLogin = async(req, res) => {
             await user.save()
         }
 
+        
+
         const token = jwt.sign({ kakaoId: user.kakaoId, name: user.name }, process.env.JWT_SECRET, { expiresIn: '1h' });
         const refreshToken = jwt.sign({ kakaoId: user.kakaoId }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
@@ -192,7 +194,7 @@ const postRecentCoins = async(req, res) => {
 }
 
 
-// *랭킹 가져오기
+// TODO 삭제하기 랭킹데이터 가져오는거임
 const getRankingData = async (req, res) => {
     try {
         const ranking = await User.find({})

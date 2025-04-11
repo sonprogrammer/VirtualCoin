@@ -3,7 +3,33 @@ const Transaction = require("../Models/transactionModel");
 const User = require("../Models/userModel");
 
 
-//*자산 정보 가져오기
+
+// *전체 유저자산 정보 가져오기 - 랭킹페이지 - User모델에서 이름 가져오고 Asset모델에서 코인데이터, 현금 데이터 가져오면됨
+const getAllAssetData = async(req, res) => {
+    try {
+        const userId = req.params.userId
+        let userAsset = await Asset.findOne({userId})
+        if(!userAsset){
+            userAsset = new Asset({
+                userId: userId,
+                coins: []
+            })
+            await userAsset.save()
+        }
+        
+        
+        let allUser = await Asset.find({}).populate('userId')
+        // console.log('alluser', allUser)
+        //  -> 잘나옴
+
+        res.status(200).json({message: 'success', allUser})
+    } catch (error) {
+        res.status(500).json({message: 'internal server error'})
+    }
+}
+
+
+//* 해당 유저의자산 정보 가져오기
 const getAssetData = async(req, res) => {
     try {
         const { userId } = req.query
@@ -14,16 +40,12 @@ const getAssetData = async(req, res) => {
         }
 
         let asset = await Asset.findOne({userId}).populate('userId',  'name')
-        // console.log('assetdsfd', asset)
         if(!asset){
             asset = new Asset({
                 userId: userId,
-                // TODO 밑에 삭제 해야함
-                // cash: 10000000,
                 coins: []
             })
             await asset.save()
-            // console.log('new asset created', asset)
         }
         return res.status(200).json(asset)
     } catch (error) {
@@ -163,4 +185,4 @@ const postSellCoins = async(req,res) =>{
 
 
 
-module.exports = { getAssetData,postBuyCoins, postSellCoins}
+module.exports = { getAssetData,postBuyCoins, postSellCoins, getAllAssetData}
