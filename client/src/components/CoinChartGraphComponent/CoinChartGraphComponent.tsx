@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createChart, CandlestickSeries, IChartApi, ISeriesApi, IRange, Time } from "lightweight-charts";
 import { useParams } from "react-router-dom";
 import useGetChartData from "../../hooks/useGetChartData";
@@ -36,9 +36,6 @@ const CoinChartGraphComponent = () => {
     data,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    isError,
   } = useGetChartData(coinId ?? '', type, unit);
 
 

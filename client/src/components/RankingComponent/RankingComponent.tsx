@@ -1,11 +1,9 @@
 
 import { useEffect, useState } from 'react'
 import { StyledBox, StyledBtns, StyledContainer, StyledTable, StyledTableBody, StyledTableHead, StyledTitle } from './style'
-import useGetRankData from '../../hooks/useGetRankData'
 import useGetAllUserAssetData from '../../hooks/useGetAllUserAssetData'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../../context/userState'
-import useCalculateAsset from '../../hooks/useCalculateAsset'
 import { CoinPrice } from '../../context/CoinPrice'
 import calculateAllUserAsset from '../../utils/calculateAllUsersAsset'
 
@@ -25,6 +23,7 @@ const RankingComponent = () => {
 
     const safeRankgData = Array.isArray(rankData) ? rankData : [];
 
+
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth)
@@ -34,17 +33,22 @@ const RankingComponent = () => {
         return () => window.removeEventListener('resize', handleResize)
     },[])
 
+    const myRank = rankData.findIndex((data:any) => data.id === userId) + 1
+
+
     const perPage = 10
     const firstPage = (page-1) * perPage
     const EachPage = safeRankgData.slice(firstPage, perPage + firstPage)
  
 
     return (
-        <StyledContainer className='compo'>
+        <StyledContainer>
             <StyledTitle>
-                <h1>랭킹 50</h1>
-                <p>*수익률 기준</p>
-                {/* //TODO 내랭킹도 적어놓기 오른쪽 끝에 */}
+                <div>
+                    <h1>랭킹 50</h1>
+                    <p>*수익률 기준</p>
+                </div>
+                <h2>나의 순위 : {myRank}위</h2>
             </StyledTitle>
             <StyledBox className='box'>
                 <StyledTable>
@@ -53,14 +57,15 @@ const RankingComponent = () => {
                         <th className='w-[70px]'>이름</th>
                         <th>총 자산</th>
                         <th>총 손익</th>
-                        <th>수익률</th>
+                        <th>수익률</th> 
                     </StyledTableHead>
                     <StyledTableBody>
-                        {( windowWidth > 530 ? EachPage : safeRankgData).map((a:any, i:number) => (
-                            <tr key={i}>
+                        {( windowWidth > 530 ? EachPage : safeRankgData).map((a:any, i:number) => {
+                            const me = a.id === userId
+                            return(
+                            <tr key={i} className={me ? 'font-bold' : ''}>
                                 <td>{firstPage + i+1}</td>
                                 <td>{a.name}</td>
-                                {/* //TODO  밑에 계산해서 총 자산, 총손익, 수익률 별로 계산해줘야함 */}
                                 <td>
                                     {a.totalAsset.toLocaleString()}원
                                 </td>
@@ -73,7 +78,7 @@ const RankingComponent = () => {
                                     {a.profitRate === 0 ? 0 : a.profitRate.toFixed(2)}%
                                 </td>
                             </tr>
-                        )).slice(0, 50)}
+                        )}).slice(0, 50)}
                     </StyledTableBody>
                 </StyledTable>
                 {windowWidth > 530 &&

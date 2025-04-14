@@ -327,7 +327,7 @@ export const StyledBookBoxTitle = styled.div`
         p,h1{
             ${tw`
             gap-1
-            text-xs
+            text-[9px]
         `}
         }
     }
@@ -387,7 +387,11 @@ export const StyledDate = styled.div`
     h1{
         ${tw`
             font-bold
+            text-center
         `}
+        @media(max-width: 490px){
+            font-size: 10px;
+        }
     }
     p{
         ${tw`

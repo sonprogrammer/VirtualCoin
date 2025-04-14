@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { AssetCircleGraph } from "../AssetCircleGraph"
 import { AssetList } from "../AssetList"
 import { AssetResultTextComponent } from "../AssetResultTextComponent"
-import { StyledAssetGraph, StyledAssetGraphToggle, StyledAssetList, StyledAssetResultText, StyledContainer, StyledTotalAsset } from "./style"
+import { StyledAssetGraph, StyledAssetGraphToggle, StyledContainer, StyledTotalAsset } from "./style"
 import AssetListTb from "../AssetList/AssetListTb"
 
 
@@ -39,19 +39,19 @@ const MyAsset = () => {
     <StyledContainer className="myAsset">
         <StyledTotalAsset className={`${showGraph === false ? 'flex flex-col' : ''}`}>
             
-            <StyledAssetResultText
+            <div
                  className={`${showGraph === false ? 'w-full' : 'w-[60%] border-r-2'}`}
             >
                 <AssetResultTextComponent />
-            </StyledAssetResultText>
+            </div>
 
             
             {
               showGraph ? (
-                <StyledAssetGraph 
+                <div 
                   className={`${showGraph === true ? 'w-[40%]' : 'w-full'}`}>
                   <AssetCircleGraph />
-                </StyledAssetGraph>
+                </div>
               ): 
               (
                 <>
@@ -62,7 +62,7 @@ const MyAsset = () => {
                   </span>
                 </StyledAssetGraphToggle>
                 { graphToggle && (
-                  <StyledAssetGraph className="flex w-full justify-center">
+                  <StyledAssetGraph>
                     <AssetCircleGraph />
                 </StyledAssetGraph>
                 )}
@@ -73,7 +73,7 @@ const MyAsset = () => {
 
         </StyledTotalAsset>
 
-      <StyledAssetList>
+      <div>
         <div className="border-t-2 py-2 pl-5">보유자산 목록</div>
         {
           windowWidth > 700 ? (
@@ -82,7 +82,7 @@ const MyAsset = () => {
             <AssetListTb />
           )
         }
-      </StyledAssetList>
+      </div>
     </StyledContainer>
   )
 }

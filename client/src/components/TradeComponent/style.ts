@@ -39,7 +39,6 @@ export const StyledNavbar = styled.div`
 export const StyledTradeSection = styled.div`
     ${tw`
         flex-1
-        // grow
         overflow-y-auto
     `}
 `

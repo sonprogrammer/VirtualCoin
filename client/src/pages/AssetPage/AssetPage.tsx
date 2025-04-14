@@ -4,7 +4,6 @@ import { MyAsset, PendingComponent, TransactionComponent } from "../../component
 
 
 const AssetPage = () => {
-  // TODO 기본 값 보유자산으로 바꾸기
   const [tabs, setTabs ] = useState<'보유자산' | '거래내역' | '미체결'>('보유자산')
   
 

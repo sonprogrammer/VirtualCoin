@@ -1,5 +1,5 @@
 
-import { StyledDivider, StyledTbBox, StyledTbContainer, StyledTbContent, StyledTbContentSmBox, StyledTbTitle, StyledTbTitleCoinName, StyledTbTitleContents } from './style'
+import { StyledDivider, StyledNonCoins, StyledTbBox, StyledTbContainer, StyledTbContent, StyledTbContentSmBox, StyledTbTitle, StyledTbTitleCoinName, StyledTbTitleContents } from './style'
 import useGetAssetData from '../../hooks/useGetAssetData'
 import useCalculateAsset from '../../hooks/useCalculateAsset'
 
@@ -19,13 +19,14 @@ const AssetListTb = () => {
   return (
     <StyledTbContainer className='tbcontainer'>   
         {
+            coins.length === 0 ? <StyledNonCoins>there is no coins</StyledNonCoins> : (
             coins.map((coin:any, i: number) => {
                 const market = coin.market.split('-')[1]
                 const totalBuy = coin.avgBuyPrice * coin.amount
                 return(
 
             
-      <StyledTbBox className='tbBox'>
+      <StyledTbBox>
 
         <StyledTbTitle>
             <StyledTbTitleCoinName>
@@ -35,7 +36,6 @@ const AssetListTb = () => {
             <StyledTbTitleContents>
                 <p> 
                     <span>평가손익</span>
-                    {/* //TODO 하락, 상승에 따른 색상변화 */}
                     <span
                         className={`${coinDetailPrice[i].profitLoss > 0 ? 'text-red-500' : 'text-blue-700'}`}
                     >
@@ -61,7 +61,6 @@ const AssetListTb = () => {
             <StyledTbContentSmBox>
                 <p>
                     <span>{coin.amount.toLocaleString()}</span>
-                    {/* <span> {coin.coinImage.split("/").pop()?.split(".")[0]}</span> */}
                 </p>
                 <p>보유수량</p>
             </StyledTbContentSmBox>
@@ -81,8 +80,6 @@ const AssetListTb = () => {
             </StyledTbContentSmBox>
             <StyledTbContentSmBox>
                 <p>
-                    {/* <span>{buyPrice.toLocaleString()}</span> */}
-                    {/* 보유수량 * 매수평균가 */}
                     <span>{totalBuy.toLocaleString()}</span>
                     <span> KRW</span>
                 </p>
@@ -93,7 +90,7 @@ const AssetListTb = () => {
       </StyledTbBox>
           )
         })
-    }
+    )}
     </StyledTbContainer>
   )
 }

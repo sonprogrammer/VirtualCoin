@@ -47,7 +47,7 @@ app.use('/api/transaction', transactionRouter);
 app.use('/api/holding', holdRouter);
 app.use('/api/chart', async(req, res) => {
   const { market, unit, type, count, to } = req.query
-  // console.log('res', req.query)
+
   try {
     if (!market || !type) {
       return res.status(400).json({ message: 'Missing required query parameters' });
@@ -57,14 +57,14 @@ app.use('/api/chart', async(req, res) => {
     if (type === 'minutes') {
       if (!unit) return res.status(400).json({ message: 'unit is required for minutes' });
       url = `https://api.upbit.com/v1/candles/minutes/${unit}`;
-      console.log('url', url)
+
     } else {
       url = `https://api.upbit.com/v1/candles/${type}`;
     }
     const params = { market, count}
     if(to) params.to = to
     const response = await axios.get(url, {params});
-    // console.log('res', response.data)
+
     res.json(response.data)
   } catch (error) {
     console.error(error.response?.data || error.message)

@@ -16,7 +16,7 @@ const useLikeToggle = () => {
     const res = await axios.post(`http://localhost:3000/api/user/${coinId}/like`,{},{
       withCredentials: true
     })
-    console.log(res.data)
+
     return res.data
   }
 

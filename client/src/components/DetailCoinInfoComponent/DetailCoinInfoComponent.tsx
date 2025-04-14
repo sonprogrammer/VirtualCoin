@@ -49,17 +49,6 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
         }
     }, [coinId, coinData]);
 
-    
-    // useEffect(() => {
-    //     //만약 좋아요한 코인에 현재 디테일페이지 코인이 있다면 setLiked를 true로 변환
-    //     if(likedCoins?.includes(coinId)){
-    //         console.log('likedCoins', likedCoins)
-    //         setLiked(true)
-    //         // console.log(liked)
-    //     }else{
-    //         setLiked(false)
-    //     }
-    // },[liked, likedCoins])
 
     useEffect(() => {
         setLiked(likedCoins || [])

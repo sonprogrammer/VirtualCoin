@@ -12,8 +12,8 @@ interface GuidComponentProps{
 }
 
 const GuidComponent = ({ handleCloseModal } : GuidComponentProps) => {
-    useGuestLogin();
     
+    useGuestLogin();
     const navigate = useNavigate()
     
     const handleGuestLogin = async () => {

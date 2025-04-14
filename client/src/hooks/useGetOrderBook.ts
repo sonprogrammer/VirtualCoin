@@ -26,14 +26,12 @@ const useGetOrderBook = (market: string) => {
     const orderBookWs = new WebSocket("wss://api.upbit.com/websocket/v1");
 
     orderBookWs.onopen = () => {
-      console.log("Orderbook WebSocket connected");
       orderBookWs.send(
         JSON.stringify([
           { ticket: "coin_list" },
           { type: "orderbook", codes: [market] },
           { type: 'ticker', codes: [market]}
 
-        //  TODO 나중에 현재가도 불러와서 디테일 페이지에서 최고가 최저가 전일대비등 한번에 처리하기 
         ])
       );
     };

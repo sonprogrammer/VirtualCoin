@@ -48,9 +48,9 @@ export const StyledTable = styled.table`
         border-2
         w-full    
         table-fixed
-        // border-separate
+
         `}
-            // border-collapse: collapse;
+
 
     th{
         ${tw`

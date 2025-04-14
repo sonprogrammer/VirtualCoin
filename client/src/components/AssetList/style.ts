@@ -7,6 +7,15 @@ export const StyledContainer = styled.div`
         w-full
     `}
 `
+
+export const StyledNonCoins = styled.div`
+    ${tw`
+        flex
+        justify-center
+    `}
+`
+
+
 export const StyledTable = styled.table`
     ${tw`
         w-full

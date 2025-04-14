@@ -31,18 +31,47 @@ export const StyledBox = styled.div`
         h-[600px]
         overflow-y-auto
         relative
+        
     `}
+    input{
+        ${tw`
+            flex-1
+        `}
+    }
     @media(min-width: 900px){
         width: 50%;
     }
 
 `
+
+export const StyledCloseBtn = styled.div`
+    ${tw`
+        ml-2
+        p-2
+        w-[30px]
+        h-[30px]
+        flex
+        items-center
+        justify-center
+        font-bold
+        cursor-pointer
+    `}
+    &:hover{
+        ${tw`
+            bg-gray-300
+            rounded-full
+        `}
+    }
+`
+
+
 export const StyledInput = styled.div`
     ${tw`
         w-full
         p-5
         flex
         justify-center
+        items-center
         sticky
         top-0
         bg-white

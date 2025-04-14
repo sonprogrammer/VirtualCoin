@@ -10,8 +10,6 @@ const getTransactions = async(req, res) => {
     try {
         const userId = req.params.userId
 
-        
-        console.log('res', userId)
         if(!userId){
             return res.status(404).json({message: 'userId not found'})
         }

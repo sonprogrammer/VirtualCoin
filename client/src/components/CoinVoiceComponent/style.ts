@@ -77,11 +77,7 @@ export const StyledRight = styled.div`
         flex
         flex-auto
     `}
-    p{
-        ${tw`
-            // flex-1
-        `}
-    }
+
     p:first-child{
         ${tw`
             font-bold

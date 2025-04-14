@@ -24,8 +24,15 @@ export const StyeldBox = styled.div`
         flex-col
         gap-5
     `}
-    @media(min-width:1000px){
+    
+    @media(max-width: 1200px){
         width: 30%;
+    }
+    @media(max-width: 1000px ){
+        width: 50%;
+    }
+    @media(max-width: 550px){
+        width: 80%;
     }
 `
 export const StyeldTitle = styled.div`

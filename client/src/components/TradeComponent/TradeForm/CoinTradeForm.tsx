@@ -6,7 +6,6 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useGetAssetData from '../../../hooks/useGetAssetData';
 import { useParams } from 'react-router-dom';
-// import useGetOrderBook from '../../../hooks/useGetOrderBook';
 import { useRecoilValue } from 'recoil';
 import { CoinPrice } from '../../../context/CoinPrice';
 import { coinKName } from '../../../context/coinKName';
@@ -32,11 +31,9 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
 const { mutate: postBuyTrade} = usePostBuyTrade()
 const { mutate: postSellTrade} = usePostSellTrade()
 
-// console.log('data', data)
 
 
   const cash = data?.cash || 0
-  // console.log('cash', cash)
 
 
     //* 코인 현재가격
@@ -51,7 +48,6 @@ const { mutate: postSellTrade} = usePostSellTrade()
 
     //*코인 한국이름
     const kName = useRecoilValue(coinKName)
-    // console.log('kname', kName)
 
     useEffect(() => {
       if(data?.coins){
@@ -61,7 +57,6 @@ const { mutate: postSellTrade} = usePostSellTrade()
         }
       }
     },[data, coinId])
-    // console.log('data' ,currentPrice)
 
     useEffect(() => {
       if (coinId && coin[coinId] && coin[coinId].trade_price !== 0 && currentPrice === null) {
@@ -84,8 +79,12 @@ const { mutate: postSellTrade} = usePostSellTrade()
           toast.error('보유 코인 수량이 부족합니다')
           return
         }
+        if(orderAmount <= 0){
+          toast.error('주문수량을 확인하세요')
+          return
+        }
         if(coinId && kName && user._id && orderAmount <= availableAmount){
-          toast.success(`매도 성공!`,{
+          toast.success(`매도 주문 완료`,{
             autoClose: 1000, 
           hideProgressBar: true,
           });
@@ -106,8 +105,12 @@ const { mutate: postSellTrade} = usePostSellTrade()
           toast.error('잔액이 부족합니다')
           return
         }
+        if(orderAmount <= 0){
+          toast.error('주문수량을 확인하세요')
+          return
+        }
         if (coinId && kName && user._id && orderAmount > 0) {
-          toast.success(`매수 성공!`,{
+          toast.success(`매수 주문 완료`,{
             autoClose: 1000, 
             hideProgressBar: true,
           });
@@ -133,7 +136,6 @@ const { mutate: postSellTrade} = usePostSellTrade()
     }
     const handlePlusClick = () => {
       setTradePrice(prev=> prev + 1 )
-      console.log('trade', tradePrice)
     }
 
     const handleResetClick = () => {
@@ -176,8 +178,7 @@ const { mutate: postSellTrade} = usePostSellTrade()
               const value = e.target.value.replace(/,/g, '')
               setTradePrice(Number(value))
           }}
-            // onChange={(e) => setTradePrice(Number(e.target.value))}
-            // onBlur={(e) => setTradePrice(Number(e.target.value))}
+
             />
           <button onClick={handleMinusClick}>-</button>
           <button onClick={handlePlusClick}>+</button>
@@ -202,7 +203,6 @@ const { mutate: postSellTrade} = usePostSellTrade()
 
       <StyledTotalOrder>
         <p>주문총액</p>
-        {/* //*데이터 받아와야함 */}
         <p><strong>{(orderAmount * tradePrice).toLocaleString()}</strong> 원</p>
       </StyledTotalOrder>
 

@@ -21,7 +21,6 @@ const startWebSocket = async (market) => {
 
     userCoins = [market]
     
-    console.log('coins from startWebsocket', market)
     if(!userCoins){
         console.log('there is no coins from startWebsocket')
         return
@@ -46,7 +45,6 @@ const startWebSocket = async (market) => {
       
         const data = JSON.parse(e.data.toString())
         currentPrice[data.code] = data.trade_price
-        // console.log('realtime price', currentPrice[data.code])
     }
 
     ws.onclose = () => {
@@ -72,7 +70,6 @@ const startAllCoinsWebSocket = async(coinList) => {
     ws = new WebSocket('wss://api.upbit.com/websocket/v1')
 
     ws.onopen =() => {
-        console.log('websocket connected on startAllCoinsWebsocket FN')
         ws.send(
             JSON.stringify([
                 {ticket: 'server_coin_list'},
@@ -84,7 +81,7 @@ const startAllCoinsWebSocket = async(coinList) => {
     ws.onmessage = (e) => {
         const data = JSON.parse(e.data.toString())
         currentPrice[data.code] = data.trade_price
-        // console.log('realtime price', data.trade_price)
+
     }
 
     ws.onclose = () => {

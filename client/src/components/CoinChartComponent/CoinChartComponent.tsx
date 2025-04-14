@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import axios from 'axios'
 import { StyledContainer, StyledPageBtns, StyledTable, StyledTableBody, StyledTableHead, StyledTitle } from "./style"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,7 +22,7 @@ const CoinChartComponent = () => {
   const [star, setStar] = useState<string[]>([]) //*관심코인 관리 
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
-  // const [user, setUser] = useRecoilState(userState);
+
 
 
 
@@ -40,8 +40,6 @@ const CoinChartComponent = () => {
     navigate(`/coin/${coinId}`)
   }
 
-
-  // TODO useGetCoins훅으로 교체하기
   //*코인 데이터 가져오기(100개) - rest api로 (고정된 값이니깐 변할일 없어서 )
   useEffect(() => {
     const fetchData = async () => {
@@ -55,27 +53,6 @@ const CoinChartComponent = () => {
     }
     fetchData()
   }, [])
-
-
-  // const prices = useWebSocket(coins);
-  // const { data: coinData, isLoading, isError } = useGetCoins()
-
-  // if (isLoading) {
-  //   return <p>Loading...</p>;
-  // }
-  
-  // if (isError) {
-  //   return <p>Error occurred while fetching coin data.</p>;
-  // }
-  
-  // console.log('price', prices)
-
-
-  // useEffect(() => {
-  //   if(coinData){
-  //     setCoins(coinData)
-  //   }
-  // },[coinData])
   
   const sortCoinByVolume = (order: 'asc' | 'desc') => {
     setCoins(prevCoins => 
@@ -111,7 +88,6 @@ const CoinChartComponent = () => {
   const handleStarClick = (coinMarket: string) => {
     likeToggle(coinMarket);
     setStar((prev) => {
-      // if (!Array.isArray(prev)) return []; 
       if(prev.includes(coinMarket)){
           return prev.filter(coin => coin !== coinMarket)
         }else{
@@ -143,7 +119,7 @@ const CoinChartComponent = () => {
       <StyledTable>
         <StyledTableHead>
           <tr>
-            <th className="text-center" style={{ width: windowWidth > 570 ? '70px' : '40px' }}>관심</th>
+            <th className={`text-center ${windowWidth > 570 ? 'w-[70px]' : 'w-[40px]'}`} style={{ width: windowWidth > 570 ? '70px' : '40px' }}>관심</th>
             <th className="text-left">코인</th>
             <th className="text-right">현재가</th>
             <th className="text-right">전일대비</th>

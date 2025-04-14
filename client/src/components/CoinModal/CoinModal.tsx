@@ -51,7 +51,6 @@ const CoinModal = ({ title, coinData, onClickOutside }: CoinModalProps) => {
                 >
                   {`${Number(a.price.change_rate) > 0 ? '+' : ''}`}
                   {(Number(a.price.change_rate) * 100).toLocaleString()}%
-                  {/* {(priceData.change_rate * 100).toLocaleString()}% */}
                 </p>
               </StyledCoin>
             ))}

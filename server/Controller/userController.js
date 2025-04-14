@@ -37,13 +37,11 @@ const createGuestUser = async (req, res) => {
 const kakaoLogin = async(req, res) => {
     try {
         const { accessToken } = req.body;
-        console.log('kakaologinreq', req.user)
         const userInfoRes = await axios.get('https://kapi.kakao.com/v2/user/me', {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        console.log('userInfo', userInfoRes.data)
         const kakaoId = userInfoRes.data.id; 
         const name = userInfoRes.data.kakao_account.profile.nickname;
 
@@ -69,7 +67,7 @@ const kakaoLogin = async(req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true, 
-            // TODO 배포할때 true로 바꾸기
+            // TODO 배포할때 secure : true로 바꾸기
             secure: false, 
             maxAge: 3600000,
         });
@@ -92,8 +90,6 @@ const kakaoLikeToggle = async(req, res) => {
     try {
         const kakaoId = req.user.kakaoId
         const { coinId } = req.params
-        console.log('userKakaoId', kakaoId)
-        console.log('coinId', coinId)
 
         const user = await User.findOne({kakaoId})
         if(!user){
@@ -122,7 +118,7 @@ const kakaoLikeToggle = async(req, res) => {
 const kakaoGetLikeCoins = async (req, res) => {
     try {
         const kakaoId = req.user.kakaoId
-        console.log('getuser', req.user)
+
         const user = await User.findOne({kakaoId})
         if(!user){
             return res.status(404).json({message: 'user not found'})
@@ -194,17 +190,5 @@ const postRecentCoins = async(req, res) => {
 }
 
 
-// TODO 삭제하기 랭킹데이터 가져오는거임
-const getRankingData = async (req, res) => {
-    try {
-        const ranking = await User.find({})
-        ranking.sort((a, b) => b.totalAssets - a.totalAssets)
-        res.status(200).json(ranking)
-        
-    } catch (error) {
-        res.status(500).json({message: 'internal sever error'})
-    }
-}
 
-
-module.exports =  {createGuestUser, kakaoLogin, kakaoGetLikeCoins,kakaoLikeToggle, getRecentCoins, postRecentCoins, getRankingData}
+module.exports =  {createGuestUser, kakaoLogin, kakaoGetLikeCoins,kakaoLikeToggle, getRecentCoins, postRecentCoins}

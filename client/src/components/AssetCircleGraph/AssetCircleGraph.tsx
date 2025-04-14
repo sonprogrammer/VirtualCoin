@@ -6,15 +6,11 @@ import {
   Legend,
   Colors,
   TooltipItem,
-  Chart,
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-// import { coins, total_bid } from './mockupData'
 import {  StyledContainer, StyledText } from './style';
 import useGetAssetData from '../../hooks/useGetAssetData';
 
-
-// 필요한 컴포넌트들을 등록
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 
 
@@ -25,7 +21,9 @@ function AssetCircleGraph() {
     return <div>Loading...</div>; 
   }
   
-  const coins = assetData.data.coins || []
+  const coins = assetData?.data.coins.filter((c:any) => c.amount !== 0) || []
+
+  
 
   // *코인별 평가금액
   const coinValue = coins.map((coin: any) => ({
@@ -44,18 +42,6 @@ function AssetCircleGraph() {
 
   const sortedCoinsRates = coinsRate.sort((a:any, b: any) => b.value - a.value)
 
-
-
-  // const generatedColors = (count: number) => {
-  //   const colors = []
-  //   const hueStep = 360 / count
-
-  //   for (let i = 0; i < count; i++) {
-  //     const hue = i * hueStep
-  //     colors.push(`hsl${hue}, 70%, 50%`)
-  //   }
-  //   return colors
-  // }
 
   const generatedColors = (count: number) => {
     return Array.from({length: count}, (_, i) => `hsl(${(i* 40) % 360}, 70%, 50%)`)
@@ -127,12 +113,11 @@ function AssetCircleGraph() {
   return (
     <StyledContainer className='graph있는쪽'>
 
-        <Doughnut data={data} options={options} className='w-full h-full ' />
+        <Doughnut data={data} options={options} className='w-full h-full' />
         <StyledText>
           <p>보유 비중</p>
           <p>(%)</p>
         </StyledText>
-
 
     </StyledContainer>
   );

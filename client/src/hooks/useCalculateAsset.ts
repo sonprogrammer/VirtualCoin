@@ -2,8 +2,7 @@
 import { useRecoilState } from "recoil"
 import { CoinPrice } from "../context/CoinPrice"
 import { useMemo } from 'react';
-import { calculatedAssetState } from "../context/calculatedAssetState";
-import useWebSocket from "./useWebSocket";
+
 
 interface AssetData {
     cash: number;
@@ -27,10 +26,6 @@ interface CalculateAssets {
 }
 const useCalculateAsset = (assetData: AssetData) => {
     const [prices] = useRecoilState(CoinPrice); 
-    // const prices = useWebSocket(assetData.coins);
-    // const realTimePrices = assetData?.coins ? useWebSocket(assetData.coins) : {};
- 
-    // console.log('realTimePrices', realTimePrices) 
 
 
     const calculateAssets = useMemo<CalculateAssets>(() => {
@@ -46,7 +41,7 @@ const useCalculateAsset = (assetData: AssetData) => {
         };
 
         const { cash, coins } = assetData
-        // console.log('coinsssCAalll', coins)
+
 
         //* 총매수 금액
         const totalBuy = coins.reduce((acc: number, coin: any) => {

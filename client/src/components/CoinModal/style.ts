@@ -24,7 +24,6 @@ export const StyledModal = styled.div`
         flex
         flex-col
         items-center
-        // justify-center
         h-[50%]
         text-center
     `}

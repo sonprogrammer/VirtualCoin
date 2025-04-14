@@ -221,7 +221,6 @@ export const StyledMobileMenu = styled.div`
         flex
         justify-around
         items-center
-        // border-t-2
         bg-red-500
         text-white
     `}
@@ -261,7 +260,6 @@ export const StyledUserIcon = styled.div`
     
 
     @media (max-width: 630px) {
-        // position: fixed;
         top: 16px;
         right: 16px;
     }
@@ -365,10 +363,4 @@ export const StyledAngle = styled.div`
         border-left: 10px solid transparent;
         border-right: 10px solid transparent;
         border-bottom: 10px solid rgb(209, 212, 217);
-`
-
-export const StyledSearchModalBox = styled.div`
-    ${tw`
-        
-    `}
 `

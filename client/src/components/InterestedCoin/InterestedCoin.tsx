@@ -1,11 +1,10 @@
 
 import { CoinModal } from "../CoinModal";
-import useLikeToggle from "../../hooks/useLikeToggle";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { CoinPrice } from "../../context/CoinPrice";
 import useGetCoins from "../../hooks/useGetCoins";
 import useGetLikedCoins from "../../hooks/useGetLikeCoins";
-import { userState } from "../../context/userState";
+
 
 
 interface InterestedCoinProps{

@@ -25,17 +25,17 @@ const CoinBookForm = () => {
   const [section, setSection] = useState<'미체결' | '체결'>('미체결')
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
 
-  // console.log('checkitem', checkedItems)
+
   const user = useRecoilValue(userState);
   
   
   const {data =[], refetch} = useGetAllTransaction(user._id)
   const coins = data?.allTransaction?.orders || [];
-  // console.log('coins', coins)
+
 
   const [coinStatus, setCoinStatus] = useState<{ 미체결: Order[]; 체결: Order[] }>(coins);
 
-  // console.log('coinstatus', coinStatus)
+
   const { mutate: deleteOrder} = usePostDeleteOrder()
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const CoinBookForm = () => {
     setSection(page)
   }
   useEffect(() => {
-    // console.log('checking', checkedItems)
+
 
   }, [checkedItems, coinStatus,deleteOrder]);
   
@@ -111,7 +111,7 @@ const CoinBookForm = () => {
             <StyledDivider>
         {/* 여러개의 박스들 */}
         <StyledBookContents className="bookcontent">
-          {/* //TODO여기서 아무것도없으면 다른 애니메이션 넣기  */}
+
           {coins[section]?.length === 0 && <p>아무것도 없음</p>}
 
           {coinStatus[section]?.map((order) => (

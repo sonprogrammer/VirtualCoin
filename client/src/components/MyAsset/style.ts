@@ -13,14 +13,10 @@ export const StyledTotalAsset = styled.div`
         w-full
     `}
 `
-export const StyledAssetResultText = styled.div`
-    ${tw`
-        
-    `}
-`
+
 export const StyledAssetGraph = styled.div`
     ${tw`
-      
+      flex w-full justify-center
     `}
 `
 
@@ -39,10 +35,4 @@ export const StyledAssetGraphToggle = styled.div`
             bg-gray-200
         `}
     }
-`
-
-export const StyledAssetList = styled.div`
-    ${tw`
-
-    `}
 `

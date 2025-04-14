@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 
 
 const TransactionComponent = () => {
-    // const [type, setType] = useState<boolean>(false)
+
     const [type, setType] = useState<'매도' | '매수' | '전체'>('전체')
     const [period, setPeriod] = useState<'1주일' | '1개월' | '6개월' | '전체'>('전체');
     const [showPeriodMenu, setShowPeriodMenu] = useState<boolean>(false);
@@ -54,7 +54,6 @@ const formatDateTime = (dateString: string) => {
         setEndDate('')
 
         const now = new Date();
-        console.log('now', now)
 
         let startingDate: Date = new Date(now)
         let endingDate: Date = new Date(now)

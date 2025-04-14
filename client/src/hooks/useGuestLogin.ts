@@ -40,7 +40,6 @@ const useGuestLogin = () => {
     const { data: guestUserData, isLoading, isError, refetch } = useQuery({
         queryKey: ['guestUser'],
         queryFn: fetchGuest,
-        staleTime: Infinity, 
     });
 
     useEffect(() => {
@@ -54,6 +53,7 @@ const useGuestLogin = () => {
         onSuccess: () => {
             localStorage.removeItem(guestUser);
             localStorage.removeItem('asset');
+            setUser(null)
         },
     });
 

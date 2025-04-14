@@ -1,6 +1,4 @@
-
 import dayjs from 'dayjs'
-// import data from './mockupData'
 import { StyledContainer, StyledTable, StyledTableBody, StyledTableHead, StyledTop } from './style'
 import { useCallback, useMemo, useState } from 'react'
 import useGetPendingCoins from '../../hooks/useGetPendingCoins'
@@ -10,7 +8,6 @@ import usePostDeleteOrder from '../../hooks/usePostDeleteOrder'
 
 const PendingComponent = () => {
     const [selectedOrder, setSelectedOrder] = useState<Set<string>>(new Set())
-    // TODO데이터 타입 바꿔야함 지금은 목업꺼라 아래가 가능
     const [cancleOrder, setCancleOrder] = useState<Set<string>>(new Set())
     const [selectedAll, setSelectedAll] = useState<boolean>(false)
 

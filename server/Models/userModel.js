@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
 
     kakaoId: {
         type: String,
-        unique: true, // 같은 카카오 계정으로 중복 가입 방지
+        unique: true, 
         sparse: true  // null 값을 허용하여 게스트 계정과 충돌 방지
     },
     //카카오로그인이면 카톡이름, 게스트면 랜덤 생성

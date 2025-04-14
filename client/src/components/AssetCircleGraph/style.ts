@@ -13,6 +13,8 @@ export const StyledContainer = styled.div`
     z-index: 0;
 `
 
+
+
 export const StyledText = styled.div`
     ${tw`
         text-center
@@ -20,7 +22,7 @@ export const StyledText = styled.div`
         top-1/2
         left-1/2
          transform
-        translate-x-14
+        translate-x-10
         -translate-y-1/2
         font-bold
     `}

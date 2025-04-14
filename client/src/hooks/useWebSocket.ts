@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { CoinPrice } from "../context/CoinPrice";
 
@@ -12,12 +12,8 @@ export interface PriceData {
   low_price: number;
 }
 
-// 거래량(24), 거래대금, 저가, 고가 추가
-
-//*위 데이터 가져옴
 
 const useWebSocket = (coins: any[]) => {
-  // const [prices, setPrices] = useState<{ [key: string]: PriceData }>({});
   const [prices, setPrices] = useRecoilState(CoinPrice);
 
   useEffect(() => {

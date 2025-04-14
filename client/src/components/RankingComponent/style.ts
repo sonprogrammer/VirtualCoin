@@ -27,8 +27,9 @@ export const StyledContainer = styled.div`
 export const StyledTitle = styled.div`
     ${tw`
         flex
-        flex-col
-        items-start
+
+        justify-between
+        items-center
         w-full
         p-5
     `}
@@ -68,9 +69,7 @@ export const StyledTable = styled.table`
             p-2
             bg-gray-200
         `}
-        @media(max-width: 570px){
-            // padding: 5px;
-        }
+
     }
 `
 export const StyledTableHead = styled.thead`
@@ -103,7 +102,8 @@ export const StyledTableBody = styled.tbody`
      
         @media(max-width: 550px){
             ${tw`
-                p-2
+                p-1
+                text-[8px]
             `}
     }
     }

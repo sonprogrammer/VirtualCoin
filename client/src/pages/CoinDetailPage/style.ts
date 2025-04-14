@@ -25,11 +25,6 @@ export const StyledContainer = styled.div`
     }
 `
 
-export const StyledCoinTitle = styled.div`
-    ${tw`
-
-        `}
-`
 
 export const StyledChart = styled.div`
     ${tw`

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyledCloseBtn, StyledContainer, StyledModalContent, StyledText } from './style'
 
 

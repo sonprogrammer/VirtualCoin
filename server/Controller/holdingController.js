@@ -28,7 +28,6 @@ const checkOrder = async(userId, market, avgTradePrice, amount, type) => {
     }
     
 
-    console.log('currentprice from checkOrder', currentPrice)
     if(!currentPrice){
       console.log('there is no currentprice')
       return
@@ -39,141 +38,18 @@ const checkOrder = async(userId, market, avgTradePrice, amount, type) => {
     if(type === 'BUY' && currentPrice <= avgTradePrice){
       await processOrder(userId, market, avgTradePrice, amount, type, currentPrice)
     }
-    //   const holdingOrders = await Hold.findOne({userId})
-
-    //   if(!holdingOrders){
-    //     console.log('there is no orders')
-    //     return
-  
-    //   }
-
-    //   const orderIndex = holdingOrders.orders.findIndex(order => order.coinMarket === market && order.status === 'PENDING')
-
-    //   if(orderIndex === -1){
-    //     console.log('there is no holding orders')
-    //     return
-  
-    //   }
-
-    //   const order = holdingOrders.orders[orderIndex]
-
-    //   const userAsset = await Asset.findOne({userId})
-
-    //   // *만약 자산에 코인이 하나도 없고 미체결된 상태로 있었을 시
-    //   if(!userAsset){
-    //     const newAsset = new Asset({
-    //       userId,
-    //       coins: [{
-    //         market: market,
-    //         name: order.coinKName,
-    //         amount: amount,
-    //         // TODO여기 한번 더 생각해보기 매도일 때는 이게 들어가면 안됌
-    //         avgBuyPrice: avgTradePrice,
-    //       }]
-    //     })
-    //     await newAsset.save()
-    //     console.log('생성자산 매수시 발생 newAsset', newAsset)
-    //   }else{
-    //     const coinIndex = userAsset.coins.findIndex(c => c.market === market)
-    //     if(coinIndex === -1){
-    //       userAsset.coins.push({
-    //         market: market,
-    //         name: order.coinKName,
-    //         amount: amount,
-    //         avgBuyPrice: avgTradePrice
-    //       })
-    //     }else{
-    //         userAsset.coins[coinIndex].amount +=amount
-    //     }
-    //     await userAsset.save()
-    //     console.log('생성자산 매수시 발생 userAsset', userAsset)
-    //   }
-
-    //   holdingOrders.orders[orderIndex].status = 'COMPLETED'
-    //   await holdingOrders.save()
-      
-      
-    //   console.log('매수 자산 실시간', newAsset)
-    // }
+ 
     // *매도 - 지정가가 현재가격보다 같거나 작을 때
     if(type ==='SELL' && currentPrice >= avgTradePrice){
       await processOrder(userId, market, avgTradePrice, amount, type, currentPrice)
     }
-    //   const holdingOrders = await Hold.findOne({userId})
-
-    //   if(!holdingOrders){
-    //     console.log('there is no orders')
-    //     return
-    //   }
-
-    //   const orderIndex = holdingOrders.orders.findIndex(order => order.coinMarket === market && order.status === 'PENDING')
-
-    //   if(orderIndex === -1){
-    //     console.log('there is no holdingOrder')
-    //     return
-    //   }
-
-    //   const order = holdingOrders.orders[orderIndex]
-    //   const userAsset = await Asset.findOne({userId})
-
-    //   if(!userAsset){
-    //     const newAsset = new Asset({
-    //       userId,
-    //       coins: [{
-    //         market: market,
-    //         name: order.coinKName,
-    //         amount: amount,
-    //         // TODO여기 한번 더 생각해보기 매도일 때는 이게 들어가면 안됌
-    //         avgBuyPrice: avgTradePrice,
-    //       }]
-    //     })
-    //     await newAsset.save()
-    //   }
-
-    //   const coinIndex = userAsset.coins.findIndex(c => c.market === market)
-
-    //   if(coinIndex === -1){
-    //     console.log('there is no more coins')
-    //     return
-    //   }
-
-    //   userAsset.coins[coinIndex].amount -= amount
-
-    //   const getCash = amount * avgTradePrice
-    //   userAsset.cash += getCash
-    //   await userAsset.save()
-
-    //   holdingOrders.orders[orderIndex].status = 'COMPLETED'
-    //   await holdingOrders.save()
-    //   console.log('매도 완료')
-    // }
+   
   } catch (error) {
     console.log(error)
   }
 }
 
-// *미체결 내용 전체 가져오기
-// const getHoldingOrder = async(req, res)=> {
-//     try {
-//         const { userId } = req.params
 
-//         if(!userId){
-//           return res.status(404).json({message: 'userId is required'})
-//         }
-//         const holdingOrders = await Hold.findOne({userId})
-
-//         if (!holdingOrders) {
-//           return res.status(404).json({ error: "No orders found" });
-//         }
-
-//         const filteredOrders = holdingOrders.orders.filter(order => order.status === "PENDING");
-
-//         return res.status(200).json({message: 'success', filteredOrders})
-//     } catch (error) {
-//         console.error(error)
-//         return res.status(500).json({message: 'internal server error'})
-//     }
-// }
 
 // * 주문처리
 const processOrder = async(userId, market, orderPrice, amount, type, currentPrice) => {
@@ -206,7 +82,7 @@ const processOrder = async(userId, market, orderPrice, amount, type, currentPric
           }]
         })
         await userAsset.save()
-        console.log("newAsset", userAsset)
+
       }else{
         const coinIndex = userAsset.coins.findIndex(c => c.market === market)
         if(coinIndex === -1){
@@ -220,7 +96,7 @@ const processOrder = async(userId, market, orderPrice, amount, type, currentPric
           userAsset.coins[coinIndex].amount += amount
         }
         await userAsset.save()
-        console.log('buy userAsset', userAsset)
+
       }
     }else if(type === 'SELL'){
       if(!userAsset){
@@ -239,7 +115,7 @@ const processOrder = async(userId, market, orderPrice, amount, type, currentPric
       userAsset.cash = (userAsset.cash || 0) + getCash
 
       await userAsset.save()
-      console.log('selling success', userAsset.cash)
+
     }
 
     // *거래내역 모델에 추가
@@ -268,7 +144,7 @@ const processOrder = async(userId, market, orderPrice, amount, type, currentPric
     holdingOrders.orders[orderIndex].status = 'COMPLETED'
     holdingOrders.orders[orderIndex].completedTime = new Date().toISOString()
     await holdingOrders.save()
-    console.log('success order', holdingOrders)
+
 
   } catch (error) {
     console.error('errorro', error)
@@ -300,7 +176,7 @@ const realTimeCheckOrder = async() => {
       return
     }
 
-    console.log('pending coins ', allPendingCoins)
+
 
     await startAllCoinsWebSocket(allPendingCoins)
 
@@ -353,7 +229,7 @@ const realTimeCheckOrder = async() => {
   }
 }
 realTimeCheckOrder()
-// 
+
 
 // *매수 예약
 const postBuyReserve = async (req, res) => {
@@ -396,7 +272,7 @@ const postBuyReserve = async (req, res) => {
       orderTime: new Date(),
       status: "PENDING"
     });
-    console.log("reserver", reserve);
+
 
     await reserve.save();
 
@@ -452,7 +328,7 @@ const postSellReserve = async (req, res) => {
 const getPendingCoins = async(req, res) => {
   try {
       const userId = req.params.userId
-      // console.log('userId' ,userId)
+
       const pending = await Hold.findOne({userId})
 
       if(!pending){
@@ -477,8 +353,6 @@ const postDeleteOrder = async(req, res) => {
     try {
       const { orderId } = req.body
       const userId = req.params.userId
-      console.log('orderId', orderId)
-      // orderId [ '67f5006e9590fc5178546676' ]
 
       if (!Array.isArray(orderId)) {
         return res.status(400).json({ message: "orderId must be an array" });
@@ -493,12 +367,11 @@ const postDeleteOrder = async(req, res) => {
 
       const orderIds = new Set(orderId.map(id => id.toString()))
 
-      // 현재 각각의 orderId의 orderPrice와 orderQuantity를 다시 캐쉬에 담아줘야함
-      //
-
       const deleteOrders = pending.orders.filter(order => orderIds.has(order._id.toString()))
 
-      const refund = deleteOrders.reduce((acc, order) => {
+      const deleteBuyOrders = deleteOrders.filter(order => order.type === 'BUY')
+
+      const refund = deleteBuyOrders.reduce((acc, order) => {
         return acc + order.orderPrice * order.orderQuantity
       }, 0)
 
@@ -513,9 +386,6 @@ const postDeleteOrder = async(req, res) => {
 
       pending.orders = pending.orders.filter(order => !orderIds.has(order._id.toString()));
       await pending.save();
-      console.log('pending', pending)
-
-      
 
       return res.status(200).json({message: 'success', pending})
       
@@ -531,10 +401,8 @@ const postDeleteOrder = async(req, res) => {
 const getTransactionCoins = async(req, res) => {
     try {
       const userId = req.params.userId
-      console.log('userasdfasd', userId)
 
       const allTransaction = await Hold.findOne({userId})
-      console.log('alltran', allTransaction)
 
       if(!allTransaction){
         return res.status(404).json({message: 'there is any transaction'})

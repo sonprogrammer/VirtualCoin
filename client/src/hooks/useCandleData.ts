@@ -1,13 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-interface CandleData {
-  time: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-}
+
 
 const fetchData = async (market: string, interval: string) => {
   const res = await axios.get(

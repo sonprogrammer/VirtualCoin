@@ -8,7 +8,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { InterestedCoin } from '../InterestedCoin';
 import { RecentCoin } from '../RecentCoin';
 import { SearchComponent } from '../SearchComponent';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { userState } from '../../context/userState';
 import useGetAssetData from '../../hooks/useGetAssetData';
 import useCalculateAsset from '../../hooks/useCalculateAsset';
@@ -27,7 +27,7 @@ const NavbarComponent = () => {
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
 
-    const user = useRecoilValue(userState);
+    const [user, setUser] = useRecoilState(userState);
 
     const {data} = useGetAssetData()
     const calculatedData = useCalculateAsset(data)
@@ -126,12 +126,14 @@ const NavbarComponent = () => {
 
     const handleLogoutClick = (e: React.MouseEvent) => {
         setLogoutModal(true);
+        setInfo(false)
         e.stopPropagation();
     }
 
     const handleLogout = () => {
         localStorage.removeItem('user')
         localStorage.removeItem('asset')
+        setUser(null)
 
         Object.keys(localStorage).forEach((key) => {
             if(key.startsWith('kakao')){
@@ -232,7 +234,6 @@ const NavbarComponent = () => {
                     <h1 className='font-bold text-center pb-2'>Welcome {user.name}</h1>
                     <p><strong>보유 현금</strong> <span>{availableOrder?.toLocaleString()}</span></p>
                     <p><strong>보유 자산</strong> <span>{totalAssets?.toLocaleString()}</span></p>
-                    {/* //TODO : 수익이면 빨강, 손익이면 파랑으로 색상조절, 평가손익으로 바꿔주기*/}
                     <p><strong>평가 손익</strong> 
                         <span className={`${totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}>{totalProfitLoss > 0 && '+'}{totalProfitLoss?.toLocaleString()}</span>
                     </p>

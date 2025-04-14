@@ -6,11 +6,6 @@ import useGetAssetData from '../../hooks/useGetAssetData';
 import { StyledContainer, StyledImage, StyledTable, StyledTableBody, StyledTableHead, StyledTableTr } from './style';
 
 
-
-
-// ! 컴퓨터 버전
-// !필요한거 : 코인 이름, 코인 로고, 코인 보유 수량, 매수평균가(코인 하나당 산 금액), 평가금액(현재코인 하나당 가격 * 보유수량)
-        // ! 평가손익((현재가격*보유수량) - (산가격*보유수량)), 수익률((현재가격 - 산가격) / 산가격 * 100)
 const AssetList = () => {
     const {data: assetData} = useGetAssetData()
     const calculatedData = useCalculateAsset(assetData)
@@ -20,13 +15,11 @@ const AssetList = () => {
     
     
     const coins = assetData?.coins.filter((c:any) => c.amount !== 0) || []
-    // console.log('coins', assetData)
     
     const {coinDetailPrice} =  calculatedData || {};
-    // console.log('calculate', coinDetailPrice)
 
     return (
-        <StyledContainer className='listContainer'>
+        <StyledContainer>
             <StyledTable>
                 <StyledTableHead>
                     <th>보유자산</th>

@@ -4,7 +4,6 @@ import axios from "axios"
 
 const getTransaction = async(userId: string) => {
     const res = await axios.get(`http://localhost:3000/api/transaction/${userId}`)
-    console.log('re', res.data)
     return res.data.transaction
 }
 

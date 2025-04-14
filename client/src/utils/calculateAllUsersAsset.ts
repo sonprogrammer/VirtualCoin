@@ -1,8 +1,7 @@
 
-const calculateAllUserAsset = ((users, prices) => {
+const calculateAllUserAsset = ((users: any, prices: any) => {
     return users.map(user => {
         const { coins, cash, userId } = user
-        // console.log('user', user)
 
         const totalBuy = coins.reduce((acc, coin) => {
             return acc + (coin.avgBuyPrice * coin.amount)
@@ -23,11 +22,15 @@ const calculateAllUserAsset = ((users, prices) => {
         // *사용자이름
         const name = userId.name
 
+        // *현재 사용자의 id
+        const id = userId._id
+
         return{
             name,
             totalAsset,
             totalProfit,
-            profitRate
+            profitRate,
+            id
         }
     })
 })

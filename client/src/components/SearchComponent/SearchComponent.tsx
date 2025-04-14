@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react'
-import { StyledBox, StyledCoin, StyledCoinBox, StyledCoinContainer, StyledCoinContent, StyledCoinNameAndImg, StyledCoinNumber, StyledContainer, StyledInput, StyledNoResult } from './style'
+import { StyledBox, StyledCloseBtn, StyledCoin, StyledCoinBox, StyledCoinContainer, StyledCoinContent, StyledCoinNameAndImg, StyledCoinNumber, StyledContainer, StyledInput, StyledNoResult } from './style'
 import useGetCoins from '../../hooks/useGetCoins'
 import useWebSocket from '../../hooks/useWebSocket'
 import { useNavigate } from 'react-router-dom'
@@ -63,7 +63,7 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
   return (
     <StyledContainer onClick={handleSearchModalClose}>
 
-      <StyledBox onClick={e => e.stopPropagation()}>
+      <StyledBox className='box' onClick={e => e.stopPropagation()}>
         <StyledInput>
           <input
             type="text"
@@ -71,7 +71,8 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
             value={searchQuery}
             onChange={handleSearchInputChange}
             ref={inputRef}
-          />
+            />
+            <StyledCloseBtn onClick={handleSearchModalClose}>X</StyledCloseBtn>
         </StyledInput>
 
         {filteredCoins.length === 0 &&

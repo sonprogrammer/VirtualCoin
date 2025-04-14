@@ -1,9 +1,9 @@
 
+// TODO안쓰는거임
 import { useEffect, useState } from "react";
 import useGetCoins from "./useGetCoins";
 import useWebSocket from "./useWebSocket";
 
-// TODO안쓰는거임
 
 export interface PriceData {
     trade_price: number;
@@ -26,9 +26,7 @@ export interface PriceData {
       
       const { data: coinNameList} = useGetCoins()
 
-      console.log('coahslzfhdslakfh;lds', coinNameList)
     const coinPrices = useWebSocket(coinNameList?.map((c: any) => c.market) || [])
-    console.log('coinprice', coinPrices)
 
     const [mergedData, setMergedData] = useState<{ [key: string]: CoinData }>({});
 
@@ -49,7 +47,6 @@ export interface PriceData {
         }
     }, [coinNameList, coinPrices])
     
-    console.log('mergeddata', mergedData)
     return mergedData
 }
 

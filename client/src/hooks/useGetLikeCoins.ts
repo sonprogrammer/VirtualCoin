@@ -25,7 +25,6 @@ const useGetLikedCoins = () => {
     const { data: likedCoins, isLoading, isError} = useQuery({
         queryKey: ['likedCoins', userData.isGuest],
         queryFn: fetchLikedCoins,
-        // staleTime: Infinity
     })
 
     return { likedCoins, isLoading, isError}

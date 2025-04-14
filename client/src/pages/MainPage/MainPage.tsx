@@ -7,8 +7,6 @@ const MainPage = () => {
   return (
     <StyledContainer className='main'>
       <CoinChartComponent />
-      
-      {/* <LoginDoubleCheckModalComponent /> */}
     </StyledContainer>
   )
 }

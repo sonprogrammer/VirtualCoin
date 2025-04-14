@@ -1,6 +1,5 @@
 const Asset = require("../Models/assetModel");
 const Transaction = require("../Models/transactionModel");
-const User = require("../Models/userModel");
 
 
 
@@ -19,8 +18,7 @@ const getAllAssetData = async(req, res) => {
         
         
         let allUser = await Asset.find({}).populate('userId')
-        // console.log('alluser', allUser)
-        //  -> 잘나옴
+
 
         res.status(200).json({message: 'success', allUser})
     } catch (error) {
@@ -33,7 +31,6 @@ const getAllAssetData = async(req, res) => {
 const getAssetData = async(req, res) => {
     try {
         const { userId } = req.query
-        // console.log('userId', userId)
 
         if(!userId){
             return res.status(400).json({error: 'there is no userId'})
@@ -94,7 +91,6 @@ const postBuyCoins = async(req, res) => {
             price: avgBuyPrice,
             type: type,
             amount,
-            // orderTime:
         }
 
         if(!transaction){

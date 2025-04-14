@@ -7,7 +7,6 @@ import useCalculateAsset from '../../hooks/useCalculateAsset'
 const AssetResultTextComponent = () => {
     const {data} = useGetAssetData()
     const calculatedData = useCalculateAsset(data)
-    // console.log('asse', calculatedData)
 
     const {
         // *총 자산
@@ -26,7 +25,7 @@ const AssetResultTextComponent = () => {
 
    
     return (
-        <StyledContainer className='Assettext'>
+        <StyledContainer>
             <StyledTopBox>
                 <StyledTopBoxContents>
                     <h2>보유 KRW</h2>
