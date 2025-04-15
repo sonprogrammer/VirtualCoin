@@ -14,14 +14,16 @@ const { default: axios } = require('axios');
 const app = express();
 const port = 3000;
 
+const allowedOrigins = ['https://virtualcoinn.netlify.app']
 // CORS 설정
 app.use(cors({
   // origin: ['http://localhost:5173', 'https://virtualcoinn.netlify.app'],
   // origin: ['https://virtualcoinn.netlify.app'],
-  origin: (origin, callback) => {
-    const allowedOrigins = ['https://virtualcoinn.netlify.app'];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, false); // 명확히 차단
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, origin); // origin 그대로 응답에 넣어줌
     } else {
       callback(new Error('Not allowed by CORS'));
     }
