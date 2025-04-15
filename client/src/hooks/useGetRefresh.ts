@@ -1,12 +1,9 @@
 import axios from 'axios';
 
-
-// TODO 코드 다시보고 확인 작업
-
 // 리프레시 토큰을 사용하여 액세스 토큰 갱신
 const refreshToken = async () => {
     try {
-        const response = await axios.get('http://localhost:3000/api/user/refresh', {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/refresh`, {
             withCredentials: true, // 쿠키 포함
         });
         return response.data.accessToken; // 새로운 액세스 토큰 반환

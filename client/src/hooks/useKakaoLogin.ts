@@ -15,7 +15,7 @@ const useKakaoLogin = () => {
 
     try {
       localStorage.removeItem('user');
-      const res = await axios.post(`http://localhost:3000/api/user/kakao-login`, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/kakao-login`, {
         accessToken,
       },
       { withCredentials: true }

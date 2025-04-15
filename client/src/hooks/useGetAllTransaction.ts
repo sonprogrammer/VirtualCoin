@@ -3,7 +3,7 @@ import axios from "axios"
 
 
 const getTransaction = async(userId:string) => {
-    const res = await axios.get(`http://localhost:3000/api/holding/all-transaction/${userId}`)
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/holding/all-transaction/${userId}`)
 
     return res.data
 }

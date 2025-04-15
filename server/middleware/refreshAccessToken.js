@@ -16,8 +16,7 @@ const refreshAccessToken = (req, res) => {
 
             res.cookie('token', newAccessToken, {
                 httpOnly: true,
-                // TODO 배포시 true로 변경
-                secure: false, 
+                secure: true, 
                 maxAge: 3600000, 
             });
 

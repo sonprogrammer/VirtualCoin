@@ -8,7 +8,7 @@ import { userState } from "../context/userState";
 // !게스트유저는 로컬스토리지에 최대 10개만 저장
 
 const getRecentCoin = async() => {
-    const res = await axios.get('http://localhost:3000/api/user/recentCoin',
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/recentCoin`,
         { withCredentials: true }
     )
     return res.data.recentCoins

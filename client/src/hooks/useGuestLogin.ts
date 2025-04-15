@@ -16,7 +16,7 @@ const fetchGuest = async(): Promise<any> => {
     if(StoredGuest) return JSON.parse(StoredGuest)
 
     try {
-        const res = await axios.post('http://localhost:3000/api/user/guest-login')
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/guest-login`)
         const guestUserData = res.data
         // //*게스트 유저정보 저장
         localStorage.setItem(guestUser, JSON.stringify(guestUserData));

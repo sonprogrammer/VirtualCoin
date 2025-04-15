@@ -28,8 +28,7 @@ app.use(session({
   cookie: {
     maxAge: 1800000,
     httpOnly: true,
-    //TODO배포할때 secure: true로 바꾸기
-    secure: false,
+    secure: true,
     sameSite: 'strict' 
   } 
 }))

@@ -67,14 +67,12 @@ const kakaoLogin = async(req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true, 
-            // TODO 배포할때 secure : true로 바꾸기
-            secure: false, 
+            secure: true, 
             maxAge: 3600000,
         });
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            // TODO 배포할때 true로 바꾸기
-            secure: false, 
+            secure: true, 
             maxAge: 7 * 24 * 60 * 60 * 1000, 
         });
         

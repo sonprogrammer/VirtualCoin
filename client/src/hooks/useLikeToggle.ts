@@ -13,7 +13,7 @@ const useLikeToggle = () => {
 
   // !카카오 좋아요 토글
   const likeToggleKakao = async(coinId: string) => {
-    const res = await axios.post(`http://localhost:3000/api/user/${coinId}/like`,{},{
+    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/${coinId}/like`,{},{
       withCredentials: true
     })
 

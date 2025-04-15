@@ -5,7 +5,7 @@ import axios from "axios"
 
 
 const deleteOrder = async(userId: string, orderId: string[]) => {
-    const res = await axios.post(`http://localhost:3000/api/holding/pending-delete/${userId}`,{
+    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/holding/pending-delete/${userId}`,{
         orderId
     })
     return res.data

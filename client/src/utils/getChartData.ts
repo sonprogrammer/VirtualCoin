@@ -12,7 +12,7 @@ interface getChartParams {
 }
 
 const getChartData = async ({ market, type, unit, to, count = 200 }: getChartParams) => {
-    let url = `http://localhost:3000/api/chart?market=${market}&type=${type}&count=${count}`;
+    let url = `${import.meta.env.VITE_API_URL}/api/chart?market=${market}&type=${type}&count=${count}`;
 
     if (type === 'minutes' && unit) {
       url += `&unit=${unit}`
