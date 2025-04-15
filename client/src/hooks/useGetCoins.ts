@@ -12,7 +12,7 @@ import axios from 'axios'
 
 
 const getCoins = async() => {
-    const res = await axios.get('https://api.upbit.com/v1/market/all')
+    const res = await axios.get('/api/upbit')
     return res.data.filter((coin:any) => coin.market.startsWith("KRW-"))
 }
 

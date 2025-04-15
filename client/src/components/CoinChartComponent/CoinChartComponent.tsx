@@ -44,7 +44,7 @@ const CoinChartComponent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('https://api.upbit.com/v1/market/all')
+        const res = await axios.get('/api/upbit')
         const krwCoins = res.data.filter((coin: any) => coin.market.startsWith("KRW-"));
         setCoins(krwCoins);
       } catch (error) {
