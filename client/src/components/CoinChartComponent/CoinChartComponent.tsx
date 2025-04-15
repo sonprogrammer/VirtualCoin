@@ -45,7 +45,6 @@ const CoinChartComponent = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/coins`)
-        console.log('res', res)
         const krwCoins = res.data.filter((coin: any) => coin.market.startsWith("KRW-"));
         setCoins(krwCoins);
       } catch (error) {
