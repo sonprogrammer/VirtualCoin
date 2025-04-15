@@ -44,6 +44,16 @@ app.use('/api/user', userRouter);
 app.use('/api/asset', assetRouter);
 app.use('/api/transaction', transactionRouter);
 app.use('/api/holding', holdRouter);
+app.get('/api/coins', async(req, res) => {
+  try {
+    const response = await axios.get('https://api.upbit.com/v1/market/all')
+    const krwCoins = response.data.filter(coin => coin.market.startsWith("KRW-"));
+    res.json(krwCoins)
+
+  } catch (error) {
+      res.status(500).json({message: 'internal server erorr'})
+  }
+})
 app.use('/api/chart', async(req, res) => {
   const { market, unit, type, count, to } = req.query
 
