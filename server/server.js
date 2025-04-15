@@ -17,7 +17,7 @@ const port = 3000;
 // CORS 설정
 app.use(cors({
   // origin: ['http://localhost:5173', 'https://virtualcoinn.netlify.app'],
-  origin: '*',
+  origin: ['https://virtualcoinn.netlify.app'],
   methods: ['GET', 'POST'],
   credentials: true
 }));
