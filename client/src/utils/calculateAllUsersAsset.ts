@@ -1,13 +1,13 @@
 
 const calculateAllUserAsset = ((users: any, prices: any) => {
-    return users.map(user => {
+    return users.map((user: any) => {
         const { coins, cash, userId } = user
 
-        const totalBuy = coins.reduce((acc, coin) => {
+        const totalBuy = coins.reduce((acc: any, coin: any) => {
             return acc + (coin.avgBuyPrice * coin.amount)
         },0)
 
-        const totalValuationAmount = coins.reduce((acc, coin) => {
+        const totalValuationAmount = coins.reduce((acc: any, coin: any) => {
             const currentPrice = prices[coin.market]?.trade_price || 0
             return acc + (currentPrice * coin.amount)
         },0)

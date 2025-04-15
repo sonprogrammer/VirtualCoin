@@ -17,6 +17,8 @@ type Candle = {
   close: number;
 };
 
+
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -110,7 +112,8 @@ const CoinChartGraphComponent = () => {
   useEffect(() => {
     if (!candleSeriesRef.current || !data) return
 
-    const combinedData = data.pages.flat() as Candle[]
+
+    const combinedData = data?.pages.flat() ?? []
 
     // 중복 제거
     const uniqueDataMap = new Map<number, Candle>()
@@ -133,7 +136,7 @@ const CoinChartGraphComponent = () => {
 
         const updatedCandle = {
           ...candle,
-          time: adjustedTime,
+          time: adjustedTime ,
         };
 
         return updatedCandle;

@@ -36,7 +36,7 @@ const getChartData = async ({ market, type, unit, to, count = 200 }: getChartPar
     close: item.trade_price,
   }));
 
-  mapped.sort((a, b) => a.time - b.time);
+  mapped.sort((a:any, b:any) => a.time - b.time);
 
 
 const unique: typeof mapped = [];

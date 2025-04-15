@@ -9,7 +9,6 @@ interface SellOrder {
     amount: number;
     avgSellPrice: number;
     userId: string;
-    cash: number;
   }
 
 

@@ -18,11 +18,11 @@ const usePostBuyTrade = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: ({ market, name, amount, avgBuyPrice, userId, cash }: { market: string; name: string; amount: number; avgBuyPrice: number, userId: string, cash: number })=> {
+        mutationFn: ({ market, name, amount, avgBuyPrice, userId }: { market: string; name: string; amount: number; avgBuyPrice: number, userId: string, cash: number })=> {
                 return postHolding({market, name, amount, avgBuyPrice, userId})
             
         },
-        onSuccess: async (data,variable) => {
+        onSuccess: async (variable) => {
 
             const { userId} = variable
 

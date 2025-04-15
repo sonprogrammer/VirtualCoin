@@ -8,7 +8,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { InterestedCoin } from '../InterestedCoin';
 import { RecentCoin } from '../RecentCoin';
 import { SearchComponent } from '../SearchComponent';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { userState } from '../../context/userState';
 import useGetAssetData from '../../hooks/useGetAssetData';
 import useCalculateAsset from '../../hooks/useCalculateAsset';

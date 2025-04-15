@@ -1,9 +1,26 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {  useInfiniteQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import getChartData, { CandleType } from "../utils/getChartData";
 
+type ChartCandleData = {
+    time: number;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    volume: number;
+  };
+
 const useGetChartData = (market: string, type: CandleType, unit?: number) => {
-    return useInfiniteQuery({
+    return useInfiniteQuery
+    <
+    ChartCandleData[], // 페이지 데이터를 InfiniteData<ChartCandleData[]>로 명시
+    Error, 
+    ChartCandleData[], // 결과는 ChartCandleData[] 타입
+    [string, string, CandleType, number?], // queryKey 타입
+    string | undefined  // pageParam 타입
+  >
+        ({
         queryKey: ['chartData', market, type, unit],
         queryFn: async ({pageParam}) => {
             return await getChartData({

@@ -35,7 +35,7 @@ const logoutGuest = async () => {
 }
 
 const useGuestLogin = () => {
-    const [user, setUser] = useRecoilState(userState)
+    const [, setUser] = useRecoilState(userState)
 
     const { data: guestUserData, isLoading, isError, refetch } = useQuery({
         queryKey: ['guestUser'],
