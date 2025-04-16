@@ -1,7 +1,7 @@
 
 const express = require('express');
 const cors = require('cors');
-const http = require('http')
+const https = require('https')
 const { default: mongoose } = require('mongoose');
 const session = require('express-session');
 require('dotenv').config();
@@ -16,7 +16,7 @@ const { webSocket } = require('./websocket');
 const app = express();
 const port = 3000;
 
-const server = http.createServer(app)
+const server = https.createServer(app)
 
 // CORS 설정
 app.use(cors({

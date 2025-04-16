@@ -84,9 +84,9 @@ const useWebSocket = (coins: any[]) => {
     if (!coins) return;
 
     // const ws = new WebSocket("wss://virtualcoin.onrender.com/ws"); 
-    const ws = new WebSocket(import.meta.env.VITE_WS_URL); 
+    // const ws = new WebSocket(import.meta.env.VITE_WS_URL); 
 
-    // const ws = new WebSocket("ws://localhost:3000/ws"); 
+    const ws = new WebSocket("ws://localhost:3000/ws"); 
 
     ws.onopen = () => {
       console.log("coinprice WebSocket from server Connected");
