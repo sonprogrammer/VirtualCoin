@@ -1,12 +1,16 @@
 import WebSocket from "ws";
 
 export const webSocket = (server) => {
-    const ws = new WebSocket.Server({server})
+    const wss = new WebSocket.Server({server})
+    let upbitSocket = null;
+
 
     wss.on('connection', (clientSocket)=> {
         console.log('connected websocket')
 
-        const upbitSocket = new WebSocket('wss://api.upbit.com/websocket/v1');
+        if (!upbitSocket) {
+            upbitSocket = new WebSocket('wss://api.upbit.com/websocket/v1');
+        }
 
 
         clientSocket.on('message', (message) => {
@@ -31,7 +35,8 @@ export const webSocket = (server) => {
 
         clientSocket.on('close', () => {
             console.log('disconnected websocket')
-            upbitSocket.close()
-        })
+            if (wss.clients.size === 0 && upbitSocket.readyState === WebSocket.OPEN) {
+                upbitSocket.close();
+            }        })
     })
 }
