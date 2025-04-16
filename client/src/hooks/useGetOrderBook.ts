@@ -24,7 +24,7 @@ const useGetOrderBook = (market: string) => {
 
   useEffect(() => {
     // const orderBookWs = new WebSocket("wss://api.upbit.com/websocket/v1");
-    const orderBookWs = new WebSocket("wss://virtualcoin.onrender.com/ws");
+    const orderBookWs = new WebSocket("wss://virtualcoin.onrender.com");
 
     orderBookWs.onopen = () => {
       orderBookWs.send(

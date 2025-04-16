@@ -1,7 +1,7 @@
 const WebSocket = require("ws");
 
 const webSocket = (server) => {
-  const wss = new WebSocket.Server({ server, path: '/ws'});
+  const wss = new WebSocket.Server({ server});
   let upbitSocket = null;
 
   wss.on('connection', (clientSocket) => {
