@@ -4,8 +4,11 @@ import axios from "axios";
 
 
 const fetchData = async (market: string, interval: string) => {
+  // const res = await axios.get(
+  //   `https://api.upbit.com/v1/candles/${interval}?market=${market}&count=200`
+  // );
   const res = await axios.get(
-    `https://api.upbit.com/v1/candles/${interval}?market=${market}&count=200`
+    `${import.meta.env.VITE_API_URL}/api/candles/${interval}?market=${market}&count=200`
   );
 
   return res.data;

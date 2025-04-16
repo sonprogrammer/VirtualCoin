@@ -16,7 +16,7 @@ const { webSocket } = require('./websocket');
 const app = express();
 const port = 3000;
 
-const server = http.createdServer()
+const server = http.createdServer(app)
 
 // CORS 설정
 app.use(cors({
