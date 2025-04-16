@@ -1,6 +1,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const http = require('http')
 const { default: mongoose } = require('mongoose');
 const session = require('express-session');
 require('dotenv').config();
@@ -11,8 +12,11 @@ const authenticateJWT = require('./middleware/authenticateJWT')
 const cookieParser = require('cookie-parser');
 const holdRouter = require('./Routes/holdingRouter');
 const { default: axios } = require('axios');
+const { webSocket } = require('./websocket');
 const app = express();
 const port = 3000;
+
+const server = http.createdServer()
 
 // CORS 설정
 app.use(cors({
@@ -82,6 +86,8 @@ app.use('/api/chart', async(req, res) => {
   }
 })
 
+
+webSocket(server)
 // 서버 실행
 app.listen(port, () => {
   console.log(`Server running on http://localhost:3000`);
