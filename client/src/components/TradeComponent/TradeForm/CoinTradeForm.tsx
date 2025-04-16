@@ -71,7 +71,7 @@ const { mutate: postSellTrade} = usePostSellTrade()
         setCurrentPrice(newPrice);
         setTradePrice(newPrice);
       }
-    }, [coinId, coin]);
+    }, [coinId]);
 
     if(currentPrice === null){
       return <div>loading...</div>
