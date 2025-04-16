@@ -89,6 +89,6 @@ app.use('/api/chart', async(req, res) => {
 
 webSocket(server)
 // 서버 실행
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:3000`);
+server.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
