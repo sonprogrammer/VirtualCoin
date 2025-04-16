@@ -65,6 +65,14 @@ const { mutate: postSellTrade} = usePostSellTrade()
       }
     }, [coinId, coin, currentPrice]);
 
+    useEffect(() => {
+      if (coinId && coin[coinId]) {
+        const newPrice = coin[coinId].trade_price;
+        setCurrentPrice(newPrice);
+        setTradePrice(newPrice);
+      }
+    }, [coinId, coin]);
+
     if(currentPrice === null){
       return <div>loading...</div>
     }
