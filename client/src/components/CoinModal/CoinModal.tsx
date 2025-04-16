@@ -44,13 +44,13 @@ const CoinModal = ({ title, coinData, onClickOutside }: CoinModalProps) => {
                 <p>{a.coinKoreanName}</p>
                 <p
                   className={`${Number(a.price.change_rate) > 0 ? 'text-red-500' : 'text-blue-600'}`}
-                >{a.price.trade_price.toLocaleString()}
+                >{a.price.trade_price?.toLocaleString()}
                 </p>
                 <p
                   className={`${Number(a.price.change_rate) > 0 ? 'text-red-500' : 'text-blue-600'}`}
                 >
                   {`${Number(a.price.change_rate) > 0 ? '+' : ''}`}
-                  {(Number(a.price.change_rate) * 100).toLocaleString()}%
+                  {(Number(a.price.change_rate) * 100)?.toLocaleString()}%
                 </p>
               </StyledCoin>
             ))}

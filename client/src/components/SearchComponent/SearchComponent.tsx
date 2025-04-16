@@ -107,10 +107,10 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
                       </StyledCoinNameAndImg>
                     </div>
                     <StyledCoinContent>
-                      <p>{coinMarket.trade_price.toLocaleString()}</p>
+                      <p>{coinMarket.trade_price?.toLocaleString()}</p>
                       <p
                         className={`${coinMarket.change_rate > 0 ? 'text-red-500' : 'text-blue-500'} `}
-                      >{coinMarket.change_rate > 0 && '+'}{coinMarket.change_rate.toLocaleString()}</p>
+                      >{coinMarket.change_rate > 0 && '+'}{coinMarket.change_rate?.toLocaleString()}</p>
                     </StyledCoinContent>
 
                   </StyledCoinBox>

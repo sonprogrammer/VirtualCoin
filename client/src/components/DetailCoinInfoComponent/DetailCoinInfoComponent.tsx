@@ -108,7 +108,7 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
                 <StyledTitlePrice>
                     <p className={`${coinInfo.change_rate > 0 ? 'text-red-500' : 'text-blue-600'}`}>
                         <span className="font-bold">
-                            {coinInfo?.trade_price.toLocaleString()}
+                            {coinInfo?.trade_price?.toLocaleString()}
                         </span>
                         <span>
                             KRW
@@ -116,9 +116,9 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
                     </p>
                     <p className={`${coinInfo.change_rate > 0 ? 'text-red-500' : 'text-blue-600'}`}>
                         <span>{coinInfo.change_rate > 0 ? '+' : ''}</span>
-                        <span>{(coinInfo?.change_rate * 100).toLocaleString()} %</span>
+                        <span>{(coinInfo?.change_rate * 100)?.toLocaleString()} %</span>
                         <span className="pl-2">{coinInfo.change_rate > 0 ? '+' : ''}</span>
-                        <span>{coinInfo?.change_price.toLocaleString()}</span>
+                        <span>{coinInfo?.change_price?.toLocaleString()}</span>
                     </p>
                 </StyledTitlePrice>
                     
@@ -131,11 +131,11 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
                  <StyledPrices className="고가저가">
                      <p>
                          <span>고가</span>
-                         <span className="text-red-500">{coinInfo?.high_price.toLocaleString()}</span>
+                         <span className="text-red-500">{coinInfo?.high_price?.toLocaleString()}</span>
                      </p>
                      <p>
                          <span>저가</span>
-                         <span className="text-blue-600">{coinInfo?.low_price.toLocaleString()}</span>
+                         <span className="text-blue-600">{coinInfo?.low_price?.toLocaleString()}</span>
                      </p>
                  </StyledPrices>
 
@@ -143,14 +143,14 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
                      <div>
                          <span>거래량(24H)</span>
                          <StyledRateNumbers>
-                         <span>{Number(coinInfo?.trade_volume).toLocaleString()}</span>
+                         <span>{Number(coinInfo?.trade_volume)?.toLocaleString()}</span>
                              <span>{coinUnit}</span>
                          </StyledRateNumbers>
                      </div>
                      <div>
                          <span>거래대금(24H)</span>
                          <StyledRateNumbers>
-                             <span>{Math.floor(coinInfo?.acc_price as number).toLocaleString()}</span>
+                             <span>{Math.floor(coinInfo?.acc_price as number)?.toLocaleString()}</span>
                              <span>KRW</span>
                          </StyledRateNumbers>
                      </div>

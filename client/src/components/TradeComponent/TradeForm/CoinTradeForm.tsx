@@ -164,7 +164,7 @@ const { mutate: postSellTrade} = usePostSellTrade()
       <StyledAsset>
         <p>주문가능</p>
         {/*//* 현재 로그인한 사람의 보유 현금  */}
-        <p><strong>{cash.toLocaleString()} 원</strong></p>
+        <p><strong>{cash?.toLocaleString()} 원</strong></p>
       </StyledAsset>
       <StyledCoinPrice>
         <p>{name}가격(KRW)</p>
@@ -173,7 +173,7 @@ const { mutate: postSellTrade} = usePostSellTrade()
             //* 사고 싶으면 그가격에 예약을 걸어놈
              */}
           <input type="string" 
-            value={tradePrice.toLocaleString()} 
+            value={tradePrice?.toLocaleString()} 
             onChange={(e) => {
               const value = e.target.value.replace(/,/g, '')
               setTradePrice(Number(value))
@@ -203,7 +203,7 @@ const { mutate: postSellTrade} = usePostSellTrade()
 
       <StyledTotalOrder>
         <p>주문총액</p>
-        <p><strong>{(orderAmount * tradePrice).toLocaleString()}</strong> 원</p>
+        <p><strong>{(orderAmount * tradePrice)?.toLocaleString()}</strong> 원</p>
       </StyledTotalOrder>
 
       <StyledBtns>

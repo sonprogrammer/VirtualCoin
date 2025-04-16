@@ -110,9 +110,9 @@ const PendingComponent = () => {
                                 <td
                                     className={`${a.type === 'SELL' ? 'text-blue-600' : 'text-red-500'}`}
                                 >{a.type === 'BUY' ? '매수' : '매도'}</td>
-                                <td>{a.orderPrice.toLocaleString()}</td>
-                                <td>{a.orderQuantity.toLocaleString()}</td>
-                                <td>{a.orderQuantity.toLocaleString()}</td>
+                                <td>{a.orderPrice?.toLocaleString()}</td>
+                                <td>{a.orderQuantity?.toLocaleString()}</td>
+                                <td>{a.orderQuantity?.toLocaleString()}</td>
                                 <td>
                                     <button 
                                         onClick={(e) => {handleCancleBtnClick(a._id, e)

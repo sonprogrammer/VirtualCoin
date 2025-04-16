@@ -43,7 +43,7 @@ const AssetList = () => {
                                     </StyledImage>
                                 </td>
                                 <td>{coin.amount}</td>
-                                <td>{coin.avgBuyPrice.toLocaleString()}</td>
+                                <td>{coin.avgBuyPrice?.toLocaleString()}</td>
                                 <td>{coinDetailPrice[i].coinValue?.toLocaleString()}</td>
                                 <td>
                                     <div>

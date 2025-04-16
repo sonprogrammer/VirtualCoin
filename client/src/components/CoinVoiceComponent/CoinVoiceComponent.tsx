@@ -33,7 +33,7 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
             </p>
             <StyledRight>
               <p>
-                {ask.price.toLocaleString()}
+                {ask.price?.toLocaleString()}
               </p>
               <p>
                 {ask.changeRate !== null ? `${ask.changeRate.toFixed(2)} %` : "error"}
@@ -53,7 +53,7 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
             </p>
             <StyledRight>
             <p className="border-x-[1px]">
-              {bid.price.toLocaleString()}
+              {bid.price?.toLocaleString()}
             </p>
             <p>
               {bid.changeRate !== null ? `${bid.changeRate.toFixed(2)} %` : "error"}

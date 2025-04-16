@@ -132,7 +132,7 @@ const CoinBookForm = () => {
                   <p>
                     <span>개당</span>
                     <span> 
-                      <strong>{order.orderPrice.toLocaleString()}원</strong>
+                      <strong>{order.orderPrice?.toLocaleString()}원</strong>
                     </span>
                   </p>
                 </StyledAmount>

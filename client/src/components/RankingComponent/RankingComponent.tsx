@@ -67,11 +67,11 @@ const RankingComponent = () => {
                                 <td>{firstPage + i+1}</td>
                                 <td>{a.name}</td>
                                 <td>
-                                    {a.totalAsset.toLocaleString()}원
+                                    {a.totalAsset?.toLocaleString()}원
                                 </td>
                                 <td className={`${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-600' : ''}`}>
                                     {a.totalProfit > 0 && '+'}
-                                    {a.totalProfit.toLocaleString()}원
+                                    {a.totalProfit?.toLocaleString()}원
                                 </td>
                                 <td className={`${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-600' : ''}`}>
                                     {a.totalProfit > 0 && '+'}

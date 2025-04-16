@@ -161,8 +161,8 @@ const formatDateTime = (dateString: string) => {
                                         className={`${a.type === 'SELL' ? 'text-blue-700' : 'text-red-500'}`}
                                     >{a.type === 'BUY' ? '매수' : '매도'}</td>
                                     <td>{a.amount.toFixed(3)}</td>
-                                    <td>{a.price.toLocaleString()}</td>
-                                    <td>{totalCost.toLocaleString()}</td>
+                                    <td>{a.price?.toLocaleString()}</td>
+                                    <td>{totalCost?.toLocaleString()}</td>
                                     <td>{formatDateTime(a.orderTime)}</td>
                                 </tr>
                             )})

@@ -191,7 +191,7 @@ const CoinChartComponent = () => {
                     >
                       <p>
                         {priceData.change_rate > 0 ? "+" : ""}
-                        {(priceData.change_rate * 100).toLocaleString()}%
+                        {(priceData.change_rate * 100)?.toLocaleString()}%
                       </p>
                       <p>
                         {priceData.change_rate > 0 ? "+" : ""}
@@ -207,7 +207,7 @@ const CoinChartComponent = () => {
                   {priceData ?
                     <p className={`${windowWidth > 570 ? '' : 'text-[12px]'}`}
                     >
-                      {Math.floor(priceData.acc_price / 1000000).toLocaleString()}백만
+                      {Math.floor(priceData.acc_price / 1000000)?.toLocaleString()}백만
                     </p>
                     : "Loading..."
                   }
