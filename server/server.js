@@ -16,7 +16,8 @@ const { webSocket } = require('./websocket');
 const app = express();
 const port = 3000;
 
-const server = https.createServer(app)
+// const server = https.createServer(app)
+const server = app
 
 // CORS 설정
 app.use(cors({
@@ -89,6 +90,6 @@ app.use('/api/chart', async(req, res) => {
 
 webSocket(server)
 // 서버 실행
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
