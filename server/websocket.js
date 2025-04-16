@@ -4,54 +4,53 @@ const webSocket = (server) => {
   const wss = new WebSocket.Server({ server });
   let upbitSocket = null;
 
-  wss.on("connection", (clientSocket) => {
-    console.log("✅ [server] connected websocket");
+  const createUpbitSocket = () => {
+    // Upbit WebSocket 연결을 생성하는 함수
+    upbitSocket = new WebSocket('wss://api.upbit.com/websocket/v1');
+    
+    upbitSocket.on('open', () => {
+      console.log('Upbit WebSocket connected');
+    });
 
-    // 최초 Upbit 소켓 연결
-    if (!upbitSocket || upbitSocket.readyState !== WebSocket.OPEN) {
-      upbitSocket = new WebSocket("wss://api.upbit.com/websocket/v1");
+    upbitSocket.on('close', () => {
+      console.log('Upbit WebSocket closed, reconnecting...');
+      // 연결이 끊어졌을 경우 재연결을 시도
+      createUpbitSocket();
+    });
 
-      upbitSocket.on("open", () => {
-        console.log("✅ [server] connected to Upbit");
+    upbitSocket.on('error', (error) => {
+      console.error('Upbit WebSocket error:', error);
+      // 오류가 발생했을 경우에도 재연결 시도
+      createUpbitSocket();
+    });
+
+    upbitSocket.on('message', (data) => {
+      wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(data);
+        }
       });
+    });
+  };
 
-      upbitSocket.on("message", (data) => {
-        console.log("📡 [server] received data from Upbit");
-        wss.clients.forEach((client) => {
-          if (client.readyState === WebSocket.OPEN) {
-            client.send(data);
-          }
-        });
-      });
+  // 최초 연결
+  createUpbitSocket();
 
-      upbitSocket.on("error", (err) => {
-        console.error("❌ [server] Upbit socket error:", err);
-      });
+  wss.on('connection', (clientSocket) => {
+    console.log('Client connected to WebSocket server');
 
-      upbitSocket.on("close", () => {
-        console.log("🔌 [server] Upbit socket closed");
-      });
-    }
-
-    // 클라이언트 → 서버 → Upbit
-    clientSocket.on("message", (message) => {
-      console.log("📨 [server] received from client:", message);
+    clientSocket.on('message', (message) => {
       if (upbitSocket.readyState === WebSocket.OPEN) {
         upbitSocket.send(message);
       } else {
-        upbitSocket.once("open", () => {
+        upbitSocket.on('open', () => {
           upbitSocket.send(message);
         });
       }
     });
 
-    clientSocket.on("close", () => {
-      console.log("❎ [server] client disconnected");
-      if (wss.clients.size === 0 && upbitSocket?.readyState === WebSocket.OPEN) {
-        console.log("🔒 [server] closing Upbit socket (no clients)");
-        upbitSocket.close();
-        upbitSocket = null;
-      }
+    clientSocket.on('close', () => {
+      console.log('Client disconnected');
     });
   });
 };
