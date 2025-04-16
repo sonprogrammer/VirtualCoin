@@ -20,7 +20,7 @@ const server = https.createServer(app)
 
 // CORS 설정
 app.use(cors({
-  origin: ['http://localhost:5173','https://virtualcoinn.netlify.app'],
+  origin: ['http://localhost:5173','https://virtualcoinn.netlify.app', 'https://virtualcoinn.onrender.com'],
 
   methods: ['GET', 'POST'],
   credentials: true
