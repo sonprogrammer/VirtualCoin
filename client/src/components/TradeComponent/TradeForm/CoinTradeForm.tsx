@@ -65,14 +65,7 @@ const { mutate: postSellTrade} = usePostSellTrade()
       }
     }, [coinId, coin, currentPrice]);
 
-    useEffect(() => {
-      if (coinId && coin[coinId] && currentPrice === null) {
-        // 초기 설정만 할 수 있도록 조건 추가
-        const newPrice = coin[coinId].trade_price;
-        setCurrentPrice(newPrice);
-        setTradePrice(newPrice);
-      }
-    }, [coinId]);
+
 
     if(currentPrice === null){
       return <div>loading...</div>
