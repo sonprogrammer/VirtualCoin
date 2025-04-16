@@ -23,8 +23,8 @@ const useGetOrderBook = (market: string) => {
   const [prevClosingPrice, setPriceClosingPrice] = useState<number | null>(null)
 
   useEffect(() => {
-    const orderBookWs = new WebSocket("wss://api.upbit.com/websocket/v1");
-    // const orderBookWs = new WebSocket("wss://virtualcoin.onrender.com");
+    // const orderBookWs = new WebSocket("wss://api.upbit.com/websocket/v1");
+    const orderBookWs = new WebSocket("wss://virtualcoin.onrender.com/ws");
 
     orderBookWs.onopen = () => {
       orderBookWs.send(

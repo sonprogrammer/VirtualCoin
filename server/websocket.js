@@ -1,6 +1,6 @@
-import WebSocket from "ws";
+const WebSocket = require("ws");
 
-export const webSocket = (server) => {
+const webSocket = (server) => {
     const wss = new WebSocket.Server({server})
     let upbitSocket = null;
 
@@ -24,6 +24,8 @@ export const webSocket = (server) => {
         })
 
         upbitSocket.on('message', (data) => {
+            console.log("🔥 받은 메시지:", data.toString());
+
             if(clientSocket.readyState === WebSocket.OPEN){
                 clientSocket.send(data)
             }
@@ -40,3 +42,5 @@ export const webSocket = (server) => {
             }        })
     })
 }
+
+module.exports = {webSocket}
