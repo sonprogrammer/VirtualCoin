@@ -83,8 +83,10 @@ const useWebSocket = (coins: any[]) => {
   useEffect(() => {
     if (!coins) return;
 
-    // 서버 주소로 웹소켓 연결
-    const ws = new WebSocket("wss://virtualcoin.onrender.com/ws");  // WebSocket URL을 서버 주소로 설정
+    // const ws = new WebSocket("wss://virtualcoin.onrender.com/ws"); 
+    const ws = new WebSocket(import.meta.env.VITE_WS_URL); 
+
+    // const ws = new WebSocket("ws://localhost:3000/ws"); 
 
     ws.onopen = () => {
       console.log("coinprice WebSocket from server Connected");
@@ -97,10 +99,7 @@ const useWebSocket = (coins: any[]) => {
     };
 
     ws.onmessage = (e) => {
-      console.log("🔥 ws.onmessage called!");
-      console.log("📦 typeof e.data:", typeof e.data);
-      console.log("📦 e.data instanceof Blob:", e.data instanceof Blob);
-      console.log("📦 e.data:", e.data);
+   
       const reader = new FileReader();
       reader.onload = () => {
         const data = JSON.parse(reader.result as string);
