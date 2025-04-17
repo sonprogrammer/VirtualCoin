@@ -59,6 +59,10 @@ const { mutate: postSellTrade} = usePostSellTrade()
       }
     },[data, coinId])
 
+    useEffect(()=>{
+      setCurrentPrice(null)
+    },[coinId])
+
     useEffect(() => {
       if (coinId && coin[coinId] && coin[coinId].trade_price !== 0 && currentPrice === null) {
         setCurrentPrice(coin[coinId].trade_price);  
@@ -67,13 +71,6 @@ const { mutate: postSellTrade} = usePostSellTrade()
     }, [coinId, coin, currentPrice]);
 
 
-    useEffect(() => {
-      if (coinId && coin[coinId] && currentPrice === null) {
-        const initialPrice = coin[coinId].trade_price;
-        setCurrentPrice(initialPrice);  // 초기 가격 설정
-        setTradePrice(initialPrice);    // 초기 가격 설정
-      }
-    }, [coinId, coin, currentPrice]);
 
 
     if(currentPrice === null){

@@ -27,6 +27,8 @@ interface CalculateAssets {
 const useCalculateAsset = (assetData: AssetData) => {
     const [prices] = useRecoilState(CoinPrice); 
 
+    // console.log('price', prices)
+
 
     const calculateAssets = useMemo<CalculateAssets>(() => {
         if (!assetData || !assetData.coins) return {
@@ -42,9 +44,12 @@ const useCalculateAsset = (assetData: AssetData) => {
 
         const { cash, coins } = assetData
 
+        const filteredCoins = coins.filter(coin => coin.amount !== 0)
+        // console.log('coins', filteredCoins)
+
 
         //* 총매수 금액
-        const totalBuy = coins.reduce((acc: number, coin: any) => {
+        const totalBuy = filteredCoins.reduce((acc: number, coin: any) => {
             const purchasePrice = coin.avgBuyPrice || 0; 
             const quantity = coin.amount || 0; 
 
@@ -53,7 +58,7 @@ const useCalculateAsset = (assetData: AssetData) => {
 
         
         // *총 평가 = 코인의 현재 가격 * 수량
-        const totalValuationAmount = coins.reduce((acc: number, coin: any) => {
+        const totalValuationAmount = filteredCoins.reduce((acc: number, coin: any) => {
             const currentPrice = prices[coin.market]?.trade_price || 0;
             const quantity = coin.amount || 0;
             return acc + (currentPrice * quantity)
@@ -73,12 +78,12 @@ const useCalculateAsset = (assetData: AssetData) => {
 
 
         // *코인 현재 가격
-        const currentCoinPrice = coins.map((coin: any) => {
+        const currentCoinPrice = filteredCoins.map((coin: any) => {
             return prices[coin.market]?.trade_price}
         )
 
         // * 코인별 평가금액, 평가 손익
-        const coinDetailPrice = coins.map((coin: any) => {
+        const coinDetailPrice = filteredCoins.map((coin: any) => {
             const currentPrice = prices[coin.market]?.trade_price || 0
             const coinValue = currentPrice * coin.amount // *평가금액
             const profitLoss = coinValue - (coin.avgBuyPrice * coin.amount) //*평가손익
@@ -91,6 +96,7 @@ const useCalculateAsset = (assetData: AssetData) => {
                 profitRate: parseFloat(profitRate.toFixed(2))
             }
         })
+        // console.log('coindetial', coinDetailPrice)
         
         
         return {
