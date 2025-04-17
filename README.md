@@ -32,7 +32,7 @@ this project built for beginners to explore real-time market and practice invest
 | **Landing Page** | Supports **Kakao Login** and **Guest Login**<br/> Guest accounts are limited to the current device and **cannot be accessed again after logout** |
 | **Navbar** | Displays the logged-in user's **asset information**, **interested coins**, and the **10 most recently viewed coins**. |
 | **Search Page** | When the user click the search component, it displays the **top 20 coins by trading volume** |
-| **Main Page** | Shows a **real-time coin list** with current prices, trading volume, and percentage change from the previous day.<br/> Coins can be **sorted by highest trading volume**. |
+| **Main Page** | Shows a **real-time coin list** with current prices, trading volume, and percentage change from the previous day.<br/> Coins can be **sorted by trading volume in descending order**. |
 | **Asset Page** | Divided into: <br/> 1. **Holdings** – shows cash balance, total profit/loss, and each coin profit/loss. <br/> 2. **Trade History** – lists completed transactions. <br/> 3. **Pending Orders** – displays reserved orders and allows cancellation. |
 | **Ranking Page** | Displays a **real-time ranking** of users based on **profitRate** among all registered users. |
 | **Coin Detail Page** | Includes **order book**, **trading interface**, and **candlestick charts**.<br/> Candlestick chart supports **minute**, **daily**, **weekly**, and **monthly** views. |
