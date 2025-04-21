@@ -14,5 +14,6 @@ export * from './SearchComponent'
 export * from './CoinChartGraphComponent'
 export * from './CoinVoiceComponent'
 export * from './DetailCoinInfoComponent'
+export * from './LoginRequestComponent'
 
 

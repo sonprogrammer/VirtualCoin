@@ -13,9 +13,6 @@ const LandingPage = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [guestModal, setGuestModal] = useState<boolean>(false)
 
-  // const apiUrl = import.meta.env.VITE_API_URL;
-
-  // console.log('apiUrl', apiUrl); 
 
   const kakaoClientId = import.meta.env.VITE_KAKAO_CLIENT_ID || '';
 
