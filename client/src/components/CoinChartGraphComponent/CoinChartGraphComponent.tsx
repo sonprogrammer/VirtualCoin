@@ -65,7 +65,6 @@ const CoinChartGraphComponent = () => {
       },
     });
 
-    // 📌 캔들스틱 시리즈 추가
     const series = chart.addSeries(CandlestickSeries, {
       upColor: "#f44336",
       downColor: "#0000ff",
