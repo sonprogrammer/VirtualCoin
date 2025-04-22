@@ -69,12 +69,14 @@ const kakaoLogin = async(req, res) => {
             httpOnly: true, 
             secure: process.env.NODE_ENV === 'production', 
             sameSite: 'None',
+            domain: '.virtualcoinn.onrender.com',
             maxAge: 3600000,
         });
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', 
             sameSite: 'None',
+            domain: '.virtualcoinn.onrender.com',
             maxAge: 7 * 24 * 60 * 60 * 1000, 
         });
         
