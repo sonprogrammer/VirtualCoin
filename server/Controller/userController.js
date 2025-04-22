@@ -68,16 +68,14 @@ const kakaoLogin = async(req, res) => {
         res.cookie('token', token, {
             httpOnly: true, 
             secure: process.env.NODE_ENV === 'production', 
-            // sameSite: 'None',
-            sameSite: 'Lax',
+            sameSite: 'None',
             domain: process.env.NODE_ENV === 'production' ? '.virtualcoinn.onrender.com' : undefined,
             maxAge: 3600000,
         });
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', 
-            // sameSite: 'None',
-            sameSite: 'Lax',
+            sameSite: 'None',
             domain: process.env.NODE_ENV === 'production' ? '.virtualcoinn.onrender.com' : undefined,
             maxAge: 7 * 24 * 60 * 60 * 1000, 
         });

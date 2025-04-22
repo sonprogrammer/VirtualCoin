@@ -34,8 +34,7 @@ app.use(session({
     maxAge: 1800000,
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    // sameSite: process.env.NODE_ENV === 'production'? 'None' : 'Lax',
-    sameSite: 'Lax',
+    sameSite: process.env.NODE_ENV === 'production'? 'None' : 'Lax',
     domain: process.env.NODE_ENV === 'production' ? '.virtualcoinn.onrender.com' : undefined
   } 
 }))
