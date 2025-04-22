@@ -6,6 +6,7 @@ const refreshToken = async () => {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/refresh`, {
             withCredentials: true, // 쿠키 포함
         });
+        console.log('resposne', response)
         return response.data.accessToken; // 새로운 액세스 토큰 반환
     } catch (error) {
         console.error("리프레시 토큰 갱신 실패", error);
