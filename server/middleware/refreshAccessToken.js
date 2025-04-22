@@ -17,6 +17,7 @@ const refreshAccessToken = (req, res) => {
             res.cookie('token', newAccessToken, {
                 httpOnly: true,
                 secure: true, 
+                sameSite: 'None',
                 maxAge: 3600000, 
             });
 
