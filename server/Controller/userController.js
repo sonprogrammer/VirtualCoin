@@ -137,6 +137,7 @@ const kakaoGetLikeCoins = async (req, res) => {
 const getRecentCoins = async(req, res) =>{
     try {
         const kakaoId = req.user.kakaoId
+        console.log('req.user', req.user)
     
         const user = await User.findOne({kakaoId})
     
@@ -157,6 +158,7 @@ const getRecentCoins = async(req, res) =>{
 const postRecentCoins = async(req, res) => {
     try {
         const { coinId } = req.params
+        
         const kakaoId = req.user.kakaoId
     
         const user = await User.findOne({kakaoId})

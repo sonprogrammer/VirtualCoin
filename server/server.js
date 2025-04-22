@@ -20,7 +20,7 @@ const server = http.createServer(app)
 
 // CORS 설정
 app.use(cors({
-  origin: ['http://localhost:5173','https://virtualcoinn.netlify.app', 'https://virtualcoinn.onrender.com'],
+  origin: ['http://localhost:5173', 'https://virtualcoinn.onrender.com'],
 
   methods: ['GET', 'POST'],
   credentials: true
@@ -34,7 +34,7 @@ app.use(session({
     maxAge: 1800000,
     httpOnly: true,
     secure: true,
-    sameSite: 'strict' 
+    sameSite: 'none' 
   } 
 }))
 app.use(cookieParser()); 
