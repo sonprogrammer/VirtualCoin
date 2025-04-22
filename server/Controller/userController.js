@@ -67,12 +67,12 @@ const kakaoLogin = async(req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true, 
-            secure: true, 
+            secure: process.env.NODE_ENV === 'deploy', 
             maxAge: 3600000,
         });
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: true, 
+            secure: process.env.NODE_ENV === 'deploy', 
             maxAge: 7 * 24 * 60 * 60 * 1000, 
         });
         
@@ -137,7 +137,7 @@ const kakaoGetLikeCoins = async (req, res) => {
 const getRecentCoins = async(req, res) =>{
     try {
         const kakaoId = req.user.kakaoId
-        console.log('req.user', req.user)
+        
     
         const user = await User.findOne({kakaoId})
     
