@@ -24,12 +24,10 @@ const useGetOrderBook = (market: string) => {
 
   useEffect(() => {
     const ws = new WebSocket(import.meta.env.VITE_WS_URL)
-    // const ws = new WebSocket("wss://api.upbit.com/websocket/v1");
 
     ws.onopen = () => {
       ws.send(
         JSON.stringify([
-          // { ticket: "coin_list" },
           { type: "orderbook", codes: [market] },
           { type: 'ticker', codes: [market]}
 

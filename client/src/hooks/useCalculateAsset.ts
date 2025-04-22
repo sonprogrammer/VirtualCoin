@@ -27,8 +27,6 @@ interface CalculateAssets {
 const useCalculateAsset = (assetData: AssetData) => {
     const [prices] = useRecoilState(CoinPrice); 
 
-    // console.log('price', prices)
-
 
     const calculateAssets = useMemo<CalculateAssets>(() => {
         if (!assetData || !assetData.coins) return {
@@ -45,7 +43,7 @@ const useCalculateAsset = (assetData: AssetData) => {
         const { cash, coins } = assetData
 
         const filteredCoins = coins.filter(coin => coin.amount !== 0)
-        // console.log('coins', filteredCoins)
+
 
 
         //* 총매수 금액
@@ -96,7 +94,6 @@ const useCalculateAsset = (assetData: AssetData) => {
                 profitRate: parseFloat(profitRate.toFixed(2))
             }
         })
-        // console.log('coindetial', coinDetailPrice)
         
         
         return {

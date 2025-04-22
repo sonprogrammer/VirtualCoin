@@ -32,7 +32,6 @@ const { mutate: postBuyTrade} = usePostBuyTrade()
 const { mutate: postSellTrade} = usePostSellTrade()
 
 
-// console.log('coin',coin)
   const cash = data?.cash || 0
 
 
@@ -48,7 +47,6 @@ const { mutate: postSellTrade} = usePostSellTrade()
 
     //*코인 한국이름
     const kName = useRecoilValue(coinKName)
-    // console.log('path', coinId)
 
     useEffect(() => {
       if(data?.coins){

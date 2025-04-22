@@ -1,8 +1,6 @@
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import { AssetPage, CoinDetailPage, LandingPage, LayoutPage, MainPage, NotfoundPage, RankingPage } from "./pages"
-import { useRecoilValue } from "recoil"
-import { userState } from "./context/userState"
-import ProtectNoUser from "./utils/protectNoUser"
+import ProtectNoUser from "./utils/ProtectNoUser"
 import { LoginRequestComponent } from "./components"
 
 

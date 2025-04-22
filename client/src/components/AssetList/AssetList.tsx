@@ -8,7 +8,6 @@ import { StyledContainer, StyledImage, StyledTable, StyledTableBody, StyledTable
 
 const AssetList = () => {
     const {data: assetData} = useGetAssetData()
-    // console.log('asset', assetData)
     const calculatedData = useCalculateAsset(assetData)
     if (!assetData) {
         return <div>Loading...</div>; 
