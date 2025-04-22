@@ -23,28 +23,28 @@ const useGetOrderBook = (market: string) => {
   const [prevClosingPrice, setPriceClosingPrice] = useState<number | null>(null)
 
   useEffect(() => {
-    // const orderBookWs = new WebSocket(import.meta.env.VITE_WS_URL)
-    const orderBookWs = new WebSocket("wss://api.upbit.com/websocket/v1");
+    const ws = new WebSocket(import.meta.env.VITE_WS_URL)
+    // const ws = new WebSocket("wss://api.upbit.com/websocket/v1");
 
-    orderBookWs.onopen = () => {
-      orderBookWs.send(
+    ws.onopen = () => {
+      ws.send(
         JSON.stringify([
-          { ticket: "coin_list" },
+          // { ticket: "coin_list" },
           { type: "orderbook", codes: [market] },
           { type: 'ticker', codes: [market]}
 
         ])
-      );
-    };
+      )
+    }
 
-    orderBookWs.onmessage = (e) => {
-        const reader = new FileReader();
+    ws.onmessage = (e) => {
+      //*서버에서 이미 toString으로 보내주고 있음
 
-        reader.onload = () => {
+        try {
+          const data = JSON.parse(e.data)
 
-          const data = JSON.parse(reader.result as string); 
   
-          if(data.type === 'ticker'){
+          if(data.type === 'ticker' && data.code === market){
             setPriceClosingPrice(data.prev_closing_price)
             setCoinPrice({
               trade_price: data.trade_price, // 현재가
@@ -58,54 +58,42 @@ const useGetOrderBook = (market: string) => {
             
           }
 
-
-          if (data.type === "orderbook") {
-            if (!prevClosingPrice) return orderBook; 
-
-            if(prevClosingPrice !== null){
+          if (data.type === "orderbook" && prevClosingPrice !== null && data.code === market) {
 
               //!매수
               const bids = data.orderbook_units.map((unit: any) => ({
                 price: unit.bid_price,
                 quantity: unit.bid_size,
-                changeRate: 
-                prevClosingPrice !== null ?
-                ( ((unit.bid_price - prevClosingPrice) / prevClosingPrice) * 100)
-                : null
+                changeRate: ((unit.bid_price - prevClosingPrice) / prevClosingPrice) * 100
               }))
               
               //!매도
               const asks = data.orderbook_units.map((unit: any) => ({
                 price: unit.ask_price,
                 quantity: unit.ask_size,
-                changeRate: 
-                prevClosingPrice !== null ?
-                ((unit.ask_price - prevClosingPrice) / prevClosingPrice) * 100
-                : null
+                changeRate: ((unit.ask_price - prevClosingPrice) / prevClosingPrice) * 100
               }))
               
               
               setOrderBook({bids, asks})
             }
-          } 
+          } catch (error) {
+             console.log('orderbook websocket error',error)
+         }
           
-        };
+        }
   
-        reader.onerror = (err) => {
-          console.error("Error reading Blob data:", err);
-        };
-  
-        reader.readAsText(e.data); 
-      };
-  
-      orderBookWs.onerror = (err) => {
+      ws.onerror = (err) => {
         console.error("WebSocket error:", err);
       };
+      ws.onclose = () => {
+        console.log('websocket connection is closed')
+      }
 
     return () => {
-      orderBookWs.close();
+      ws.close();
     };
-  }, [market, prevClosingPrice]);
+  }, [market,prevClosingPrice])
 
   return { orderBook, prevClosingPrice, coinPrice };
 };

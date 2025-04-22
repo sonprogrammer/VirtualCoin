@@ -81,7 +81,8 @@ const webSocket = (server) => {
 
         const subscribeMessage = [
           { ticket: "coin-ticker" },
-          { type: "ticker", codes: krwMarkets }
+          { type: "ticker", codes: krwMarkets },
+          { type: "orderbook", codes: krwMarkets }
         ];
         upbitSocket.send(JSON.stringify(subscribeMessage));
       });
@@ -96,7 +97,7 @@ const webSocket = (server) => {
       });
 
       upbitSocket.on('close', () => {
-        console.log('Upbit WebSocket closed. Reconnecting...');
+        console.log('Upbit WebSocket closed.');
         setTimeout(createUpbitSocket, 2000);
       });
 
@@ -121,7 +122,7 @@ const webSocket = (server) => {
     });
 
     clientSocket.on('message', (msg) => {
-      console.log(' 라이언트 메시지(무시):', msg);
+      console.log(' 라이언트 메시지(무시):');
     });
   });
 };

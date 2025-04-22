@@ -25,6 +25,7 @@ const CoinModal = ({ title, coinData, onClickOutside }: CoinModalProps) => {
 
   const handleCoinClick = (coinId: string) => {
     navigate(`/coin/${coinId}`)
+    onClickOutside()
     addRecentCoin(coinId)
   }
 
