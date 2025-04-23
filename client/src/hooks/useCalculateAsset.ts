@@ -10,6 +10,9 @@ interface AssetData {
 }
 
 interface CoinDetailPrice {
+    market: string;
+    avgBuyPrice: number;
+    amount: number;
     coinValue: number;
     profitLoss: number;
     profitRate: number;
@@ -42,6 +45,7 @@ const useCalculateAsset = (assetData: AssetData) => {
 
         const { cash, coins } = assetData
 
+        //* 코인 갯수가 0인건 빼고 계산
         const filteredCoins = coins.filter(coin => coin.amount !== 0)
 
 
@@ -81,19 +85,19 @@ const useCalculateAsset = (assetData: AssetData) => {
         )
 
         // * 코인별 평가금액, 평가 손익
-        const coinDetailPrice = filteredCoins.map((coin: any) => {
-            const currentPrice = prices[coin.market]?.trade_price || 0
+        const coinDetailPrice : CoinDetailPrice[]= filteredCoins.map(((coin:any) => {
+            const currentPrice = prices[coin.market]?.trade_price || 0 //*현재 가
             const coinValue = currentPrice * coin.amount // *평가금액
-            const profitLoss = coinValue - (coin.avgBuyPrice * coin.amount) //*평가손익
-            const profitRate = ((currentPrice - coin.avgBuyPrice) / (coin.avgBuyPrice * coin.amount)) * 100
-
+            const coinBuyPrice = coin.avgBuyPrice * coin.amount //*매수금액
+            const profitLoss = coinValue - (coin.avgBuyPrice * coin.amount) //* 평가 손익
+            const profitRate = (coinValue - coinBuyPrice) / coinBuyPrice * 100 //*수익률
             return {
                 ...coin,
                 coinValue,
                 profitLoss,
                 profitRate: parseFloat(profitRate.toFixed(2))
             }
-        })
+        }))
         
         
         return {

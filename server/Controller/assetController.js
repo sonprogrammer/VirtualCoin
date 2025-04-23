@@ -76,6 +76,7 @@ const postBuyCoins = async(req, res) => {
             const isAlreadyIn = userAsset.coins[isAlreadyCheck]
             isAlreadyIn.amount += amount
             isAlreadyIn.avgBuyPrice = (((isAlreadyIn.avgBuyPrice * isAlreadyIn.amount) + (avgBuyPrice * amount)) / (isAlreadyIn.amount + amount))
+
         }
         const coinPrice = avgBuyPrice * amount
         userAsset.cash = userAsset.cash - coinPrice

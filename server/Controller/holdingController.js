@@ -79,13 +79,14 @@ const processOrder = async(userId, market, orderPrice, amount, type, currentPric
             name: order.coinKName,
             amount,
             avgBuyPrice: orderPrice,
+            
           }]
         })
         await userAsset.save()
 
       }else{
-        const coinIndex = userAsset.coins.findIndex(c => c.market === market)
-        if(coinIndex === -1){
+        const isAlreadyCheck = userAsset.coins.findIndex(c => c.market === market)
+        if(isAlreadyCheck === -1){
           userAsset.coins.push({
             market,
             name: order.coinKName,
@@ -93,7 +94,9 @@ const processOrder = async(userId, market, orderPrice, amount, type, currentPric
             avgBuyPrice: orderPrice
           })
         }else{
-          userAsset.coins[coinIndex].amount += amount
+          const isAlreadyIn = userAsset.coins[isAlreadyCheck]
+          isAlreadyIn.amount += amount
+          isAlreadyIn.avgBuyPrice = (((isAlreadyIn.avgBuyPrice * isAlreadyIn.amount) + (orderPrice*amount)) / (amount+isAlreadyIn.amount))
         }
         await userAsset.save()
 
