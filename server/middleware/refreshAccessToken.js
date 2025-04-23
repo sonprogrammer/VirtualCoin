@@ -3,21 +3,23 @@ const jwt = require('jsonwebtoken');
 const refreshAccessToken = (req, res) => {
     try {
         const refreshToken = req.cookies.refreshToken; 
+        console.log('refresh token', refreshToken)
         if (!refreshToken) return res.status(401).json({ error: '리프레시 토큰이 없습니다.' });
 
-        jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decoded) => {
+        jwt.verify(refreshToken, process.env.JWT_SECRET, (err, user) => {
             if (err) return res.status(403).json({ error: '리프레시 토큰이 유효하지 않습니다.' });
 
             const newAccessToken = jwt.sign(
-                { kakaoId: decoded.kakaoId, name: decoded.name },
+                { kakaoId: user.kakaoId, name: user.name },
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
             );
 
             res.cookie('token', newAccessToken, {
                 httpOnly: true,
-                secure: true, 
+                secure: process.env.NODE_ENV === 'production',
                 sameSite: 'None',
+                domain: process.env.NODE_ENV === 'production' ? '.virtualcoinn.onrender.com' : undefined,
                 maxAge: 3600000, 
             });
 

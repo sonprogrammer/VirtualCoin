@@ -1,16 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userState } from "../context/userState";
+import axiosInstance from "./useGetRefresh";
 
 
 // !카카오유저는 서버에 최대 10개만 보여주자
 // !게스트유저는 로컬스토리지에 최대 10개만 저장
 
 const getRecentCoin = async() => {
-    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/recentCoin`,
-        { withCredentials: true }
-    )
+    const res = await axiosInstance.get(`${import.meta.env.VITE_API_URL}/api/user/recentCoin`)
     return res.data.recentCoins
 }
 

@@ -1,13 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../context/userState';
+import axiosInstance from './useGetRefresh';
 
 
 const postRecentCoin = async (coinId: string) => {
-    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/${coinId}/recentCoin`, {},
-        { withCredentials: true }
-    )
+    const res = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/api/user/${coinId}/recentCoin`)
     return res.data
 }
 

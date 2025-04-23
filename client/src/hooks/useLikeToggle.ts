@@ -3,7 +3,7 @@
 import { useRecoilValue } from "recoil"
 import { userState } from "../context/userState"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import axios from "axios"
+import axiosInstance from "./useGetRefresh"
 
 
 
@@ -13,9 +13,7 @@ const useLikeToggle = () => {
 
   // !카카오 좋아요 토글
   const likeToggleKakao = async(coinId: string) => {
-    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/${coinId}/like`,{},{
-      withCredentials: true
-    })
+    const res = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/api/user/${coinId}/like`)
 
     return res.data
   }
