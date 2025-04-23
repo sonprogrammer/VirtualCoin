@@ -38,7 +38,7 @@ this project built for beginners to explore real-time market and practice invest
 | **Ranking Page** | Displays a **real-time ranking** of users based on **profitRate** among all registered users. |
 | **Coin Detail Page** | Includes **order book**, **trading interface**, and **candlestick charts**.<br/> Candlestick chart supports **minute**, **daily**, **weekly**, and **monthly** views. |
 + responsive web
-
++ Built as a **PWA**, it runs like a native app on both mobile and desktop—no installation needed.
 --- 
 
 ## 📁 폴더 구조(Folder Structure)
