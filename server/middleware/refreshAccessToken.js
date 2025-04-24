@@ -19,7 +19,7 @@ const refreshAccessToken = (req, res) => {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'None',
-                domain: process.env.NODE_ENV === 'production' ? '.virtualcoinn.onrender.com' : undefined,
+                // domain: process.env.NODE_ENV === 'production' ? '.virtualcoinn.onrender.com' : undefined,
                 maxAge: 3600000, 
             });
 
