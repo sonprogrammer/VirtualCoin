@@ -1,6 +1,8 @@
 
 const calculateAllUserAsset = ((users: any, prices: any) => {
-    return users.map((user: any) => {
+    return users
+        .filter((user: any) => user.userId)
+        .map((user: any) => {
         const { coins, cash, userId } = user
 
         const totalBuy = coins.reduce((acc: any, coin: any) => {
@@ -20,11 +22,10 @@ const calculateAllUserAsset = ((users: any, prices: any) => {
         const profitRate = totalBuy !== 0 ? parseFloat(((totalProfit / totalBuy) * 100).toFixed(2)) : 0
         
         // *사용자이름
-        const name = userId.name
+        const name = userId?.name
 
         // *현재 사용자의 id
-        const id = userId._id
-
+        const id = userId?._id
         return{
             name,
             totalAsset,
@@ -32,6 +33,7 @@ const calculateAllUserAsset = ((users: any, prices: any) => {
             profitRate,
             id
         }
+    
     })
 })
 

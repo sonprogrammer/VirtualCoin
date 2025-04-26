@@ -35,7 +35,6 @@ app.use(session({
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: process.env.NODE_ENV === 'production'? 'None' : 'Lax',
-    // domain: process.env.NODE_ENV === 'production' ? '.virtualcoin.onrender.com' : undefined
   } 
 }))
 app.use(cookieParser()); 

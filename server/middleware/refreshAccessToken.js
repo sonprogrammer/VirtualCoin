@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const refreshAccessToken = (req, res) => {
     try {
         const refreshToken = req.cookies.refreshToken; 
-        console.log('refresh token', refreshToken)
         if (!refreshToken) return res.status(401).json({ error: '리프레시 토큰이 없습니다.' });
 
         jwt.verify(refreshToken, process.env.JWT_SECRET, (err, user) => {
@@ -19,7 +18,6 @@ const refreshAccessToken = (req, res) => {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'None',
-                // domain: process.env.NODE_ENV === 'production' ? '.virtualcoinn.onrender.com' : undefined,
                 maxAge: 3600000, 
             });
 
