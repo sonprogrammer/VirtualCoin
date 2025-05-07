@@ -1,5 +1,7 @@
 # VC(Virtual Coin)
 
+## 🛠️Under optimization...
+
 this project built for beginners to explore real-time market and practice investing, gain understanding of coin world.
 ---
 
