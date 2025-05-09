@@ -12,6 +12,7 @@ import { useRecoilState } from 'recoil';
 import { userState } from '../../context/userState';
 import useGetAssetData from '../../hooks/useGetAssetData';
 import useCalculateAsset from '../../hooks/useCalculateAsset';
+import useLogout from '../../hooks/useLogout';
 
 
 
@@ -31,6 +32,8 @@ const NavbarComponent = () => {
 
     const {data} = useGetAssetData()
     const calculatedData = useCalculateAsset(data)
+
+    const {mutate: logoutMutate} = useLogout()
 
     const {
         // *총 자산
@@ -131,6 +134,7 @@ const NavbarComponent = () => {
     }
 
     const handleLogout = () => {
+        logoutMutate()
         localStorage.removeItem('user')
         localStorage.removeItem('asset')
         setUser(null)

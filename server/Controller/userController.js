@@ -85,6 +85,25 @@ const kakaoLogin = async(req, res) => {
     }
 } 
 
+const kakaoLogout = async(req, res) => {
+    try {
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'None'
+        })
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'None'
+        })
+        res.status(200).json({message: 'logout'})
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({message: 'internal server error'})
+    }
+}
+
 // * 카카오로그인 관심코인 토글
 const kakaoLikeToggle = async(req, res) => {
     try {
@@ -193,4 +212,4 @@ const postRecentCoins = async(req, res) => {
 
 
 
-module.exports =  {createGuestUser, kakaoLogin, kakaoGetLikeCoins,kakaoLikeToggle, getRecentCoins, postRecentCoins}
+module.exports =  {createGuestUser, kakaoLogin, kakaoGetLikeCoins,kakaoLikeToggle, getRecentCoins, postRecentCoins, kakaoLogout}
