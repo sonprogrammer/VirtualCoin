@@ -14,7 +14,6 @@ const useKakaoLogin = () => {
     const accessToken = data.response.access_token
 
     try {
-      //*혹시라도 게스트 로그인 후 카카오로그인 할 수 도 있으니깐 로컬스토리지 삭제
       localStorage.removeItem('user');
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/kakao-login`, {
         accessToken,

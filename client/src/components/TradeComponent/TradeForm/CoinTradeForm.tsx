@@ -175,9 +175,6 @@ const { mutate: postSellTrade} = usePostSellTrade()
       <StyledCoinPrice>
         <p>{name}가격(KRW)</p>
         <StyledTradeInput>
-            {/* //*인풋창에 코인의 가격이 들어가고 거기서 더 낮은 금액에
-            //* 사고 싶으면 그가격에 예약을 걸어놈
-             */}
           <input type="string" 
             value={tradePrice?.toLocaleString()} 
             onChange={(e) => {

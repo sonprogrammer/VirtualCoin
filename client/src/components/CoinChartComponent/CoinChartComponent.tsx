@@ -40,7 +40,7 @@ const CoinChartComponent = () => {
     navigate(`/coin/${coinId}`)
   }
 
-  //*코인 데이터 가져오기(100개) - rest api로 (고정된 값이니깐 변할일 없어서 )
+
   useEffect(() => {
     const fetchData = async () => {
       try {

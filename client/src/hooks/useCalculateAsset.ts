@@ -45,7 +45,6 @@ const useCalculateAsset = (assetData: AssetData) => {
 
         const { cash, coins } = assetData
 
-        //* 코인 갯수가 0인건 빼고 계산
         const filteredCoins = coins.filter(coin => coin.amount !== 0)
 
 

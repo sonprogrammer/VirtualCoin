@@ -36,7 +36,6 @@ const useGetOrderBook = (market: string) => {
     }
 
     ws.onmessage = (e) => {
-      //*서버에서 이미 toString으로 보내주고 있음
 
         try {
           const data = JSON.parse(e.data)

@@ -9,7 +9,6 @@ const guestUser = 'user'
 
 
 
-//*로컬스토리지에서 조회, 없으면 생성 - 서버에서 랜덤 닉네임 받아옴 -> 서버에서 중복이름 걸러줌
 const fetchGuest = async(): Promise<any> => {
     const StoredGuest = localStorage.getItem(guestUser)
 
@@ -18,7 +17,6 @@ const fetchGuest = async(): Promise<any> => {
     try {
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/guest-login`)
         const guestUserData = res.data
-        // //*게스트 유저정보 저장
         localStorage.setItem(guestUser, JSON.stringify(guestUserData));
     
         return guestUserData
