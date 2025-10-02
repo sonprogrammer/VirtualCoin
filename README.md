@@ -78,7 +78,7 @@ this project built for beginners to explore real-time market and practice invest
 --- 
  
 ## ✏️what i learned
-- by implementing `websocket`, i got understanding of how
+- by implementing `websocket`, i got understanding of how to handle websocket
 - i resolved CORS issues using a proxy server which helped me understand browser and server security policies
 - i became comfortable using `userCallback`, `useMemo`, `recoil` while optimizing state management and improving performance
 - i improved my understanding of `React Query`

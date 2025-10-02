@@ -14,7 +14,7 @@ const refreshToken = async () => {
             withCredentials: true, // 쿠키 포함
         });
         console.log('resposne', response)
-        return response.data.accessToken; // 새로운 액세스 토큰 반환
+        return response.data.token; // 새로운 액세스 토큰 반환
     } catch (error) {
         console.error("리프레시 토큰 갱신 실패", error);
         return null;
