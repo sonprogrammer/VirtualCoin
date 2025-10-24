@@ -2,9 +2,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { StyledBox, StyledCloseBtn, StyledCoin, StyledCoinBox, StyledCoinContainer, StyledCoinContent, StyledCoinNameAndImg, StyledCoinNumber, StyledContainer, StyledInput, StyledNoResult } from './style'
 import useGetCoins from '../../hooks/useGetCoins'
-import useWebSocket from '../../hooks/useWebSocket'
 import { useNavigate } from 'react-router-dom'
 import usePostRecentCoin from '../../hooks/usePostRecentCoin'
+import { useRecoilState } from 'recoil'
+import { CoinPrice } from '../../context/CoinPrice'
 
 interface SearchComponentProps {
   handleSearchModalClose: () => void
@@ -14,6 +15,8 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
   const [coins, setCoins] = useState<any[]>([])
   const [searchQuery, setSearchQuery] = useState<string>('')
   const inputRef = useRef<HTMLInputElement | null>(null)
+
+  const [prices] = useRecoilState(CoinPrice);
 
   const navigate = useNavigate()
   const { mutate: addRecentCoin } = usePostRecentCoin();
@@ -34,18 +37,17 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
   
   
   const { data: coinData, isLoading, error } = useGetCoins()
-  const coinInfo = useWebSocket(coinData)
 
   useEffect(() => {
-    if (coinData && coinInfo) {
+    if (coinData && prices) {
       const sortedCoins = [...coinData].sort((a, b) => {
-        const tradeVolumeA = coinInfo[a.market]?.acc_price || 0;
-        const tradeVolumeB = coinInfo[b.market]?.acc_price || 0;
+        const tradeVolumeA = prices[a.market]?.acc_price || 0;
+        const tradeVolumeB = prices[b.market]?.acc_price || 0;
         return tradeVolumeB - tradeVolumeA;
       });
       setCoins(sortedCoins)
     }
-  }, [coinInfo])
+  }, [prices])
 
   const filteredCoins = coins.filter(coin => (
     coin.korean_name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -88,14 +90,14 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
           </h1>
           <StyledCoin>
             {(filteredCoins.length > 0 ? filteredCoins : coins).slice(0, 20).map((coin: any, i) => {
-              const coinMarket = coinInfo[coin.market]
+              const coinMarket = prices[coin.market]
               const coinUnit = coin.market.split('-')[1]
               const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
               if (!coinMarket) {
                 return null;
               }
               return (
-                <>
+                <div key={coin.market}>
                   <StyledCoinBox onClick={() => handleCoinClick(coin.market)}>
                     <div className='flex gap-2'>
                       <StyledCoinNumber>
@@ -114,7 +116,7 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
                     </StyledCoinContent>
 
                   </StyledCoinBox>
-                </>
+                </div>
               )
             })}
           </StyledCoin>

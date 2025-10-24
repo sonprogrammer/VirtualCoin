@@ -1,7 +1,8 @@
-import axios from "axios"
+
 import { useRecoilValue } from "recoil"
 import { userState } from "../context/userState"
 import { useQuery } from "@tanstack/react-query"
+import axiosInstance from "./useGetRefresh"
 
 
 
@@ -9,7 +10,7 @@ const useGetAssetData =  () => {
     const user = useRecoilValue(userState)
 
     const fetchData = async () => {
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/asset?userId=${user._id}`)
+            const res = await axiosInstance.get(`${import.meta.env.VITE_API_URL}/api/asset?userId=${user._id}`)
             return res.data
 
         

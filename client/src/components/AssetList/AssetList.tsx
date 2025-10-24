@@ -42,9 +42,9 @@ const AssetList = () => {
                                         <p>{coin.name}</p>
                                     </StyledImage>
                                 </td>
-                                <td>{coin.amount}</td>
+                                <td>{coin.amount?.toLocaleString()}</td>
                                 <td>{coin.avgBuyPrice?.toLocaleString()}</td>
-                                <td>{coinDetailPrice[i].coinValue?.toLocaleString()}</td>
+                                <td>{Math.round(Number(coinDetailPrice[i].coinValue)).toLocaleString()}</td>
                                 <td>
                                     <div>
                                         <p
@@ -54,7 +54,7 @@ const AssetList = () => {
                                             {coinDetailPrice[i].profitRate}%</p>
                                         <p
                                             className={`${Number(coinDetailPrice[i].profitLoss) < 0 ? 'text-blue-600' : 'text-red-500'}`}
-                                        >{coinDetailPrice[i].profitLoss?.toLocaleString()}KRW</p>
+                                        >{Math.round(Number(coinDetailPrice[i].profitLoss)).toLocaleString()}KRW</p>
                                     </div>
                                 </td>
 

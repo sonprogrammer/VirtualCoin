@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { CoinPrice } from "../context/CoinPrice";
+import { CoinPrice } from '../../context/CoinPrice'
 
 export interface PriceData {
   trade_price: number;
@@ -12,12 +12,13 @@ export interface PriceData {
   low_price: number;
 }
 
-const useWebSocket = () => {
+const testWebsocket = () => {
   const [prices, setPrices] = useRecoilState(CoinPrice);
 
   useEffect(() => {
+  
 
-    const ws = new WebSocket(import.meta.env.VITE_WS_URL)
+    const ws = new WebSocket(import.meta.env.VITE_WS_URL); 
 
     ws.onopen = () => {
       console.log("coinprice WebSocket from server Connected");
@@ -27,6 +28,7 @@ const useWebSocket = () => {
     ws.onmessage = (e) => {
       try {
         const data = JSON.parse(e.data); 
+
         if (data.type === "ticker") {
         setPrices((prev) => ({
           ...prev,
@@ -49,9 +51,9 @@ const useWebSocket = () => {
     return () => {
       ws.close();
     };
-  }, [setPrices]);
+  }, [ setPrices]);
 
   return prices;
 };
 
-export default useWebSocket;
+export default testWebsocket;

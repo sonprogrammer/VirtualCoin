@@ -31,7 +31,7 @@ const RecentCoin = ({handleOutsideClick} : RecentCoinProps) => {
    
     
     
-      return <CoinModal title="최근 본 코인" coinData={coinData} onClickOutside={handleOutsideClick} />;
+      return <CoinModal title="최근 본 코인(10개)" coinData={coinData} onClickOutside={handleOutsideClick} />;
 }
 
 export default RecentCoin

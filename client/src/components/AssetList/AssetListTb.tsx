@@ -40,7 +40,7 @@ const AssetListTb = () => {
                         className={`${coinDetailPrice[i].profitLoss > 0 ? 'text-red-500' : 'text-blue-700'}`}
                     >
                         {coinDetailPrice[i].profitLoss > 0 && '+'}
-                        {coinDetailPrice[i].profitLoss?.toLocaleString()} KRW
+                        {Math.round(Number(coinDetailPrice[i].profitLoss)).toLocaleString()} KRW
                         </span>
                 </p>
                 <p>
@@ -73,7 +73,7 @@ const AssetListTb = () => {
             </StyledTbContentSmBox>
             <StyledTbContentSmBox>
                 <p>
-                    <span>{coinDetailPrice[i].coinValue?.toLocaleString()}</span>
+                    <span>{Math.round(Number(coinDetailPrice[i].coinValue)).toLocaleString()}</span>
                     <span> KRW</span>
                 </p>
                 <p>평가금액</p>

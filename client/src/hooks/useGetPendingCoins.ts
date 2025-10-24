@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
+import axiosInstance from "./useGetRefresh"
 
 
 const getPendingCoins = async(userId: string) => {
-    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/holding/pending/${userId}`)
+    const res = await axiosInstance.get(`${import.meta.env.VITE_API_URL}/api/holding/pending/${userId}`)
     return res.data
 }
 

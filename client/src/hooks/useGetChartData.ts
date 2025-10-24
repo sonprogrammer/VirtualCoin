@@ -14,11 +14,11 @@ type ChartCandleData = {
 const useGetChartData = (market: string, type: CandleType, unit?: number) => {
     return useInfiniteQuery
     <
-    ChartCandleData[], // 페이지 데이터를 InfiniteData<ChartCandleData[]>로 명시
+    ChartCandleData[], 
     Error, 
-    ChartCandleData[], // 결과는 ChartCandleData[] 타입
-    [string, string, CandleType, number?], // queryKey 타입
-    string | undefined  // pageParam 타입
+    ChartCandleData[], 
+    [string, string, CandleType, number?], 
+    string | undefined 
   >
         ({
         queryKey: ['chartData', market, type, unit],

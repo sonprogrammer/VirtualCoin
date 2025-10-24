@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import axios from "axios"
+import axiosInstance from "./useGetRefresh"
 
 
 
 
 const deleteOrder = async(userId: string, orderId: string[]) => {
-    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/holding/pending-delete/${userId}`,{
+    const res = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/api/holding/pending-delete/${userId}`,{
         orderId
     })
     return res.data

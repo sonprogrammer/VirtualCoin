@@ -42,7 +42,7 @@ const webSocket = (server) => {
 
       upbitSocket.on('error', (error) => {
         console.error('Upbit WebSocket error:', error);
-        upbitSocket.close(); // 닫고 재연결
+        upbitSocket.close()
       });
 
     } catch (error) {

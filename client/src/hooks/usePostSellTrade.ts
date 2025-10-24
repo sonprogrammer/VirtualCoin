@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios"
+import axiosInstance from "./useGetRefresh";
 
 
 
@@ -13,7 +13,7 @@ interface SellOrder {
 
 
 const postHolding = async({market, name, amount, avgSellPrice, userId}: {market: string, name: string, amount: number, avgSellPrice: number, userId: string}) => {
-    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/holding/${market}/sell-reserve`,{
+    const res = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/api/holding/${market}/sell-reserve`,{
         amount,
         avgSellPrice,
         name,

@@ -4,7 +4,6 @@ import { StyledContainer, StyledPageBtns, StyledTable, StyledTableBody, StyledTa
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
-import useWebSocket from "../../hooks/useWebSocket";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { CoinPrice } from "../../context/CoinPrice";
@@ -31,9 +30,6 @@ const CoinChartComponent = () => {
   const { mutate: addRecentCoin } = usePostRecentCoin();
 
   const [prices] = useRecoilState(CoinPrice); 
-
-  useWebSocket(coins)
-
 
   const handleCoinClick = (coinId: string) => {
     addRecentCoin(coinId)

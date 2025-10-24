@@ -34,7 +34,7 @@ const AssetResultTextComponent = () => {
                 </StyledTopBoxContents>
                 <StyledTopBoxContents>
                     <h2>총 보유자산</h2>
-                    <h1>{totalAssets?.toLocaleString()}</h1>
+                    <h1>{Math.round(Number(totalAssets))?.toLocaleString()}</h1>
                     <p>KRW</p>
                 </StyledTopBoxContents>
             </StyledTopBox>
@@ -54,7 +54,7 @@ const AssetResultTextComponent = () => {
                     <StyledBottomContentBox>
                         <h1
                             className={`${totalProfitLoss && totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}
-                        >{totalProfitLoss?.toLocaleString()}</h1>
+                        >{Math.round(Number(totalProfitLoss))?.toLocaleString()}</h1>
                         <p>KRW</p>
                     </StyledBottomContentBox>
                 </StyledBottomBoxContents>
@@ -62,7 +62,7 @@ const AssetResultTextComponent = () => {
                 <StyledBottomBoxContents>
                     <h2>총 평가</h2>
                     <StyledBottomContentBox>
-                        <h1>{totalValuationAmount?.toLocaleString()}</h1>
+                        <h1>{Math.round(Number(totalValuationAmount))?.toLocaleString()}</h1>
                         <p>KRW</p>
                     </StyledBottomContentBox>
                 </StyledBottomBoxContents>

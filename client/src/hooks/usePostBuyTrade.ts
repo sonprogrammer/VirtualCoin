@@ -1,12 +1,13 @@
 
-import axios from "axios"
+
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import axiosInstance from "./useGetRefresh"
 
 
 
 
 const postHolding = async({market, name, amount, avgBuyPrice, userId}: {market: string, name: string, amount: number, avgBuyPrice: number, userId: string}) => {
-    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/holding/${market}/buy-reserve`,{
+    const res = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/api/holding/${market}/buy-reserve`,{
         amount, //거래량
         avgBuyPrice, //지정가
         name, //코인 한국이름
