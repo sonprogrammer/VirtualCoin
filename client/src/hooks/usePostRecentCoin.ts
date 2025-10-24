@@ -5,7 +5,7 @@ import axiosInstance from './useGetRefresh';
 
 
 const postRecentCoin = async (coinId: string) => {
-    const res = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/api/user/${coinId}/recentCoin`)
+    const res = await axiosInstance.post(`/api/user/${coinId}/recentCoin`)
     return res.data
 }
 

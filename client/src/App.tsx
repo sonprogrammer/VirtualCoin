@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import { AssetPage, CoinDetailPage, LandingPage, LayoutPage, MainPage, NotfoundPage, RankingPage } from "./pages"
 import ProtectNoUser from "./utils/ProtectNoUser"
 import { LoginRequestComponent } from "./components"
+import { TestPage } from "./pages/TestPage/TestPage"
 
 
 
@@ -19,6 +20,7 @@ function App() {
         }>
           <Route path="/browse" element={
             <ProtectNoUser>
+              {/* <TestPage /> */}
               <MainPage />
             </ProtectNoUser>
           }

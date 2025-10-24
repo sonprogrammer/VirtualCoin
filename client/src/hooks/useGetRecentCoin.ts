@@ -8,7 +8,7 @@ import axiosInstance from "./useGetRefresh";
 // !게스트유저는 로컬스토리지에 최대 10개만 저장
 
 const getRecentCoin = async() => {
-    const res = await axiosInstance.get(`${import.meta.env.VITE_API_URL}/api/user/recentCoin`)
+    const res = await axiosInstance.get(`/api/user/recentCoin`)
     return res.data.recentCoins
 }
 

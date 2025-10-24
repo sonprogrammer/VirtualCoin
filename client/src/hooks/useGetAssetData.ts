@@ -9,7 +9,7 @@ const useGetAssetData =  () => {
     const user = useRecoilValue(userState)
 
     const fetchData = async () => {
-            const res = await axios(`${import.meta.env.VITE_API_URL}/api/asset?userId=${user._id}`)
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/asset?userId=${user._id}`)
             return res.data
 
         

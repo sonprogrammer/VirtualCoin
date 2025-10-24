@@ -26,6 +26,7 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json())
+app.use(cookieParser()); 
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -37,7 +38,7 @@ app.use(session({
     sameSite: process.env.NODE_ENV === 'production'? 'None' : 'Lax',
   } 
 }))
-app.use(cookieParser()); 
+
 
 mongoose.connect(process.env.MONGO_URI,{
   useNewUrlParser: true,
@@ -59,7 +60,7 @@ app.get('/api/coins', async(req, res) => {
       res.status(500).json({message: 'internal server erorr'})
   }
 })
-app.use('/api/chart', async(req, res) => {
+app.get('/api/chart', async(req, res) => {
   const { market, unit, type, count, to } = req.query
 
   try {

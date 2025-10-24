@@ -2,6 +2,7 @@ import { useRecoilValue } from "recoil"
 import { userState } from "../context/userState"
 import { useQuery } from "@tanstack/react-query"
 import axiosInstance from "./useGetRefresh"
+import axios from "axios"
 
 
 
@@ -21,7 +22,7 @@ const useGetLikedCoins = () => {
        
 
     const { data: likedCoins, isLoading, isError} = useQuery({
-        queryKey: ['likedCoins', userData.isGuest],
+        queryKey: ['likedCoins'],
         queryFn: fetchLikedCoins,
     })
 
