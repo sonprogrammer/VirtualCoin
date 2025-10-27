@@ -6,6 +6,9 @@ import KakaoLogin from 'react-kakao-login';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import useKakaoLogin from '../../hooks/useKakaoLogin';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../context/userState';
 
 
 const LandingPage = () => {
@@ -13,10 +16,19 @@ const LandingPage = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [guestModal, setGuestModal] = useState<boolean>(false)
 
+  const navigate = useNavigate()
 
+  const user = useRecoilValue(userState)
+  
   const kakaoClientId = import.meta.env.VITE_KAKAO_CLIENT_ID || '';
 
   const { handleKakaoSuccess, handleKakaoFailure } = useKakaoLogin();
+
+  useEffect(() => {
+   if(user){
+      navigate('/browse')
+   } 
+  }, [user])
 
 
     const handleCloseModal = () => {

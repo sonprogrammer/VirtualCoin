@@ -4,6 +4,8 @@ import { CoinChartGraphComponent, CoinVoiceComponent, DetailCoinInfoComponent, T
 import useGetOrderBook from "../../hooks/useGetOrderBook";
 import { useEffect, useState } from "react";
 import { StyledChart, StyledContainer, StyledOrderBook, StyledOrderBookAndTrade, StyledTrade } from "./style";
+import { useRecoilState } from "recoil";
+import { CoinPrice } from "../../context/CoinPrice";
 
 
 interface PriceData {
@@ -23,13 +25,14 @@ const CoinDetailPage = () => {
 
   const [coinInfo, setCoinInfo] = useState<PriceData | null>(null);
 
-  const { orderBook, coinPrice } = useGetOrderBook(coinId || "");
+  const { orderBook } = useGetOrderBook(coinId || "");
 
+  const [coinPrice] = useRecoilState(CoinPrice)
 
-
+// console.log('coin', coinId)
   useEffect(() => {
-    if (coinPrice) {
-      setCoinInfo(coinPrice);
+    if (coinPrice && coinId) {
+      setCoinInfo(coinPrice[coinId]);
     }
   }, [coinPrice]);
 

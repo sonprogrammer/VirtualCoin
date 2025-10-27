@@ -29,7 +29,7 @@ const CoinChartComponent = () => {
 
   const { mutate: addRecentCoin } = usePostRecentCoin();
 
-  const [prices] = useRecoilState(CoinPrice); 
+  const [prices] = useRecoilState(CoinPrice)
 
   const handleCoinClick = (coinId: string) => {
     addRecentCoin(coinId)

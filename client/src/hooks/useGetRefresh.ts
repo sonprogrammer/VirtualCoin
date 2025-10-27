@@ -7,7 +7,6 @@ const axiosInstance = axios.create({
     withCredentials: true
 })
 
-// console.log(import.meta.env.VITE_API_URL)
 
 // 리프레시 토큰을 사용하여 액세스 토큰 갱신
 const refreshToken = async () => {
@@ -15,7 +14,6 @@ const refreshToken = async () => {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/refresh`, {
             withCredentials: true
         });
-        console.log('resposne', response)
         return response.data.token; // 새로운 액세스 토큰 반환
     } catch (error) {
         console.error("리프레시 토큰 갱신 실패", error);

@@ -39,6 +39,9 @@ const CoinModal = ({ title, coinData, onClickOutside }: CoinModalProps) => {
               <p>현재가</p>
               <p>전일대비</p>
           </StyledContentTitle>
+
+          {/* //! 코인데이터 없을 시  애니메이션 추가해주기*/}
+          {coinData.length === 0 && <div className='h-full flex w-full items-center justify-center'>there is no coins</div>}
           <StyledContent>
             {coinData?.map((a, index) => (
               <StyledCoin key={index} onClick={() => handleCoinClick(a.coinMarket)}>

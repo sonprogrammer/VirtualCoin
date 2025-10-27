@@ -14,7 +14,7 @@ const getRecentCoin = async() => {
 
 const useGetRecentCoin = () => {
     const userData = useRecoilValue(userState)
-    // console.log('userdata', userData)
+    console.log('userdata', userData)
 
     if(!userData.isGuest){
         return useQuery({

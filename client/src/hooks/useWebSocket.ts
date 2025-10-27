@@ -10,6 +10,7 @@ export interface PriceData {
   trade_volume: number;
   high_price: number;
   low_price: number;
+  prev_closing_price: number;
 }
 
 const useWebSocket = () => {
@@ -38,6 +39,7 @@ const useWebSocket = () => {
             trade_volume: data.acc_trade_volume_24h, // 거래량
             high_price: data.high_price, // 고가
             low_price: data.low_price, // 저가
+            prev_closing_price: data.prev_closing_price
           },
         }))
       }

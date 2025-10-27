@@ -236,10 +236,10 @@ const NavbarComponent = () => {
                 <StyledUserInfo ref={userRef}>
                     <StyledAngle />
                     <h1 className='font-bold text-center pb-2'>Welcome {user.name}</h1>
-                    <p><strong>보유 현금</strong> <span>{availableOrder?.toLocaleString()}</span></p>
-                    <p><strong>보유 자산</strong> <span>{totalAssets?.toLocaleString()}</span></p>
+                    <p><strong>보유 현금</strong> <span>{Math.round(availableOrder)?.toLocaleString()}</span></p>
+                    <p><strong>보유 자산</strong> <span>{Math.round(totalAssets)?.toLocaleString()}</span></p>
                     <p><strong>평가 손익</strong> 
-                        <span className={`${totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}>{totalProfitLoss > 0 && '+'}{totalProfitLoss?.toLocaleString()}</span>
+                        <span className={`${totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}>{totalProfitLoss > 0 && '+'}{Math.round(totalProfitLoss)?.toLocaleString()}</span>
                     </p>
                     <hr />
                     <StyledCoins>
