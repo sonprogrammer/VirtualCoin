@@ -31,10 +31,11 @@ const InterestedCoin = ({handleOutsideClick} : InterestedCoinProps) => {
       coinMarket: name.market,
       price: prices[name.market]
     }))
+
     
       return(
          <CoinModal title="관심코인" coinData={coinData} onClickOutside={handleOutsideClick} />
-  )
+    )
 }
 
 export default InterestedCoin

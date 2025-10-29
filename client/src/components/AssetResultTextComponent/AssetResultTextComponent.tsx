@@ -79,7 +79,7 @@ const AssetResultTextComponent = () => {
                 <StyledRestOfMoney>
                     <h2>주문가능</h2>
                     <StyledBottomContentBox>
-                        <h1>{availableOrder?.toLocaleString()}</h1>
+                        <h1>{Math.round(Number(availableOrder))?.toLocaleString()}</h1>
                         <p>KRW</p>
                     </StyledBottomContentBox>
                 </StyledRestOfMoney>

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import  { OrderBook } from "../../hooks/useGetOrderBook";
 import { QuantityBar, StyledAskBox, StyledAskContent, StyledBidBox, StyledBidContent, StyledContainer, StyledRight } from "./style";
+import Skeleton from '@mui/material/Skeleton';
 
 
 interface CoinVoiceComponentProps {
@@ -10,7 +11,11 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
 
 
   if (!orderBook) {
-    return <div>Loading...</div>;
+    return (
+    <div className='로딩 h-full'>
+      <Skeleton variant="rectangular" height='100%'/>
+    </div>
+    )
   }
 
   const totalBidQuantity = useMemo(() => 
@@ -28,7 +33,7 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
         {orderBook.asks.slice().reverse().map((ask) => (
           <StyledAskContent key={ask.price}>
             <p>
-              {Number(ask.quantity).toFixed(3)}
+              {Number(Number(ask.quantity).toFixed(3)).toLocaleString()}
               <QuantityBar quantity={Number(ask.quantity)} totalQuantity={totalAskQuantity} type='ask'/>
             </p>
             <StyledRight>
@@ -48,7 +53,7 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
         {orderBook.bids.map((bid) => (
           <StyledBidContent key={bid.price}>
             <p>
-              {Number(bid.quantity).toFixed(3)}
+              {Number(Number(bid.quantity).toFixed(3)).toLocaleString()}
               <QuantityBar quantity={Number(bid.quantity)} totalQuantity={totalBidQuantity} type='bid'/>
             </p>
             <StyledRight>

@@ -7,26 +7,28 @@ import { StyledContainer, StyledImage, StyledTable, StyledTableBody, StyledTable
 
 
 const AssetList = () => {
-    const {data: assetData} = useGetAssetData()
+    const { data: assetData } = useGetAssetData()
     const calculatedData = useCalculateAsset(assetData)
     if (!assetData) {
-        return <div>Loading...</div>; 
+        return <div>Loading...</div>;
     }
-    
-    
-    const coins = assetData?.coins.filter((c:any) => c.amount !== 0) || []
-    
-    const {coinDetailPrice} =  calculatedData || {};
+
+
+    const coins = assetData?.coins.filter((c: any) => c.amount !== 0) || []
+
+    const { coinDetailPrice } = calculatedData || {};
 
     return (
         <StyledContainer>
             <StyledTable>
                 <StyledTableHead>
-                    <th>보유자산</th>
-                    <th>보유수량</th>
-                    <th>매수평군가</th>
-                    <th>평가금액</th>
-                    <th>평가손익(%)</th>
+                    <tr>
+                        <th>보유자산</th>
+                        <th>보유수량</th>
+                        <th>매수평군가</th>
+                        <th>평가금액</th>
+                        <th>평가손익(%)</th>
+                    </tr>
                 </StyledTableHead>
                 <StyledTableBody>
                     {coins.map((coin: any, i: number) => {

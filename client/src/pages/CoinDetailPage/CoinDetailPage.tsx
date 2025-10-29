@@ -29,12 +29,13 @@ const CoinDetailPage = () => {
 
   const [coinPrice] = useRecoilState(CoinPrice)
 
-// console.log('coin', coinId)
   useEffect(() => {
     if (coinPrice && coinId) {
       setCoinInfo(coinPrice[coinId]);
     }
   }, [coinPrice]);
+
+    // console.log('coin', coinInfo)
 
   
 // ! 790, 630, 450 반응형
@@ -45,7 +46,6 @@ const CoinDetailPage = () => {
       <div className="맨위에 있어야함">
         <DetailCoinInfoComponent coinId={coinId || ''} coinInfo={coinInfo}/>
       </div>
-
 
 
       <StyledChart className="차트 w-full">

@@ -19,7 +19,7 @@ const RankingComponent = () => {
     const { data } = useGetAllUserAssetData(userId)
 
     const allUser = data?.allUser || []
-    const rankData = calculateAllUserAsset(allUser, prices)?.sort((a:any, b: any) => b.profitRate - a.profitRate)
+    const rankData = calculateAllUserAsset(allUser, prices)?.sort((a: any, b: any) => b.profitRate - a.profitRate)
 
     const safeRankgData = Array.isArray(rankData) ? rankData : [];
 
@@ -31,15 +31,15 @@ const RankingComponent = () => {
         window.addEventListener('resize', handleResize)
 
         return () => window.removeEventListener('resize', handleResize)
-    },[])
+    }, [])
 
-    const myRank = rankData.findIndex((data:any) => data.id === userId) + 1
+    const myRank = rankData.findIndex((data: any) => data.id === userId) + 1
 
 
     const perPage = 10
-    const firstPage = (page-1) * perPage
+    const firstPage = (page - 1) * perPage
     const EachPage = safeRankgData.slice(firstPage, perPage + firstPage)
- 
+
 
     return (
         <StyledContainer>
@@ -53,47 +53,50 @@ const RankingComponent = () => {
             <StyledBox className='box'>
                 <StyledTable>
                     <StyledTableHead>
-                        <th className='w-[50px]'>순위</th>
-                        <th className='w-[70px]'>이름</th>
-                        <th>총 자산</th>
-                        <th>총 손익</th>
-                        <th>수익률</th> 
+                        <tr>
+                            <th className='w-[50px]'>순위</th>
+                            <th className='w-[70px]'>이름</th>
+                            <th>총 자산</th>
+                            <th>총 손익</th>
+                            <th>수익률</th>
+                        </tr>
                     </StyledTableHead>
                     <StyledTableBody>
-                        {( windowWidth > 530 ? EachPage : safeRankgData).map((a:any, i:number) => {
+                        {(windowWidth > 530 ? EachPage : safeRankgData).map((a: any, i: number) => {
                             const me = a.id === userId
-                            return(
-                            <tr key={i} className={me ? 'font-bold' : ''}>
-                                <td>{firstPage + i+1}</td>
-                                <td>{a.name}</td>
-                                <td>
-                                    {a.totalAsset?.toLocaleString()}원
-                                </td>
-                                <td className={`${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-600' : ''}`}>
-                                    {a.totalProfit > 0 && '+'}
-                                    {a.totalProfit?.toLocaleString()}원
-                                </td>
-                                <td className={`${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-600' : ''}`}>
-                                    {a.totalProfit > 0 && '+'}
-                                    {a.profitRate === 0 ? 0 : a.profitRate.toFixed(2)}%
-                                </td>
-                            </tr>
-                        )}).slice(0, 50)}
+                            return (
+                                <tr key={i} className={me ? 'font-bold' : ''}>
+                                    <td>{firstPage + i + 1}</td>
+                                    <td>{a.name}</td>
+                                    <td>
+                                        {Math.round(Number(a.totalAsset))?.toLocaleString()}원
+                                    </td>
+                                    <td className={`${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-600' : ''}`}>
+                                        {a.totalProfit > 0 && '+'}
+                                        {Math.round(Number(a.totalProfit))?.toLocaleString()}원
+                                    </td>
+                                    <td className={`${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-600' : ''}`}>
+                                        {a.totalProfit > 0 && '+'}
+                                        {a.profitRate === 0 ? 0 : a.profitRate.toFixed(2)}%
+                                    </td>
+                                </tr>
+                            )
+                        }).slice(0, 50)}
                     </StyledTableBody>
                 </StyledTable>
                 {windowWidth > 530 &&
-                <StyledBtns>
-                    {Array.from({length: Math.ceil(safeRankgData.length / perPage)}, (_, i) => (
-                        <button key={i}
-                        onClick={() => setPage(i+1)}
-                        className={`${page === i + 1 ? 'bg-red-500 flex items-center justify-center' : ''}`}
-                        >
-                            {i + 1}
-                        </button>
-                    ))}
-                </StyledBtns>
+                    <StyledBtns>
+                        {Array.from({ length: Math.ceil(safeRankgData.length / perPage) }, (_, i) => (
+                            <button key={i}
+                                onClick={() => setPage(i + 1)}
+                                className={`${page === i + 1 ? 'bg-red-500 flex items-center justify-center' : ''}`}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                    </StyledBtns>
                 }
-               
+
             </StyledBox>
         </StyledContainer>
     )

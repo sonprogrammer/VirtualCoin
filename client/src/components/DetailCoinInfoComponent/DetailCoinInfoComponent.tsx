@@ -8,6 +8,7 @@ import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
 import useLikeToggle from "../../hooks/useLikeToggle";
 import useGetLikedCoins from "../../hooks/useGetLikeCoins";
+import Skeleton from "@mui/material/Skeleton";
 
 interface CoinName {
     market: string;
@@ -55,6 +56,7 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
     },[likedCoins])
     
 
+
     // 좋아요 등록, 취소 -> 
     const handleLikedCoin = () =>{
         likeToggle(coinId)
@@ -71,6 +73,15 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
+
+
+    if(!coinInfo){
+        return(
+            <div>
+                <Skeleton variant="rectangular" width='100%' height={100} />
+            </div>
+        )
+    }
 
     const coinUnit = coinId?.split('-')[1];
     const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`;

@@ -26,7 +26,11 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
   const coin = useRecoilValue(CoinPrice)
   const user = useRecoilValue(userState)
   if(isLoading && !coin && !coinId){
-    return <div>loading...</div>
+    return (
+    <div className='h-full flex justify-center items-center'>
+      <img src='/loadingbar.gif' alt='loadingbar' />
+    </div>
+    )
   }
 const { mutate: postBuyTrade} = usePostBuyTrade()
 const { mutate: postSellTrade} = usePostSellTrade()
@@ -72,7 +76,9 @@ const { mutate: postSellTrade} = usePostSellTrade()
 
 
     if(currentPrice === null){
-      return <div>loading...</div>
+      return (<div className='h-full flex justify-center items-center'>
+      <img src='/loadingbar.gif' alt='loadingbar' />
+    </div>)
     }
 
     
@@ -170,7 +176,7 @@ const { mutate: postSellTrade} = usePostSellTrade()
       <StyledAsset>
         <p>주문가능</p>
         {/*//* 현재 로그인한 사람의 보유 현금  */}
-        <p><strong>{cash?.toLocaleString()} 원</strong></p>
+        <p><strong>{Math.round(cash)?.toLocaleString()} 원</strong></p>
       </StyledAsset>
       <StyledCoinPrice>
         <p>{name}가격(KRW)</p>
