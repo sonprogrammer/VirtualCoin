@@ -6,6 +6,8 @@ import { loginRequestState } from "../context/loginRequestState";
 const ProtectNoUser = ({children}: {children:ReactNode}) => {
     const user = useRecoilValue(userState);
     const setLoginRequest = useSetRecoilState(loginRequestState)
+
+    console.log('user', user)
   
     useEffect(() => {
       if (!user._id) {
