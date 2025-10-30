@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { useSetRecoilState } from 'recoil';
+import { refreshState } from '../context/refreshExpired';
 
 
 
@@ -21,6 +23,8 @@ const refreshToken = async () => {
     }
 };
 
+const setRefresh = useSetRecoilState(refreshState)
+
 // Axios 인터셉터 설정
 axiosInstance.interceptors.response.use(
     (response) => response,  // 응답이 성공적으로 왔을 때 그대로 응답
@@ -36,7 +40,8 @@ axiosInstance.interceptors.response.use(
                 originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                 return axiosInstance(originalRequest); // 실패한 요청 재시도
             }else{
-                console.log('refresh token faild')
+                console.log('refresh token expired')
+                setRefresh({expired: true, message:'로그인 세션이 만료되었습니다. 다시 로그인해주세요.'})
             }
         }
 

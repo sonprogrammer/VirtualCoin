@@ -52,7 +52,12 @@ const RankingComponent = () => {
                 </div>
                 <h2>나의 순위 : {myRank}위</h2>
             </StyledTitle>
-            {isLoading && <div className='w-full h-full flex justify-center items-center'> <img src='/loadingbar.gif' alt='loadingbar' /></div>}
+            {isLoading ?
+                <div className='w-full h-full flex justify-center items-center'> 
+                    <img src='/loadingbar.gif' alt='loadingbar' />
+                </div>
+            :     
+            
             <StyledBox className='box'>
                 <StyledTable>
                     <StyledTableHead>
@@ -101,6 +106,7 @@ const RankingComponent = () => {
                 }
 
             </StyledBox>
+            }
         </StyledContainer>
     )
 }

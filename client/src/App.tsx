@@ -1,12 +1,29 @@
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useNavigate } from "react-router-dom"
 import { AssetPage, CoinDetailPage, LandingPage, LayoutPage, MainPage, NotfoundPage, RankingPage } from "./pages"
 import ProtectNoUser from "./utils/ProtectNoUser"
 import { LoginRequestComponent } from "./components"
-import { TestPage } from "./pages/TestPage/TestPage"
+import { useRecoilValue } from "recoil"
+import { refreshState } from "./context/refreshExpired"
+import { useEffect } from "react"
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 
 function App() {
+  const refresh = useRecoilValue(refreshState)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if(refresh.expired){
+      toast.error('로그인 세션이 만료되었습니다. 재로그인 부탁드립니다.',{
+        autoClose: 1000,
+        hideProgressBar: true
+      })
+      navigate('/')
+    }
+  },[refresh])
 
   return (
     <>
@@ -20,7 +37,6 @@ function App() {
         }>
           <Route path="/browse" element={
             <ProtectNoUser>
-              {/* <TestPage /> */}
               <MainPage />
             </ProtectNoUser>
           }
@@ -47,6 +63,8 @@ function App() {
         </Route>
       </Routes>
       <LoginRequestComponent />
+      <ToastContainer position="top-center" />
+
     </>
   )
 }

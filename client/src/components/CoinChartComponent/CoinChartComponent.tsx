@@ -114,7 +114,7 @@ const CoinChartComponent = () => {
       </StyledTitle>
 
       {coins.length === 0 ?
-       <Skeleton variant="rectangular" width='100%' height='100vh' />
+       <Skeleton variant="rectangular" width='80%' height='100vh' />
       
        :(
        
