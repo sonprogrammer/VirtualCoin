@@ -1,52 +1,39 @@
 import axios from 'axios';
-import { useSetRecoilState } from 'recoil';
-import { refreshState } from '../context/refreshExpired';
-
-
 
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true
-})
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+});
 
+export const setupAxiosInterceptors = (setRefresh: (value: any) => void) => {
+  axiosInstance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config;
 
-// 리프레시 토큰을 사용하여 액세스 토큰 갱신
-const refreshToken = async () => {
-    try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/refresh`, {
-            withCredentials: true
-        });
-        return response.data.token; // 새로운 액세스 토큰 반환
-    } catch (error) {
-        console.error("리프레시 토큰 갱신 실패", error);
-        return null;
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+        try {
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/refresh`, {
+            withCredentials: true,
+          });
+          const newAccessToken = response.data.token;
+
+          if (newAccessToken) {
+            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+            originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+            return axiosInstance(originalRequest);
+          } else {
+            setRefresh({ expired: true, message: '로그인 세션이 만료되었습니다. 다시 로그인해주세요.' });
+          }
+        } catch {
+          setRefresh({ expired: true, message: '로그인 세션이 만료되었습니다. 다시 로그인해주세요.' });
+        }
+      }
+
+      return Promise.reject(error);
     }
+  );
 };
 
-const setRefresh = useSetRecoilState(refreshState)
-
-// Axios 인터셉터 설정
-axiosInstance.interceptors.response.use(
-    (response) => response,  // 응답이 성공적으로 왔을 때 그대로 응답
-    async (error) => {
-        const originalRequest = error.config;
-
-        // 액세스 토큰 만료(401 에러) 시 리프레시 토큰으로 새로운 액세스 토큰 요청
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true; // 무한 재시도를 막기 위한 플래그
-            const newAccessToken = await refreshToken();
-            if (newAccessToken) {
-                axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                return axiosInstance(originalRequest); // 실패한 요청 재시도
-            }else{
-                console.log('refresh token expired')
-                setRefresh({expired: true, message:'로그인 세션이 만료되었습니다. 다시 로그인해주세요.'})
-            }
-        }
-
-        return Promise.reject(error);  // 그 외의 오류 처리
-    }
-);
-
-export default axiosInstance
+export default axiosInstance;
