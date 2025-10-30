@@ -2,6 +2,7 @@
 import { StyledDivider, StyledNonCoins, StyledTbBox, StyledTbContainer, StyledTbContent, StyledTbContentSmBox, StyledTbTitle, StyledTbTitleCoinName, StyledTbTitleContents } from './style'
 import useGetAssetData from '../../hooks/useGetAssetData'
 import useCalculateAsset from '../../hooks/useCalculateAsset'
+import Skeleton from '@mui/material/Skeleton'
 
 
 // !테블릿버전
@@ -9,8 +10,10 @@ const AssetListTb = () => {
     const {data: assetData} = useGetAssetData()
     const calculatedData = useCalculateAsset(assetData)
     if (!assetData) {
-        return <div>Loading...</div>; 
-      }
+        return <div className='h-64'>
+            <Skeleton variant='rectangular' height='100%' />
+        </div>;
+    }
     
     
     const coins = assetData?.coins.filter((c:any) => c.amount !== 0) || []

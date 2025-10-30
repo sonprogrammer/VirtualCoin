@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil'
 import { userState } from '../../context/userState'
 import { CoinPrice } from '../../context/CoinPrice'
 import calculateAllUserAsset from '../../utils/calculateAllUsersAsset'
+import Skeleton from '@mui/material/Skeleton'
 
 const RankingComponent = () => {
     const [page, setPage] = useState<number>(1)
@@ -16,7 +17,7 @@ const RankingComponent = () => {
     const userId = user._id
 
     // *이거로 모든 유저의 정보를 가져옴
-    const { data } = useGetAllUserAssetData(userId)
+    const { data, isLoading } = useGetAllUserAssetData(userId)
 
     const allUser = data?.allUser || []
     const rankData = calculateAllUserAsset(allUser, prices)?.sort((a: any, b: any) => b.profitRate - a.profitRate)
@@ -40,6 +41,7 @@ const RankingComponent = () => {
     const firstPage = (page - 1) * perPage
     const EachPage = safeRankgData.slice(firstPage, perPage + firstPage)
 
+    
 
     return (
         <StyledContainer>
@@ -50,6 +52,7 @@ const RankingComponent = () => {
                 </div>
                 <h2>나의 순위 : {myRank}위</h2>
             </StyledTitle>
+            {isLoading && <div className='w-full h-full flex justify-center items-center'> <img src='/loadingbar.gif' alt='loadingbar' /></div>}
             <StyledBox className='box'>
                 <StyledTable>
                     <StyledTableHead>

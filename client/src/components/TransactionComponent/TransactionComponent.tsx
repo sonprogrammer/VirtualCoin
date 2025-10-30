@@ -4,6 +4,7 @@ import useGetTransaction from '../../hooks/useGetTransaction'
 import { userState } from '../../context/userState'
 import { useRecoilValue } from 'recoil'
 import dayjs from 'dayjs'
+import Skeleton from '@mui/material/Skeleton'
 
 
 const TransactionComponent = () => {
@@ -20,7 +21,13 @@ const TransactionComponent = () => {
 
     const { data, isLoading, error } = useGetTransaction(userId);
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) {
+        return (
+        <div className='h-full mt-5'>
+            <Skeleton variant='rectangular' height='50vh'/>
+        </div>
+        )
+    }
     if (error) return <p>{error.message}</p>;
     const coins = data?.coins
     

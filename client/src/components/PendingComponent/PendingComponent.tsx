@@ -71,6 +71,7 @@ const PendingComponent = () => {
                     {selectedAll ? '선택 해제' : '전체 선택'}
                 </p>
             </StyledTop>
+
                 <StyledTable>
                     <StyledTableHead>
                         <tr>
@@ -84,6 +85,7 @@ const PendingComponent = () => {
                             <th>주문취소</th>
                         </tr>
                     </StyledTableHead>
+                    
                     <StyledTableBody>
                         {filteredData?.map((a:any) => {
                             const formattedDays = dayjs(a.orderTime).format('YY.MM.DD'); 
@@ -122,6 +124,12 @@ const PendingComponent = () => {
                         )})}
                     </StyledTableBody>
                 </StyledTable>
+
+
+                {filteredData.length === 0 && <div className='flex justify-center items-center h-full w-full'>
+                        <p className='text-gray-400 mt-10'>미체결 중인 코인이 없습니다.</p>
+                        
+                        </div>}
         </StyledContainer>
     )
 }

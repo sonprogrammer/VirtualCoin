@@ -10,6 +10,7 @@ import { CoinPrice } from "../../context/CoinPrice";
 import useLikeToggle from "../../hooks/useLikeToggle";
 import usePostRecentCoin from "../../hooks/usePostRecentCoin";
 import useGetLikedCoins from "../../hooks/useGetLikeCoins";
+import Skeleton from "@mui/material/Skeleton";
 
 
 const CoinChartComponent = () => {
@@ -95,7 +96,6 @@ const CoinChartComponent = () => {
       
 
 
-
   const isStar = (coinMarket: string) => star.includes(coinMarket)
 
   const CoinPage = 10;
@@ -112,6 +112,12 @@ const CoinChartComponent = () => {
         <h2>실시간 코인</h2>
         <p>{time}</p>
       </StyledTitle>
+
+      {coins.length === 0 ?
+       <Skeleton variant="rectangular" width='100%' height='100vh' />
+      
+       :(
+       
       <StyledTable>
         <StyledTableHead>
           <tr>
@@ -216,6 +222,9 @@ const CoinChartComponent = () => {
 
         </StyledTableBody>
       </StyledTable>
+
+
+      )}
       { 
         windowWidth > 630 && (
 

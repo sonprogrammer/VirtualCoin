@@ -5,6 +5,7 @@ import tw from "twin.macro";
 export const StyledContainer = styled.div`
     ${tw`
         w-full
+        h-full
     `}
 `
 export const StyledTop = styled.div`

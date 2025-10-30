@@ -1,5 +1,6 @@
 
 
+import Skeleton from '@mui/material/Skeleton';
 import useCalculateAsset from '../../hooks/useCalculateAsset';
 import useGetAssetData from '../../hooks/useGetAssetData';
 
@@ -10,7 +11,9 @@ const AssetList = () => {
     const { data: assetData } = useGetAssetData()
     const calculatedData = useCalculateAsset(assetData)
     if (!assetData) {
-        return <div>Loading...</div>;
+        return <div className='h-64'>
+            <Skeleton variant='rectangular' height='100%' />
+        </div>;
     }
 
 

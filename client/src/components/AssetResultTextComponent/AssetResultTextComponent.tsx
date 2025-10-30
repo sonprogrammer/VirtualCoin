@@ -2,6 +2,7 @@
 import { StyledBottomBox, StyledBottomBoxContents, StyledBottomContentBox, StyledContainer, StyledDivider, StyledRestOfMoney, StyledTopBox, StyledTopBoxContents } from './style'
 import useGetAssetData from '../../hooks/useGetAssetData'
 import useCalculateAsset from '../../hooks/useCalculateAsset'
+import Skeleton from '@mui/material/Skeleton'
 
 
 const AssetResultTextComponent = () => {
