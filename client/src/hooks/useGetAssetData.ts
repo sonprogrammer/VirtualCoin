@@ -10,13 +10,14 @@ const useGetAssetData =  () => {
     const user = useRecoilValue(userState)
 
     const fetchData = async () => {
+        if(!user) return null
             const res = await axiosInstance.get(`${import.meta.env.VITE_API_URL}/api/asset?userId=${user._id}`)
             return res.data
 
         
     }
     const { data, isLoading, error, refetch } = useQuery({
-        queryKey: ['asset', user._id],
+        queryKey: ['asset'],
         queryFn: fetchData,
     })
     

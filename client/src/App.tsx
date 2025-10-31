@@ -1,7 +1,6 @@
 import { Route, Routes, useNavigate } from "react-router-dom"
 import { AssetPage, CoinDetailPage, LandingPage, LayoutPage, MainPage, NotfoundPage, RankingPage } from "./pages"
 import ProtectNoUser from "./utils/ProtectNoUser"
-import { LoginRequestComponent } from "./components"
 import { useRecoilValue } from "recoil"
 import { refreshState } from "./context/refreshExpired"
 import { useEffect } from "react"
@@ -62,7 +61,6 @@ function App() {
           } />
         </Route>
       </Routes>
-      <LoginRequestComponent />
       <ToastContainer position="top-center" />
 
     </>

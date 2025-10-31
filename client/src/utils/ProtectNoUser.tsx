@@ -1,19 +1,18 @@
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { userState } from "../context/userState";
 import { ReactNode, useEffect } from "react";
-import { loginRequestState } from "../context/loginRequestState";
+import { useNavigate } from "react-router-dom";
 
 const ProtectNoUser = ({children}: {children:ReactNode}) => {
     const user = useRecoilValue(userState);
-    const setLoginRequest = useSetRecoilState(loginRequestState)
-
+  const navigate = useNavigate()
     console.log('user', user)
   
     useEffect(() => {
-      if (!user._id) {
-        setLoginRequest(true)
+      if (!user || !user._id) {
+        navigate('/')
       }
-    }, [user, setLoginRequest]);
+    }, [user]);
   
     return <>{children}</>
 }

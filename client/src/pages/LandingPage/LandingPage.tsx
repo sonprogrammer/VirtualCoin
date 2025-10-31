@@ -25,7 +25,8 @@ const LandingPage = () => {
   const { handleKakaoSuccess, handleKakaoFailure } = useKakaoLogin();
 
   useEffect(() => {
-   if(user._id){
+
+   if(user?._id){
       navigate('/browse')
    } 
   }, [user])
