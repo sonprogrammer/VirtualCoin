@@ -114,6 +114,8 @@ const kakaoLikeToggle = async (req, res) => {
     const kakaoId = req.user.kakaoId;
     const { coinId } = req.params;
 
+    console.log('req', req.user)
+
     const user = await User.findOne({ kakaoId });
     if (!user) {
       return res.status(404).json({ message: "user not found" });
@@ -139,6 +141,7 @@ const kakaoLikeToggle = async (req, res) => {
 const kakaoGetLikeCoins = async (req, res) => {
   try {
     const kakaoId = req.user.kakaoId;
+    console.log('req', req.user)
 
     const user = await User.findOne({ kakaoId });
     if (!user) {

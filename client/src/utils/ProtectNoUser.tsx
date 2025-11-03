@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 const ProtectNoUser = ({children}: {children:ReactNode}) => {
     const user = useRecoilValue(userState);
   const navigate = useNavigate()
-    console.log('user', user)
   
     useEffect(() => {
       if (!user || !user._id) {

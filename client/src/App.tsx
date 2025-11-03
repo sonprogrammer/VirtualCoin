@@ -1,18 +1,23 @@
 import { Route, Routes, useNavigate } from "react-router-dom"
 import { AssetPage, CoinDetailPage, LandingPage, LayoutPage, MainPage, NotfoundPage, RankingPage } from "./pages"
 import ProtectNoUser from "./utils/ProtectNoUser"
-import { useRecoilValue } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 import { refreshState } from "./context/refreshExpired"
 import { useEffect } from "react"
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setupAxiosInterceptors } from "./hooks/useGetRefresh"
 
 
 
 
 function App() {
-  const refresh = useRecoilValue(refreshState)
+  const [refresh, setRefresh] = useRecoilState(refreshState)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    setupAxiosInterceptors(setRefresh)
+  }, [setRefresh])
 
   useEffect(() => {
     if(refresh.expired){
@@ -22,7 +27,7 @@ function App() {
       })
       navigate('/')
     }
-  },[refresh])
+  },[refresh, navigate])
 
   return (
     <>
