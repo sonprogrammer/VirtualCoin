@@ -4,26 +4,26 @@ import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
 import { userState } from '../context/userState'; 
 import { saveUserToLocalStorage } from '../context/localStorage';
+import { saveAccessToken } from '../context/saveAccessToken';
+import axiosInstance from './useGetRefresh';
 
 const useKakaoLogin = () => {
   const navigate = useNavigate();
   const setUser = useSetRecoilState(userState); 
 
   const handleKakaoSuccess = async (data: any) => {
-    console.log('카카오 로그인 성공', data);
+
     const accessToken = data.response.access_token
 
     try {
-      localStorage.removeItem('user');
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/kakao-login`, {
+      const res = await axiosInstance.post(`api/user/kakao-login`, {
         accessToken,
-      },
-      { withCredentials: true }
-    );
+      })
 
       if (res.status === 200) { 
         const userData = res.data.user
         setUser(userData)
+        saveAccessToken(res.data.token)
         saveUserToLocalStorage(userData)
 
         toast.success('로그인 성공!', {

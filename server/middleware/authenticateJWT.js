@@ -1,23 +1,18 @@
 const jwt = require('jsonwebtoken')
 
 const authenticateJWT = (req, res, next) => {
-    const token = req.cookies.token
-    if (!token) {
-        console.log("No token provided from authenticateJWT");
-        return res.sendStatus(401);
-      }
+    const header = req.headers.authorization
+    if(!header) return res.status(401).json({message: 'no token provided'})
     
-    if(token){
-        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-            if(err){
-                return res.status(400).json({message: 'invalid token'})
-            }
-            req.user = user
-            next()
-        })
-    }else{
-        res.status(400).json(({message: 'no token'}))
-    }
+    const token = header.split(' ')[1]
+
+    jwt.verify(token, process.env.JWT_SECRET,(err, decoded) => {
+        if(err) {
+            return res.status(403).json({message: 'invalid token'})
+        }
+        req.user = decoded
+        next()
+    })
 }
 
 module.exports = authenticateJWT

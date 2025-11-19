@@ -69,12 +69,7 @@ const kakaoLogin = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production" ? true : false,
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "LAX",
-      maxAge: 3600000,
-    });
+  
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production" ? true : false,
@@ -82,7 +77,7 @@ const kakaoLogin = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({ user });
+    res.status(200).json({ user, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "로그인 중 오류가 발생했습니다." });
@@ -91,11 +86,7 @@ const kakaoLogin = async (req, res) => {
 
 const kakaoLogout = async (req, res) => {
   try {
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "LAX",
-    });
+    
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -113,8 +104,6 @@ const kakaoLikeToggle = async (req, res) => {
   try {
     const kakaoId = req.user.kakaoId;
     const { coinId } = req.params;
-
-    console.log('req', req.user)
 
     const user = await User.findOne({ kakaoId });
     if (!user) {
@@ -141,7 +130,6 @@ const kakaoLikeToggle = async (req, res) => {
 const kakaoGetLikeCoins = async (req, res) => {
   try {
     const kakaoId = req.user.kakaoId;
-    console.log('req', req.user)
 
     const user = await User.findOne({ kakaoId });
     if (!user) {

@@ -137,6 +137,7 @@ const NavbarComponent = () => {
         logoutMutate()
         localStorage.removeItem('user')
         localStorage.removeItem('asset')
+        localStorage.removeItem('accessToken')
         setUser(null)
 
         Object.keys(localStorage).forEach((key) => {

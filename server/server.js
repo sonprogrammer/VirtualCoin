@@ -27,17 +27,17 @@ app.use(cors({
 }));
 app.use(express.json())
 app.use(cookieParser()); 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 1800000,
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production'? 'None' : 'Lax',
-  } 
-}))
+// app.use(session({
+//   secret: process.env.SESSION_SECRET,
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie: {
+//     maxAge: 1800000,
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV === 'production',
+//     sameSite: process.env.NODE_ENV === 'production'? 'None' : 'Lax',
+//   } 
+// }))
 
 
 mongoose.connect(process.env.MONGO_URI,{
