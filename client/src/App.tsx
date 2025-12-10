@@ -7,6 +7,8 @@ import { useEffect } from "react"
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setupAxiosInterceptors } from "./hooks/useGetRefresh"
+import useLogout from "./hooks/useLogout"
+import { userState } from "./context/userState"
 
 
 
@@ -14,6 +16,8 @@ import { setupAxiosInterceptors } from "./hooks/useGetRefresh"
 function App() {
   const [refresh, setRefresh] = useRecoilState(refreshState)
   const navigate = useNavigate()
+  const [, setUser] = useRecoilState(userState);
+  const {mutate: logoutMutate} = useLogout()
 
   useEffect(() => {
     setupAxiosInterceptors(setRefresh)
@@ -25,6 +29,17 @@ function App() {
         autoClose: 1000,
         hideProgressBar: true
       })
+      logoutMutate()
+        localStorage.removeItem('user')
+        localStorage.removeItem('asset')
+        localStorage.removeItem('accessToken')
+        setUser(null)
+
+        Object.keys(localStorage).forEach((key) => {
+            if(key.startsWith('kakao')){
+                localStorage.removeItem(key)
+            }
+        })
       navigate('/')
     }
   },[refresh, navigate])
