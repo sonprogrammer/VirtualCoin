@@ -6,7 +6,7 @@ const refreshAccessToken = (req, res) => {
         if (!refreshToken) return res.status(401).json({ error: '리프레시 토큰이 없습니다.' });
 
         jwt.verify(refreshToken, process.env.JWT_SECRET, (err, user) => {
-            if (err) return res.status(403).json({ error: '리프레시 토큰이 유효하지 않습니다.' });
+            if (err) return res.status(401).json({ error: '리프레시 토큰이 유효하지 않습니다.' });
 
             const newAccessToken = jwt.sign(
                 { kakaoId: user.kakaoId, name: user.name },
