@@ -64,43 +64,49 @@ const PendingComponent = () => {
     
     
     return (
-        <StyledContainer className='containe'>
+        <StyledContainer>
             <StyledTop>
-                <p onClick={handleCancleClick}>선택주문취소</p>
+                <p onClick={handleCancleClick}>선택 주문 취소</p>
                 <p onClick={handleAllClick}>
                     {selectedAll ? '선택 해제' : '전체 선택'}
                 </p>
             </StyledTop>
 
-                <StyledTable>
-                    <StyledTableHead>
-                        <tr>
-                            <th>선택</th>
-                            <th>주문시간</th>
-                            <th>코인</th>
-                            <th>구분</th>
-                            <th>주문가격</th>
-                            <th>주문량</th>
-                            <th>미체결량</th>
-                            <th>주문취소</th>
-                        </tr>
-                    </StyledTableHead>
-                    
-                    <StyledTableBody>
-                        {filteredData?.map((a:any) => {
-                            const formattedDays = dayjs(a.orderTime).format('YY.MM.DD'); 
-                            const formattedTime = dayjs(a.orderTime).format('HH:mm'); 
-                            return(
-                            <tr key={a._id} 
+            <StyledTable>
+                <StyledTableHead>
+                    <tr>
+                        <th className="w-10">선택</th>
+                        <th>주문시간</th>
+                        <th>코인</th>
+                        <th>구분</th>
+                        <th>주문가격</th>
+                        <th>주문량</th>
+                        <th>미체결량</th>
+                        <th>관리</th>
+                    </tr>
+                </StyledTableHead>
+                
+                <StyledTableBody>
+                    {filteredData?.map((a: any) => {
+                        const formattedDays = dayjs(a.orderTime).format('YY.MM.DD'); 
+                        const formattedTime = dayjs(a.orderTime).format('HH:mm'); 
+                        const isSelected = selectedOrder.has(a._id);
+                        const isBuy = a.type === 'BUY';
+
+                        return (
+                            <tr 
+                                key={a._id} 
                                 onClick={() => handleRadioChange(a._id)}
-                                className={`${selectedOrder.has(a.orderTime) ? 'bg-gray-100' : ''}`}
-                                >
+                                className={isSelected ? 'selected' : ''}
+                            >
                                 <td>
-                                <input type="checkbox"
-                                    checked={selectedOrder.has(a._id)}
-                                    onChange={(e) => {
-                                        handleRadioChange(a._id)
-                                        e.stopPropagation()}}
+                                    <input 
+                                        type="checkbox"
+                                        checked={isSelected}
+                                        onChange={(e) => {
+                                            handleRadioChange(a._id);
+                                            e.stopPropagation();
+                                        }}
                                         onClick={(e) => e.stopPropagation()}
                                     />
                                 </td>
@@ -108,28 +114,33 @@ const PendingComponent = () => {
                                     <p>{formattedDays}</p>    
                                     <p>{formattedTime}</p>
                                 </td>
-                                <td>{a.coinKName}</td>
-                                <td
-                                    className={`${a.type === 'SELL' ? 'text-blue-600' : 'text-red-500'}`}
-                                >{a.type === 'BUY' ? '매수' : '매도'}</td>
+                                <td className="font-bold text-zinc-100">{a.coinKName}</td>
+                                <td className={isBuy ? '!text-red-500 font-bold' : '!text-sky-400 font-bold'}>
+                                    {isBuy ? '매수' : '매도'}
+                                </td>
                                 <td>{a.orderPrice?.toLocaleString()}</td>
                                 <td>{a.orderQuantity?.toLocaleString()}</td>
-                                <td>{a.orderQuantity?.toLocaleString()}</td>
+                                <td className="text-zinc-500">{a.orderQuantity?.toLocaleString()}</td>
                                 <td>
                                     <button 
-                                        onClick={(e) => {handleCancleBtnClick(a._id, e)
-                                        }}>주문취소</button>
+                                        onClick={(e) => {
+                                            handleCancleBtnClick(a._id, e);
+                                        }}
+                                    >
+                                        취소
+                                    </button>
                                 </td>
                             </tr>
-                        )})}
-                    </StyledTableBody>
-                </StyledTable>
+                        )
+                    })}
+                </StyledTableBody>
+            </StyledTable>
 
-
-                {filteredData.length === 0 && <div className='flex justify-center items-center h-full w-full'>
-                        <p className='text-gray-400 mt-10'>미체결 중인 코인이 없습니다.</p>
-                        
-                        </div>}
+            {filteredData.length === 0 && (
+                <div className='flex flex-col justify-center items-center py-20'>
+                    <p className='text-zinc-600 text-sm'>미체결 중인 주문이 없습니다.</p>
+                </div>
+            )}
         </StyledContainer>
     )
 }

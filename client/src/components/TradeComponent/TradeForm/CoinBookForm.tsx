@@ -100,75 +100,71 @@ const CoinBookForm = () => {
         <StyledBookTitle>
           <button
             onClick={() => handleSectionClick('미체결')}
-            className={`${section === '미체결' ? 'bg-blue-700 text-white font-bold' : ''}`}
-            >미체결</button>
+            className={section === '미체결' ? 'active-pending' : ''}
+          >미체결</button>
           <button
             onClick={() => handleSectionClick('체결')}
-            className={`${section === '체결' ? 'bg-red-600 text-white font-bold' : ''}`}
-            >체결</button>
+            className={section === '체결' ? 'active-completed' : ''}
+          >체결</button>
         </StyledBookTitle>
 
-            <StyledDivider>
-        {/* 여러개의 박스들 */}
-        <StyledBookContents className="bookcontent">
+        <StyledDivider className="mt-4">
+          <StyledBookContents>
+            {coinStatus[section]?.length === 0 && (
+              <p className="text-center py-10 text-zinc-600 text-sm font-bold">내역이 없습니다.</p>
+            )}
 
-          {coins[section]?.length === 0 && <p>아무것도 없음</p>}
-
-          {coinStatus[section]?.map((order) => (
-            <StyledBookBox 
-              key={order._id} 
-              onClick={() => handleCheckboxChange(order._id)}
-              className={`${checkedItems[order._id] ? 'bg-gray-400 cursor-pointer' : 'cursor-pointer'}`}
+            {coinStatus[section]?.map((order) => (
+              <StyledBookBox 
+                key={order._id} 
+                onClick={() => handleCheckboxChange(order._id)}
+                className={checkedItems[order._id] ? 'selected' : ''}
               >
-              <StyledContent>
-                <StyledBookBoxTitle>
-                  <p ><strong>{order.coinKName}</strong></p>
-                  <h1 className={`${order.type === 'SELL' ? 'text-blue-700 font-bold' : 'text-red-600 font-bold'}`}>
-                    {order.type === 'SELL' ? '매도' : '매수'}
-                  </h1>
-                </StyledBookBoxTitle>
-                <StyledAmount>
-                  <p><strong>{order.orderQuantity.toFixed(3)}개</strong> 주문</p>
-                  <p>
-                    <span>개당</span>
-                    <span> 
-                      <strong>{order.orderPrice?.toLocaleString()}원</strong>
+                <StyledContent className="!ml-0">
+                  <StyledBookBoxTitle>
+                    <p className="text-zinc-100 font-bold">{order.coinKName}</p>
+                    <span className={order.type === 'SELL' ? 'text-sky-400 font-black text-xs' : 'text-red-500 font-black text-xs'}>
+                      {order.type === 'SELL' ? '매도' : '매수'}
                     </span>
-                  </p>
-                </StyledAmount>
-              </StyledContent>
-              {section === '미체결' ? (
-                <StyledCancleBtn onClick={e => {e.stopPropagation(); e.preventDefault(); handleDeleteClick(order._id)}}>
-                    <button>취소</button>
-                </StyledCancleBtn>
-              ) : section === '체결' && order.completedTime ? (
-                <StyledDate>
-                  <h1>체결일</h1>
-                  <p>{dayjs(order.completedTime).format('YY.MM.DD')}</p>
-                </StyledDate>
-                ) : null}
-            </StyledBookBox>
-          ))}
+                  </StyledBookBoxTitle>
+                  <StyledAmount className="mt-1">
+                    <p className="text-zinc-400 font-mono">{order.orderQuantity.toFixed(3)} <span className="text-[10px]">Qty</span></p>
+                    <p className="text-zinc-500 ml-2">@ {order.orderPrice?.toLocaleString()}</p>
+                  </StyledAmount>
+                </StyledContent>
 
-        </StyledBookContents>
-      </StyledDivider>
+                {section === '미체결' ? (
+                  <StyledCancleBtn 
+                    className="!bg-zinc-800 !text-zinc-300 hover:!bg-red-900/30 hover:!text-red-500 transition-colors"
+                    onClick={e => {e.stopPropagation(); handleDeleteClick(order._id)}}
+                  >
+                    취소
+                  </StyledCancleBtn>
+                ) : (
+                  <StyledDate>
+                    <p className="text-zinc-600 text-[10px] font-bold uppercase">Completed</p>
+                    <p className="text-zinc-400 font-mono">{dayjs(order.completedTime).format('MM.DD HH:mm')}</p>
+                  </StyledDate>
+                )}
+              </StyledBookBox>
+            ))}
+          </StyledBookContents>
+        </StyledDivider>
 
-
-      {section === '미체결' ? (
-        <StyledAllCancleBtn>
-        <button onClick={handleUnCheckBox}>
-            <FontAwesomeIcon icon={faRotateRight} />
-            <span>초기화</span>
-        </button>
-        <button onClick={handleDeleteAll}>예약 취소</button>
-      </StyledAllCancleBtn>
-      ) : (
-        <>
-
-      </>
-      )
-      }
-
+        {section === '미체결' && (
+          <StyledAllCancleBtn>
+            <button onClick={handleUnCheckBox}>
+                <FontAwesomeIcon icon={faRotateRight} />
+                <span>초기화</span>
+            </button>
+            <button 
+              onClick={handleDeleteAll}
+              className="!bg-zinc-800 border border-zinc-700 hover:!bg-red-900/40 hover:!border-red-900 transition-all"
+            >
+              선택 예약 취소
+            </button>
+          </StyledAllCancleBtn>
+        )}
     </StyledBookContainer>
   )
 }

@@ -1,172 +1,87 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import tw from 'twin.macro';
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 export const StyledContainer = styled.div`
-    ${tw`
-        w-full
-    `}
-    @media(max-width: 600px){
-        ${tw`
-            text-sm    
-        `}
-    }
-`
+    ${tw`w-full bg-zinc-950 text-zinc-100`}
+`;
 
 export const StyledPeriodAndType = styled.div`
-    ${tw`
-        flex
-        px-6
-        py-3
-        flex-col
-        justify-center
-        relative
-    `}
-    h1{
-        ${tw`
-            bg-gray-500
-            p-1
-            px-4
-            text-white
-            cursor-pointer
-            `}
-            border-radius: 12px;
-    }
-    @media(max-width: 385px){
-        ${tw`
-            px-2    
-        `}
-    }
-`
-
+    ${tw`flex px-6 py-4 flex-col justify-center gap-3`}
+`;
 
 export const StyledDetail = styled.div`
-    ${tw`
-        flex
-        gap-3
-         justify-between
-        items-center
-        pb-1
-    `}
-    h2{
-        cursor: pointer;
-        padding: 2px 16px;
-        border-radius: 12px;
-    }
+    ${tw`flex justify-between items-start pb-2`}
     
-`
+    /* 필터 리셋 버튼 */
+    h1 {
+        ${tw`bg-zinc-800 text-zinc-300 text-xs py-1.5 px-3 cursor-pointer transition-colors`}
+        border-radius: 8px;
+        &:hover { ${tw`bg-zinc-700 text-white`} }
+    }
+`;
 
 export const StyledSelect = styled.div`
-    ${tw`
-        flex   
-        flex-col
-    `}
-`
+    ${tw`flex flex-col gap-2`}
+    h2 {
+        ${tw`cursor-pointer py-1.5 px-4 rounded-lg bg-zinc-900 border border-zinc-800 text-sm font-bold transition-all`}
+        &:hover { ${tw`border-red-500 text-red-500`} }
+    }
+`;
 
 export const StyledDate = styled.div`
-    ${tw`
-        text-xs
-        flex
-        bg-gray-100
-        py-1
-        px-3
-        gap-3
-    `}
-`
+    ${tw`text-[11px] flex items-center bg-zinc-900/50 py-2 px-4 gap-4 rounded-md border border-zinc-800/50`}
+    h3 { ${tw`text-zinc-400`} }
+`;
 
+/* 기간/유형 선택 팝업 메뉴 */
 export const StyledPeriodBurgerMenu = styled.div`
-    ${tw`
-        flex
-        gap-2
-        pb-1
-    `}
-    p{
-        ${tw`
-            border-2
-            px-2
-            cursor-pointer
-            `}
-        &:hover{
-            ${tw`
-                bg-gray-100    
-            `}
-        }
+    ${tw`flex gap-2 py-2 `}
+      animation: ${fadeIn} 0.4s ease-out;
+    p {
+        ${tw`bg-zinc-800 border border-zinc-700 text-[11px] px-3 py-1 rounded-full cursor-pointer transition-all`}
+        &:hover { ${tw`bg-red-600 border-red-600 text-white`} }
     }
-   
-`
+`;
 
-export const StyledTypeMenu = styled.div`
-    ${tw`
-        flex
-        gap-2
-        pb-1
-    `}
-    p{
-        ${tw`
-            border-2
-            px-2
-            cursor-pointer
-        `}
-        &:hover{
-            ${tw`
-                bg-gray-100    
-            `}
-        }
-    }
-`
+export const StyledTypeMenu = styled(StyledPeriodBurgerMenu)``;
 
 export const StyledTableContainer = styled.div`
-    ${tw`
-        overflow-hidden
-        w-full
-    `}
-
-  @media (max-width: 530px) {
-        ${tw`
-            overflow-x-auto
-            `}
-  }
-`
+    ${tw`w-full overflow-hidden border-t border-zinc-900`}
+    @media (max-width: 530px) { ${tw`overflow-x-auto`} }
+`;
 
 export const StyledTable = styled.table`
-    ${tw`
-        w-full
-        table-fixed
-    `}
-    @media (max-width: 530px) {
-        min-width: 600px; 
-    }
-`
+    ${tw`w-full table-fixed border-collapse`}
+    @media (max-width: 530px) { min-width: 650px; }
+`;
 
 export const StyledHead = styled.thead`
-    ${tw`
-        bg-gray-200
-    `}
-    th{
-        padding: 4px;
+    ${tw`bg-zinc-900/80`}
+    th {
+        ${tw`py-3 px-2 text-[11px] font-bold text-zinc-500 text-center uppercase tracking-tighter`}
     }
-`
-
+`;
 
 export const StyledBody = styled.tbody`
-    ${tw`
-        
-    `}
-    tr{
-        border-bottom: 1px solid gray;
+    tr {
+        ${tw`border-b border-zinc-900 transition-colors hover:bg-zinc-900/30`}
     }
-    td{
-        text-align: center;
-        padding: 10px 8px;
+    td {
+        ${tw`text-center py-4 px-2 text-sm text-zinc-300`}
     }
-    td:first-child{
-        ${tw`
-            text-sm
-        `}
+    /* 시간 데이터는 조금 더 작고 흐리게 */
+    td:first-child, td:last-child {
+        ${tw`text-[11px] text-zinc-500 font-mono`}
     }
-    td:last-child{
-        ${tw`
-            text-sm
-        `}
-    }
-`
+`;

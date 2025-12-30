@@ -3,7 +3,7 @@ import { CoinChartGraphComponent, CoinVoiceComponent, DetailCoinInfoComponent, T
 
 import useGetOrderBook from "../../hooks/useGetOrderBook";
 import { useEffect, useState } from "react";
-import { StyledChart, StyledContainer, StyledOrderBook, StyledOrderBookAndTrade, StyledTrade } from "./style";
+import { LeftSection, MainContent, RightSection, StyledChart, StyledContainer, StyledOrderBook, StyledOrderBookAndTrade, StyledOrderBookWrapper, StyledTrade, StyledTradeWrapper } from "./style";
 import { useRecoilState } from "recoil";
 import { CoinPrice } from "../../context/CoinPrice";
 
@@ -35,35 +35,30 @@ const CoinDetailPage = () => {
     }
   }, [coinPrice]);
 
-    // console.log('coin', coinInfo)
 
   
 // ! 790, 630, 450 반응형
 
   return (
-    <StyledContainer className="디테일">
+    <StyledContainer>
+      {/* 1. 상단 코인 정보 카드 */}
+      <DetailCoinInfoComponent coinId={coinId || ''} coinInfo={coinInfo}/>
 
-      <div className="맨위에 있어야함">
-        <DetailCoinInfoComponent coinId={coinId || ''} coinInfo={coinInfo}/>
-      </div>
-
-
-      <StyledChart className="차트 w-full">
-      <CoinChartGraphComponent />
-        차트
+      {/* 2. 차트 영역 */}
+      <StyledChart>
+        <CoinChartGraphComponent />
       </StyledChart>
 
-      <StyledOrderBookAndTrade className="호가랑 거래창">
-        <StyledOrderBook className="호가창">
+      {/* 3. 호가창 & 거래창 영역 */}
+      <StyledOrderBookAndTrade>
+        <StyledOrderBook>
           <CoinVoiceComponent orderBook={orderBook}/>
         </StyledOrderBook>
 
-        <StyledTrade className="거래창">
+        <StyledTrade>
           <TradeComponent />
         </StyledTrade>
       </StyledOrderBookAndTrade>
-
-
     </StyledContainer>
   )
 }

@@ -4,16 +4,19 @@ import Skeleton from '@mui/material/Skeleton';
 import useCalculateAsset from '../../hooks/useCalculateAsset';
 import useGetAssetData from '../../hooks/useGetAssetData';
 
-import { StyledContainer, StyledImage, StyledTable, StyledTableBody, StyledTableHead, StyledTableTr } from './style';
+import { ProfitBox, StyledContainer, StyledImage, StyledTable, StyledTableBody, StyledTableHead, StyledTableTr } from './style';
 
 
 const AssetList = () => {
     const { data: assetData } = useGetAssetData()
     const calculatedData = useCalculateAsset(assetData)
     if (!assetData) {
-        return <div className='h-64'>
-            <Skeleton variant='rectangular' height='100%' />
-        </div>;
+        return (
+            <div className='w-full space-y-2'>
+                <Skeleton variant='rectangular' height={50} sx={{ bgcolor: '#18181b' }} />
+                <Skeleton variant='rectangular' height={200} sx={{ bgcolor: '#18181b' }} />
+            </div>
+        );
     }
 
 
@@ -26,43 +29,45 @@ const AssetList = () => {
             <StyledTable>
                 <StyledTableHead>
                     <tr>
-                        <th>보유자산</th>
+                    <th className='w-[25%]'>보유자산</th>
                         <th>보유수량</th>
-                        <th>매수평군가</th>
+                        <th>매수평균가</th>
                         <th>평가금액</th>
-                        <th>평가손익(%)</th>
+                        <th className='w-[20%]'>평가손익(%)</th>
                     </tr>
                 </StyledTableHead>
                 <StyledTableBody>
                     {coins.map((coin: any, i: number) => {
                         const market = coin.market.split('-')[1]
                         const coinImage = `https://static.upbit.com/logos/${market}.png`
-
+                        const detail = coinDetailPrice?.[i] || {}
+                        const isPlus = Number(detail.profitLoss) >= 0
                         return (
-
-                            <StyledTableTr key={coin.id}>
+<StyledTableTr key={coin.id || i}>
                                 <td>
                                     <StyledImage>
-                                        <img src={coinImage} alt="코인이미지" />
+                                        <img src={coinImage} alt={market} />
                                         <p>{coin.name}</p>
                                     </StyledImage>
                                 </td>
                                 <td>{coin.amount?.toLocaleString()}</td>
-                                <td>{coin.avgBuyPrice?.toLocaleString()}</td>
-                                <td>{Math.round(Number(coinDetailPrice[i].coinValue)).toLocaleString()}</td>
-                                <td>
-                                    <div>
-                                        <p
-                                            className={`${Number(coinDetailPrice[i].profitLoss) < 0 ? 'text-blue-600' : 'text-red-500'}`}
-                                        >
-                                            {Number(coinDetailPrice[i].profitRate) > 0 && '+'}
-                                            {coinDetailPrice[i].profitRate}%</p>
-                                        <p
-                                            className={`${Number(coinDetailPrice[i].profitLoss) < 0 ? 'text-blue-600' : 'text-red-500'}`}
-                                        >{Math.round(Number(coinDetailPrice[i].profitLoss)).toLocaleString()}KRW</p>
-                                    </div>
+                                <td className="text-zinc-400">
+                                    {Number(coin.avgBuyPrice)?.toLocaleString()}
                                 </td>
-
+                                <td className="font-bold">
+                                    {Math.round(Number(detail.coinValue || 0)).toLocaleString()}
+                                </td>
+                                <td>
+                                    <ProfitBox>
+                                        <p className={isPlus ? '!text-red-500' : '!text-sky-400'}>
+                                            {isPlus && '+'}
+                                            {detail.profitRate}%
+                                        </p>
+                                        <p className={isPlus ? '!text-red-500' : '!text-sky-400'}>
+                                            {Math.round(Number(detail.profitLoss || 0)).toLocaleString()}
+                                        </p>
+                                    </ProfitBox>
+                                </td>
                             </StyledTableTr>
                         )
                     })}

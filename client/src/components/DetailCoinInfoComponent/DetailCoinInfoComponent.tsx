@@ -16,25 +16,25 @@ interface CoinName {
     english_name: string;
 }
 
-interface DetailCoinInfoComponentProps{
+interface DetailCoinInfoComponentProps {
     coinId: string;
     coinInfo: {
-            trade_price: number;
-            change_rate: number;
-            acc_price: number;
-            change_price: number;
-            trade_volume: number;
-            high_price: number;
-            low_price: number;
+        trade_price: number;
+        change_rate: number;
+        acc_price: number;
+        change_price: number;
+        trade_volume: number;
+        high_price: number;
+        low_price: number;
     } | null
 }
 
 
 
-const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProps) => {
+const DetailCoinInfoComponent = ({ coinId, coinInfo }: DetailCoinInfoComponentProps) => {
     const [coinName, setCoinName] = useState<string>('');
     const { data: coinData, isLoading, error } = useGetCoins();
-    const [kName , setKName] = useRecoilState(coinKName)
+    const [kName, setKName] = useRecoilState(coinKName)
     const [liked, setLiked] = useState<string[]>([])
     const { likeToggle } = useLikeToggle();
     const { likedCoins } = useGetLikedCoins()
@@ -53,17 +53,17 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
 
     useEffect(() => {
         setLiked(likedCoins || [])
-    },[likedCoins])
-    
+    }, [likedCoins])
+
 
 
     // 좋아요 등록, 취소 -> 
-    const handleLikedCoin = () =>{
+    const handleLikedCoin = () => {
         likeToggle(coinId)
         setLiked((prev) => {
-            if(prev.includes(coinId)){
+            if (prev.includes(coinId)) {
                 return prev.filter(coin => coin !== coinId)
-            }else{
+            } else {
                 return [...prev, coinId]
             }
         })
@@ -75,107 +75,76 @@ const DetailCoinInfoComponent = ({coinId, coinInfo}: DetailCoinInfoComponentProp
     if (error) return <div>Error: {error.message}</div>;
 
 
-    if(!coinInfo){
-        return(
-            <div>
-                <Skeleton variant="rectangular" width='100%' height={100} />
-            </div>
-        )
+    if (!coinInfo) {
+        return <Skeleton variant="rectangular" width='100%' height={100} sx={{ bgcolor: '#18181b' }} />;
     }
 
+    const isPlus = coinInfo.change_rate > 0
     const coinUnit = coinId?.split('-')[1];
     const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`;
-  return (
-      <StyledContainer>
-      {coinInfo && (
-        <>
-             <StyledLeftInfo>
+    return (
+        <StyledContainer>
+            <StyledLeftInfo>
                 <StyledCLogoImg>
-                 <img src={coinLogo} alt="CoinLogo" />
-                 <p>{coinName}</p>
-                 <StyledLikedBtn>
-                {isStar() ? 
-                    (<>
+                    <img src={coinLogo} alt="Logo" />
+                    <div>
+                        <p>{coinName}</p>
+                        <span className="text-[10px] text-zinc-500 font-mono">{coinId}</span>
+                    </div>
+                    <StyledLikedBtn onClick={handleLikedCoin}>
                         <FontAwesomeIcon
-                            icon={fullStar}
-                            onClick={() => handleLikedCoin()}
-                            className="text-yellow-400"
-                            size="xl"
+                            icon={isStar() ? fullStar : faStar}
+                            className={isStar() ? "text-yellow-400" : "text-zinc-600"}
+                            size="lg"
                         />
-                    </>
-                  ) : (
-                    <>
-                        <FontAwesomeIcon
-                            icon={faStar}
-                            onClick={() => handleLikedCoin()}
-                            size="xl"
-                        />
-                    </>
-                  )
-                    }
-                </StyledLikedBtn>
+                    </StyledLikedBtn>
                 </StyledCLogoImg>
 
                 <StyledTitlePrice>
-                    <p className={`${coinInfo.change_rate > 0 ? 'text-red-500' : 'text-blue-600'}`}>
-                        <span className="font-bold">
-                            {coinInfo?.trade_price?.toLocaleString()}
-                        </span>
-                        <span>
-                            KRW
-                        </span>
+                    <p className={isPlus ? '!text-red-500' : '!text-sky-400'}>
+                        {coinInfo?.trade_price?.toLocaleString()}
+                        <span className="text-xs ml-1 font-normal opacity-70">KRW</span>
                     </p>
-                    <p className={`${coinInfo.change_rate > 0 ? 'text-red-500' : 'text-blue-600'}`}>
-                        <span>{coinInfo.change_rate > 0 ? '+' : ''}</span>
-                        <span>{(coinInfo?.change_rate * 100)?.toLocaleString()} %</span>
-                        <span className="pl-2">{coinInfo.change_rate > 0 ? '+' : ''}</span>
-                        <span>{coinInfo?.change_price?.toLocaleString()}</span>
+                    <p className={isPlus ? '!text-red-500' : '!text-sky-400'}>
+                        <span>{isPlus ? '+' : ''}{(coinInfo?.change_rate * 100).toFixed(2)}%</span>
+                        <span className="ml-2">{isPlus ? '▲' : '▼'} {coinInfo?.change_price?.toLocaleString()}</span>
                     </p>
                 </StyledTitlePrice>
-                    
-             </StyledLeftInfo>
-
+            </StyledLeftInfo>
 
             <StyledConInfoWrapper>
-             <StyledCoinInfo className="정보">
+                <StyledCoinInfo>
+                    <StyledPrices>
+                        <p>
+                            <span>고가</span>
+                            <span className="!text-red-500">{coinInfo?.high_price?.toLocaleString()}</span>
+                        </p>
+                        <p>
+                            <span>저가</span>
+                            <span className="!text-sky-400">{coinInfo?.low_price?.toLocaleString()}</span>
+                        </p>
+                    </StyledPrices>
 
-                 <StyledPrices className="고가저가">
-                     <p>
-                         <span>고가</span>
-                         <span className="text-red-500">{coinInfo?.high_price?.toLocaleString()}</span>
-                     </p>
-                     <p>
-                         <span>저가</span>
-                         <span className="text-blue-600">{coinInfo?.low_price?.toLocaleString()}</span>
-                     </p>
-                 </StyledPrices>
-
-                 <StyledRates className="거래량, 거래대금">
-                     <div>
-                         <span>거래량(24H)</span>
-                         <StyledRateNumbers>
-                         <span>{Number(coinInfo?.trade_volume)?.toLocaleString()}</span>
-                             <span>{coinUnit}</span>
-                         </StyledRateNumbers>
-                     </div>
-                     <div>
-                         <span>거래대금(24H)</span>
-                         <StyledRateNumbers>
-                             <span>{Math.floor(coinInfo?.acc_price as number)?.toLocaleString()}</span>
-                             <span>KRW</span>
-                         </StyledRateNumbers>
-                     </div>
-                 </StyledRates>
-                
-                    
-                
-             </StyledCoinInfo>
-             </StyledConInfoWrapper>
-             </>
-        )}
-        
-         </StyledContainer>
-  )
+                    <StyledRates>
+                        <p>
+                            <span>거래량(24H)</span>
+                            <StyledRateNumbers>
+                                {Math.floor(coinInfo?.trade_volume)?.toLocaleString()}
+                                <span>{coinUnit}</span>
+                            </StyledRateNumbers>
+                        </p>
+                        <p>
+                            <span>거래대금(24H)</span>
+                            <StyledRateNumbers>
+                                {Math.floor(Number(coinInfo?.acc_price) / 1000000)?.toLocaleString()}
+                                <span>백만</span>
+                            </StyledRateNumbers>
+                        </p>
+                    </StyledRates>
+                </StyledCoinInfo>
+            </StyledConInfoWrapper>
+        </StyledContainer>
+    )
 }
 
 export default DetailCoinInfoComponent

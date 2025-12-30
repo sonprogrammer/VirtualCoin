@@ -54,7 +54,7 @@ const AssetResultTextComponent = () => {
                     <h2>평가손익</h2>
                     <StyledBottomContentBox>
                         <h1
-                            className={`${totalProfitLoss && totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}
+                            className={`${totalProfitLoss && totalProfitLoss > 0 ? '!text-red-500' : '!text-blue-600'}`}
                         >{Math.round(Number(totalProfitLoss))?.toLocaleString()}</h1>
                         <p>KRW</p>
                     </StyledBottomContentBox>
@@ -71,7 +71,7 @@ const AssetResultTextComponent = () => {
                     <h2>수익률</h2>
                     <StyledBottomContentBox>
                         <h1
-                            className={`${totalProfitLoss && totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}
+                            className={`${totalProfitLoss && totalProfitLoss > 0 ? '!text-red-500' : '!text-blue-600'}`}
                         >{totalProfitRate}</h1>
                         <h3>%</h3>
                     </StyledBottomContentBox>

@@ -1,256 +1,69 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 
-
 export const StyledContainer = styled.div`
     ${tw`
-        flex
-        w-full
-        justify-between
-        py-4
-        border-b-2
-
+        flex w-full justify-between py-5
+        border-b border-zinc-900 bg-zinc-950
     `}
-    @media(max-width: 790px){
-        ${tw`
-            py-1
-        `}
-    }
-    @media(max-width: 630px){
-        ${tw`
-            p-2
-        `}
-    }
-    @media(max-width: 450px){
-        ${tw`
-            flex-col
-            gap-2
-        `}
-    }
-    
-`
+    @media(max-width: 450px){ ${tw`flex-col gap-4`} }
+`;
 
 export const StyledLeftInfo = styled.div`
-    ${tw`
-        flex
-        gap-5
-    `}
-    @media(max-width: 790px){
-        ${tw`
-            flex
-            flex-col    
-            text-sm
-            gap-1
-        `}
-    }
-    @media(max-width: 630px){
-        ${tw`
-            gap-3    
-            justify-center
-        `}
-    }
-    @media(max-width: 450px){
-        ${tw`
-            flex-row
-            items-center
-            justify-between
-        `}
-    }
-`
+    ${tw`flex items-center gap-8`}
+    @media(max-width: 790px){ ${tw`flex-col items-start gap-2`} }
+    @media(max-width: 450px){ ${tw`flex-row justify-between w-full`} }
+`;
 
 export const StyledCLogoImg = styled.div`
-    ${tw`
-        flex
-        items-center
-        gap-3
-        pl-3
-    `}
-    img{
-        ${tw`
-            w-[48px]
-        `}
-    }
-    p{
-        ${tw`
-            text-xl
-            font-bold
-        `}
-    }
-    @media(max-width: 630px){
-        p{
-            ${tw`
-                text-lg
-        `}
-        }
-    }
-    
-`
+    ${tw`flex items-center gap-4`}
+    img { ${tw`w-12 h-12 rounded-full bg-white p-0.5`} }
+    p { ${tw`text-2xl font-black text-white`} }
+`;
 
 export const StyledTitlePrice = styled.div`
-    ${tw`
-        flex
-        flex-col
-        items-center
-    `}
-    p:first-child{
-        ${tw`
-            flex
-            gap-1    
-        `}
+    ${tw`flex flex-col items-start`}
+    p:first-child {
+        ${tw`text-2xl font-black flex items-baseline gap-1`}
     }
-    @media(max-width: 790px){
-        ${tw`
-            pl-3
-        `}
+    p:last-child {
+        ${tw`text-xs font-bold flex gap-1 mt-1`}
     }
-    @media(max-width: 630px){
-        ${tw`
-            text-xs
-        `}
-    }
-`
-
-export const StyledConInfoWrapper = styled.div`
-    ${tw`
-
-    `}
-    @media(max-width: 450px){
-        ${tw`
-            max-h-[28px]
-            overflow-hidden
-            border-2
-            border-red-100
-        `}
-        &:hover{
-            overflow-y: auto;
-        }
-    }
-`
+`;
 
 export const StyledCoinInfo = styled.div`
-    ${tw`
-        flex
-        text-sm
-        gap-3
-    `}
-    @media(max-width: 790px){
-        ${tw`
-            items-center
-        `}
-    }
-    @media(max-width: 630px){
-        ${tw`
-            text-xs
-            flex-col
-            gap-1
-        `}
-    }
-    @media(max-width: 450px){
-        ${tw`
-            will-change-transform
-        `}
-        animation: scrolling 10s linear infinite;
-        &:hover{
-            animation-play-state: paused;
-        }            
-        @keyframes scrolling{
-            0% {
-                transform: translateY(0);
-            }
-  
-            100%{
-                transform: translateY(-100%);
-            }
-}
-    }
-`
+    ${tw`flex text-xs gap-6 py-1`}
+    span:first-child { ${tw`text-zinc-500 font-medium`} } /* 라벨 색상 */
+`;
 
 export const StyledPrices = styled.div`
-    ${tw`
-        flex
-        flex-col
-    `}
-    p{
-        ${tw`
-            flex
-            justify-between
-            gap-5
-            p-1
-            `}
-        &:first-child{
-            ${tw`
-                border-b-2
-            `}
-        }  
-        @media(max-width: 630px){
-            &:last-child{
-                ${tw`
-                    border-b-2
-                `}
-            }
-        }
+    ${tw`flex flex-col gap-2 min-w-[120px]`}
+    p {
+        ${tw`flex justify-between border-b border-zinc-900 pb-1`}
+        span:last-child { ${tw`font-bold`} }
     }
-    @media(max-width: 630px){
-        ${tw`
-            w-full
-            flex-1
-        `}
-    }
-`
-export const StyledRates = styled.div`
-    ${tw`
-        flex
-        flex-col
+`;
 
-    `}
-    
-    div{
-        ${tw`
-            flex
-            p-1
-            justify-between
-            items-center
-            gap-5
-            `}
-        
-        &:first-child{
-        ${tw`
-            border-b-2
-        `}
-    }
-    }
-    @media(max-width: 630px){
-        ${tw`
-            flex-1
-            w-full
-        `}
-    }
-`
+export const StyledRates = styled(StyledPrices)``;
 
-export const StyledRateNumbers = styled.p`
-    ${tw`
-        flex
-        gap-1
-        items-center
-    `}
-    span:last-child{
-        ${tw`
-            text-xs
-            text-gray-500
-        `}
-    }
-`
+export const StyledRateNumbers = styled.div`
+    ${tw`flex items-baseline gap-1 font-bold text-zinc-200`}
+    span:last-child { ${tw`text-[10px] text-zinc-600 font-normal uppercase`} }
+`;
 
 export const StyledLikedBtn = styled.div`
     ${tw`
-        flex
-        items-center
-        justify-center
-        border-2
-        p-1
-        rounded-md
-        w-[30px]
-        h-[30px]
+        flex items-center justify-center
+        border border-zinc-800 bg-zinc-900/50
+        rounded-lg w-9 h-9 cursor-pointer
+        transition-colors hover:bg-zinc-800
     `}
-    
-`
+    svg { ${tw`text-zinc-500`} }
+`;
+
+export const StyledConInfoWrapper = styled.div`
+    ${tw`flex items-center`}
+    @media(max-width: 450px){
+        ${tw`bg-zinc-900/30 p-3 rounded-lg border border-zinc-900`}
+    }
+`;

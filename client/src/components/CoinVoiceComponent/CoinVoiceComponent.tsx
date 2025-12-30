@@ -12,9 +12,9 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
 
   if (!orderBook) {
     return (
-    <div className='로딩 h-full'>
-      <Skeleton variant="rectangular" height='100%'/>
-    </div>
+      <div className='h-full p-2 bg-zinc-950'>
+        <Skeleton variant="rectangular" height='100%' sx={{ bgcolor: '#18181b', borderRadius: '8px' }}/>
+      </div>
     )
   }
 
@@ -29,6 +29,7 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
 
   return (
     <StyledContainer>
+      {/* 매도 (Asks) - 파란색 계열 */}
       <StyledAskBox>
         {orderBook.asks.slice().reverse().map((ask) => (
           <StyledAskContent key={ask.price}>
@@ -37,18 +38,17 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
               <QuantityBar quantity={Number(ask.quantity)} totalQuantity={totalAskQuantity} type='ask'/>
             </p>
             <StyledRight>
-              <p>
-                {ask.price?.toLocaleString()}
-              </p>
-              <p>
-                {ask.changeRate !== null ? `${ask.changeRate.toFixed(2)} %` : "error"}
-              </p>
+              <p>{ask.price?.toLocaleString()}</p>
+              <p>{ask.changeRate !== null ? `${ask.changeRate.toFixed(2)}%` : ""}</p>
             </StyledRight>
           </StyledAskContent>
         ))}
       </StyledAskBox>
-      <div className="border-2"></div>
 
+      {/* 중앙 현재가 구분선 - 얇고 어둡게 */}
+      <div className="h-[1px] bg-zinc-800 my-1"></div>
+
+      {/* 매수 (Bids) - 빨간색 계열 */}
       <StyledBidBox>
         {orderBook.bids.map((bid) => (
           <StyledBidContent key={bid.price}>
@@ -57,22 +57,15 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
               <QuantityBar quantity={Number(bid.quantity)} totalQuantity={totalBidQuantity} type='bid'/>
             </p>
             <StyledRight>
-            <p className="border-x-[1px]">
-              {bid.price?.toLocaleString()}
-            </p>
-            <p>
-              {bid.changeRate !== null ? `${bid.changeRate.toFixed(2)} %` : "error"}
-            </p>
+              <p>{bid.price?.toLocaleString()}</p>
+              <p>{bid.changeRate !== null ? `${bid.changeRate.toFixed(2)}%` : ""}</p>
             </StyledRight>
-
           </StyledBidContent>
         ))}
       </StyledBidBox>
-
-
     </StyledContainer>
 
-  );
-};
+  )
+}
 
 export default CoinVoiceComponent;

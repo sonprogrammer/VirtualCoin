@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react'
-import { StyledBox, StyledCloseBtn, StyledCoin, StyledCoinBox, StyledCoinContainer, StyledCoinContent, StyledCoinNameAndImg, StyledCoinNumber, StyledContainer, StyledInput, StyledNoResult } from './style'
+import { StyledBox, StyledCloseBtn, StyledCoinBox, StyledCoinContainer, StyledCoinContent, StyledCoinNameAndImg, StyledCoinNumber, StyledContainer, StyledInput, StyledNoResult } from './style'
 import useGetCoins from '../../hooks/useGetCoins'
 import { useNavigate } from 'react-router-dom'
 import usePostRecentCoin from '../../hooks/usePostRecentCoin'
@@ -54,7 +54,14 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
   ))
 
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return (
+    <StyledContainer>
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-12 h-12 border-4 border-zinc-800 border-t-red-500 rounded-full animate-spin" />
+        <p className="text-zinc-400 text-sm animate-pulse">코인 목록을 가져오는 중...</p>
+      </div>
+    </StyledContainer>
+  )
   if (error) return <div>Error occurred: {error.message}</div>
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,63 +71,58 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
 
   return (
     <StyledContainer onClick={handleSearchModalClose}>
-
-      <StyledBox className='box' onClick={e => e.stopPropagation()}>
+      <StyledBox onClick={e => e.stopPropagation()}>
         <StyledInput>
           <input
             type="text"
-            placeholder='코인을 검색하세요'
+            placeholder='검색할 코인명을 입력하세요'
             value={searchQuery}
             onChange={handleSearchInputChange}
             ref={inputRef}
-            />
-            <StyledCloseBtn onClick={handleSearchModalClose}>X</StyledCloseBtn>
+          />
+          <StyledCloseBtn onClick={handleSearchModalClose}>✕</StyledCloseBtn>
         </StyledInput>
 
-        {filteredCoins.length === 0 &&
-          <StyledNoResult>
-            🚨there is no coins🚨
-          </StyledNoResult>
-        }
-
         <StyledCoinContainer>
-          <h1>
-            <span>코인 TOP 20</span>
-            <span>(거래대금 순)</span>
-          </h1>
-          <StyledCoin>
-            {(filteredCoins.length > 0 ? filteredCoins : coins).slice(0, 20).map((coin: any, i) => {
-              const coinMarket = prices[coin.market]
-              const coinUnit = coin.market.split('-')[1]
-              const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
-              if (!coinMarket) {
-                return null;
-              }
-              return (
-                <div key={coin.market}>
-                  <StyledCoinBox onClick={() => handleCoinClick(coin.market)}>
-                    <div className='flex gap-2'>
-                      <StyledCoinNumber>
-                        {i + 1}
-                      </StyledCoinNumber>
-                      <StyledCoinNameAndImg>
-                        <img src={coinLogo} alt="로고" width='30' height='30' />
-                        {coin.korean_name}
-                      </StyledCoinNameAndImg>
-                    </div>
-                    <StyledCoinContent>
-                      <p>{coinMarket.trade_price?.toLocaleString()}</p>
-                      <p
-                        className={`${coinMarket.change_rate > 0 ? 'text-red-500' : 'text-blue-500'} `}
-                      >{coinMarket.change_rate > 0 && '+'}{coinMarket.change_rate?.toLocaleString()}</p>
-                    </StyledCoinContent>
+          {filteredCoins.length === 0 ? (
+            <StyledNoResult>
+              <p className="mt-2 text-sm font-medium">검색 결과가 없습니다.</p>
+            </StyledNoResult>
+          ) : (
+            <>
+              <h1>
+                <span>코인 TOP 20</span>
+                <span>거래대금 순</span>
+              </h1>
+              <div className="flex flex-col">
+                {filteredCoins.slice(0, 20).map((coin, i) => {
+                  const coinMarket = prices[coin.market]
+                  const coinUnit = coin.market.split('-')[1]
+                  const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
+                  
+                  if (!coinMarket) return null;
 
-                  </StyledCoinBox>
-                </div>
-              )
-            })}
-          </StyledCoin>
-
+                  return (
+                    <StyledCoinBox key={coin.market} onClick={() => handleCoinClick(coin.market)}>
+                      <div className='flex items-center gap-2'>
+                        <StyledCoinNumber>{String(i + 1).padStart(2, '0')}</StyledCoinNumber>
+                        <StyledCoinNameAndImg>
+                          <img src={coinLogo} alt="로고" width='28' height='28' />
+                          <span>{coin.korean_name}</span>
+                        </StyledCoinNameAndImg>
+                      </div>
+                      <StyledCoinContent>
+                        <p>{coinMarket.trade_price?.toLocaleString()} <span className="text-[10px] text-zinc-500 font-normal">KRW</span></p>
+                        <p className={coinMarket.change_rate > 0 ? 'text-red-500' : 'text-blue-500'}>
+                          {coinMarket.change_rate > 0 && '+'}{(coinMarket.change_rate * 100).toFixed(2)}%
+                        </p>
+                      </StyledCoinContent>
+                    </StyledCoinBox>
+                  )
+                })}
+              </div>
+            </>
+          )}
         </StyledCoinContainer>
       </StyledBox>
     </StyledContainer>

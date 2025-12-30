@@ -1,146 +1,154 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 
-
 export const StyledContainer = styled.div`
-    ${tw`
-        w-full
-    `}
-`
-
-export const StyledNonCoins = styled.div`
-    ${tw`
-        flex
-        justify-center
-    `}
-`
-
+  ${tw`w-full overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950`}
+`;
 
 export const StyledTable = styled.table`
-    ${tw`
-        w-full
-        table-fixed
-    `}
-`
-export const StyledTableHead = styled.thead`
-    ${tw`
-        bg-gray-200
-    `}
-    th{
-        padding: 4px;
-    }
-`
-export const StyledTableBody = styled.tbody`
-    ${tw`
+  ${tw`w-full table-fixed border-collapse`}
+`;
 
-    `}
-    td{
-        text-align: center;
-        padding: 10px 8px;
-    }
-`
+export const StyledTableHead = styled.thead`
+  ${tw`bg-zinc-900/80 border-b border-zinc-800`}
+  th {
+    ${tw`p-4 text-xs font-bold text-zinc-400 text-center uppercase tracking-wider`}
+  }
+`;
+
+export const StyledTableBody = styled.tbody`
+  tr {
+    ${tw`border-b border-zinc-900 transition-colors hover:bg-zinc-900/40`}
+  }
+  td {
+    ${tw`p-4 text-sm text-center text-zinc-100 font-medium`}
+    vertical-align: middle;
+  }
+`;
+
 export const StyledTableTr = styled.tr`
-    ${tw`
-        border-b-2
-    `}
-   
-`
+  /* 개별 행에 대한 추가 스타일이 필요할 때 사용 */
+`;
+
 export const StyledImage = styled.div`
-    ${tw`
-        flex
-        gap-1
-    `}
-    img{
-        width: 24px;
+  ${tw`flex items-center gap-3 justify-start pl-2`}
+  img {
+    ${tw`w-6 h-6 rounded-full bg-white p-0.5`} /* 코인 로고가 어두울 수 있어 흰색 배경 살짝 추가 */
+  }
+  p {
+    ${tw`font-bold text-zinc-100 m-0`}
+  }
+`;
+
+// 손익 정보 박스
+export const ProfitBox = styled.div`
+  ${tw`flex flex-col items-center gap-0.5`}
+  p {
+    ${tw`text-xs font-bold`}
+    &:last-child {
+      ${tw`text-[10px] font-medium opacity-80`}
     }
-`
+  }
+`;
+
 
 export const StyledTbContainer = styled.div`
     ${tw`
         w-full
         flex
         flex-col
+        bg-zinc-950
+        pb-20 /* 하단 네브바 여백 */
     `}
-`
+`;
+
+export const StyledNonCoins = styled.div`
+    ${tw`
+        flex justify-center items-center py-20
+        text-zinc-500 font-bold
+    `}
+`;
+
 export const StyledTbBox = styled.div`
     ${tw`
         w-full
-        border-t-2
-        border-gray-300
+        border-b border-zinc-900 /* 구분선을 아주 어둡게 */
+        bg-zinc-900/20
+        mb-2
     `}
-`
+`;
+
 export const StyledTbTitle = styled.div`
     ${tw`
         flex
-        p-2
+        p-4
         items-center
+        gap-4
     `}
-`
+`;
 
 export const StyledTbTitleCoinName = styled.div`
     ${tw`
-        flex-1
-        font-bold
+        flex flex-col
+        flex-shrink-0
     `}
+    p:first-child {
+        ${tw`text-zinc-100 font-bold text-base`}
+    }
+    p:last-child {
+        ${tw`text-zinc-500 text-xs font-medium`}
+    }
+`;
 
-`
 export const StyledTbTitleContents = styled.div`
     ${tw`
         flex-1
+        flex flex-col gap-1
     `}
-    p{
+    p {
         ${tw`
             flex
             justify-between
-        `}
-    }
-         @media(max-width:430px){
-        ${tw`
             text-sm
         `}
+        span:first-child {
+            ${tw`text-zinc-500`}
+        }
     }
-`
+`;
 
 export const StyledDivider = styled.div`
     ${tw`
-        border-[1px]
-        w-[90%]
-
+        border-t border-zinc-800/50
+        w-[92%]
+        mx-auto
     `}
-    margin: 0 auto;
-`
-
+`;
 
 export const StyledTbContent = styled.div`
     ${tw`
         flex
         flex-wrap
+        p-2
     `}
-
-`
+`;
 
 export const StyledTbContentSmBox = styled.div`
     ${tw`
         flex
-        p-1
+        p-3
         flex-col
         items-end
     `}
-    flex: 1 1 calc(50% - 10px);
-    p{
-        &:last-child{
-            color: gray;
-            font-size: 12px;
-        }
-        span{
-            &:last-child{
-                font-weight: bold;
-            }
+    flex: 1 1 50%; /* 2열 배치 */
+
+    p:first-child {
+        ${tw`text-zinc-200 font-bold text-sm`}
+        span:last-child {
+            ${tw`text-[10px] text-zinc-500 ml-1 font-normal`}
         }
     }
-         @media(max-width:430px){
-        ${tw`
-            text-sm
-        `}
+    p:last-child {
+        ${tw`text-zinc-500 text-[11px] mt-1`}
     }
-`
+`;

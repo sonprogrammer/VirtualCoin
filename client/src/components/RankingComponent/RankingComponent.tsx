@@ -6,7 +6,6 @@ import { useRecoilValue } from 'recoil'
 import { userState } from '../../context/userState'
 import { CoinPrice } from '../../context/CoinPrice'
 import calculateAllUserAsset from '../../utils/calculateAllUsersAsset'
-import Skeleton from '@mui/material/Skeleton'
 
 const RankingComponent = () => {
     const [page, setPage] = useState<number>(1)
@@ -47,66 +46,77 @@ const RankingComponent = () => {
         <StyledContainer>
             <StyledTitle>
                 <div>
-                    <h1>랭킹 50</h1>
-                    <p>*수익률 기준</p>
+                    <h1>🏆 Top 50 Leaders</h1>
+                    <p>*수익률 높은 순위입니다.</p>
                 </div>
-                <h2>나의 순위 : {myRank}위</h2>
+                <h2>My Rank: {myRank > 0 ? `${myRank}위` : 'N/A'}</h2>
             </StyledTitle>
-            {isLoading ?
-                <div className='w-full h-full flex justify-center items-center'> 
-                    <img src='/loadingbar.gif' alt='loadingbar' />
-                </div>
-            :     
-            
-            <StyledBox className='box'>
-                <StyledTable>
-                    <StyledTableHead>
-                        <tr>
-                            <th className='w-[50px]'>순위</th>
-                            <th className='w-[70px]'>이름</th>
-                            <th>총 자산</th>
-                            <th>총 손익</th>
-                            <th>수익률</th>
-                        </tr>
-                    </StyledTableHead>
-                    <StyledTableBody>
-                        {(windowWidth > 530 ? EachPage : safeRankgData).map((a: any, i: number) => {
-                            const me = a.id === userId
-                            return (
-                                <tr key={i} className={me ? 'font-bold' : ''}>
-                                    <td>{firstPage + i + 1}</td>
-                                    <td>{a.name}</td>
-                                    <td>
-                                        {Math.round(Number(a.totalAsset))?.toLocaleString()}원
-                                    </td>
-                                    <td className={`${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-600' : ''}`}>
-                                        {a.totalProfit > 0 && '+'}
-                                        {Math.round(Number(a.totalProfit))?.toLocaleString()}원
-                                    </td>
-                                    <td className={`${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-600' : ''}`}>
-                                        {a.totalProfit > 0 && '+'}
-                                        {a.profitRate === 0 ? 0 : a.profitRate.toFixed(2)}%
-                                    </td>
-                                </tr>
-                            )
-                        }).slice(0, 50)}
-                    </StyledTableBody>
-                </StyledTable>
-                {windowWidth > 530 &&
-                    <StyledBtns>
-                        {Array.from({ length: Math.ceil(safeRankgData.length / perPage) }, (_, i) => (
-                            <button key={i}
-                                onClick={() => setPage(i + 1)}
-                                className={`${page === i + 1 ? 'bg-red-500 flex items-center justify-center' : ''}`}
-                            >
-                                {i + 1}
-                            </button>
-                        ))}
-                    </StyledBtns>
-                }
 
-            </StyledBox>
-            }
+            {isLoading ? (
+                <div className='w-full py-20 flex flex-col justify-center items-center gap-4'> 
+                    <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                    <p className="text-zinc-500 animate-pulse text-sm">유저 자산 데이터를 분석 중...</p>
+                </div>
+            ) : (
+                <StyledBox>
+                    <StyledTable>
+                        <StyledTableHead>
+                            <tr>
+                                <th className='w-[60px] md:w-[80px]'>순위</th>
+                                <th className='text-left'>플레이어</th>
+                                <th className='hidden md:table-cell'>총 자산</th>
+                                <th className='text-right'>누적 손익</th>
+                                <th className='text-right w-[80px] md:w-[120px]'>수익률</th>
+                            </tr>
+                        </StyledTableHead>
+                        <StyledTableBody>
+                            {(windowWidth > 530 ? EachPage : safeRankgData).slice(0, 50).map((a: any, i: number) => {
+                                const me = a.id === userId;
+                                const actualRank = firstPage + i + 1;
+                                
+                                const getRankDisplay = (rank: number) => {
+                                    if (rank === 1) return <span className="rank-badge bg-yellow-500 text-black">1</span>;
+                                    if (rank === 2) return <span className="rank-badge bg-zinc-400 text-black">2</span>;
+                                    if (rank === 3) return <span className="rank-badge bg-orange-700 text-white">3</span>;
+                                    return rank;
+                                };
+
+                                return (
+                                    <tr key={a.id || i} className={me ? 'me' : ''}>
+                                        <td>{getRankDisplay(actualRank)}</td>
+                                        <td className="text-left font-sans">
+                                            <span className="font-bold">{a.name}</span>
+                                            {me && <span className="ml-2 text-[10px] bg-red-600 text-white px-1 rounded">YOU</span>}
+                                        </td>
+                                        <td className="hidden md:table-cell text-zinc-400">
+                                            ₩{Math.round(Number(a.totalAsset))?.toLocaleString()}
+                                        </td>
+                                        <td className={`text-right ${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-500' : 'text-zinc-500'}`}>
+                                            {a.totalProfit > 0 && '+'}{Math.round(Number(a.totalProfit))?.toLocaleString()}
+                                        </td>
+                                        <td className={`text-right font-bold ${a.totalProfit > 0 ? 'text-red-500' : a.totalProfit < 0 ? 'text-blue-500' : 'text-zinc-500'}`}>
+                                            {a.totalProfit > 0 && '+'}{(a.profitRate || 0).toFixed(2)}%
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </StyledTableBody>
+                    </StyledTable>
+
+                    {windowWidth > 530 && safeRankgData.length > perPage && (
+                        <StyledBtns>
+                            {Array.from({ length: Math.ceil(Math.min(safeRankgData.length, 50) / perPage) }, (_, i) => (
+                                <button key={i}
+                                    onClick={() => setPage(i + 1)}
+                                    className={page === i + 1 ? 'active' : ''}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                        </StyledBtns>
+                    )}
+                </StyledBox>
+            )}
         </StyledContainer>
     )
 }

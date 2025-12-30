@@ -16,16 +16,24 @@ const TradeComponent = () => {
   return (
     <Styledcontainer>
       <StyledNavbar>
-        <p onClick={() => handleTabClick('buy')}
-          className={`${selection === 'buy' ? 'bg-red-500 font-bold text-white' : 'text-black'}`}
-        >매수</p>
-        <p onClick={() => handleTabClick('sell')}
-          className={`${selection === 'sell' ? 'bg-blue-500 font-bold text-white' : 'text-black'}`}
-        >매도</p>
-        <p onClick={() => handleTabClick('book')}
-          className={`${selection === 'book' ? 'bg-orange-400 font-bold text-white' : 'text-black'}`}
-        >예약확인</p>
-
+        <p 
+          onClick={() => handleTabClick('buy')}
+          className={selection === 'buy' ? 'active-buy' : ''}
+        >
+          매수
+        </p>
+        <p 
+          onClick={() => handleTabClick('sell')}
+          className={selection === 'sell' ? 'active-sell' : ''}
+        >
+          매도
+        </p>
+        <p 
+          onClick={() => handleTabClick('book')}
+          className={selection === 'book' ? 'active-book' : ''}
+        >
+          예약확인
+        </p>
       </StyledNavbar>
 
       <StyledTradeSection>
@@ -33,7 +41,6 @@ const TradeComponent = () => {
         {selection === 'sell' && <CoinSellForm />}
         {selection === 'book' && <CoinBookForm />}
       </StyledTradeSection>
-
     </Styledcontainer>
   )
 }

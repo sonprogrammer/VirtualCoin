@@ -1,440 +1,151 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 
+// --- 공통 컨테이너 ---
 export const StyledContainer = styled.div`
-    ${tw`
-        p-4
-        flex
-        flex-col
-        gap-3
-    `}
-    @media(max-width: 450px){
-        ${tw`
-            p-2
-        `}
-    }
-`
+    ${tw`p-4 flex flex-col gap-4 bg-zinc-950`}
+`;
+
+// --- 매수/매도 폼 전용 (CoinTradeForm) ---
 export const StyledAsset = styled.div`
-    ${tw`
-        flex
-        justify-between
-        items-center
-        mb-3
-    `}
-    @media(max-width: 630px){
-            p{
-                ${tw`
-                    text-sm
-                `}
-            }
-    }
-`
+    ${tw`flex justify-between items-center mb-1`}
+    p:first-child { ${tw`text-xs text-zinc-500 font-bold`} }
+    p:last-child { ${tw`text-sm text-zinc-200`} }
+`;
 
 export const StyledCoinPrice = styled.div`
-    ${tw`
-        text-start
-        flex
-        flex-col
-    `}
-    @media(max-width: 630px){
-        p{
-            ${tw`
-                text-sm
-            `}
-        }
-    }
-    
-`
+    ${tw`text-start flex flex-col`}
+`;
 
 export const StyledTradeInput = styled.div`
-    ${tw`
-        mt-2
-        flex
-        w-full
-        gap-1
-    `}
-    button{
-        border: 1px solid black;
-        padding: 0 12px;
-        cursor: pointer;
-        border-radius: 50%;
+    ${tw`mt-2 flex w-full gap-1`}
+    input {
         ${tw`
-            bg-gray-500
+            w-full font-bold text-white outline-none p-3
+            bg-zinc-900 border border-zinc-800 rounded-xl
+            focus:border-zinc-600 transition-all text-right
         `}
-        &:hover{
-            ${tw`
-                bg-gray-400
-            `}
-        }
-       
     }
-
-    input{
+    button {
         ${tw`
-            w-full
-            font-bold 
-            text-black
-            outline-none
-            p-2
-            rounded-xl
+            bg-zinc-800 text-zinc-400 w-10 h-10 flex 
+            items-center justify-center rounded-xl border border-zinc-700
+            hover:bg-zinc-700 hover:text-white transition-all
         `}
-        &:focus{
-            border: 1px solid black;
-        }
-        &::placeholder{
-            color: black;
-        }
     }
-    @media(max-width: 630px){
-        input{
-            ${tw`
-                text-sm
-            `}
-        }
-        button{
-            padding: 0 10px;
-        }
-    }
-`
-
+`;
 
 export const StyledCoinAmount = styled.div`
-    ${`
-        flex
-        flex-col
-    `}
-    @media(max-width: 630px){
-        
-    }
-`
-
+    ${tw`flex flex-col`}
+`;
 
 export const StyledAmountInput = styled.div`
-    ${tw`
-        flex
-        flex-col
-        text-start
-        mt-3
-    `}
-    input{
+    ${tw`flex flex-col text-start mt-3`}
+    p { ${tw`text-xs text-zinc-500 font-bold mb-2`} }
+    input {
         ${tw`
-            mt-2
-            p-2
-            w-full
-            font-bold
-            text-black
-            outline-none
-            rounded-xl
+            p-3 w-full font-bold text-white outline-none
+            bg-zinc-900 border border-zinc-800 rounded-xl
+            focus:border-red-900/30 text-right
         `}
-        &:focus{
-            border: 1px solid red;
-        }
     }
-    @media(max-width: 630px){
-        input{
-            ${tw`
-                text-sm
-                `}
-        }
-        p{
-            ${tw`
-                text-sm
-            `}
-        }
-    }
-`
+`;
 
 export const StyledAmountRate = styled.div`
-    ${tw`
-        flex
-        justify-around
-        mt-2
-    `}
-    button{
+    ${tw`flex justify-between mt-3 gap-1`}
+    button {
         ${tw`
-            border-gray-700
-            border-[1px]
-            rounded-lg
-            px-2
+            flex-1 py-1.5 text-[11px] font-bold
+            bg-zinc-900 text-zinc-500 border border-zinc-800
+            rounded-lg hover:bg-zinc-800 hover:text-zinc-200 transition-all
         `}
-        &:hover{
-            ${tw`
-                bg-gray-200
-                `}
-        }
     }
-    @media(max-width: 570px){
-        button{
-            ${tw`
-                text-xs
-                py-1
-                px-1
-            `}
-        }
-    }
-`
-
+`;
 
 export const StyledTotalOrder = styled.div`
-    ${tw`
-        flex
-        justify-between
-    `}
-    @media(max-width: 630px){
-        p{
-            ${tw`
-                text-sm
-                `}
-        }
-    }
-    @media(max-width: 490px){
-        p{
-            ${tw`
-                text-xs
-            `}
-        }
-    }
-`
+    ${tw`flex justify-between items-center py-4 border-t border-zinc-900 mt-2`}
+    p:first-child { ${tw`text-xs text-zinc-500 font-bold`} }
+    p:last-child { ${tw`text-lg font-black text-white`} }
+`;
 
 export const StyledBtns = styled.div`
-    ${tw`
-        flex
-        gap-2
-        font-bold
-        pb-0
-    `}
-    button:first-child{
-        width: 30%;
-        background-color: gray;
-        border-radius: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-        color: white;
-        padding: 5px 0;
+    ${tw`flex gap-2 font-bold mt-2`}
+    button:first-child {
+        ${tw`w-[30%] bg-zinc-800 text-zinc-400 rounded-xl py-3 flex items-center justify-center gap-2 hover:bg-zinc-700`}
     }
-
-    button:last-child{
-        width: 70%;
-        border-radius: 8px;
-        color: white;
+    button:last-child {
+        ${tw`w-[70%] rounded-xl py-3 text-lg shadow-lg active:scale-95 transition-all`}
     }
-        @media(max-width: 630px){
-            button{
-                span{
-                    display:none;
-                }
-            }
-        }
-`
+`;
 
+// --- 예약 내역 폼 전용 (CoinBookForm) ---
 export const StyledBookContainer = styled.div`
-    ${tw`
-        p-5
-        h-full
-    `}
-    @media(max-width: 630px){
-        ${tw`
-            p-2
-        `}
-    }
-`
+    ${tw`p-4 h-full flex flex-col gap-4`}
+`;
 
 export const StyledBookTitle = styled.div`
-    ${tw`
-        flex
-        w-full
-        justify-around
-        border-2
-        rounded-xl
-    `}
-    button{
-        flex: 1;
-        padding: 8px 0;
-        border-radius: 12px;
-    }
-    @media(max-width: 630px){
-        button{
-            ${tw`
-                text-sm
-                `}
-        }
-    }
-`
-
-
-export const StyledBookContents = styled.div`
-    ${tw`
-        flex
-        flex-col
-        gap-2
-        mt-2
-    `}
-`
-export const StyledBookBox = styled.div`
-    ${tw`
-        flex
-        items-center
-        justify-around
-        border-2
-        py-2
-        px-3
-        w-full
-    `}
-    @media(max-width: 490px){
-        ${tw`
-            px-1
-        `}
-    }
-`
-export const StyledContent = styled.div`
-    ${tw`
-        flex    
-        flex-col
-        flex-1
-        ml-4
-    `}
-    @media(max-width: 630px){
-        ${tw`
-            ml-2
-        `}
-    }
-`
-
+  ${tw`flex bg-zinc-900 p-1 rounded-xl border border-zinc-800`}
+  button {
+    ${tw`flex-1 py-2 text-xs font-bold text-zinc-500 rounded-lg transition-all`}
+    &.active-pending { ${tw`bg-sky-600 text-white shadow-md`} }
+    &.active-completed { ${tw`bg-red-600 text-white shadow-md`} }
+  }
+`;
 
 export const StyledDivider = styled.div`
-    ${tw`
-        max-h-[70%]
-        overflow-y-auto
-    `}
-`
+    ${tw`max-h-[70%] overflow-y-auto`}
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-thumb { ${tw`bg-zinc-800 rounded-full`} }
+`;
 
+export const StyledBookContents = styled.div`
+    ${tw`flex flex-col gap-2 mt-2`}
+`;
+
+export const StyledBookBox = styled.div`
+    ${tw`
+        flex items-center justify-between py-4 px-4
+        bg-zinc-900/40 border border-zinc-900 rounded-xl
+        mb-2 transition-all hover:border-zinc-700
+    `}
+    &.selected { ${tw`bg-zinc-800 border-zinc-600`} }
+`;
+
+export const StyledContent = styled.div`
+    ${tw`flex flex-col flex-1`}
+`;
 
 export const StyledBookBoxTitle = styled.div`
-    ${tw`
-        flex
-        gap-3
-    `}
-    @media(max-width: 630px){
-        p,h1{
-            ${tw`
-                text-sm
-            `}
-        }
-    }
-    @media(max-width: 490px){
-        p,h1{
-            ${tw`
-            gap-1
-            text-[9px]
-        `}
-        }
-    }
-`
+    ${tw`flex gap-3 items-center`}
+    p { ${tw`text-zinc-100 font-bold text-sm`} }
+`;
 
 export const StyledAmount = styled.div`
-    ${tw`
-        flex
-        text-xs
-    `}
-    @media(max-width: 760px){
-        ${tw`
-            flex-col
-        `}
-    }
-    @media(max-width: 630px){
-        p{
-            font-size: 10px;
-        }
-    }
-    @media(max-width: 490px){
-        p:last-child{
-            display: flex;
-            flex-direction: column;
-        }
-    }
-`
+    ${tw`flex mt-1`}
+    p:first-child { ${tw`text-zinc-400 font-mono text-xs`} }
+    p:last-child { ${tw`text-zinc-500 text-xs ml-2`} }
+`;
 
 export const StyledCancleBtn = styled.div`
     ${tw`
-        px-3
-        py-2
-        bg-gray-950
-        text-white
-        rounded-xl
-        cursor-pointer
+        px-3 py-1.5 bg-zinc-800 text-zinc-300 
+        text-xs font-bold rounded-lg cursor-pointer
+        hover:bg-red-900/30 hover:text-red-500 transition-all
     `}
-        &:hover{
-            ${tw`
-                bg-gray-700
-            `}
-        }
-    @media(max-width: 760px){
-        ${tw`
-            text-xs
-            px-2
-            py-1
-        `}
-    }
-`
+`;
 
 export const StyledDate = styled.div`
-    ${tw`
-        flex
-        flex-col
-    `}
-    h1{
-        ${tw`
-            font-bold
-            text-center
-        `}
-        @media(max-width: 490px){
-            font-size: 10px;
-        }
-    }
-    p{
-        ${tw`
-            text-[12px]    
-        `}
-    }
-`
-
+    ${tw`flex flex-col items-end`}
+    h1 { ${tw`font-bold text-[10px] text-zinc-600 uppercase`} }
+    p { ${tw`text-[11px] text-zinc-400 font-mono`} }
+`;
 
 export const StyledAllCancleBtn = styled.div`
-    ${tw`
-        flex
-        gap-2
-        font-bold
-        mt-5
-        mb-5
-    `}
-    button:first-child{
-        width: 30%;
-        background-color: gray;
-        border-radius: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-        color: white;
-        padding: 5px 0;
+    ${tw`flex gap-2 font-bold mt-auto mb-4`}
+    button:first-child {
+        ${tw`w-[30%] bg-zinc-800 text-zinc-400 rounded-xl py-3 flex items-center justify-center gap-2 hover:bg-zinc-700`}
     }
-
-    button:last-child{
-        width: 70%;
-        border-radius: 8px;
-        color: white;
-        ${tw`
-            bg-gray-500
-        `}
-        &:hover{
-            background-color:rgb(107, 114, 128, 0.9)
-        }
+    button:last-child {
+        ${tw`w-[70%] bg-zinc-800 border border-zinc-700 text-zinc-300 rounded-xl py-3 hover:bg-red-900/40 hover:text-red-500 hover:border-red-900 transition-all`}
     }
-    @media(max-width: 630px){
-        span{
-            display: none;
-        }
-    }
-`
+`;

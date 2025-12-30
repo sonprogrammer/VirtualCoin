@@ -28,12 +28,8 @@ const MyAsset = () => {
   }
   
   useEffect(() => {
-    if(windowWidth <= 1014){
-      setShowGraph(false)
-    }else{
-      setShowGraph(true)
-    }
-  },[windowWidth])
+    setShowGraph(windowWidth > 1014)
+  }, [windowWidth])
   
   return (
     <StyledContainer className="myAsset">
@@ -74,7 +70,7 @@ const MyAsset = () => {
         </StyledTotalAsset>
 
       <div>
-        <div className="border-t-2 py-2 pl-5">보유자산 목록</div>
+        <div className="mb-2 ml-2 font-black">보유자산 목록</div>
         {
           windowWidth > 700 ? (
             <AssetList />

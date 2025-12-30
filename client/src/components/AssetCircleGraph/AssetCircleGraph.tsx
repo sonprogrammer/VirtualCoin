@@ -5,10 +5,9 @@ import {
   Tooltip,
   Legend,
   Colors,
-  TooltipItem,
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import {  StyledContainer, StyledText } from './style';
+import {  ChartSide, GraphWrapper, LegendItem, LegendSide, StyledText } from './style';
 import useGetAssetData from '../../hooks/useGetAssetData';
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);
@@ -44,82 +43,66 @@ function AssetCircleGraph() {
 
 
   const generatedColors = (count: number) => {
-    return Array.from({length: count}, (_, i) => `hsl(${(i* 40) % 360}, 70%, 50%)`)
+    return Array.from({length: count}, (_, i) => `hsla(${(i * 137.5) % 360}, 65%, 65%, 0.8)`);
   }
 
   const data = coins.length === 0 ? {
-    labels: ['No Coin'],
-    datasets: [
-      {
-        data: [100],
-        backgroundColor: ['#d3d3d3'],
-        hoverOffset: 3
-      }
-    ]
+    labels: ['자산 없음'],
+    datasets: [{
+      data: [100],
+      backgroundColor: ['#27272a'], // zinc-800
+      borderWidth: 0
+    }]
   } : {
     labels: sortedCoinsRates.map((coin:any) => coin.market),
-    datasets: [
-    {
+    datasets: [{
       data: sortedCoinsRates.map((coin: any) => coin.value),
       backgroundColor: generatedColors(sortedCoinsRates.length),
-      hoverOffset: 3
-    }
-  ]
-}
+      hoverOffset: 10,
+      borderWidth: 2,
+      borderColor: '#09090b', // zinc-950 (배경색과 맞춰서 도넛 조각 분리)
+    }]
+  }
 
   const options = {
+    cutout: '70%', // 도넛 두께 조절 (중앙 글씨를 위해 넓게)
     plugins: {
-      colors: {
-        forceOverride: true,
-      },
-      legend: {
-        position: 'left' as const,
-        onClick: () => { },
-        labels: {
-          generateLabels: (chart: ChartJS) => {
-            const data = chart.data;
-            const dataset = data.datasets[0];
-            const colors = dataset.backgroundColor as string[];
-
-            return (
-              data.labels?.map((label, i) => ({
-                text: `${label}: ${dataset.data[i]}%`,
-                fillStyle: colors?.[i] || '#000000',
-                hidden: false,
-                index: i,
-              })) || []
-            );
-          },
-        },
+      legend: { display: false
       },
       tooltip: {
-        position: 'nearest' as const,
-        callbacks: {
-          label: function (context: TooltipItem<'doughnut'>) {
-            const label = context.label;
-            const value = context.raw;
-            return ` ${label}: ${value}%`;
-          },
-        },
-        yAlign: 'top' as const,
-        xAlign: 'center' as const,
+        backgroundColor: '#18181b', // zinc-900
+        titleColor: '#ffffff',
+        bodyColor: '#d4d4d8',
+        borderColor: '#3f3f46', // zinc-700
+        borderWidth: 1,
+        displayColors: true,
       },
     },
     responsive: true,
     maintainAspectRatio: false,
-  };
+  }
 
 
   return (
-    <StyledContainer className='graph있는쪽'>
+    <GraphWrapper>
+    <ChartSide>
+      <Doughnut data={data} options={options} />
+      <StyledText>
+        <p>보유 자산</p>
+        <p>비중 (%)</p>
+      </StyledText>
+    </ChartSide>
 
-        <Doughnut data={data} options={options} className='w-full h-full' />
-        <StyledText>
-          <p>보유 비중</p>
-          <p>(%)</p>
-        </StyledText>
-
-    </StyledContainer>
+    <LegendSide>
+      {sortedCoinsRates.map((coin: any, i: number) => (
+        <LegendItem key={coin.market}>
+          <div className="dot" style={{ backgroundColor: data.datasets[0].backgroundColor[i] }} />
+          <span className="name">{coin.market}</span>
+          <span>{coin.value}%</span>
+        </LegendItem>
+      ))}
+    </LegendSide>
+  </GraphWrapper>
   );
 }
 

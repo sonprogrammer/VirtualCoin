@@ -2,112 +2,43 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 export const StyledContainer = styled.div`
-    ${tw`
-        h-full
-        flex
-        flex-col
-        w-full
-        px-5
-        items-center
-    `}
-    @media(min-width: 900px){
-        ${tw`
-            px-24
-        `}
-    }
-
-    @media(max-width: 630px){
-        margin-bottom: 60px;
-        padding: 0;
-    }
-`
+  ${tw`flex flex-col w-full px-4 md:px-8 bg-zinc-950 text-white min-h-screen`}
+`;
 
 export const StyledTitle = styled.div`
-    ${tw`
-        flex
-        flex-col
-        items-start
-        w-full
-        p-5
-    `}
-    h2{
-        ${tw`
-            text-xl
-            font-bold    
-        `}
-    }
-    p{
-        ${tw`
-            text-[12px]
-        `}
-    }
-`
+  ${tw`flex justify-between items-end w-full py-6`}
+  h2 { ${tw`text-2xl font-black text-white`} }
+  p { ${tw`text-zinc-500 text-xs font-mono`} }
+`;
 
 export const StyledTable = styled.table`
-    ${tw`
-        border-2
-        w-full    
-        table-fixed
-
-        `}
-
-
-    th{
-        ${tw`
-            p-2
-            w-full
-        `}
-        @media(max-width: 570px){
-            padding: 5px;
-        }
-    }
-`
+  ${tw`w-full border-collapse table-fixed bg-zinc-900/50 rounded-2xl overflow-hidden`}
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+`;
 
 export const StyledTableHead = styled.thead`
-    ${tw`
-        bg-gray-200
-    `}
-`
+  ${tw`bg-zinc-900 border-b border-zinc-800`}
+  th {
+    ${tw`p-4 text-xs font-bold text-zinc-500 uppercase tracking-wider`}
+    button { ${tw`hover:text-red-500 transition-colors`} }
+  }
+`;
 
 export const StyledTableBody = styled.tbody`
+  tr {
+    ${tw`border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors cursor-pointer`}
+  }
+  td { ${tw`p-4 text-sm [vertical-align:middle]`} }
 
-    tr{
-        ${tw`
-            border-b-2
-            p-2
-        `}
-        &:hover{
-            ${tw`
-                bg-gray-100
-            `}
-        }
-    }
-    td{
-        padding: 10px 8px;
-    }
-`
+  /* 가격이 변할 때의 느낌을 위해 폰트를 고정폭으로 설정 */
+  .price-font { ${tw`font-mono font-medium`} }
+`;
 
 export const StyledPageBtns = styled.div`
-    ${tw`
-        flex
-        w-full
-        justify-center
-        mt-4
-        pb-5
-        gap-3
-    `}
-    button{
-        width: 24px;
-        height: 24px;
-        display: flex;
-        justify-content: center;
-        item-align: center;
-        border-radius: 50%;
-        &:hover{
-            ${tw`
-                bg-red-300
-                text-white
-            `}
-        }
-    }
-`
+  ${tw`flex w-full justify-center py-10 gap-2`}
+  button {
+    ${tw`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold transition-all`}
+    &.active { ${tw`bg-red-600 text-white`} }
+    &:not(.active) { ${tw`bg-zinc-900 text-zinc-500 hover:bg-zinc-800 hover:text-white`} }
+  }
+`;

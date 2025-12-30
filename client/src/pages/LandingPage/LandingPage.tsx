@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react'
 import { StyledBox, StyledBtns, StyledContainer, StyledGuestBtn, StyledLoginBtn, StyledLogo, StyledText } from './style'
 import { GuidComponent } from '../../components';
 import KakaoLogin from 'react-kakao-login';
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
 import useKakaoLogin from '../../hooks/useKakaoLogin';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -32,17 +30,8 @@ const LandingPage = () => {
   }, [user])
 
 
-    const handleCloseModal = () => {
-        setGuestModal(false)
-    }
 
   const text = 'Welcome to Virtual Coin'
-
-
-  const handleModalClick = () => {
-    setGuestModal(true)
-  }
-
 
 
 
@@ -69,30 +58,25 @@ const LandingPage = () => {
         </StyledText>
 
         <StyledBtns>
-          <StyledGuestBtn onClick={handleModalClick}>
-              Guest
+        <StyledGuestBtn onClick={() => setGuestModal(true)}>
+            게스트로 시작하기
           </StyledGuestBtn>
-          <StyledLoginBtn>
           <KakaoLogin
             token={kakaoClientId}
             onSuccess={handleKakaoSuccess}
             onFail={handleKakaoFailure}
             render={(props) => (
-                <img
-                  src="./kakao.png"
-                  alt="카톡아이콘"
-                  style={{ cursor: 'pointer' }}
-                  onClick={props.onClick}  
-                />
+              <StyledLoginBtn onClick={props.onClick} type="button">
+              <img src="./kakao.png" alt="kakao" />
+              <span>카카오 로그인</span>
+            </StyledLoginBtn>
               )}
             />
-          </StyledLoginBtn>
         </StyledBtns>
 
-        { guestModal && <GuidComponent handleCloseModal={handleCloseModal} />} 
+        {guestModal && <GuidComponent handleCloseModal={() => setGuestModal(false)} />}
 
       </StyledBox>
-      <ToastContainer position="top-center" />
 
 
     </StyledContainer>

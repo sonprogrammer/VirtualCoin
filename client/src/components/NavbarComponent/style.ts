@@ -3,364 +3,160 @@ import tw from "twin.macro";
 
 export const StyledContainer = styled.div`
     ${tw`
-        flex
-        items-center
-        gap-5
-        px-5
-        py-2
-        border-b-2
-        relative
-        w-full
-        h-[82px]
+        flex items-center gap-5 px-5 py-2
+        border-b border-zinc-900 /* 다크모드용 얇은 보더 */
+        relative w-full h-[82px]
+        bg-zinc-950 text-zinc-100 /* 배경색과 글자색 */
     `}
-
-    h2{
-        ${tw`
-            text-3xl
-        `}
-    }
-    
-
-    @media (max-width: 630px) {
-        gap: 10px;
-        justify-content: center;
-    }
-
-       
-`
+    z-index: 100;
+`;
 
 export const StyledLogo = styled.div`
-    ${tw`
-        flex
-        items-center
-        w-[64px]
-    `}
-
-    @media (max-width: 630px) {
-        flex
-        justify-center
-        mx-auto
-    }
-
-`
-
+    ${tw`flex items-center w-[64px] transition-transform hover:scale-105`}
+    img { filter: brightness(1.1); } /* 로고가 어두우면 살짝 밝게 */
+`;
 
 export const StyledDeskMenus = styled.div`
-    ${tw`
-        flex
-        gap-10
-        items-center
-        w-full
-
-    `}
-    
-    h3{
-        cursor:pointer;
-        font-size: 1.2rem;
-        }
-    
-    @media(max-width:1024px){
-        gap: 10px;
+    ${tw`flex gap-10 items-center w-full`}
+    h3 {
+        ${tw`cursor-pointer text-sm font-medium text-zinc-400 hover:text-white transition-colors`}
     }
-`
+`;
 
 export const StyledDeskInput = styled.div`
-    ${tw`
-        flex
-        flex-1
-        block
-        pl-5
-    `}
-    p{
+    ${tw`flex flex-1 block pl-5`}
+    p {
         ${tw`
-            text-gray-400
-            border-2
-            px-20
-            pl-3
-            py-2
-            rounded-xl
-            text-left
-            w-[60%]
+            text-zinc-500 bg-zinc-900 border border-zinc-800
+            px-10 pl-4 py-2 rounded-xl text-left text-sm w-[60%]
+            cursor-pointer hover:border-zinc-600 transition-all
         `}
-
-        &:hover{
-            ${tw`
-                border-red-500
-            `}
-        }
-        @media(min-width:1024px){
-            width: 50%;
-            }
     }
-      
-    
-`
-
+`;
 
 export const StyledTablet = styled.div`
-    ${tw`
-        hidden
-    `}
+    ${tw`hidden`}
      @media(max-width: 730px){
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
+        ${tw`flex items-center justify-between w-full`}
      }
-`
+`;
 
 export const StyledTabletInput = styled.div`
-    ${tw`
-        flex-1
-        flex
-        justify-center
-    `}
-
-    p{
+    ${tw`flex-1 flex justify-center`}
+    p {
         ${tw`
-            text-gray-400
-            border-2
-            px-20
-            pl-3
-            py-2
-            rounded-xl
-            text-left
+            text-zinc-500 bg-zinc-900 border border-zinc-800
+            px-10 pl-4 py-2 rounded-xl text-left text-sm
+            hover:border-zinc-600
         `}
-        &:hover{
-            ${tw`
-                border-red-500
-            `}
-        }
     }
-`
+`;
 
 export const StyledTabletTab = styled.div`
-    ${tw`
-        cursor-pointer
-    `}
-`
+    ${tw`cursor-pointer text-zinc-400 hover:text-white`}
+`;
 
 export const StyledTabletMenu = styled.div`
     ${tw`
         absolute
-        bg-white
-        right-0
-        border-2
-        top-[72px]
-        z-10
+        bg-zinc-900
+        border border-zinc-800
+        right-4
+        top-[76px] /* 네브바 높이에 맞춰 조정 */
+        rounded-xl
+        overflow-hidden
+        w-[180px]
     `}
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-    p{
-        padding: 15px 20px;
+    z-index: 1001; /* 유저 아이콘(40)보다 높게 설정 */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+
+    p {
+        ${tw`px-6 py-4 text-sm text-zinc-300 hover:bg-zinc-800 transition-all`}
+        border-bottom: 1px solid #27272a;
     }
     
-    p:hover{
-        background-color: rgba(0, 0, 0, 0.2);
+    a:last-child p {
+        border-bottom: none;
     }
-    
-
-    a:not(:last-child) p {
-        border-bottom: 1px solid #ccc;
-  }
-`
-
-
+`;
 
 export const StyledSearchIcon = styled.div`
-    ${tw`
-        absolute
-        right-20
-        p-1
-        cursor-pointer
-    `}
-`
-
-
-export const StyledSearchWrapper = styled.div`
-    ${tw`
-        flex
-        w-full
-        relative
-        justify-center
-        items-center
-        p-2
-    `}
-    input{
-        border: 2px solid black;
-        border-radius: 20px;
-        padding: 10px;
-
-        &:focus{
-            border-color: red;
-            outline: none;
-        }
-    }
-`
-
-export const StyledCloseBtn = styled.div`
-    ${tw`
-        absolute
-        left-0
-        cursor-pointer
-        p-3
-    `}
-    &:hover{
-        background-color: rgba(140, 140, 140, 0.7);
-        border-radius: 50%;
-    }
-`
-
-
+    ${tw`absolute right-20 p-1 cursor-pointer text-zinc-400 hover:text-white`}
+`;
 
 export const StyledMobileMenu = styled.div`
     ${tw`
-        fixed
-        bottom-0
-        left-0
-        w-full
-        flex
-        justify-around
-        items-center
-        bg-red-500
-        text-white
+        fixed bottom-0 left-0 w-full flex justify-around items-center
+        bg-zinc-900 border-t border-zinc-800 text-zinc-400 z-50
     `}
-    
-    a{
-        ${tw`
-            w-full
-        `}
-    }
-
-    p{
-        padding: 16px;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-    }
-  
-    p:hover{
-        background-color: rgb(255,154,154);
-    }
-`
-
-
+    p { ${tw`py-4 text-xs font-bold transition-colors w-full text-center hover:bg-zinc-800`} }
+`;
 
 export const StyledUserIcon = styled.div`
     ${tw`
         absolute
         right-4
         cursor-pointer
-        w-12
-        
+        w-10
+        h-10
     `}
+    z-index: 40; /* 메뉴보다는 낮게 설정 */
 
     @media(max-width:730px){
         right: 76px;
     }
-    
 
     @media (max-width: 630px) {
-        top: 16px;
+        top: 20px;
         right: 16px;
     }
-`
-
+`;
 
 export const StyledUserInfo = styled.div`
-    ${tw`
-        absolute
-        bg-gray-300
-        rounded-xl
-        p-5
-        right-6
-        top-[72px]
-        w-[250px]
-    `}
-    z-index: 1000;
-        box-shadow: 0px 4px 6px rgba(0,0,0, 0.3);
-        
-        p{
-            ${tw`
-                flex
-                justify-between
-                p-2
-            `}
-        }
-
-        hr{
-            background-color: white;
-            margin: 5px 0;
-        }
-        span{
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        span:first-child:hover{
-            background-color: red;
-        }
-        
-        @media(max-width: 730px){
-            right: 84px;
-        }
-        @media(max-width: 630px){
-            top: 76px;
-            right: 24px;
-        }
-`
+${tw`
+    absolute
+    bg-zinc-900
+    border border-zinc-800
+    rounded-2xl
+    p-6
+    right-6
+    top-[76px]
+    w-[280px]
+`}
+    z-index: 1100;
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.5);
+    
+    h1 { ${tw`text-zinc-100 text-lg border-b border-zinc-800 pb-3 mb-3 text-left font-bold`} }
+    p {
+        ${tw`flex justify-between items-center py-1 text-sm text-zinc-400`}
+        strong { ${tw`text-zinc-500 font-medium`} }
+        span { ${tw`text-zinc-200 font-mono`} }
+    }
+    hr { ${tw`border-zinc-800 my-4`} }
+`;
 
 export const StyledCoins = styled.div`
-    ${tw`
-        flex
-        justify-between
-        p-2
-    `}
-    span{
-        padding: 4px 12px;
-        border-radius: 10%;
+    ${tw`flex gap-2`}
+    span {
+        ${tw`
+            flex-1 text-center py-2 px-2 rounded-lg text-xs
+            bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-all
+        `}
     }
-    span:first-child:hover{
-        background-color: orange;
-    }
-    span:last-child:hover{
-        background-color: white;
-    }
-`
+`;
 
 export const StyledLogout = styled.div`
     ${tw`
-        flex
-        justify-center
-        cursor-pointer
-        bg-black
-        text-white
-        rounded-3xl
-        font-bold
+        flex justify-center cursor-pointer
+        bg-red-600 text-white py-2.5 rounded-xl
+        font-bold text-sm mt-4 hover:bg-red-500 transition-colors
     `}
-`
-
-
-export const StyledBurgerMenu = styled.div`
-    ${tw`
-        cursor-pointer
-    `}
-    @media(max-width: 630px){
-        display: block;
-        position: absolute;
-        right: 20px;
-    }
-`
-
+`;
 
 export const StyledAngle = styled.div`
-    ${tw`
-        absolute
-        top-[-8px]
-        right-2
-        `}
-        width: 0;
-        height: 0;
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 10px solid rgb(209, 212, 217);
-`
+    ${tw`absolute top-[-8px] right-4`}
+    width: 0; height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #27272a; /* zinc-800 */
+`;

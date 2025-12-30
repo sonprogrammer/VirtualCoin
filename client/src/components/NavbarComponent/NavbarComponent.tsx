@@ -30,10 +30,10 @@ const NavbarComponent = () => {
 
     const [user, setUser] = useRecoilState(userState);
 
-    const {data} = useGetAssetData()
+    const { data } = useGetAssetData()
     const calculatedData = useCalculateAsset(data)
 
-    const {mutate: logoutMutate} = useLogout()
+    const { mutate: logoutMutate } = useLogout()
 
     // console.log('data', data)
     const {
@@ -43,12 +43,12 @@ const NavbarComponent = () => {
         totalProfitLoss,
         //*보유 현금
         availableOrder
-    } =  calculatedData || {};
+    } = calculatedData || {};
 
 
-  const handleSearchModalClose = () => {
-    setSearchModal(false)
-  }
+    const handleSearchModalClose = () => {
+        setSearchModal(false)
+    }
 
 
     const userRef = useRef<HTMLDivElement | null>(null);
@@ -86,13 +86,13 @@ const NavbarComponent = () => {
             document.removeEventListener('keydown', handleKeydown);
         };
     }, []);
-    
-    
+
+
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
-        
+
         window.addEventListener('resize', handleResize);
 
         return () => {
@@ -100,7 +100,7 @@ const NavbarComponent = () => {
         };
     }, [windowWidth]);
 
-    const handleOutsideClick =() => {
+    const handleOutsideClick = () => {
         setInterestedCoin(false)
         setRecentCoin(false)
     }
@@ -198,7 +198,7 @@ const NavbarComponent = () => {
             {windowWidth >= 630 && windowWidth < 730 && (
                 <>
                     <StyledTablet>
-                        <StyledTabletInput>   
+                        <StyledTabletInput>
                             <p onClick={handleClickSearch}>코인을 검색하세요</p>
                         </StyledTabletInput>
                         <StyledTabletTab onClick={handleBurgerClick} ref={tabRef}>
@@ -215,7 +215,7 @@ const NavbarComponent = () => {
                                 <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)}
                                     style={{
                                         fontWeight: page === item.path ? 'bold' : 'normal',
-                                        color: page === item.path ? 'red' : 'black'
+                                        color: page === item.path ? '#ef4444' : '#d4d4d8' // 활성화시 레드
                                     }}>
                                     <p>{item.name}</p>
                                 </Link>
@@ -232,7 +232,7 @@ const NavbarComponent = () => {
                     <h1 className='font-bold text-center pb-2'>Welcome {user.name}</h1>
                     <p><strong>보유 현금</strong> <span>{Math.round(availableOrder)?.toLocaleString()}</span></p>
                     <p><strong>보유 자산</strong> <span>{Math.round(totalAssets)?.toLocaleString()}</span></p>
-                    <p><strong>평가 손익</strong> 
+                    <p><strong>평가 손익</strong>
                         <span className={`${totalProfitLoss > 0 ? 'text-red-500' : 'text-blue-600'}`}>{totalProfitLoss > 0 && '+'}{Math.round(totalProfitLoss)?.toLocaleString()}</span>
                     </p>
                     <hr />
@@ -244,48 +244,46 @@ const NavbarComponent = () => {
                     <StyledLogout onClick={handleLogoutClick}>
                         <p>로그아웃</p>
                     </StyledLogout>
-                    { interestedCoin && <InterestedCoin handleOutsideClick={handleOutsideClick}/>}
-                    { recentCoin && <RecentCoin handleOutsideClick={handleOutsideClick}/>}
+                    {interestedCoin && <InterestedCoin handleOutsideClick={handleOutsideClick} />}
+                    {recentCoin && <RecentCoin handleOutsideClick={handleOutsideClick} />}
                 </StyledUserInfo>
             )}
 
 
             {/* //* 모바일 (630px 이하) */}
             {windowWidth < 630 && (
-                <>     
+                <>
                     <StyledSearchIcon onClick={handleClickSearch}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} size='2xl' />
+                        <FontAwesomeIcon icon={faMagnifyingGlass} size='xl' />
                     </StyledSearchIcon>
 
                     <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
                         <img src="/user.png" alt="userIcon" />
                     </StyledUserIcon>
 
-
                     <StyledMobileMenu>
                         {menus.map(item => (
                             <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)}
                                 style={{
                                     fontWeight: page === item.path ? 'bold' : 'normal',
-                                    color: page === item.path ? 'black' : 'white'
+                                    color: page === item.path ? '#ffffff' : '#71717a' // zinc-500
                                 }}
                             >
                                 <p>{item.name}</p>
                             </Link>
                         ))}
                     </StyledMobileMenu>
-                    
                 </>
             )}
 
             {/* //*검색 모달 */}
-            { searchModal &&
-                    <div>
-                        <SearchComponent handleSearchModalClose={handleSearchModalClose}/>
-                    </div>
+            {searchModal &&
+                <div>
+                    <SearchComponent handleSearchModalClose={handleSearchModalClose} />
+                </div>
 
 
-                    }
+            }
 
             {/* //* 로그아웃 모달 */}
             {logoutModal && <LogoutModal handleLogout={handleLogout} handleCloseModal={handleCloseModal} />}

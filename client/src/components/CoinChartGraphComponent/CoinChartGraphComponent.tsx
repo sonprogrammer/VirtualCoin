@@ -52,27 +52,31 @@ const CoinChartGraphComponent = () => {
       width: chartContainerRef.current.clientWidth,
       height: 500,
       layout: {
-        background: { color: "#fff" },
-        textColor: "#000",
+        background: { color: "#09090b" }, // zinc-950 (컨테이너 배경과 일치)
+        textColor: "#a1a1aa", // zinc-400
       },
       grid: {
-        vertLines: { color: "#EAEAEA" },
-        horzLines: { color: "#EAEAEA" },
+        vertLines: { color: "#18181b" }, // zinc-900 (희미한 격자)
+        horzLines: { color: "#18181b" },
       },
       timeScale: {
         timeVisible: true,
         secondsVisible: false,
+        borderColor: "#27272a", // zinc-800
       },
-    });
+      rightPriceScale: {
+        borderColor: "#27272a",
+      },
+    })
 
     const series = chart.addSeries(CandlestickSeries, {
-      upColor: "#f44336",
-      downColor: "#0000ff",
-      borderUpColor: "#f44336",
-      borderDownColor: "#0000ff",
-      wickUpColor: "#f44336",
-      wickDownColor: "#0000ff",
-    });
+      upColor: "#ef4444",       // red-500
+      downColor: "#38bdf8",     // sky-400 (밝은 파랑/하늘색)
+      borderUpColor: "#ef4444",
+      borderDownColor: "#38bdf8",
+      wickUpColor: "#ef4444",
+      wickDownColor: "#38bdf8",
+    })
 
     chartRef.current = chart;
     candleSeriesRef.current = series;
@@ -163,32 +167,44 @@ const CoinChartGraphComponent = () => {
   }, []);
 
   return (
-    <div>
-      <div>
-        <label htmlFor="unit">차트</label>
-        <select id="type" value={type}
-         onChange={(e) => setType(e.target.value as 'minutes' | 'days' | 'weeks' | 'months')}
-        >
-          <option value="minutes">분</option>
-          <option value="days">일</option>
-          <option value="weeks">주</option>
-          <option value="months">월</option>
+    <div className="w-full bg-zinc-950 rounded-xl overflow-hidden border border-zinc-900">
+      {/* 차트 컨트롤러 (상단 메뉴) */}
+      <div className="flex items-center gap-4 p-3 bg-zinc-900/50 border-b border-zinc-900">
+        <div className="flex items-center gap-2">
+          <label htmlFor="type" className="text-xs font-bold text-zinc-500">차트</label>
+          <select 
+            id="type" 
+            value={type}
+            onChange={(e) => setType(e.target.value as any)}
+            className="bg-zinc-800 text-zinc-200 text-xs p-1 px-2 rounded border border-zinc-700 outline-none"
+          >
+            <option value="minutes">분</option>
+            <option value="days">일</option>
+            <option value="weeks">주</option>
+            <option value="months">월</option>
+          </select>
+        </div>
 
-        </select>
         {type === 'minutes' && (
-          <>
-            <label htmlFor="unit">단위</label>
-            <select id="unit" value={unit} onChange={(e) => setUnit(Number(e.target.value))}>
+          <div className="flex items-center gap-2">
+            <label htmlFor="unit" className="text-xs font-bold text-zinc-500">단위</label>
+            <select 
+              id="unit" 
+              value={unit} 
+              onChange={(e) => setUnit(Number(e.target.value))}
+              className="bg-zinc-800 text-zinc-200 text-xs p-1 px-2 rounded border border-zinc-700 outline-none"
+            >
               <option value="1">1분</option>
               <option value="15">15분</option>
               <option value="30">30분</option>
               <option value="60">1시간</option>
             </select>
-          </>
+          </div>
         )}
       </div>
-      <div ref={chartContainerRef} style={{ width: "100%", height: "500px" }} />
 
+      {/* 실제 차트가 렌더링되는 영역 */}
+      <div ref={chartContainerRef} style={{ width: "100%", height: "500px" }} />
     </div>
   );
 };

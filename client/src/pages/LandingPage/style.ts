@@ -1,112 +1,84 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import tw from "twin.macro";
 
+const blink = keyframes`
+  50% { opacity: 0; }
+`;
+
 export const StyledContainer = styled.div`
-    ${tw`
-        h-screen
-        `}
-        background: linear-gradient(
-      rgba(255, 255, 255, 0.3),
-      rgba(255, 255, 255, 0.5)
+  ${tw`
+    relative h-screen w-full flex items-center justify-center overflow-hidden
+  `}
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.6), 
+      rgba(0, 0, 0, 0.7)
     ),
     url('/landingbg.webp');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    box-sizing: border-box;
-`
+  background-size: cover;
+  background-position: center;
+`;
 
 export const StyledBox = styled.div`
-    ${tw`
-        flex
-        flex-col
-        justify-center
-        items-center
-        h-full
-        w-full
-        gap-[20px]
-        z-10
-    `}
-`
-
+  ${tw`
+    flex flex-col justify-center items-center 
+    w-full max-w-4xl px-6 gap-8 z-10
+  `}
+`;
 
 export const StyledLogo = styled.div`
-        ${tw`
-            w-[35%]
-            flex
-            justify-center
-        `}
-    img{
-    ${tw`
-            block
-            w-[50%]
-    `}
-    }
-`
-export const StyledText = styled.div`
-        ${tw`
-            font-[2rem]
-            inline-block
-            font-bold
-            text-white
-            text-3xl
-            
-        `}
-      
-`
+  ${tw`
+    w-40 md:w-64 mb-4
+    transition-all duration-500
+  `}
+  img {
+    ${tw`w-full h-auto drop-shadow-2xl`}
+    /* 로고가 로드될 때 살짝 위아래로 움직이는 효과 */
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+`;
+
+export const StyledText = styled.h1`
+  ${tw`
+    text-2xl md:text-5xl font-extrabold text-white text-center
+    tracking-tight min-h-[1.5em] flex items-center
+  `}
+  /* 타이핑 커서 스타일 */
+  &::after {
+    content: '|';
+    animation: ${blink} 1s step-end infinite;
+    ${tw`text-red-500 ml-1`}
+  }
+`;
 
 export const StyledBtns = styled.div`
-    ${tw`
-        flex
-        gap-10
-    `}
-`
+  ${tw`
+    flex flex-col md:flex-row gap-4 md:gap-8 w-full justify-center items-center mt-8
+  `}
+`;
 
+const ButtonBase = tw.button`
+  flex items-center justify-center gap-3
+  px-8 h-14 rounded-full font-bold text-lg
+  transition-all duration-300 transform
+  hover:scale-105 active:scale-95
+  w-full md:w-64 shadow-lg
+  box-border
+`;
 
-export const StyledLoginBtn = styled.div`
-    ${tw`
-        bg-red-500
-        px-5
-        py-2
-        rounded-xl
-        mt-10
-        font-bold
-        flex
-        items-center
-        justify-center
-        gap-3
-      `}
-      &:hover{
-      cursor: pointer;
-      color: white;
-      animation: all 0.7s;
-      transform: scale(1.1);
-      transition: transform 0.3s;
-      }
-      img{
-        width: 32px;
-      }
-`
-export const StyledGuestBtn = styled.div`
-    ${tw`
-        bg-gray-700
-        px-5
-        py-2
-        rounded-xl
-        mt-10
-        font-bold
-        text-white
-        flex
-        items-center
-        justify-center
-    `}
-    &:hover{
-      cursor: pointer;
-      color: white;
-      animation: all 0.7s;
-      transform: scale(1.1);
-      transition: transform 0.3s;
-      }
-`
+export const StyledLoginBtn = styled(ButtonBase)`
+  ${tw`bg-red-600 text-white hover:bg-red-700 shadow-red-900/20`}
+  
+  img {
+    ${tw`w-6 h-6 object-contain`}
+  }
+`;
+
+export const StyledGuestBtn = styled(ButtonBase)`
+  ${tw`bg-white/10 text-white backdrop-blur-md border border-white/20 hover:bg-white/20`}
+`;

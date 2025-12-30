@@ -23,9 +23,10 @@ const TransactionComponent = () => {
 
     if (isLoading) {
         return (
-        <div className='h-full mt-5'>
-            <Skeleton variant='rectangular' height='50vh'/>
-        </div>
+            <div className='p-6 space-y-4'>
+                <Skeleton variant='rectangular' height={40} sx={{ bgcolor: '#18181b', borderRadius: '8px' }} />
+                <Skeleton variant='rectangular' height={300} sx={{ bgcolor: '#18181b', borderRadius: '8px' }} />
+            </div>
         )
     }
     if (error) return <p>{error.message}</p>;
@@ -101,44 +102,39 @@ const formatDateTime = (dateString: string) => {
     });
 
     return (
-
-        <StyledContainer>
-
+<StyledContainer>
             <StyledPeriodAndType>
                 <StyledDetail>
                     <StyledSelect>
-                        <div className='flex'>
-
-                        <h2 className='hover:bg-blue-700 hover:text-white' onClick={handlePeriodClick}>기간</h2>
-                        <h2 className='hover:bg-green-700 hover:text-white' onClick={handleTypeClick}>거래유형</h2>
+                        <div className='flex gap-2'>
+                            <h2 onClick={handlePeriodClick}>기간 설정</h2>
+                            <h2 onClick={handleTypeClick}>거래 유형</h2>
                         </div>
-                        <div>
-
-                        {showPeriodMenu &&
-                            <StyledPeriodBurgerMenu>
-                                <p onClick={() => handlePeriodSelect('1주일')}>1주일</p>
-                                <p onClick={() => handlePeriodSelect('1개월')}>1개월</p>
-                                <p onClick={() => handlePeriodSelect('6개월')}>6개월</p>
-                                <p onClick={() => handlePeriodSelect('전체')}>전체</p>
-                            </StyledPeriodBurgerMenu>
-                        }
-                        {showTypeMenu &&
-                            <StyledTypeMenu>
-                                <p onClick={() => handleTypeSelect('매수')}>매수</p>
-                                <p onClick={() => handleTypeSelect('매도')}>매도</p>
-                                <p onClick={() => handleTypeSelect('전체')}>전체</p>
-                            </StyledTypeMenu>
-                        }
-                        </div>
-                    </StyledSelect>
-                    <h1 
                         
-                    onClick={() => { handlePeriodSelect('전체'); handleTypeSelect('전체') }}>전체</h1>
+                        {showPeriodMenu && (
+                            <StyledPeriodBurgerMenu>
+                                {(['1주일', '1개월', '6개월', '전체'] as const).map(p => (
+                                    <p key={p} onClick={() => handlePeriodSelect(p)}>{p}</p>
+                                ))}
+                            </StyledPeriodBurgerMenu>
+                        )}
+                        {showTypeMenu && (
+                            <StyledTypeMenu>
+                                {(['매수', '매도', '전체'] as const).map(t => (
+                                    <p key={t} onClick={() => handleTypeSelect(t)}>{t}</p>
+                                ))}
+                            </StyledTypeMenu>
+                        )}
+                    </StyledSelect>
+                    
+                    <h1 onClick={() => { handlePeriodSelect('전체'); handleTypeSelect('전체') }}>
+                        초기화
+                    </h1>
                 </StyledDetail>
 
                 <StyledDate>
-                    <h3>{`${period === '전체' ? '모든기간' : period}`} | {startDate && endDate && `${startDate} ~ ${endDate}`}</h3>
-                    <h3>{type}</h3>
+                    <h3>기간: {period === '전체' ? '모든 기간' : `${startDate} ~ ${endDate}`}</h3>
+                    <h3>유형: {type}</h3>
                 </StyledDate>
             </StyledPeriodAndType>
 
@@ -146,34 +142,40 @@ const formatDateTime = (dateString: string) => {
                 <StyledTable>
                     <StyledHead>
                         <tr>
-                            <th>체결시간</th>
-                            <th>코인명</th>
-                            <th className='w-[44px]'>종류</th>
+                            <th className='w-[15%]'>체결시간</th>
+                            <th>코인</th>
+                            <th className='w-[60px]'>종류</th>
                             <th>거래수량</th>
-                            <th>거래단가</th>
+                            <th>단가</th>
                             <th>거래금액</th>
-                            <th>주문시간</th>
+                            <th className='w-[15%]'>주문시간</th>
                         </tr>
                     </StyledHead>
                     <StyledBody>
-                        {
-                            filteredData?.map((a: any, i:number) => {
-                                const totalCost = Math.floor(a.amount * a.price)
+                        {filteredData?.length === 0 ? (
+                            <tr>
+                                <td colSpan={7} className="py-20 text-zinc-600">거래 내역이 없습니다.</td>
+                            </tr>
+                        ) : (
+                            filteredData?.map((a: any, i: number) => {
+                                const isBuy = a.type === 'BUY';
+                                const totalCost = Math.floor(a.amount * a.price);
 
-                                return(
-                                <tr key={i}>
-                                    <td>{formatDateTime(a.completedTime)}</td>
-                                    <td>{a.kName}</td>
-                                    <td
-                                        className={`${a.type === 'SELL' ? 'text-blue-700' : 'text-red-500'}`}
-                                    >{a.type === 'BUY' ? '매수' : '매도'}</td>
-                                    <td>{a.amount.toFixed(3)}</td>
-                                    <td>{a.price?.toLocaleString()}</td>
-                                    <td>{totalCost?.toLocaleString()}</td>
-                                    <td>{formatDateTime(a.orderTime)}</td>
-                                </tr>
-                            )})
-                        }
+                                return (
+                                    <tr key={i}>
+                                        <td>{formatDateTime(a.completedTime)}</td>
+                                        <td className="font-bold text-zinc-100">{a.kName}</td>
+                                        <td className={isBuy ? '!text-red-500 font-bold' : '!text-sky-400 font-bold'}>
+                                            {isBuy ? '매수' : '매도'}
+                                        </td>
+                                        <td>{a.amount.toFixed(3)}</td>
+                                        <td>{a.price?.toLocaleString()}</td>
+                                        <td className="text-zinc-100">{totalCost?.toLocaleString()}</td>
+                                        <td>{formatDateTime(a.orderTime)}</td>
+                                    </tr>
+                                )
+                            })
+                        )}
                     </StyledBody>
                 </StyledTable>
             </StyledTableContainer>

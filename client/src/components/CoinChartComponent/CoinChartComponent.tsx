@@ -226,24 +226,19 @@ const CoinChartComponent = () => {
 
 
       )}
-      { 
-        windowWidth > 630 && (
-
-          <StyledPageBtns >
-        {Array.from({ length: Math.ceil(coins.length / CoinPage) }, (_, i) => (
-          <button
-          key={i + 1}
-          onClick={() => {
-            setPage(i + 1);
-          }
-        }
-        className={`${page === i + 1 ?
-          'bg-red-500 text-white flex items-center justify-center'
-          :
-          'bg-white text-black flex items-center justify-center'} p-2 rounded`}
-          >{i + 1}</button>
-        ))}
-      </StyledPageBtns>
+      
+      {windowWidth > 630 && coins.length > 0 && (
+        <StyledPageBtns>
+          {Array.from({ length: Math.ceil(coins.length / CoinPage) }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => setPage(i + 1)}
+              className={page === i + 1 ? 'active' : ''}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </StyledPageBtns>
       )}
 
     </StyledContainer>

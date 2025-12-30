@@ -14,7 +14,6 @@ import usePostBuyTrade from '../../../hooks/usePostBuyTrade';
 import usePostSellTrade from '../../../hooks/usePostSellTrade';
 
 
-
 interface CoinTradeFormProps{
     name: string;
 }
@@ -25,17 +24,20 @@ const CoinTradeForm = ({name} : CoinTradeFormProps) => {
   const { coinId } = useParams()
   const coin = useRecoilValue(CoinPrice)
   const user = useRecoilValue(userState)
-  if(isLoading && !coin && !coinId){
-    return (
-    <div className='h-full flex justify-center items-center'>
-      <img src='/loadingbar.gif' alt='loadingbar' />
-    </div>
-    )
-  }
+ 
 const { mutate: postBuyTrade} = usePostBuyTrade()
 const { mutate: postSellTrade} = usePostSellTrade()
 
 
+if (isLoading || !coin || !coinId) {
+  return (
+    <div className="h-full w-full flex flex-col justify-center items-center gap-3 bg-zinc-950">
+      {/* 테일윈드로 만든 스피너 */}
+      <div className="w-10 h-10 border-4 border-zinc-800 border-t-sky-500 rounded-full animate-spin" />
+      <p className="text-zinc-500 text-xs font-medium animate-pulse">데이터를 불러오는 중...</p>
+    </div>
+  );
+}
   const cash = data?.cash || 0
 
 
@@ -75,10 +77,33 @@ const { mutate: postSellTrade} = usePostSellTrade()
 
 
 
-    if(currentPrice === null){
-      return (<div className='h-full flex justify-center items-center'>
-      <img src='/loadingbar.gif' alt='loadingbar' />
-    </div>)
+    if (currentPrice === null) {
+      return (
+        <div className="h-full w-full flex flex-col justify-center items-center bg-zinc-950 p-6">
+          {/* 커스텀 테일윈드 스피너 */}
+          <div className="relative flex items-center justify-center mb-4">
+            <div className="w-12 h-12 border-4 border-zinc-800 rounded-full"></div>
+            <div className="absolute w-12 h-12 border-4 border-t-red-500 border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+          </div>
+          
+          {/* 로딩 텍스트 */}
+          <div className="flex flex-col items-center gap-1">
+            <p className="text-zinc-200 text-sm font-bold tracking-tight">
+              실시간 시세 연결 중
+            </p>
+            <p className="text-zinc-500 text-[11px]">
+              잠시만 기다려 주세요...
+            </p>
+          </div>
+    
+          {/* 하단에 살짝 보이는 스켈레톤 가이드 (선택 사항) */}
+          <div className="w-full mt-8 opacity-20 px-4">
+            <div className="h-4 bg-zinc-800 rounded w-1/2 mb-4 animate-pulse"></div>
+            <div className="h-10 bg-zinc-900 rounded-xl w-full mb-2 animate-pulse"></div>
+            <div className="h-10 bg-zinc-900 rounded-xl w-full animate-pulse"></div>
+          </div>
+        </div>
+      );
     }
 
     
@@ -175,32 +200,34 @@ const { mutate: postSellTrade} = usePostSellTrade()
     <StyledContainer>
       <StyledAsset>
         <p>주문가능</p>
-        {/*//* 현재 로그인한 사람의 보유 현금  */}
-        <p><strong>{Math.round(cash)?.toLocaleString()} 원</strong></p>
+        <p><strong className="text-white">{Math.round(cash)?.toLocaleString()}</strong> <span className="text-zinc-500 text-xs">KRW</span></p>
       </StyledAsset>
+
       <StyledCoinPrice>
-        <p>{name}가격(KRW)</p>
+        <p className="text-xs text-zinc-500 font-bold">{name}가격(KRW)</p>
         <StyledTradeInput>
-          <input type="string" 
+          <input 
+            type="text" 
             value={tradePrice?.toLocaleString()} 
             onChange={(e) => {
               const value = e.target.value.replace(/,/g, '')
               setTradePrice(Number(value))
-          }}
-
-            />
-          <button onClick={handleMinusClick}>-</button>
-          <button onClick={handlePlusClick}>+</button>
+            }}
+          />
+          <button onClick={handleMinusClick} className="text-xl">-</button>
+          <button onClick={handlePlusClick} className="text-xl">+</button>
         </StyledTradeInput>
       </StyledCoinPrice>
 
       <StyledCoinAmount>
         <StyledAmountInput>
             <p>주문수량</p>
-            <input type="number"
+            <input 
+               type="number"
                value={orderAmount}
                onChange={(e) => setOrderAmount(Number(e.target.value))}
-               />
+               placeholder="0"
+            />
         </StyledAmountInput>
         <StyledAmountRate>
             <button onClick={() => handleOrderClick(10)}>10%</button>
@@ -212,7 +239,7 @@ const { mutate: postSellTrade} = usePostSellTrade()
 
       <StyledTotalOrder>
         <p>주문총액</p>
-        <p><strong>{(orderAmount * tradePrice)?.toLocaleString()}</strong> 원</p>
+        <p><strong>{(orderAmount * tradePrice)?.toLocaleString()}</strong> <span className="text-zinc-500 text-xs font-normal">KRW</span></p>
       </StyledTotalOrder>
 
       <StyledBtns>
@@ -221,13 +248,13 @@ const { mutate: postSellTrade} = usePostSellTrade()
             <span>초기화</span>
         </button>
         <button 
-            className={`${name === '매도' ? 'bg-blue-600 text-white' : 'bg-red-600 text-white'} px-4 py-2 rounded`}
+            className={`${name === '매도' ? 'bg-sky-600 hover:bg-sky-500' : 'bg-red-600 hover:bg-red-500'} text-white`}
             onClick={handleSubmit}
         >{name}</button>
       </StyledBtns>
-      <ToastContainer position="top-center" />
 
-      
+      {/* 토스트 알림 다크테마 적용 */}
+      <ToastContainer position="top-center" theme="dark" />
     </StyledContainer>
   )
 }
