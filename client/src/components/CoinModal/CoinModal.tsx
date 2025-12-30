@@ -29,7 +29,6 @@ const CoinModal = ({ title, coinData, onClickOutside }: CoinModalProps) => {
     addRecentCoin(coinId)
   }
 
-  // console.log('coin', coinData)
 
 
   return (
@@ -53,12 +52,10 @@ const CoinModal = ({ title, coinData, onClickOutside }: CoinModalProps) => {
             <StyledCoin key={index} onClick={() => handleCoinClick(a.coinMarket)}>
               <p>{a.coinKoreanName || "Loading..."}</p>
 
-              {/* 현재가 */}
               <p className={`${a.price && Number(a.price.change_rate) > 0 ? 'text-red-500' : 'text-blue-600'}`}>
                 {a.price?.trade_price ? Number(a.price.trade_price).toLocaleString() : <img src='/dotLoading.gif' alt='loadingIcon' className=' h-10'/>}
               </p>
 
-              {/* 전일대비 */}
               <p className={`${a.price && Number(a.price.change_rate) > 0 ? 'text-red-500' : 'text-blue-600'}`}>
                 {a.price ? `${Number(a.price.change_rate) > 0 ? '+' : ''}${(Number(a.price.change_rate) * 100).toLocaleString()}%` : <img src='/dotLoading.gif' alt='loadingIcon' className='h-10'/>}
               </p>

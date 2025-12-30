@@ -5,7 +5,7 @@ export const Styledcontainer = styled.div`
     ${tw`
         w-full
         h-full
-        bg-zinc-900/40 /* 다크모드 배경 */
+        bg-zinc-900/40 
         rounded-2xl
         flex
         flex-col
@@ -40,7 +40,6 @@ export const StyledNavbar = styled.div`
         }
     }
 
-    /* 선택된 탭 전용 클래스 (JS에서 동적으로 할당) */
     .active-buy {
         ${tw`bg-red-600/90 text-white font-bold shadow-lg shadow-red-900/20`}
     }
@@ -60,7 +59,7 @@ export const StyledTradeSection = styled.div`
     ${tw`
         flex-1
         overflow-y-auto
-        p-4 /* 입력 폼과의 여백 */
+        p-4
     `}
     &::-webkit-scrollbar { width: 4px; }
     &::-webkit-scrollbar-thumb { ${tw`bg-zinc-800 rounded-full`} }

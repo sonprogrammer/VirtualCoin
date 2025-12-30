@@ -26,7 +26,6 @@ const getChartData = async ({ market, type, unit, to, count = 200 }: getChartPar
   const res = await axios.get(url);
 
 
-  // 🟡 최신 → 과거 순이므로 우선 정렬
   const mapped = res.data.map((item: any) => ({
     time: Math.floor(new Date(item.candle_date_time_kst).getTime() / 1000),
 

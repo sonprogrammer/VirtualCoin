@@ -30,7 +30,7 @@ export const StyledTableBody = styled.tbody`
   }
   td { ${tw`p-4 text-sm [vertical-align:middle]`} }
 
-  /* 가격이 변할 때의 느낌을 위해 폰트를 고정폭으로 설정 */
+
   .price-font { ${tw`font-mono font-medium`} }
 `;
 

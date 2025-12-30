@@ -31,7 +31,7 @@ const useGetChartData = (market: string, type: CandleType, unit?: number) => {
         initialPageParam: undefined,
         getNextPageParam: (lastPage) => {
             if (!lastPage || lastPage.length === 0) return undefined;
-            const oldest = lastPage[0]; // 제일 오래된 데이터
+            const oldest = lastPage[0]; 
             return dayjs.unix(oldest.time).subtract(1, 'second').toISOString();
           },
           staleTime: 1000 * 60,         

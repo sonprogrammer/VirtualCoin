@@ -24,13 +24,13 @@ export const StyledTotalAsset = styled.div`
   `}
 `;
 
-// 텍스트 정보 영역 (왼쪽)
+
 export const InfoSection = styled.div<{ showGraph: boolean }>`
   ${props => props.showGraph ? tw`w-[60%] border-r border-zinc-800` : tw`w-full`}
   ${tw`transition-all duration-300`}
 `;
 
-// 그래프 영역 (오른쪽)
+
 export const GraphSection = styled.div`
   ${tw`w-[40%] flex items-center justify-center p-6`}
 `;

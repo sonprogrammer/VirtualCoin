@@ -32,7 +32,7 @@ export const StyledLogo = styled.div`
   `}
   img {
     ${tw`w-full h-auto drop-shadow-2xl`}
-    /* 로고가 로드될 때 살짝 위아래로 움직이는 효과 */
+
     animation: float 3s ease-in-out infinite;
   }
 
@@ -48,7 +48,7 @@ export const StyledText = styled.h1`
     text-2xl md:text-5xl font-extrabold text-white text-center
     tracking-tight min-h-[1.5em] flex items-center
   `}
-  /* 타이핑 커서 스타일 */
+
   &::after {
     content: '|';
     animation: ${blink} 1s step-end infinite;

@@ -32,13 +32,11 @@ export const StyledTableBody = styled.tbody`
     ${tw`border-b border-zinc-800/50 transition-colors cursor-default`}
     &:hover { ${tw`bg-zinc-800/30`} }
     
-    /* 1, 2, 3위 특별 배경색 (선택사항) */
     &:nth-child(1) { ${tw`bg-yellow-500/5`} }
     &:nth-child(2) { ${tw`bg-zinc-400/5`} }
     &:nth-child(3) { ${tw`bg-orange-900/5`} }
   }
 
-  /* 나(Me) 강조 스타일 */
   .me {
     ${tw`bg-red-500/10 border-y border-red-500/30`}
     td { ${tw`text-red-500 font-bold`} }

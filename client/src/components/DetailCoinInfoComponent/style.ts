@@ -33,7 +33,7 @@ export const StyledTitlePrice = styled.div`
 
 export const StyledCoinInfo = styled.div`
     ${tw`flex text-xs gap-6 py-1`}
-    span:first-child { ${tw`text-zinc-500 font-medium`} } /* 라벨 색상 */
+    span:first-child { ${tw`text-zinc-500 font-medium`} }  
 `;
 
 export const StyledPrices = styled.div`

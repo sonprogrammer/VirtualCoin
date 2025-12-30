@@ -43,7 +43,6 @@ export const StyledTabs = styled.div`
       ${tw`text-zinc-300`}
     }
 
-    /* 활성화된 탭 스타일 */
     &.active {
       ${tw`text-red-500`}
       &::after {

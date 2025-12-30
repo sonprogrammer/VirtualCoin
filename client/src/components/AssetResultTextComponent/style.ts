@@ -10,7 +10,7 @@ export const StyledContainer = styled.div`
         h-full
         bg-zinc-900/30
     `}
-    /* 보조 텍스트 색상 보정 */
+
     p, h3 {
         ${tw`text-zinc-500 font-medium`}
     }
@@ -35,7 +35,7 @@ export const StyledTopBoxContents = styled.div`
     `}
     h2 {
         ${tw`
-            text-zinc-400 /* 라벨을 더 밝게 */
+            text-zinc-400
             text-xs
             font-semibold
         `}
@@ -44,7 +44,7 @@ export const StyledTopBoxContents = styled.div`
     h1 {
         ${tw`
             text-white
-            text-2xl /* 강조를 위해 크기 키움 */
+            text-2xl  
             font-black
             flex
             items-center    
@@ -89,7 +89,7 @@ export const StyledBottomBoxContents = styled.div`
         gap-1
         px-4
     `}
-    flex: 1 1 50%; /* 2열 배치 */
+    flex: 1 1 50%;
 
     h2 {
         ${tw`
@@ -121,7 +121,7 @@ export const StyledBottomContentBox = styled.div`
         gap-1
     `}
     h1 {
-        ${tw`font-bold text-zinc-100`} /* 기본은 밝은 회색/흰색 */
+        ${tw`font-bold text-zinc-100`} 
     }
 
     h3 {
@@ -147,7 +147,7 @@ export const StyledRestOfMoney = styled.div`
     }
     h1 {
         ${tw`
-            text-red-400 /* 강조색 */
+            text-red-400 
             font-black
             text-xl
         `}

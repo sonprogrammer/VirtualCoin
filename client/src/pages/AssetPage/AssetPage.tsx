@@ -28,9 +28,9 @@ const AssetPage = () => {
           ))}
         </StyledTabs>
 
-          {/* 탭별 내용 */}
+
           <StyledContents>
-          <div key={tabs}> {/* key를 주면 탭 전환 시 애니메이션이 재실행됩니다 */}
+          <div key={tabs}> 
             {tabs === '보유자산' && <MyAsset />}
             {tabs === '거래내역' && <TransactionComponent />}
             {tabs === '미체결' && <PendingComponent />}

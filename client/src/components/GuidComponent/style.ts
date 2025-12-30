@@ -34,7 +34,7 @@ export const StyledModalContent = styled.div`
       text-sm md:text-base break-keep
     `}
     span {
-      ${tw`text-red-500 font-bold`} /* 강조 텍스트용 */
+      ${tw`text-red-500 font-bold`} 
     }
   }
 `;

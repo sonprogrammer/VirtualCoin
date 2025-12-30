@@ -4,16 +4,16 @@ import tw from "twin.macro";
 export const StyledContainer = styled.div`
     ${tw`
         flex items-center gap-5 px-5 py-2
-        border-b border-zinc-900 /* 다크모드용 얇은 보더 */
+        border-b border-zinc-900 
         relative w-full h-[82px]
-        bg-zinc-950 text-zinc-100 /* 배경색과 글자색 */
+        bg-zinc-950 text-zinc-100 
     `}
     z-index: 100;
 `;
 
 export const StyledLogo = styled.div`
     ${tw`flex items-center w-[64px] transition-transform hover:scale-105`}
-    img { filter: brightness(1.1); } /* 로고가 어두우면 살짝 밝게 */
+    img { filter: brightness(1.1); } 
 `;
 
 export const StyledDeskMenus = styled.div`
@@ -62,12 +62,12 @@ export const StyledTabletMenu = styled.div`
         bg-zinc-900
         border border-zinc-800
         right-4
-        top-[76px] /* 네브바 높이에 맞춰 조정 */
+        top-[76px] 
         rounded-xl
         overflow-hidden
         w-[180px]
     `}
-    z-index: 1001; /* 유저 아이콘(40)보다 높게 설정 */
+    z-index: 1001; 
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 
     p {
@@ -100,7 +100,7 @@ export const StyledUserIcon = styled.div`
         w-10
         h-10
     `}
-    z-index: 40; /* 메뉴보다는 낮게 설정 */
+    z-index: 40;
 
     @media(max-width:730px){
         right: 76px;
@@ -158,5 +158,5 @@ export const StyledAngle = styled.div`
     width: 0; height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 8px solid #27272a; /* zinc-800 */
+    border-bottom: 8px solid #27272a; 
 `;

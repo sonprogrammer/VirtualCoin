@@ -23,7 +23,7 @@ export const StyledPeriodAndType = styled.div`
 export const StyledDetail = styled.div`
     ${tw`flex justify-between items-start pb-2`}
     
-    /* 필터 리셋 버튼 */
+
     h1 {
         ${tw`bg-zinc-800 text-zinc-300 text-xs py-1.5 px-3 cursor-pointer transition-colors`}
         border-radius: 8px;
@@ -44,7 +44,7 @@ export const StyledDate = styled.div`
     h3 { ${tw`text-zinc-400`} }
 `;
 
-/* 기간/유형 선택 팝업 메뉴 */
+
 export const StyledPeriodBurgerMenu = styled.div`
     ${tw`flex gap-2 py-2 `}
       animation: ${fadeIn} 0.4s ease-out;
@@ -80,7 +80,7 @@ export const StyledBody = styled.tbody`
     td {
         ${tw`text-center py-4 px-2 text-sm text-zinc-300`}
     }
-    /* 시간 데이터는 조금 더 작고 흐리게 */
+
     td:first-child, td:last-child {
         ${tw`text-[11px] text-zinc-500 font-mono`}
     }

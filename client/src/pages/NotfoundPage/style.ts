@@ -14,7 +14,6 @@ export const ErrorCode = styled.h1`
     text-zinc-900 leading-none select-none
     relative
   `}
-  /* 배경에 404를 크게 깔아 입체감을 줌 */
   &::after {
     content: '404';
     ${tw`

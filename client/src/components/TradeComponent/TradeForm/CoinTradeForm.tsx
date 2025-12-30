@@ -110,7 +110,7 @@ if (isLoading || !coin || !coinId) {
   
     const handleSubmit = () => {
       const total = orderAmount * tradePrice
-      // 알림 띄우기
+
       if (name === '매도') {
         if(availableAmount < orderAmount){
           toast.error('보유 코인 수량이 부족합니다')

@@ -5,7 +5,7 @@ export const StyledContainer = styled.div`
     ${tw`
         fixed inset-0 z-[100]
         flex items-center justify-center
-        bg-black/70 backdrop-blur-sm /* 배경 흐림 효과 */
+        bg-black/70 backdrop-blur-sm 
     `}
 `;
 
@@ -48,10 +48,6 @@ export const StyledCoinContainer = styled.div`
         ${tw`flex items-center gap-2 mb-6 text-zinc-100 font-bold text-lg`}
         span:last-child { ${tw`text-xs text-zinc-500 font-normal`} }
     }
-
-    /* 스크롤바 커스텀 */
-    &::-webkit-scrollbar { width: 5px; }
-    &::-webkit-scrollbar-thumb { ${tw`bg-zinc-800 rounded-full`} }
 `;
 
 export const StyledCoinBox = styled.div`

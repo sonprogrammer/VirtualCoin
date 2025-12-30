@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import tw from "twin.macro";
 
-// --- 공통 컨테이너 ---
+
 export const StyledContainer = styled.div`
     ${tw`p-4 flex flex-col gap-4 bg-zinc-950`}
 `;
 
-// --- 매수/매도 폼 전용 (CoinTradeForm) ---
+
 export const StyledAsset = styled.div`
     ${tw`flex justify-between items-center mb-1`}
     p:first-child { ${tw`text-xs text-zinc-500 font-bold`} }
@@ -78,7 +78,7 @@ export const StyledBtns = styled.div`
     }
 `;
 
-// --- 예약 내역 폼 전용 (CoinBookForm) ---
+
 export const StyledBookContainer = styled.div`
     ${tw`p-4 h-full flex flex-col gap-4`}
 `;

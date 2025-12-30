@@ -41,15 +41,15 @@ const CoinDetailPage = () => {
 
   return (
     <StyledContainer>
-      {/* 1. 상단 코인 정보 카드 */}
+
       <DetailCoinInfoComponent coinId={coinId || ''} coinInfo={coinInfo}/>
 
-      {/* 2. 차트 영역 */}
+
       <StyledChart>
         <CoinChartGraphComponent />
       </StyledChart>
 
-      {/* 3. 호가창 & 거래창 영역 */}
+
       <StyledOrderBookAndTrade>
         <StyledOrderBook>
           <CoinVoiceComponent orderBook={orderBook}/>

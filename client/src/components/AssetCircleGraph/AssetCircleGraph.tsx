@@ -50,7 +50,7 @@ function AssetCircleGraph() {
     labels: ['자산 없음'],
     datasets: [{
       data: [100],
-      backgroundColor: ['#27272a'], // zinc-800
+      backgroundColor: ['#27272a'],
       borderWidth: 0
     }]
   } : {
@@ -60,20 +60,20 @@ function AssetCircleGraph() {
       backgroundColor: generatedColors(sortedCoinsRates.length),
       hoverOffset: 10,
       borderWidth: 2,
-      borderColor: '#09090b', // zinc-950 (배경색과 맞춰서 도넛 조각 분리)
+      borderColor: '#09090b', 
     }]
   }
 
   const options = {
-    cutout: '70%', // 도넛 두께 조절 (중앙 글씨를 위해 넓게)
+    cutout: '70%', 
     plugins: {
       legend: { display: false
       },
       tooltip: {
-        backgroundColor: '#18181b', // zinc-900
+        backgroundColor: '#18181b', 
         titleColor: '#ffffff',
         bodyColor: '#d4d4d8',
-        borderColor: '#3f3f46', // zinc-700
+        borderColor: '#3f3f46', 
         borderWidth: 1,
         displayColors: true,
       },

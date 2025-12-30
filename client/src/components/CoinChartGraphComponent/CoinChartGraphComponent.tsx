@@ -52,17 +52,17 @@ const CoinChartGraphComponent = () => {
       width: chartContainerRef.current.clientWidth,
       height: 500,
       layout: {
-        background: { color: "#09090b" }, // zinc-950 (컨테이너 배경과 일치)
-        textColor: "#a1a1aa", // zinc-400
+        background: { color: "#09090b" }, 
+        textColor: "#a1a1aa", 
       },
       grid: {
-        vertLines: { color: "#18181b" }, // zinc-900 (희미한 격자)
+        vertLines: { color: "#18181b" }, 
         horzLines: { color: "#18181b" },
       },
       timeScale: {
         timeVisible: true,
         secondsVisible: false,
-        borderColor: "#27272a", // zinc-800
+        borderColor: "#27272a", 
       },
       rightPriceScale: {
         borderColor: "#27272a",
@@ -70,8 +70,8 @@ const CoinChartGraphComponent = () => {
     })
 
     const series = chart.addSeries(CandlestickSeries, {
-      upColor: "#ef4444",       // red-500
-      downColor: "#38bdf8",     // sky-400 (밝은 파랑/하늘색)
+      upColor: "#ef4444",       
+      downColor: "#38bdf8",   
       borderUpColor: "#ef4444",
       borderDownColor: "#38bdf8",
       wickUpColor: "#ef4444",
@@ -128,7 +128,6 @@ const CoinChartGraphComponent = () => {
 
 
     function convertToKSTTimestamp(originalTime: number): number {
-      // originalTime은 초 단위
       const KST_OFFSET_IN_SECONDS = 9 * 60 * 60; // 9시간
       return originalTime + KST_OFFSET_IN_SECONDS;
     }
@@ -168,7 +167,7 @@ const CoinChartGraphComponent = () => {
 
   return (
     <div className="w-full bg-zinc-950 rounded-xl overflow-hidden border border-zinc-900">
-      {/* 차트 컨트롤러 (상단 메뉴) */}
+
       <div className="flex items-center gap-4 p-3 bg-zinc-900/50 border-b border-zinc-900">
         <div className="flex items-center gap-2">
           <label htmlFor="type" className="text-xs font-bold text-zinc-500">차트</label>
@@ -203,7 +202,6 @@ const CoinChartGraphComponent = () => {
         )}
       </div>
 
-      {/* 실제 차트가 렌더링되는 영역 */}
       <div ref={chartContainerRef} style={{ width: "100%", height: "500px" }} />
     </div>
   );

@@ -7,13 +7,12 @@ export const StyledContainer = styled.div`
         flex-col 
         w-full 
         h-full 
-        gap-6 /* 컴포넌트 간 간격 확대 */
+        gap-6
         p-5 
         bg-zinc-950
         overflow-y-auto
     `}
     
-    /* 데스크탑에서 너무 퍼지지 않게 최대 너비 설정 */
     @media(min-width: 1024px){
         ${tw`px-32 max-w-[1200px] mx-auto`}
     }
@@ -45,7 +44,7 @@ export const StyledOrderBookAndTrade = styled.div`
         ${tw`gap-3`}
     }
     @media(max-width: 630px){
-        ${tw`flex-col gap-4`} /* 모바일에서는 호가창과 거래창도 세로로 */
+        ${tw`flex-col gap-4`} 
     }
 `
 
@@ -66,7 +65,7 @@ export const StyledTrade = styled.div`
     ${tw`
         w-[45%]
         bg-zinc-950
-        sticky top-5 /* 스크롤 시 거래창이 따라오게 설정 */
+        sticky top-5 
     `}
     @media(max-width: 630px){
         ${tw`w-full static`}

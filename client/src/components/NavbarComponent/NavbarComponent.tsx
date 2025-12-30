@@ -35,7 +35,7 @@ const NavbarComponent = () => {
 
     const { mutate: logoutMutate } = useLogout()
 
-    // console.log('data', data)
+
     const {
         // *총 자산
         totalAssets,
@@ -215,7 +215,7 @@ const NavbarComponent = () => {
                                 <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)}
                                     style={{
                                         fontWeight: page === item.path ? 'bold' : 'normal',
-                                        color: page === item.path ? '#ef4444' : '#d4d4d8' // 활성화시 레드
+                                        color: page === item.path ? '#ef4444' : '#d4d4d8' 
                                     }}>
                                     <p>{item.name}</p>
                                 </Link>
@@ -266,7 +266,7 @@ const NavbarComponent = () => {
                             <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)}
                                 style={{
                                     fontWeight: page === item.path ? 'bold' : 'normal',
-                                    color: page === item.path ? '#ffffff' : '#71717a' // zinc-500
+                                    color: page === item.path ? '#ffffff' : '#71717a'  
                                 }}
                             >
                                 <p>{item.name}</p>

@@ -29,7 +29,7 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
 
   return (
     <StyledContainer>
-      {/* 매도 (Asks) - 파란색 계열 */}
+
       <StyledAskBox>
         {orderBook.asks.slice().reverse().map((ask) => (
           <StyledAskContent key={ask.price}>
@@ -45,10 +45,10 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
         ))}
       </StyledAskBox>
 
-      {/* 중앙 현재가 구분선 - 얇고 어둡게 */}
+
       <div className="h-[1px] bg-zinc-800 my-1"></div>
 
-      {/* 매수 (Bids) - 빨간색 계열 */}
+
       <StyledBidBox>
         {orderBook.bids.map((bid) => (
           <StyledBidContent key={bid.price}>

@@ -24,8 +24,6 @@ const postHolding = async({market, name, amount, avgSellPrice, userId}: {market:
 
 const usePostSellTrade = () => {
 
-    // const [prices] = useRecoilState(CoinPrice)
-
     const mutation =  useMutation({
         mutationFn: async(order: SellOrder) => {
                 return postHolding(order)

@@ -42,7 +42,7 @@ export const StyledTableBody = styled.tbody`
         ${tw`border-b border-zinc-900 cursor-pointer transition-colors`}
         &:hover { ${tw`bg-zinc-900/40`} }
         
-        /* 선택된 행 하이라이트 */
+
         &.selected {
             ${tw`bg-red-500/5`}
         }
@@ -51,7 +51,6 @@ export const StyledTableBody = styled.tbody`
     td {
         ${tw`text-center py-4 text-zinc-300 font-medium`}
         
-        /* 주문취소 버튼 스타일 */
         button {
             ${tw`
                 bg-zinc-800 text-zinc-400 text-[10px] 
@@ -60,12 +59,10 @@ export const StyledTableBody = styled.tbody`
             `}
         }
 
-        /* 날짜/시간 텍스트 */
         p:first-child { ${tw`text-[11px] text-zinc-500`} }
         p:last-child { ${tw`text-xs text-zinc-400 font-mono`} }
     }
 
-    /* 체크박스 커스텀 (다크모드용) */
     input[type="checkbox"] {
         ${tw`accent-red-600 w-4 h-4`}
     }

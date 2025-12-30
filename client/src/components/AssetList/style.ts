@@ -27,20 +27,20 @@ export const StyledTableBody = styled.tbody`
 `;
 
 export const StyledTableTr = styled.tr`
-  /* 개별 행에 대한 추가 스타일이 필요할 때 사용 */
+
 `;
 
 export const StyledImage = styled.div`
   ${tw`flex items-center gap-3 justify-start pl-2`}
   img {
-    ${tw`w-6 h-6 rounded-full bg-white p-0.5`} /* 코인 로고가 어두울 수 있어 흰색 배경 살짝 추가 */
+    ${tw`w-6 h-6 rounded-full bg-white p-0.5`}
   }
   p {
     ${tw`font-bold text-zinc-100 m-0`}
   }
 `;
 
-// 손익 정보 박스
+
 export const ProfitBox = styled.div`
   ${tw`flex flex-col items-center gap-0.5`}
   p {
@@ -58,7 +58,7 @@ export const StyledTbContainer = styled.div`
         flex
         flex-col
         bg-zinc-950
-        pb-20 /* 하단 네브바 여백 */
+        pb-20 
     `}
 `;
 
@@ -72,7 +72,7 @@ export const StyledNonCoins = styled.div`
 export const StyledTbBox = styled.div`
     ${tw`
         w-full
-        border-b border-zinc-900 /* 구분선을 아주 어둡게 */
+        border-b border-zinc-900 
         bg-zinc-900/20
         mb-2
     `}
@@ -140,7 +140,7 @@ export const StyledTbContentSmBox = styled.div`
         flex-col
         items-end
     `}
-    flex: 1 1 50%; /* 2열 배치 */
+    flex: 1 1 50%; 
 
     p:first-child {
         ${tw`text-zinc-200 font-bold text-sm`}
