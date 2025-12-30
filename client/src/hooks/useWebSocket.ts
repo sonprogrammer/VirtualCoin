@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { CoinPrice } from "../context/CoinPrice";
+import axiosInstance from "./useGetRefresh";
 
 export interface PriceData {
   trade_price: number;
@@ -14,9 +15,20 @@ export interface PriceData {
 }
 
 const useWebSocket = () => {
-  const [prices, setPrices] = useRecoilState(CoinPrice);
+  const [prices, setPrices] = useRecoilState(CoinPrice)
 
   useEffect(() => {
+
+    const fetchRestPrice = async() => {
+      try {
+        const res = await axiosInstance.get('/api/coins/tickers')
+        setPrices(res.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchRestPrice()
 
     const ws = new WebSocket(import.meta.env.VITE_WS_URL)
 

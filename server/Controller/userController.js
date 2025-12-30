@@ -25,14 +25,34 @@ const createGuestUser = async (req, res) => {
       availableBalance: 10000000,
     });
 
-    await newGuestUser.save();
+    await newGuestUser.save()
+    console.log('newGuest', newGuestUser)
 
-    res.status(201).json(newGuestUser);
+    const token = jwt.sign(
+      { objectId: newGuestUser._id, name: newGuestUser.name },
+      process.env.JWT_SECRET,
+      { expiresIn: "5m" }
+    )
+    const refreshToken = jwt.sign(
+      { objectId: newGuestUser._id, name: newGuestUser.name},
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    )
+
+  
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "LAX",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    })
+
+    res.status(200).json({newGuestUser,token});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
-};
+}
 
 const kakaoLogin = async (req, res) => {
   try {
@@ -43,7 +63,8 @@ const kakaoLogin = async (req, res) => {
       },
     });
     const kakaoId = userInfoRes.data.id;
-    const name = userInfoRes.data.kakao_account.profile.nickname;
+    const name = userInfoRes.data.kakao_account.profile.nickname
+    console.log('name', name)
 
     let user = await User.findOne({ kakaoId });
 
@@ -62,12 +83,12 @@ const kakaoLogin = async (req, res) => {
       { kakaoId: user.kakaoId, name: user.name },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
-    );
+    )
     const refreshToken = jwt.sign(
       { kakaoId: user.kakaoId },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
-    );
+    )
 
   
     res.cookie("refreshToken", refreshToken, {
@@ -75,14 +96,14 @@ const kakaoLogin = async (req, res) => {
       secure: process.env.NODE_ENV === "production" ? true : false,
       sameSite: process.env.NODE_ENV === "production" ? "None" : "LAX",
       maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    })
 
     res.status(200).json({ user, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "로그인 중 오류가 발생했습니다." });
   }
-};
+}
 
 const kakaoLogout = async (req, res) => {
   try {
@@ -97,7 +118,21 @@ const kakaoLogout = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "internal server error" });
   }
-};
+}
+
+const regularLogout = async(req, res) => {
+  try{
+    res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'LAX'
+  })
+  res.status(200).json({message: 'logout'})
+  }catch(error){
+    console.log(error)
+    res.status(500).json({message: 'interval server errro'})
+  }
+}
 
 // * 카카오로그인 관심코인 토글
 const kakaoLikeToggle = async (req, res) => {
@@ -206,4 +241,5 @@ module.exports = {
   getRecentCoins,
   postRecentCoins,
   kakaoLogout,
+  regularLogout
 };

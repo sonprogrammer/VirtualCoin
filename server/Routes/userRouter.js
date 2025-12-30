@@ -1,5 +1,5 @@
 const express = require('express');
-const { createGuestUser, kakaoLogin, kakaoGetLikeCoins, kakaoLikeToggle, getRecentCoins, postRecentCoins, kakaoLogout } = require('../Controller/userController');
+const { createGuestUser, kakaoLogin, kakaoGetLikeCoins, kakaoLikeToggle, getRecentCoins, postRecentCoins, kakaoLogout, regularLogout } = require('../Controller/userController');
 const authenticateJWT = require('../middleware/authenticateJWT');
 const {refreshAccessToken} =require('../middleware/refreshAccessToken')
 
@@ -9,6 +9,7 @@ const userRouter = express.Router()
 userRouter.post('/guest-login', createGuestUser)
 userRouter.post('/kakao-login', kakaoLogin)
 userRouter.post('/kakao-logout', kakaoLogout)
+userRouter.post('/regular-logout', regularLogout)
 userRouter.get('/liked-coins',authenticateJWT, kakaoGetLikeCoins)
 userRouter.post('/:coinId/like', authenticateJWT, kakaoLikeToggle)
 userRouter.get('/recentCoin', authenticateJWT, getRecentCoins)

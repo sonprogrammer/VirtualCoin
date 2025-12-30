@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const refreshAccessToken = (req, res) => {
     try {
-        const refreshToken = req.cookies.refreshToken; 
+        const refreshToken = req.cookies.refreshToken
         if (!refreshToken) return res.status(401).json({ error: '리프레시 토큰이 없습니다.' });
 
         jwt.verify(refreshToken, process.env.JWT_SECRET, (err, user) => {

@@ -1,68 +1,61 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { userState } from '../context/userState';
-import { useEffect } from 'react';
+import { saveAccessToken } from '../context/saveAccessToken';
+import { toast } from 'react-toastify';
 
 
-const guestUser = 'user'
 
 
-
-const fetchGuest = async(): Promise<any> => {
-    const StoredGuest = localStorage.getItem(guestUser)
-
-    if(StoredGuest) return JSON.parse(StoredGuest)
-
+const guestLogin = async() => {
     try {
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/guest-login`)
-        const guestUserData = res.data
-        localStorage.setItem(guestUser, JSON.stringify(guestUserData));
-    
-        return guestUserData
+        console.log('res.data', res.data)
+        return res.data
     } catch (error) {
-        console.error('게스트 로그인 실패:', error);
-        return null;
+        console.error('게스트 로그인 실패', error)
+        toast.error('게스트 로그인 실패')
     }
-
-}
-
-const logoutGuest = async () => {
-    localStorage.removeItem(guestUser)
-    localStorage.removeItem('asset')
 }
 
 const useGuestLogin = () => {
-    const [, setUser] = useRecoilState(userState)
+    const [user, setUser] = useRecoilState(userState)
+    const queryClient = useQueryClient()
 
-    const { data: guestUserData, isLoading, isError, refetch } = useQuery({
-        queryKey: ['guestUser'],
-        queryFn: fetchGuest,
-    });
-
-    useEffect(() => {
-        if (guestUserData) {
-          setUser(guestUserData);
-        }
-      }, [guestUserData, setUser]);
-
-    const { mutate: handleLogout } = useMutation({
-        mutationFn: logoutGuest,
-        onSuccess: () => {
-            localStorage.removeItem(guestUser);
-            localStorage.removeItem('asset');
-            setUser(null)
+    const loginMutation = useMutation({
+        mutationFn: guestLogin,
+        onSuccess: (data) => {
+            localStorage.setItem('user', JSON.stringify(data.newGuestUser))
+            saveAccessToken(data.token)
+            console.log('data', data.newGuestUser)
+            setUser(data.newGuestUser)
+            queryClient.invalidateQueries({queryKey:['guestUser']})
         },
-    });
+        onError: (error) => {
+            console.log('error')
+        }
+    })
 
-    return {
-        guestUserData,
-        isLoading,
-        isError,
-        handleLogout,
-        refetch,
-    };
+    const logoutMutation = useMutation({
+        mutationFn: async() => {
+            localStorage.clear()
+        },
+        onSuccess: () => {
+            setUser(null)
+            queryClient.clear()
+        }
+    })
+    const restoreSession = () =>{
+        const stored = localStorage.getItem('user')
+        if(stored && !user){
+            setUser(JSON.parse(stored))
+        }
+    }
+
+    return{ user, login: loginMutation.mutate, logout: logoutMutation.mutate, restoreSession}
 
 }
+
 
 export default useGuestLogin

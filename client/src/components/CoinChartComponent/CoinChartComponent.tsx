@@ -136,6 +136,7 @@ const CoinChartComponent = () => {
 
           {(windowWidth > 630 ? coinPerPage : coins).map(coin => {
             const priceData = prices[coin.market]
+            // console.log('pricedata', priceData)
             const coinUnit = coin.market.split('-')[1]
             const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
 

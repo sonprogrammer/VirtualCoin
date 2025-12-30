@@ -35,6 +35,7 @@ const NavbarComponent = () => {
 
     const {mutate: logoutMutate} = useLogout()
 
+    // console.log('data', data)
     const {
         // *총 자산
         totalAssets,
@@ -135,16 +136,8 @@ const NavbarComponent = () => {
 
     const handleLogout = () => {
         logoutMutate()
-        localStorage.removeItem('user')
-        localStorage.removeItem('asset')
-        localStorage.removeItem('accessToken')
+        localStorage.clear()
         setUser(null)
-
-        Object.keys(localStorage).forEach((key) => {
-            if(key.startsWith('kakao')){
-                localStorage.removeItem(key)
-            }
-        })
 
         setLogoutModal(false);
         navigate('/')
@@ -255,9 +248,6 @@ const NavbarComponent = () => {
                     { recentCoin && <RecentCoin handleOutsideClick={handleOutsideClick}/>}
                 </StyledUserInfo>
             )}
-
-
-
 
 
             {/* //* 모바일 (630px 이하) */}

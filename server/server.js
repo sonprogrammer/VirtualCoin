@@ -13,12 +13,13 @@ const cookieParser = require('cookie-parser');
 const holdRouter = require('./Routes/holdingRouter');
 const { default: axios } = require('axios');
 const { webSocket } = require('./websocket');
+const getRestCoinsTicker = require('./Controller/coinController');
 const app = express();
 const port = process.env.PORT || 3000;
 
 const server = http.createServer(app)
 
-// CORS 설정
+
 app.use(cors({
   origin: ['http://localhost:5173', 'https://virtualcoinn.onrender.com'],
 
@@ -27,17 +28,6 @@ app.use(cors({
 }));
 app.use(express.json())
 app.use(cookieParser()); 
-// app.use(session({
-//   secret: process.env.SESSION_SECRET,
-//   resave: false,
-//   saveUninitialized: false,
-//   cookie: {
-//     maxAge: 1800000,
-//     httpOnly: true,
-//     secure: process.env.NODE_ENV === 'production',
-//     sameSite: process.env.NODE_ENV === 'production'? 'None' : 'Lax',
-//   } 
-// }))
 
 
 mongoose.connect(process.env.MONGO_URI,{
@@ -49,7 +39,8 @@ mongoose.connect(process.env.MONGO_URI,{
 app.use('/api/user', userRouter);  
 app.use('/api/asset', assetRouter);
 app.use('/api/transaction', transactionRouter);
-app.use('/api/holding', holdRouter);
+app.use('/api/holding', holdRouter)
+app.get('/api/coins/tickers', getRestCoinsTicker)
 app.get('/api/coins', async(req, res) => {
   try {
     const response = await axios.get('https://api.upbit.com/v1/market/all')
@@ -86,6 +77,7 @@ app.get('/api/chart', async(req, res) => {
     res.status(500).json({message: 'internal server error'})
   }
 })
+
 
 
 webSocket(server)

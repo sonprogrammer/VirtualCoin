@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { StyledCloseBtn } from "../LoginModal/style";
 import useGuestLogin from "../../hooks/useGuestLogin";
+import { toast } from "react-toastify";
 
 
 
@@ -13,12 +14,22 @@ interface GuidComponentProps{
 
 const GuidComponent = ({ handleCloseModal } : GuidComponentProps) => {
     
-    useGuestLogin();
+    const {login } =useGuestLogin()
     const navigate = useNavigate()
     
     const handleGuestLogin = async () => {
-        handleCloseModal()
-        navigate('/browse')
+        login(undefined, {
+            onSuccess: () => {
+
+                handleCloseModal()
+                navigate('/browse')
+                toast.success('로그인 성공')
+            },
+            onError: () => {
+                console.log('error')
+                toast.error('게스트로ㅡㄱ인 실패 ')
+            }
+        })
     }
 
 

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { getAccessToken } from '../context/saveAccessToken';
+import { getAccessToken, saveAccessToken } from '../context/saveAccessToken';
+import { toast } from 'react-toastify';
 
 
 
@@ -19,35 +20,35 @@ axiosInstance.interceptors.request.use(
   (err) => Promise.reject(err)
 )
 
-export const setupAxiosInterceptors = (setRefresh: (value: any) => void) => {
+
   axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
 
       if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
+        originalRequest._retry = true
         try {
           const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/refresh`, {
             withCredentials: true,
           });
-          const newAccessToken = response.data.token;
+          const newAccessToken = response.data.token
 
           if (newAccessToken) {
+            saveAccessToken(newAccessToken)
             axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
             originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
             return axiosInstance(originalRequest);
-          } else {
-            setRefresh({ expired: true, message: '로그인 세션이 만료되었습니다. 다시 로그인해주세요.' });
-          }
-        } catch {
-          setRefresh({ expired: true, message: '로그인 세션이 만료되었습니다. 다시 로그인해주세요.' });
+          } 
+        }catch(error){
+          console.log(error)
+          toast.error('토큰 만료 재로그인해주세요')
         }
       }
 
       return Promise.reject(error);
     }
   );
-};
+
 
 export default axiosInstance;
