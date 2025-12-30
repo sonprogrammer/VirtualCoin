@@ -3,68 +3,52 @@ import tw from "twin.macro";
 
 export const StyeldContainer = styled.div`
     ${tw`
-        flex
-        items-center
-        justify-center
-        bg-gray-800
-        fixed
-        bg-opacity-50
-        inset-0
-        z-50
+        fixed inset-0 
+        flex items-center justify-center
+        bg-black/70 backdrop-blur-sm 
+        z-[2000] 
     `}
-`
+`;
 
 export const StyeldBox = styled.div`
     ${tw`
-        w-[50%]
-        bg-gray-600
-        rounded-xl
-        p-5
-        flex
-        flex-col
-        gap-5
+        w-[90%] max-w-[400px]
+        bg-zinc-900 border border-zinc-800
+        rounded-3xl p-8
+        flex flex-col gap-8
+        shadow-2xl
     `}
-    
-    @media(max-width: 1200px){
-        width: 30%;
-    }
-    @media(max-width: 1000px ){
-        width: 50%;
-    }
-    @media(max-width: 550px){
-        width: 80%;
-    }
-`
+`;
+
 export const StyeldTitle = styled.div`
-    ${tw`
-        text-center
-        text-xl
-        font-bold
-    `}
-`
+    ${tw`text-center`}
+    h1 {
+        ${tw`text-zinc-100 text-xl font-bold mb-4`}
+    }
+    p {
+        ${tw`text-zinc-400 text-sm leading-relaxed`}
+        span.warning { ${tw`text-red-500 font-bold`} }
+    }
+`;
+
 export const StyeldBtns = styled.div`
-    ${tw`
-        flex
-        items-center
-        justify-center
-    `}
-`
+    ${tw`flex gap-3 w-full`}
+`;
+
 export const StyeldYesBtn = styled.div`
     ${tw`
-        cursor-pointer
-        rounded-xl
+        flex-1 flex items-center justify-center
+        cursor-pointer rounded-xl py-3
+        bg-red-600 text-white font-bold
+        hover:bg-red-500 active:scale-95 transition-all
     `}
-    padding: 10px 20px;
-    transition: all 0.3s ease;
+`;
 
-    &:hover{
-        background-color: red;
-        color: white;
-    }
-`
 export const StyeldNoBtn = styled.div`
     ${tw`
-        cursor-pointer
+        flex-1 flex items-center justify-center
+        cursor-pointer rounded-xl py-3
+        bg-zinc-800 text-zinc-300 font-bold
+        hover:bg-zinc-700 active:scale-95 transition-all
     `}
-    padding: 10px 20px;
-`
+`;

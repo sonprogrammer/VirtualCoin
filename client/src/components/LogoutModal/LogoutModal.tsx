@@ -17,11 +17,18 @@ const LogoutModal = ({handleCloseModal, handleLogout} : LogoutModalProps) => {
             <StyeldBox onClick={stopPropagation}>
                 <StyeldTitle>
                     <h1>로그아웃 하시겠습니까?</h1>
-                    <p className='text-sm mt-3 text-gray-100'>⛔️ 게스트 계정은 계정이 삭제됩니다.⛔️<br/>🚨 랭킹페이지 내에서는 유지됩니다 🚨</p>
+                    <div className="bg-zinc-800/50 p-4 rounded-2xl border border-zinc-800">
+                        <p>
+                            <span className="text-red-500 font-bold block mb-1">⚠️ 게스트 계정 주의</span>
+                            게스트 계정은 로그아웃 시 재로그인이 불가합니다.<br/>
+                            (랭킹 내역은 유지됩니다)
+                        </p>
+                    </div>
                 </StyeldTitle>
+                
                 <StyeldBtns>
-                    <StyeldYesBtn onClick={handleLogout}>YES</StyeldYesBtn>
-                    <StyeldNoBtn onClick={handleCloseModal}>NO</StyeldNoBtn>
+                    <StyeldNoBtn onClick={handleCloseModal}>취소</StyeldNoBtn>
+                    <StyeldYesBtn onClick={handleLogout}>로그아웃</StyeldYesBtn>
                 </StyeldBtns>
             </StyeldBox>
         </StyeldContainer>
