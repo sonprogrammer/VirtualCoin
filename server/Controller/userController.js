@@ -26,28 +26,9 @@ const createGuestUser = async (req, res) => {
     });
 
     await newGuestUser.save()
-    console.log('newGuest', newGuestUser)
-
-    const token = jwt.sign(
-      { objectId: newGuestUser._id, name: newGuestUser.name },
-      process.env.JWT_SECRET,
-      { expiresIn: "5m" }
-    )
-    const refreshToken = jwt.sign(
-      { objectId: newGuestUser._id, name: newGuestUser.name},
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    )
-
   
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production" ? true : false,
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "LAX",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    })
 
-    res.status(200).json({newGuestUser,token});
+    res.status(200).json(newGuestUser);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
