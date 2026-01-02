@@ -1,13 +1,8 @@
-import { Route, Routes, useNavigate } from "react-router-dom"
+import { Route, Routes} from "react-router-dom"
 import { AssetPage, CoinDetailPage, LandingPage, LayoutPage, MainPage, NotfoundPage, RankingPage } from "./pages"
 import ProtectNoUser from "./utils/ProtectNoUser"
-import { useRecoilState, useRecoilValue } from "recoil"
-import { refreshState } from "./context/refreshExpired"
-import { useEffect } from "react"
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import useLogout from "./hooks/useLogout"
-import { userState } from "./context/userState"
 
 
 

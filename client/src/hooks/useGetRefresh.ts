@@ -42,6 +42,7 @@ axiosInstance.interceptors.request.use(
           } 
         }catch(error){
           console.log(error)
+          localStorage.clear()
           toast.error('토큰 만료 재로그인해주세요')
         }
       }

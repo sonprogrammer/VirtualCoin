@@ -4,8 +4,7 @@ import { getAccessToken } from "./saveAccessToken";
 
 const user = getUserFromLocalStorage()
 const accessToken = getAccessToken()
-console.log('user check from userState.ts', user)
-console.log('user check from userState.ts', accessToken)
+
 
 export const userState = atom({
     key: 'userState',
