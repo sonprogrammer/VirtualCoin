@@ -1,12 +1,10 @@
 # VC(Virtual Coin)
 
-## 🛠️Under optimization...
+## ⚠️ Note
 
-this project built for beginners to explore real-time market and practice investing, gain understanding of coin world.
----
-
-## 🎥 Demo Video(Click the image below to watch a short demo of the app)
-[![Watch the demo](https://img.youtube.com/vi/ccbFX_n9WCk/0.jpg)](https://www.youtube.com/watch?v=ccbFX_n9WCk)
+This project is hosted on a free-tier server. 
+Please note that the initial loading may take 1~2 minutes as the server wakes up from inactivity.
+Thank you for your patience
 
 ## 👀 let's going to coin world!
 <a href="https://virtualcoinn.onrender.com/" target="_blank">VirtualCoin</a>
