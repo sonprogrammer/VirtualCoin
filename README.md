@@ -1,6 +1,7 @@
 # VC(Virtual Coin)
 
 ## ⚠️ Note
+🚧 Work In Progress: Optimizing performance and refactoring codebase.
 
 This project is hosted on a free-tier server. 
 Please note that the initial loading may take 1~2 minutes as the server wakes up from inactivity.
