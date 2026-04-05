@@ -4,19 +4,16 @@ import { useRecoilState } from 'recoil';
 import { userState } from '../context/userState';
 import { saveAccessToken } from '../context/saveAccessToken';
 import { toast } from 'react-toastify';
+import axiosInstance from './useGetRefresh';
 
 
 
 
 const guestLogin = async() => {
-    try {
-        const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/guest-login`)
-        console.log('res.data', res.data)
-        return res.data
-    } catch (error) {
-        console.error('게스트 로그인 실패', error)
-        toast.error('게스트 로그인 실패')
-    }
+    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/guest-login`)
+    // const res = await axiosInstance.post('/api/user/guest-login')
+    console.log('rea datae', res.data)
+    return res.data
 }
 
 const useGuestLogin = () => {
@@ -26,14 +23,17 @@ const useGuestLogin = () => {
     const loginMutation = useMutation({
         mutationFn: guestLogin,
         onSuccess: (data) => {
-            localStorage.setItem('user', JSON.stringify(data.newGuestUser))
-            saveAccessToken(data.token)
-            console.log('data', data.newGuestUser)
-            setUser(data.newGuestUser)
-            queryClient.invalidateQueries({queryKey:['guestUser']})
+            if (data) {
+                console.log('data from useguestloing ', data)
+                localStorage.setItem('user', JSON.stringify(data))
+                console.log('2. 로컬스토리지 확인:', localStorage.getItem('user'))
+                // saveAccessToken(data)
+                setUser(data)
+                queryClient.invalidateQueries({ queryKey: ['guestUser'] });
+            }
         },
         onError: (error) => {
-            console.log('error')
+            console.error('로그인 훅 에러:', error);
         }
     })
 

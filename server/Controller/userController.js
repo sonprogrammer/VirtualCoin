@@ -28,7 +28,7 @@ const createGuestUser = async (req, res) => {
     await newGuestUser.save()
   
 
-    res.status(200).json(newGuestUser);
+    res.status(200).json(newGuestUser)
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
