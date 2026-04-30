@@ -25,6 +25,8 @@ Thank you for your patience
 5. styled-component
 6. tailwind
 7. chartjs
+8. recoil
+9. react-query
 
 ---
 
