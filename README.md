@@ -17,6 +17,12 @@ Thank you for your patience
 - 개발을 하며 직접 코인에 대해 공부하고자 하는 의지에서 비롯되었습니다.하고 싶은 주제를 다루면 더욱 동기부여가 되고, 자연스럽게 몰입할 수 있었기 때문입니다.
 
 ---
+
+## 🏗️ System Architecture & Flow
+<img width="2000" height="1640" alt="vcflow" src="https://github.com/user-attachments/assets/f280a984-4c8f-40c7-bdc4-f56a4638e114" />
+
+
+
 ## 🛠️ STACK
 1. typescript
 2. react
