@@ -10,10 +10,9 @@ interface RecentData {
     recentCoins: string[]
 }
 
-const getRecentCoin = async (): Promise<RecentData> => {
+const getRecentCoin = async (): Promise<string[]> => {
     const res = await axiosInstance.get<RecentData>(`/api/user/recentCoin`)
-    console.log('res', res.data)
-    return res.data
+    return res.data.recentCoins
 }
 
 const useGetRecentCoin = () => {

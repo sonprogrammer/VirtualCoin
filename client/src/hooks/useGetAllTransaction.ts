@@ -28,7 +28,6 @@ export interface AllTransactionResponse {
 
 const getTransaction = async(userId:string): Promise<AllTransactionResponse> => {
     const res = await axiosInstance.get<AllTransactionResponse>(`${import.meta.env.VITE_API_URL}/api/holding/all-transaction/${userId}`)
-    console.log('res', res.data)
     return res.data
 }
 

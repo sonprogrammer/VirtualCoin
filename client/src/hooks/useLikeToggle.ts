@@ -14,7 +14,6 @@ const useLikeToggle = () => {
   // !카카오 좋아요 토글
   const likeToggleKakao = async (coinId: string) => {
     const res = await axiosInstance.post(`/api/user/${coinId}/like`)
-    console.log('res', res.data)
 
     return res.data
   }
@@ -22,7 +21,6 @@ const useLikeToggle = () => {
   const { mutate } = useMutation({
     mutationFn: likeToggleKakao,
     onSuccess: (_, variable) => {
-      console.log('카카오유저 좋아요성공', variable)
       queryClient.invalidateQueries({ queryKey: ['likedCoins', variable] })
     },
     onError: (error) => {

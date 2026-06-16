@@ -41,7 +41,7 @@ const CoinModal = ({ title, coinData, onClose }: CoinModalProps) => {
         </StyledContentTitle>
 
 
-        {coinData?.length === 0 &&
+        {!coinData || coinData?.length === 0 &&
           <div className='h-full flex flex-col w-full items-center justify-center'>
             <img src="/emptyCoin.gif" alt="코인" />
           </div>

@@ -15,13 +15,14 @@ const RecentCoin = ({ onClose }: RecentCoinProps) => {
     const { data: recentCoin } = useGetRecentCoin();
     const { data: coinName } = useGetCoins();
 
-    console.log('recent', recentCoin)
-
 
     const coinData = useMemo(() => {
         const coinSet = new Set(recentCoin)
         return coinName?.filter(c => coinSet.has(c.market))
-            .map(name => ({ coinKoreanName: name.korean_name, coinMarket: name.market })) ?? []
+            .map(name => ({ 
+                coinKoreanName: name.korean_name, 
+                coinMarket: name.market 
+            })) ?? []
     }, [coinName, recentCoin])
 
 

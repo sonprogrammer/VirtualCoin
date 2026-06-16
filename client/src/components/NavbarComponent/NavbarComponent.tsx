@@ -37,8 +37,6 @@ const NavbarComponent = () => {
         setSearchModal(false)
     }
 
-    console.log('navbarcomponetn')
-
 
     const navigate = useNavigate();
 

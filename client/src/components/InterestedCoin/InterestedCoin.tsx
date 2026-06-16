@@ -14,8 +14,6 @@ interface InterestedCoinProps{
 const InterestedCoin = ({onClose} : InterestedCoinProps) => {
     const { likedCoins } = useGetLikedCoins()
     const { data: coinName } = useGetCoins();    
-
-    console.log('interested')
     
     const coinData = useMemo(() => {
         const coinSet = new Set(likedCoins);

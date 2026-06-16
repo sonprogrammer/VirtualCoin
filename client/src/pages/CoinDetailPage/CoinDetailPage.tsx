@@ -8,8 +8,6 @@ import {  StyledChart, StyledContainer, StyledOrderBook, StyledOrderBookAndTrade
 const CoinDetailPage = () => {
   const { coinEName } = useParams()
 
-
-    console.log('coindetailpage rendering')
   
 // ! 790, 630, 450 반응형
 

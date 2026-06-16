@@ -11,7 +11,6 @@ import { saveAccessToken } from '../context/saveAccessToken';
 
 const guestLogin = async() => {
     const res = await axiosInstance.post('/api/user/guest-login')
-    console.log('rea datae', res.data)
     return res.data
 }
 
@@ -23,7 +22,6 @@ const useGuestLogin = () => {
         mutationFn: guestLogin,
         onSuccess: (data) => {
             if (data) {
-                console.log('data from useguestloing ', data)
                 saveUserToLocalStorage(data.user)
                 saveAccessToken(data.token)
                 setUser(data.user)
