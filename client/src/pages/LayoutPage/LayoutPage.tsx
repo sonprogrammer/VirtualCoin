@@ -7,9 +7,7 @@ import useWebSocket from '../../hooks/useWebSocket'
 
 
 const LayoutPage = () => {
-
   useWebSocket()
-
   return (
     <StyledContaier className='전체최종'>
 

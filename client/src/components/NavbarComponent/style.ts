@@ -123,7 +123,7 @@ ${tw`
     top-[76px]
     w-[280px]
 `}
-    z-index: 1100;
+    z-index: 1000;
     box-shadow: 0 20px 25px rgba(0, 0, 0, 0.5);
     
     h1 { ${tw`text-zinc-100 text-lg border-b border-zinc-800 pb-3 mb-3 text-left font-bold`} }

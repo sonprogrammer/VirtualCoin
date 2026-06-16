@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { StyledContainer, StyledTable, StyledTableBody, StyledTableHead, StyledTop } from './style'
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import useGetPendingCoins from '../../hooks/useGetPendingCoins'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../../context/userState'
@@ -13,56 +13,59 @@ const PendingComponent = () => {
 
     const user = useRecoilValue(userState);
 
-    
-    const {data =[]} = useGetPendingCoins(user._id)
-    const { mutate: deleteOrder} = usePostDeleteOrder()
+
+    const { data = [] } = useGetPendingCoins(user._id)
+    const { mutate: deleteOrder } = usePostDeleteOrder()
 
 
-    const handleRadioChange = useCallback((orderId: string) => {
+    const handleRadioChange = (orderId: string) => {
         setSelectedOrder(prev => {
             const newSet = new Set(prev)
-            newSet.has(orderId) ? newSet.delete(orderId) : newSet.add(orderId)
+            if (newSet.has(orderId)) {
+                newSet.delete(orderId);
+            } else {
+                newSet.add(orderId);
+            }
             return newSet
         })
-    },[])
+    }
 
-    const handleCancleClick = useCallback(() => {
-        if(selectedOrder.size === 0) return
-            deleteOrder({userId: user._id, orderId: Array.from(selectedOrder)}, {
-                onSuccess: () => {
-                    setCancleOrder(prev => new Set([...prev, ...selectedOrder]))
-                    setSelectedOrder(new Set())
-                }
-            })
-    },[selectedOrder,deleteOrder, user._id])
+    const handleCancleClick = () => {
+        if (selectedOrder.size === 0) return
+        deleteOrder({ userId: user._id, orderId: Array.from(selectedOrder) }, {
+            onSuccess: () => {
+                setCancleOrder(prev => new Set([...prev, ...selectedOrder]))
+                setSelectedOrder(new Set())
+            }
+        })
+    }
 
-    const handleCancleBtnClick = useCallback((orderId: string, e: React.MouseEvent) => {
-        deleteOrder({userId: user._id, orderId: [orderId]},{
+    const handleCancleBtnClick = (orderId: string, e: React.MouseEvent) => {
+        deleteOrder({ userId: user._id, orderId: [orderId] }, {
             onSuccess: () => {
                 setCancleOrder(prev => new Set([...prev, orderId]))
             }
         })
-        e.stopPropagation(); 
-    }, [deleteOrder, user._id]);
+        e.stopPropagation();
+    }
 
     const filteredData = useMemo(() => {
-
-        return data.filter((a:any) => !cancleOrder.has(a._id))
+        return data.filter((a) => !cancleOrder.has(a._id))
     }, [cancleOrder, data]);
 
 
-    const handleAllClick = useCallback(() =>{
-        if(selectedAll){
+    const handleAllClick = () => {
+        if (selectedAll) {
             setSelectedOrder(new Set())
             setSelectedAll(false)
-        }else{
-            setSelectedOrder(new Set(filteredData.map((a:any) => a._id)))
+        } else {
+            setSelectedOrder(new Set(filteredData.map((a) => a._id)))
             setSelectedAll(true)
         }
-    },[selectedAll, filteredData])
+    }
 
-    
-    
+
+
     return (
         <StyledContainer>
             <StyledTop>
@@ -85,22 +88,22 @@ const PendingComponent = () => {
                         <th>관리</th>
                     </tr>
                 </StyledTableHead>
-                
+
                 <StyledTableBody>
-                    {filteredData?.map((a: any) => {
-                        const formattedDays = dayjs(a.orderTime).format('YY.MM.DD'); 
-                        const formattedTime = dayjs(a.orderTime).format('HH:mm'); 
+                    {filteredData?.map((a) => {
+                        const formattedDays = dayjs(a.orderTime).format('YY.MM.DD');
+                        const formattedTime = dayjs(a.orderTime).format('HH:mm');
                         const isSelected = selectedOrder.has(a._id);
                         const isBuy = a.type === 'BUY';
 
                         return (
-                            <tr 
-                                key={a._id} 
+                            <tr
+                                key={a._id}
                                 onClick={() => handleRadioChange(a._id)}
                                 className={isSelected ? 'selected' : ''}
                             >
                                 <td>
-                                    <input 
+                                    <input
                                         type="checkbox"
                                         checked={isSelected}
                                         onChange={(e) => {
@@ -111,7 +114,7 @@ const PendingComponent = () => {
                                     />
                                 </td>
                                 <td>
-                                    <p>{formattedDays}</p>    
+                                    <p>{formattedDays}</p>
                                     <p>{formattedTime}</p>
                                 </td>
                                 <td className="font-bold text-zinc-100">{a.coinKName}</td>
@@ -122,7 +125,7 @@ const PendingComponent = () => {
                                 <td>{a.orderQuantity?.toLocaleString()}</td>
                                 <td className="text-zinc-500">{a.orderQuantity?.toLocaleString()}</td>
                                 <td>
-                                    <button 
+                                    <button
                                         onClick={(e) => {
                                             handleCancleBtnClick(a._id, e);
                                         }}

@@ -1,37 +1,31 @@
 
 import { CoinModal } from "../CoinModal";
 import useGetRecentCoin from "../../hooks/useGetRecentCoin";
-import { useRecoilState } from "recoil";
-import { CoinPrice } from "../../context/CoinPrice";
 import useGetCoins from "../../hooks/useGetCoins";
+import { useMemo } from "react";
 
 
 
 
-interface RecentCoinProps{
-    handleOutsideClick: () => void;
+interface RecentCoinProps {
+    onClose: () => void;
 }
-const RecentCoin = ({handleOutsideClick} : RecentCoinProps) => {
+const RecentCoin = ({ onClose }: RecentCoinProps) => {
 
     const { data: recentCoin } = useGetRecentCoin();
-    const [prices] = useRecoilState(CoinPrice);
     const { data: coinName } = useGetCoins();
 
+    console.log('recent', recentCoin)
 
-    const sortedCoins = recentCoin?.map((market: string) => {
-        return coinName?.find((c: any)=> c.market === market)
-    })
 
-    const coinData = sortedCoins?.map((name: any)=> ({
-        coinKoreanName: name.korean_name,
-        coinMarket: name.market,
-        price: prices[name.market]
-    }) )
+    const coinData = useMemo(() => {
+        const coinSet = new Set(recentCoin)
+        return coinName?.filter(c => coinSet.has(c.market))
+            .map(name => ({ coinKoreanName: name.korean_name, coinMarket: name.market })) ?? []
+    }, [coinName, recentCoin])
 
-   
-    
-    
-      return <CoinModal title="최근 본 코인(10개)" coinData={coinData} onClickOutside={handleOutsideClick} />;
+
+    return <CoinModal title="최근 본 코인(10개)" coinData={coinData} onClose={onClose} />;
 }
 
 export default RecentCoin

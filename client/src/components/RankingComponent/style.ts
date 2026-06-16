@@ -2,7 +2,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 
 export const StyledContainer = styled.div`
-  ${tw`flex flex-col w-full px-4 md:px-8 bg-zinc-950 text-white min-h-screen`}
+  ${tw`flex flex-col items-center w-full px-4 md:px-8 bg-zinc-950 text-white min-h-screen`}
 `;
 
 export const StyledTitle = styled.div`

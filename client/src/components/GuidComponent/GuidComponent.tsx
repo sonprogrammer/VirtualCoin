@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom"
 import { StyledBtn, StyledContainer, StyledImage, StyledModalBox, StyledModalContent, StyledCloseBtn } from "./style"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -15,10 +14,10 @@ interface GuidComponentProps{
 const GuidComponent = ({ handleCloseModal } : GuidComponentProps) => {
     const [loading, setLoading] = useState<boolean>(false)
     const {login } =useGuestLogin()
-    const navigate = useNavigate()
     
     const handleGuestLogin = async () => {
         if(loading) return
+        setLoading(true)
 
         const toastId = toast.loading('게스트 계정 생성중...')
         
@@ -31,8 +30,6 @@ const GuidComponent = ({ handleCloseModal } : GuidComponentProps) => {
                     autoClose: 3000,
                 })
                 handleCloseModal()
-                navigate('/browse')
-                toast.success('로그인 성공')
             },
             onError: () => {
                 toast.update(toastId, {

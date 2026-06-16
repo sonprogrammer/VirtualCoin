@@ -1,87 +1,64 @@
-import { useEffect, useState } from "react"
-import useGetCoins from "../../hooks/useGetCoins"
+import { useMemo } from "react"
 import { StyledCLogoImg, StyledCoinInfo, StyledConInfoWrapper, StyledContainer, StyledLeftInfo, StyledLikedBtn, StyledPrices, StyledRateNumbers, StyledRates, StyledTitlePrice } from "./style";
 import { useRecoilState } from "recoil";
-import { coinKName } from "../../context/coinKName";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
 import useLikeToggle from "../../hooks/useLikeToggle";
 import useGetLikedCoins from "../../hooks/useGetLikeCoins";
 import Skeleton from "@mui/material/Skeleton";
+import { useSelectedCoinInfo } from "../../hooks/useGetSelectedCoinInfo";
+import { CoinPrice } from "../../context/CoinPrice";
 
-interface CoinName {
-    market: string;
-    korean_name: string;
-    english_name: string;
-}
 
 interface DetailCoinInfoComponentProps {
-    coinId: string;
-    coinInfo: {
-        trade_price: number;
-        change_rate: number;
-        acc_price: number;
-        change_price: number;
-        trade_volume: number;
-        high_price: number;
-        low_price: number;
-    } | null
+    coinEName: string;
+
 }
 
 
 
-const DetailCoinInfoComponent = ({ coinId, coinInfo }: DetailCoinInfoComponentProps) => {
-    const [coinName, setCoinName] = useState<string>('');
-    const { data: coinData, isLoading, error } = useGetCoins();
-    const [kName, setKName] = useRecoilState(coinKName)
-    const [liked, setLiked] = useState<string[]>([])
+const DetailCoinInfoComponent = ({ coinEName }: DetailCoinInfoComponentProps) => {
+    //* 코인 이름
+    const { coinData, isLoading, error } = useSelectedCoinInfo(coinEName)
     const { likeToggle } = useLikeToggle();
-    const { likedCoins } = useGetLikedCoins()
+    const { likedCoins = [] } = useGetLikedCoins()
+    // console.log('likedCoins', likedCoins)
 
+    const [coinPrice] = useRecoilState(CoinPrice)
 
-    useEffect(() => {
-        if (coinData && coinId) {
-            const thisCoin = coinData.find((c: CoinName) => coinId === c.market);
-            if (thisCoin) {
-                setCoinName(thisCoin.korean_name);
-                setKName(thisCoin.korean_name)
-            }
-        }
-    }, [coinId, coinData]);
+    // * 현재 페이지 코인 가격 데이터
+    const coinInfo = useMemo(() => {
+        return coinEName ? coinPrice[coinEName] : null;
+    }, [coinEName, coinPrice])
 
+    // console.log('coininfo', coinInfo)
 
-    useEffect(() => {
-        setLiked(likedCoins || [])
-    }, [likedCoins])
+    // console.log('hi',coinData)
 
 
 
-    // 좋아요 등록, 취소 -> 
+
+    // 좋아요 등록, 취소 
     const handleLikedCoin = () => {
-        likeToggle(coinId)
-        setLiked((prev) => {
-            if (prev.includes(coinId)) {
-                return prev.filter(coin => coin !== coinId)
-            } else {
-                return [...prev, coinId]
-            }
-        })
+        likeToggle(coinEName)
     }
 
-    const isStar = () => liked.includes(coinId)
+    const isStar = likedCoins.includes(coinEName)
 
+    // TODO 수정
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
 
 
-    if (!coinInfo) {
+    if (!coinInfo || !coinData) {
         return <Skeleton variant="rectangular" width='100%' height={100} sx={{ bgcolor: '#18181b' }} />;
     }
 
     const isPlus = coinInfo.change_rate > 0
-    const coinUnit = coinId?.split('-')[1];
+    const coinUnit = coinEName?.split('-')[1];
     const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`;
+    const coinName = coinData?.korean_name
     return (
         <StyledContainer>
             <StyledLeftInfo>
@@ -89,23 +66,23 @@ const DetailCoinInfoComponent = ({ coinId, coinInfo }: DetailCoinInfoComponentPr
                     <img src={coinLogo} alt="Logo" />
                     <div>
                         <p>{coinName}</p>
-                        <span className="text-[10px] text-zinc-500 font-mono">{coinId}</span>
+                        <span className="text-[10px] text-zinc-500 font-mono">{coinEName}</span>
                     </div>
                     <StyledLikedBtn onClick={handleLikedCoin}>
                         <FontAwesomeIcon
-                            icon={isStar() ? fullStar : faStar}
-                            className={isStar() ? "text-yellow-400" : "text-zinc-600"}
+                            icon={isStar ? fullStar : faStar}
+                            className={isStar ? "!text-yellow-400" : "!text-zinc-600"}
                             size="lg"
                         />
                     </StyledLikedBtn>
                 </StyledCLogoImg>
 
                 <StyledTitlePrice>
-                    <p className={isPlus ? '!text-red-500' : '!text-sky-400'}>
+                    <p className={isPlus ? '!text-red-500' : '!text-blue-500'}>
                         {coinInfo?.trade_price?.toLocaleString()}
                         <span className="text-xs ml-1 font-normal opacity-70">KRW</span>
                     </p>
-                    <p className={isPlus ? '!text-red-500' : '!text-sky-400'}>
+                    <p className={isPlus ? '!text-red-500' : '!text-blue-500'}>
                         <span>{isPlus ? '+' : ''}{(coinInfo?.change_rate * 100).toFixed(2)}%</span>
                         <span className="ml-2">{isPlus ? '▲' : '▼'} {coinInfo?.change_price?.toLocaleString()}</span>
                     </p>

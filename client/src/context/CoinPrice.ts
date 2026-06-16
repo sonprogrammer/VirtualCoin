@@ -1,5 +1,6 @@
 import { atom } from 'recoil';
 
+//! 전체 코인 데이터 가져오는거임
 
 export interface PriceData {
     prev_closing_price: number;

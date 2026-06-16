@@ -7,6 +7,7 @@ import axiosInstance from "./useGetRefresh"
 
 
 const postHolding = async({market, name, amount, avgBuyPrice, userId}: {market: string, name: string, amount: number, avgBuyPrice: number, userId: string}) => {
+    // console.log('market', market, name, amount, avgBuyPrice, userId)
     const res = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/api/holding/${market}/buy-reserve`,{
         amount, //거래량
         avgBuyPrice, //지정가
@@ -19,11 +20,8 @@ const usePostBuyTrade = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: ({ market, name, amount, avgBuyPrice, userId }: { market: string; name: string; amount: number; avgBuyPrice: number, userId: string, cash: number })=> {
-                return postHolding({market, name, amount, avgBuyPrice, userId})
-            
-        },
-        onSuccess: async (variable) => {
+        mutationFn: postHolding,
+        onSuccess: async (_, variable) => {
 
             const { userId} = variable
 

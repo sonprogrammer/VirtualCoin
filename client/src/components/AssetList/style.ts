@@ -18,7 +18,10 @@ export const StyledTableHead = styled.thead`
 
 export const StyledTableBody = styled.tbody`
   tr {
-    ${tw`border-b border-zinc-900 transition-colors hover:bg-zinc-900/40`}
+    ${tw`border-b border-zinc-900 transition-colors transition-colors`}
+    &:hover{
+    ${tw`bg-zinc-800/30`}
+    }
   }
   td {
     ${tw`p-4 text-sm text-center text-zinc-100 font-medium`}

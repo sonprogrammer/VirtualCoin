@@ -18,12 +18,14 @@ const RankingComponent = () => {
     // *이거로 모든 유저의 정보를 가져옴
     const { data, isLoading } = useGetAllUserAssetData(userId)
 
-    const allUser = data?.allUser || []
-    const rankData = calculateAllUserAsset(allUser, prices)?.sort((a: any, b: any) => b.profitRate - a.profitRate)
+    const allUser = data || []
+    const rankData = calculateAllUserAsset(allUser, prices)?.sort((a, b) => b.profitRate - a.profitRate)
 
     const safeRankgData = Array.isArray(rankData) ? rankData : [];
 
+    // console.log('rankdat', rankData)
 
+    // TODO 훅으로 만들어논거 가져오기
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth)
@@ -33,7 +35,7 @@ const RankingComponent = () => {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
-    const myRank = rankData.findIndex((data: any) => data.id === userId) + 1
+    const myRank = rankData.findIndex((data) => data.id === userId) + 1
 
 
     const perPage = 10
@@ -70,7 +72,7 @@ const RankingComponent = () => {
                             </tr>
                         </StyledTableHead>
                         <StyledTableBody>
-                            {(windowWidth > 530 ? EachPage : safeRankgData).slice(0, 50).map((a: any, i: number) => {
+                            {(windowWidth > 530 ? EachPage : safeRankgData).slice(0, 50).map((a, i: number) => {
                                 const me = a.id === userId;
                                 const actualRank = firstPage + i + 1;
                                 

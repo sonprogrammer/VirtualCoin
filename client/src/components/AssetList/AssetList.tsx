@@ -8,9 +8,9 @@ import { ProfitBox, StyledContainer, StyledImage, StyledTable, StyledTableBody, 
 
 
 const AssetList = () => {
-    const { data: assetData } = useGetAssetData()
+    const { data: assetData, isLoading } = useGetAssetData()
     const calculatedData = useCalculateAsset(assetData)
-    if (!assetData) {
+    if (isLoading) {
         return (
             <div className='w-full space-y-2'>
                 <Skeleton variant='rectangular' height={50} sx={{ bgcolor: '#18181b' }} />
@@ -20,7 +20,7 @@ const AssetList = () => {
     }
 
 
-    const coins = assetData?.coins.filter((c: any) => c.amount !== 0) || []
+    const coins = assetData?.coins.filter((c) => c.amount !== 0) || []
 
     const { coinDetailPrice } = calculatedData || {};
 
@@ -29,7 +29,7 @@ const AssetList = () => {
             <StyledTable>
                 <StyledTableHead>
                     <tr>
-                    <th className='w-[25%]'>보유자산</th>
+                        <th className='w-[25%]'>보유자산</th>
                         <th>보유수량</th>
                         <th>매수평균가</th>
                         <th>평가금액</th>
@@ -37,13 +37,13 @@ const AssetList = () => {
                     </tr>
                 </StyledTableHead>
                 <StyledTableBody>
-                    {coins.map((coin: any, i: number) => {
+                    {coins.map((coin, i: number) => {
                         const market = coin.market.split('-')[1]
                         const coinImage = `https://static.upbit.com/logos/${market}.png`
                         const detail = coinDetailPrice?.[i] || {}
                         const isPlus = Number(detail.profitLoss) >= 0
                         return (
-<StyledTableTr key={coin.id || i}>
+                            <StyledTableTr key={coin._id || i}>
                                 <td>
                                     <StyledImage>
                                         <img src={coinImage} alt={market} />

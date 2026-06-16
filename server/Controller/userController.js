@@ -26,9 +26,28 @@ const createGuestUser = async (req, res) => {
     });
 
     await newGuestUser.save()
+
+    const token = jwt.sign(
+      {id: newGuestUser._id, name: newGuestUser.name, isGuest: true},
+      process.env.JWT_SECRET,
+      { expiresIn: '1h'}
+    )
+
+    const refreshToken = jwt.sign(
+      {id: newGuestUser._id},
+      process.env.JWT_SECRET,
+      {expiresIn: '7d'}
+    )
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production' ? true : false,
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'LAX',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    })
   
 
-    res.status(200).json(newGuestUser)
+    res.status(200).json({user: newGuestUser, token})
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -119,7 +138,10 @@ const regularLogout = async(req, res) => {
 const kakaoLikeToggle = async (req, res) => {
   try {
     const kakaoId = req.user.kakaoId;
+    console.log('kakaoId', kakaoId)
     const { coinId } = req.params;
+    console.log('coin', coinId)
+    console.log('coin')
 
     const user = await User.findOne({ kakaoId });
     if (!user) {
@@ -146,6 +168,7 @@ const kakaoLikeToggle = async (req, res) => {
 const kakaoGetLikeCoins = async (req, res) => {
   try {
     const kakaoId = req.user.kakaoId;
+    console.log('req.user', req.user)
 
     const user = await User.findOne({ kakaoId });
     if (!user) {

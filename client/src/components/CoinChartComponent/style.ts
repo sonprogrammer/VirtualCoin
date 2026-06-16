@@ -26,7 +26,10 @@ export const StyledTableHead = styled.thead`
 
 export const StyledTableBody = styled.tbody`
   tr {
-    ${tw`border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors cursor-pointer`}
+    ${tw`border-b border-zinc-800/50  cursor-pointer transition-colors`}
+    &:hover {
+      ${tw`bg-zinc-800/30`}
+    }
   }
   td { ${tw`p-4 text-sm [vertical-align:middle]`} }
 

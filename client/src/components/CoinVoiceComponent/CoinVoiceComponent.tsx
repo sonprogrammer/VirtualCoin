@@ -1,15 +1,24 @@
 import { useMemo } from "react";
-import  { OrderBook } from "../../hooks/useGetOrderBook";
+import  useGetOrderBook from "../../hooks/useGetOrderBook";
 import { QuantityBar, StyledAskBox, StyledAskContent, StyledBidBox, StyledBidContent, StyledContainer, StyledRight } from "./style";
 import Skeleton from '@mui/material/Skeleton';
 
 
 interface CoinVoiceComponentProps {
-  orderBook: OrderBook | null;  
+  coinEName: string  
 }
-const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
+const CoinVoiceComponent = ({coinEName} : CoinVoiceComponentProps) => {
+  const { orderBook } = useGetOrderBook(coinEName || "");
 
-
+  const totalBidQuantity = useMemo(() => 
+    orderBook?.bids.reduce((acc, bid) => acc + Number(bid.quantity), 0), 
+    [orderBook?.bids]
+  );
+  const totalAskQuantity = useMemo(() => 
+    orderBook?.asks.reduce((acc, ask) => acc + Number(ask.quantity), 0), 
+    [orderBook?.asks]
+  );
+  
   if (!orderBook) {
     return (
       <div className='h-full p-2 bg-zinc-950'>
@@ -18,24 +27,17 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
     )
   }
 
-  const totalBidQuantity = useMemo(() => 
-    orderBook.bids.reduce((acc, bid) => acc + Number(bid.quantity), 0), 
-    [orderBook.bids]
-  );
-  const totalAskQuantity = useMemo(() => 
-    orderBook.asks.reduce((acc, ask) => acc + Number(ask.quantity), 0), 
-    [orderBook.asks]
-  );
+  
 
   return (
     <StyledContainer>
 
       <StyledAskBox>
-        {orderBook.asks.slice().reverse().map((ask) => (
+        {orderBook.asks.slice(0, 10).reverse().map((ask) => (
           <StyledAskContent key={ask.price}>
             <p>
               {Number(Number(ask.quantity).toFixed(3)).toLocaleString()}
-              <QuantityBar quantity={Number(ask.quantity)} totalQuantity={totalAskQuantity} type='ask'/>
+              <QuantityBar quantity={Number(ask.quantity)} totalQuantity={totalAskQuantity ?? 0} type='ask'/>
             </p>
             <StyledRight>
               <p>{ask.price?.toLocaleString()}</p>
@@ -50,11 +52,11 @@ const CoinVoiceComponent = ({orderBook} : CoinVoiceComponentProps) => {
 
 
       <StyledBidBox>
-        {orderBook.bids.map((bid) => (
+        {orderBook.bids.slice(0, 10).map((bid) => (
           <StyledBidContent key={bid.price}>
             <p>
               {Number(Number(bid.quantity).toFixed(3)).toLocaleString()}
-              <QuantityBar quantity={Number(bid.quantity)} totalQuantity={totalBidQuantity} type='bid'/>
+              <QuantityBar quantity={Number(bid.quantity)} totalQuantity={totalBidQuantity ?? 0} type='bid'/>
             </p>
             <StyledRight>
               <p>{bid.price?.toLocaleString()}</p>

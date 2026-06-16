@@ -27,7 +27,7 @@ const LandingPage = () => {
    if(user?._id){
       navigate('/browse')
    } 
-  }, [user])
+  }, [navigate, user])
 
 
 
@@ -58,9 +58,9 @@ const LandingPage = () => {
         </StyledText>
 
         <StyledBtns>
-        {/* <StyledGuestBtn onClick={() => setGuestModal(true)}>
+         <StyledGuestBtn onClick={() => setGuestModal(true)}>
             게스트로 시작하기
-          </StyledGuestBtn> */}
+          </StyledGuestBtn> 
           <KakaoLogin
             token={kakaoClientId}
             onSuccess={handleKakaoSuccess}

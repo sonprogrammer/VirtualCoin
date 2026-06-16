@@ -103,4 +103,4 @@ const getCurrentPrice = (market) => {
     return currentPrice[market]
 }
 
-module.exports = { startWebSocket, getCurrentPrice, startAllCoinsWebSocket}
+module.exports = { startWebSocket, getCurrentPrice, startAllCoinsWebSocket, currentPrice}

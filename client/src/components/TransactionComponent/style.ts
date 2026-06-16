@@ -75,7 +75,9 @@ export const StyledHead = styled.thead`
 
 export const StyledBody = styled.tbody`
     tr {
-        ${tw`border-b border-zinc-900 transition-colors hover:bg-zinc-900/30`}
+        ${tw`border-b border-zinc-900`}
+        &:hover{
+        ${tw` transition-colors bg-blue-900/30`}
     }
     td {
         ${tw`text-center py-4 px-2 text-sm text-zinc-300`}

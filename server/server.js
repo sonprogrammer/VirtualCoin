@@ -7,13 +7,14 @@ const session = require('express-session');
 require('dotenv').config();
 const userRouter = require('./Routes/userRouter')
 const assetRouter = require('./Routes/assetRouter')
+const rankRouter = require('./Routes/rankRouter')
 const transactionRouter = require('./Routes/transactionRouter')
-const authenticateJWT = require('./middleware/authenticateJWT')
-const cookieParser = require('cookie-parser');
 const holdRouter = require('./Routes/holdingRouter');
+const cookieParser = require('cookie-parser');
 const { default: axios } = require('axios');
 const { webSocket } = require('./websocket');
 const getRestCoinsTicker = require('./Controller/coinController');
+// const redis = require('./redisClient')
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -21,7 +22,7 @@ const server = http.createServer(app)
 
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://virtualcoinn.onrender.com'],
+  origin: ['http://localhost:5173', 'https://virtualcoinn.onrender.com', 'http://localhost:4173'],
 
   methods: ['GET', 'POST'],
   credentials: true
@@ -77,11 +78,22 @@ app.get('/api/chart', async(req, res) => {
     res.status(500).json({message: 'internal server error'})
   }
 })
-
+app.use('/api/rank', rankRouter)
 
 
 webSocket(server)
 // 서버 실행
-server.listen(port, () => {
+server.listen(port, async () => {
   console.log(`Server running on http://localhost:${port}`);
+  
+  // try {
+  //   // await redis.set('connection-test', 'success');
+  //   // const status = await redis.get('connection-test');
+    
+  //   if (status === 'success') {
+  //     console.log('✅ Redis 연결 및 테스트 성공!');
+  //   }
+  // } catch (error) {
+  //   console.error('❌ Redis 연결 실패:', error.message);
+  // }
 });

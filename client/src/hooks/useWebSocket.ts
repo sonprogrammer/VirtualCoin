@@ -1,7 +1,8 @@
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect, useMemo } from "react";
+import { useSetRecoilState } from "recoil";
 import { CoinPrice } from "../context/CoinPrice";
 import axiosInstance from "./useGetRefresh";
+import { throttle } from "lodash";
 
 export interface PriceData {
   trade_price: number;
@@ -15,11 +16,28 @@ export interface PriceData {
 }
 
 const useWebSocket = () => {
-  const [prices, setPrices] = useRecoilState(CoinPrice)
+  const setPrices = useSetRecoilState(CoinPrice)
+
+  const throttledSetPrices = useMemo(() =>
+    throttle((data) => {
+      setPrices((prev) => ({
+        ...prev,
+        [data.code]: {
+          trade_price: data.trade_price,
+          change_rate: data.signed_change_rate,
+          acc_price: data.acc_trade_price_24h,
+          change_price: data.signed_change_price,
+          trade_volume: data.acc_trade_volume_24h,
+          high_price: data.high_price,
+          low_price: data.low_price,
+          prev_closing_price: data.prev_closing_price,
+        }
+      }))
+    }, 300),[setPrices])
 
   useEffect(() => {
 
-    const fetchRestPrice = async() => {
+    const fetchRestPrice = async () => {
       try {
         const res = await axiosInstance.get('/api/coins/tickers')
         setPrices(res.data)
@@ -33,28 +51,16 @@ const useWebSocket = () => {
     const ws = new WebSocket(import.meta.env.VITE_WS_URL)
 
     ws.onopen = () => {
-      console.log("coinprice WebSocket from server Connected");
-      
+      // console.log("coinprice WebSocket from server Connected");
+
     };
 
     ws.onmessage = (e) => {
       try {
-        const data = JSON.parse(e.data); 
+        const data = JSON.parse(e.data);
         if (data.type === "ticker") {
-        setPrices((prev) => ({
-          ...prev,
-          [data.code]: {
-            trade_price: data.trade_price, // 현재가
-            change_rate: data.signed_change_rate, // 전일 대비 퍼센트
-            acc_price: data.acc_trade_price_24h, // 거래대금
-            change_price: data.signed_change_price, // 전일 대비 가격 변동
-            trade_volume: data.acc_trade_volume_24h, // 거래량
-            high_price: data.high_price, // 고가
-            low_price: data.low_price, // 저가
-            prev_closing_price: data.prev_closing_price
-          },
-        }))
-      }
+          throttledSetPrices(data)
+        }
       } catch (error) {
         console.error("Error parsing WebSocket message:", error);
       }
@@ -62,10 +68,11 @@ const useWebSocket = () => {
 
     return () => {
       ws.close();
+      throttledSetPrices.cancel()
     };
-  }, [setPrices]);
+  }, [setPrices, throttledSetPrices]);
 
-  return prices;
+  return null;
 };
 
 export default useWebSocket;

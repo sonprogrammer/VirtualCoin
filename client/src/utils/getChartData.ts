@@ -1,3 +1,4 @@
+import { UpbitCandle } from './../type';
 import axios from "axios";
 
 
@@ -11,7 +12,17 @@ interface getChartParams {
   count?: number;
 }
 
-const getChartData = async ({ market, type, unit, to, count = 200 }: getChartParams) => {
+interface ChartCandleData {
+    time: number;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+  };
+
+
+
+const getChartData = async ({ market, type, unit, to, count = 200 }: getChartParams): Promise<ChartCandleData[]> => {
     let url = `${import.meta.env.VITE_API_URL}/api/chart?market=${market}&type=${type}&count=${count}`;
 
     if (type === 'minutes' && unit) {
@@ -23,19 +34,18 @@ const getChartData = async ({ market, type, unit, to, count = 200 }: getChartPar
     }
 
 
-  const res = await axios.get(url);
+  const res = await axios.get<UpbitCandle[]>(url);
 
 
-  const mapped = res.data.map((item: any) => ({
+  const mapped = res.data.map((item) => ({
     time: Math.floor(new Date(item.candle_date_time_kst).getTime() / 1000),
-
     open: item.opening_price,
     high: item.high_price,
     low: item.low_price,
     close: item.trade_price,
   }));
 
-  mapped.sort((a:any, b:any) => a.time - b.time);
+  mapped.sort((a, b) => a.time - b.time);
 
 
 const unique: typeof mapped = [];

@@ -5,5 +5,6 @@ const authenticateJWT = require('../middleware/authenticateJWT')
 const transactionRouter = express.Router()
 
 transactionRouter.get('/:userId',authenticateJWT, getTransactions)
+transactionRouter.post('buy', authenticateJWT, )
 
 module.exports = transactionRouter

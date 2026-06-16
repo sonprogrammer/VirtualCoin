@@ -1,17 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { userState } from '../context/userState';
-import { saveAccessToken } from '../context/saveAccessToken';
-import { toast } from 'react-toastify';
 import axiosInstance from './useGetRefresh';
+import { saveUserToLocalStorage } from '../context/localStorage';
+import { saveAccessToken } from '../context/saveAccessToken';
+
 
 
 
 
 const guestLogin = async() => {
-    const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/user/guest-login`)
-    // const res = await axiosInstance.post('/api/user/guest-login')
+    const res = await axiosInstance.post('/api/user/guest-login')
     console.log('rea datae', res.data)
     return res.data
 }
@@ -25,10 +24,9 @@ const useGuestLogin = () => {
         onSuccess: (data) => {
             if (data) {
                 console.log('data from useguestloing ', data)
-                localStorage.setItem('user', JSON.stringify(data))
-                console.log('2. 로컬스토리지 확인:', localStorage.getItem('user'))
-                // saveAccessToken(data)
-                setUser(data)
+                saveUserToLocalStorage(data.user)
+                saveAccessToken(data.token)
+                setUser(data.user)
                 queryClient.invalidateQueries({ queryKey: ['guestUser'] });
             }
         },

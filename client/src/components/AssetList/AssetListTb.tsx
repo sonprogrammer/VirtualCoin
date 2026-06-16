@@ -16,14 +16,14 @@ const AssetListTb = () => {
     }
     
     
-    const coins = assetData?.coins.filter((c:any) => c.amount !== 0) || []
+    const coins = assetData?.coins.filter((c) => c.amount !== 0) || []
     
     const {coinDetailPrice} =  calculatedData || {};
   return (
     <StyledTbContainer className='tbcontainer'>   
         {
             coins.length === 0 ? <StyledNonCoins>there is no coins</StyledNonCoins> : (
-            coins.map((coin:any, i: number) => {
+            coins.map((coin, i: number) => {
                 const market = coin.market.split('-')[1]
                 const totalBuy = coin.avgBuyPrice * coin.amount
                 return(

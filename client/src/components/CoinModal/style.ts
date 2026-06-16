@@ -12,13 +12,16 @@ export const StyledContainer = styled.div`
         flex
         justify-center
         items-center
+        z-[9999]
     `}
 `
 
 export const StyledModal = styled.div`
     ${tw`
-        bg-white
-        rounded-xl
+        bg-slate-900
+        border border-slate-700
+        rounded-2xl
+        shadow-2xl
         w-[50%]
         p-5
         flex
@@ -43,6 +46,7 @@ export const StyledContentTitle = styled.div`
         justify-around
         w-full
         border-b-2
+        py-2
         `}
         p{
             ${tw`
@@ -61,28 +65,7 @@ export const StyledContent = styled.div`
         items-center
         w-full
         overflow-y-auto
+        mt-1
     `}
 `
     
-    export const StyledCoin = styled.div`
-    ${tw`
-        flex
-        justify-between
-        items-center
-        w-full
-        cursor-pointer
-        `}
-        p{
-            ${tw`
-                flex
-                justify-center
-                flex-1
-                py-2
-            `}
-        }
-            &:hover{
-                    ${tw`
-                        bg-gray-100
-                    `}
-                }
-`

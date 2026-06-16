@@ -63,8 +63,8 @@ const formatDateTime = (dateString: string) => {
 
         const now = new Date();
 
-        let startingDate: Date = new Date(now)
-        let endingDate: Date = new Date(now)
+        const startingDate: Date = new Date(now)
+        const endingDate: Date = new Date(now)
 
         if (selectedPeriod === '1주일') {
             startingDate.setDate(now.getDate() - 7)
@@ -95,7 +95,7 @@ const formatDateTime = (dateString: string) => {
         return transactionDate >= new Date(startDate) && transactionDate <= new Date(endDate);
     };
     
-    const filteredData = coins?.filter((item:any) => {
+    const filteredData = coins?.filter((item) => {
         const periodMatch = filterByPeriod((item.completedTime));
         const typeMatch = type === '전체' || item.type === (type === '매수' ? 'BUY' : 'SELL');
         return periodMatch && typeMatch;
@@ -157,7 +157,7 @@ const formatDateTime = (dateString: string) => {
                                 <td colSpan={7} className="py-20 text-zinc-600">거래 내역이 없습니다.</td>
                             </tr>
                         ) : (
-                            filteredData?.map((a: any, i: number) => {
+                            filteredData?.map((a, i: number) => {
                                 const isBuy = a.type === 'BUY';
                                 const totalCost = Math.floor(a.amount * a.price);
 

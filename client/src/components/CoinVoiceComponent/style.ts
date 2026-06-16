@@ -8,9 +8,7 @@ export const StyledContainer = styled.div`
         flex-col
         h-full
         w-full
-        border-2
         p-2
-        gap-2
         overflow-y-auto
     `}
     
@@ -31,6 +29,8 @@ export const StyledAskContent = styled.div`
         flex
         justify-around
         w-full
+        border-[0.5px]
+        border-black
     `}
     p{
         ${tw`
@@ -93,7 +93,7 @@ export const StyledRight = styled.div`
 
 export const StyledBidBox = styled.div`
     ${tw`
-        text-red-500
+        text-rose-500
         bg-red-100/50
     `}
 `
@@ -102,6 +102,8 @@ export const StyledBidContent = styled.div`
         flex
         justify-around
         w-full
+        border-[0.5px]
+        border-black
     `}
     p{
         ${tw`

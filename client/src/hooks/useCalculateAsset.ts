@@ -2,11 +2,17 @@
 import { useRecoilState } from "recoil"
 import { CoinPrice } from "../context/CoinPrice"
 import { useMemo } from 'react';
-
+export interface AssetCoinsData {
+    market: string;
+    name: string;
+    amount: number;
+    _id: string
+    avgBuyPrice: number;
+}
 
 interface AssetData {
     cash: number;
-    coins: any[];
+    coins: AssetCoinsData[];
 }
 
 interface CoinDetailPrice {
@@ -27,9 +33,9 @@ interface CalculateAssets {
     currentCoinPrice: number[];
     coinDetailPrice: CoinDetailPrice[]
 }
-const useCalculateAsset = (assetData: AssetData) => {
-    const [prices] = useRecoilState(CoinPrice); 
 
+const useCalculateAsset = (assetData: AssetData | undefined) => {
+    const [prices] = useRecoilState(CoinPrice); 
 
     const calculateAssets = useMemo<CalculateAssets>(() => {
         if (!assetData || !assetData.coins) return {
@@ -50,7 +56,7 @@ const useCalculateAsset = (assetData: AssetData) => {
 
 
         //* 총매수 금액
-        const totalBuy = filteredCoins.reduce((acc: number, coin: any) => {
+        const totalBuy = filteredCoins.reduce((acc: number, coin) => {
             const purchasePrice = coin.avgBuyPrice || 0; 
             const quantity = coin.amount || 0; 
 
@@ -59,7 +65,7 @@ const useCalculateAsset = (assetData: AssetData) => {
 
         
         // *총 평가 = 코인의 현재 가격 * 수량
-        const totalValuationAmount = filteredCoins.reduce((acc: number, coin: any) => {
+        const totalValuationAmount = filteredCoins.reduce((acc: number, coin) => {
             const currentPrice = prices[coin.market]?.trade_price || 0;
             const quantity = coin.amount || 0;
             return acc + (currentPrice * quantity)
@@ -79,12 +85,12 @@ const useCalculateAsset = (assetData: AssetData) => {
 
 
         // *코인 현재 가격
-        const currentCoinPrice = filteredCoins.map((coin: any) => {
+        const currentCoinPrice = filteredCoins.map((coin) => {
             return prices[coin.market]?.trade_price}
         )
 
         // * 코인별 평가금액, 평가 손익
-        const coinDetailPrice : CoinDetailPrice[]= filteredCoins.map(((coin:any) => {
+        const coinDetailPrice : CoinDetailPrice[]= filteredCoins.map(((coin) => {
             const currentPrice = prices[coin.market]?.trade_price || 0 //*현재 가
             const coinValue = currentPrice * coin.amount // *평가금액
             const coinBuyPrice = coin.avgBuyPrice * coin.amount //*매수금액

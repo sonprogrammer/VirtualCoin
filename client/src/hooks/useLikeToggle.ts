@@ -12,19 +12,20 @@ const useLikeToggle = () => {
   const queryClient = useQueryClient()
 
   // !카카오 좋아요 토글
-  const likeToggleKakao = async(coinId: string) => {
+  const likeToggleKakao = async (coinId: string) => {
     const res = await axiosInstance.post(`/api/user/${coinId}/like`)
+    console.log('res', res.data)
 
     return res.data
   }
 
-  const {mutate } = useMutation({ 
+  const { mutate } = useMutation({
     mutationFn: likeToggleKakao,
-    onSuccess: () => {
-      console.log('카카오유저 좋아요성공')
-      queryClient.invalidateQueries({ queryKey: ['likeCoins', false] })
+    onSuccess: (_, variable) => {
+      console.log('카카오유저 좋아요성공', variable)
+      queryClient.invalidateQueries({ queryKey: ['likedCoins', variable] })
     },
-    onError: (error) => { 
+    onError: (error) => {
       console.error('error while toggling', error)
     }
   })
@@ -44,14 +45,15 @@ const useLikeToggle = () => {
 
     const updatedUser = { ...storedUser, interestedCoins: updatedLikeCoins}
     localStorage.setItem('user', JSON.stringify(updatedUser))
+    queryClient.setQueryData(['likedCoins'], updatedLikeCoins)
 
   }
 
   const likeToggle = (coinId: string) => {
     if(userData.isGuest){
-      likeToggleGuest(coinId)
+    likeToggleGuest(coinId)
     }else{
-      mutate(coinId)
+    mutate(coinId)
     }
   }
 

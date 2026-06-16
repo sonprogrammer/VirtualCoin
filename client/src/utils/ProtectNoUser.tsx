@@ -6,12 +6,13 @@ import { useNavigate } from "react-router-dom";
 const ProtectNoUser = ({children}: {children:ReactNode}) => {
     const user = useRecoilValue(userState);
   const navigate = useNavigate()
+
   
     useEffect(() => {
       if (!user || !user._id) {
         navigate('/')
       }
-    }, [user]);
+    }, [user, navigate])
   
     return <>{children}</>
 }

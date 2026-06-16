@@ -2,6 +2,7 @@ const Hold = require("../Models/holdingModel");
 const Asset = require("../Models/assetModel")
 const { startWebSocket, getCurrentPrice, startAllCoinsWebSocket } = require("../utils/getTradePrice");
 const Transaction = require("../Models/transactionModel");
+const { updateRanking } = require('../utils/rankUtils')
 
 
 // *실시간 가격체크 후 체결
@@ -121,6 +122,16 @@ const processOrder = async(userId, market, orderPrice, amount, type, currentPric
 
     }
 
+    try{
+      const updatedAsset = await Asset.findOne({userId})
+      console.log("랭킹 업데이트 호출 직전:", userId);
+      if(updatedAsset){
+        await updateRanking(userId, updatedAsset)
+      }
+    }catch(rankError){
+      console.error('랭킹 업데이트 실패',rankError)
+    }
+
     // *거래내역 모델에 추가
     const transaction = await Transaction.findOne({userId})
     const newTransaction = {
@@ -238,6 +249,7 @@ realTimeCheckOrder()
 const postBuyReserve = async (req, res) => {
   try {
     const { amount, avgBuyPrice, name, userId } = req.body;
+    console.log('amount' , amount, avgBuyPrice, name, userId)
     const market = req.params.coinId;
     const avgTradePrice = avgBuyPrice
     const totalCost = amount * avgBuyPrice

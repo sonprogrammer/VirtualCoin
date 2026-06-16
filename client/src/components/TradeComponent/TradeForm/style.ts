@@ -93,7 +93,7 @@ export const StyledBookTitle = styled.div`
 `;
 
 export const StyledDivider = styled.div`
-    ${tw`max-h-[70%] overflow-y-auto`}
+    ${tw`max-h-[400px] overflow-y-auto min-h-0 `}
     &::-webkit-scrollbar { width: 4px; }
     &::-webkit-scrollbar-thumb { ${tw`bg-zinc-800 rounded-full`} }
 `;

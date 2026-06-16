@@ -6,12 +6,21 @@ import { saveUserToLocalStorage } from '../context/localStorage';
 import { saveAccessToken } from '../context/saveAccessToken';
 import axiosInstance from './useGetRefresh';
 
+interface KakaoLoginData {
+  response: {
+    access_token: string;
+  };
+}
+interface KakaoError {
+  error: string;
+  error_description: string;
+}
+
 const useKakaoLogin = () => {
   const navigate = useNavigate();
   const setUser = useSetRecoilState(userState); 
 
-  const handleKakaoSuccess = async (data: any) => {
-
+  const handleKakaoSuccess = async (data:KakaoLoginData) => {
     const accessToken = data.response.access_token
 
     try {
@@ -40,7 +49,7 @@ const useKakaoLogin = () => {
     }
   };
 
-  const handleKakaoFailure = (error: any) => {
+  const handleKakaoFailure = (error: KakaoError) => {
     console.error('카카오 로그인 오류:', error);
     toast.error('카카오 로그인에 실패했습니다.');
   };

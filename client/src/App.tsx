@@ -1,4 +1,4 @@
-import { Route, Routes} from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import { AssetPage, CoinDetailPage, LandingPage, LayoutPage, MainPage, NotfoundPage, RankingPage } from "./pages"
 import ProtectNoUser from "./utils/ProtectNoUser"
 import { ToastContainer } from 'react-toastify';
@@ -26,7 +26,7 @@ function App() {
             </ProtectNoUser>
           }
           />
-          <Route path="/coin/:coinId" element={
+          <Route path="/coin/:coinEName" element={
             <ProtectNoUser>
               <CoinDetailPage />
             </ProtectNoUser>
@@ -47,7 +47,12 @@ function App() {
           } />
         </Route>
       </Routes>
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-center" limit={2} style={{ zIndex: 99999 }}
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick={true}
+      />
 
     </>
   )

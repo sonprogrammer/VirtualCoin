@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react"
-import axios from 'axios'
+import { useEffect, useMemo, useState } from "react"
 import { StyledContainer, StyledPageBtns, StyledTable, StyledTableBody, StyledTableHead, StyledTitle } from "./style"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
@@ -11,20 +10,20 @@ import useLikeToggle from "../../hooks/useLikeToggle";
 import usePostRecentCoin from "../../hooks/usePostRecentCoin";
 import useGetLikedCoins from "../../hooks/useGetLikeCoins";
 import Skeleton from "@mui/material/Skeleton";
+import useGetCoins from "../../hooks/useGetCoins";
 
 
 const CoinChartComponent = () => {
   const { likeToggle } = useLikeToggle();
   const { likedCoins } = useGetLikedCoins()
 
-  const [coins, setCoins] = useState<any[]>([])
   const [page, setPage] = useState(1)
   const [star, setStar] = useState<string[]>([]) //*관심코인 관리 
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
 
 
-
+  const { data: coins =[]} = useGetCoins()
 
   const navigate = useNavigate()
 
@@ -32,35 +31,20 @@ const CoinChartComponent = () => {
 
   const [prices] = useRecoilState(CoinPrice)
 
-  const handleCoinClick = (coinId: string) => {
-    addRecentCoin(coinId)
-    navigate(`/coin/${coinId}`)
+  const handleCoinClick = (coinEName: string) => {
+    addRecentCoin(coinEName)
+    navigate(`/coin/${coinEName}`)
   }
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/coins`)
-        const krwCoins = res.data.filter((coin: any) => coin.market.startsWith("KRW-"));
-        setCoins(krwCoins);
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchData()
-  }, [])
   
-  const sortCoinByVolume = (order: 'asc' | 'desc') => {
-    setCoins(prevCoins => 
-      [...prevCoins].sort((a, b) => {
-        const tradeVolumeA = prices[a.market]?.acc_price || 0;
-        const tradeVolumeB = prices[b.market]?.acc_price || 0;
-        return order === 'asc' ? tradeVolumeA - tradeVolumeB : tradeVolumeB - tradeVolumeA;
-      })
-    );
-    setSortOrder(order);
-  };
+  const sortedCoins = useMemo(() => {
+  const sorted = [...coins].sort((a, b) => {
+    const tradeVolumeA = prices[a.market]?.acc_price || 0;
+    const tradeVolumeB = prices[b.market]?.acc_price || 0;
+    return sortOrder === 'asc' ? tradeVolumeA - tradeVolumeB : tradeVolumeB - tradeVolumeA;
+  });
+  return sorted;
+}, [coins, prices, sortOrder])
 
 
 
@@ -101,7 +85,7 @@ const CoinChartComponent = () => {
   const CoinPage = 10;
 
   const firstPage = (page - 1) * CoinPage
-  const coinPerPage = coins.slice(firstPage, firstPage + CoinPage)
+  const coinPerPage = sortedCoins.slice(firstPage, firstPage + CoinPage)
 
 
   const time = new Date().toLocaleString()
@@ -126,7 +110,7 @@ const CoinChartComponent = () => {
             <th className="text-right">현재가</th>
             <th className="text-right">전일대비</th>
               <th className="text-right">
-                <button onClick={() => sortCoinByVolume(sortOrder === 'asc' ? 'desc' : 'asc')}>
+                <button onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')}>
                   {sortOrder === 'asc' ? '▲' : '▼'} 거래대금(24H)
                 </button>
               </th>

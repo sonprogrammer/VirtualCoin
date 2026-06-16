@@ -20,26 +20,26 @@ function AssetCircleGraph() {
     return <div>Loading...</div>; 
   }
   
-  const coins = assetData?.data.coins.filter((c:any) => c.amount !== 0) || []
+  const coins = assetData?.data.coins.filter((c) => c.amount !== 0) || []
 
   
 
   // *코인별 평가금액
-  const coinValue = coins.map((coin: any) => ({
+  const coinValue = coins.map((coin) => ({
     market: coin.market.split('-')[1],
     value: coin.amount * coin.avgBuyPrice
   }))
 
-  const totalCoinValue = coinValue.reduce((sum: number, coin:any) => sum+coin.value, 0)
+  const totalCoinValue = coinValue.reduce((sum: number, coin) => sum+coin.value, 0)
 
-  const coinsRate = totalCoinValue > 0 ? coinValue.map((coin: any) => ({
+  const coinsRate = totalCoinValue > 0 ? coinValue.map((coin) => ({
     market: coin.market,
     value: Number(((coin.value / totalCoinValue) * 100).toFixed(2))
   })) : []
 
   
 
-  const sortedCoinsRates = coinsRate.sort((a:any, b: any) => b.value - a.value)
+  const sortedCoinsRates = coinsRate.sort((a, b) => b.value - a.value)
 
 
   const generatedColors = (count: number) => {
@@ -54,9 +54,9 @@ function AssetCircleGraph() {
       borderWidth: 0
     }]
   } : {
-    labels: sortedCoinsRates.map((coin:any) => coin.market),
+    labels: sortedCoinsRates.map((coin) => coin.market),
     datasets: [{
-      data: sortedCoinsRates.map((coin: any) => coin.value),
+      data: sortedCoinsRates.map((coin) => coin.value),
       backgroundColor: generatedColors(sortedCoinsRates.length),
       hoverOffset: 10,
       borderWidth: 2,
@@ -94,7 +94,7 @@ function AssetCircleGraph() {
     </ChartSide>
 
     <LegendSide>
-      {sortedCoinsRates.map((coin: any, i: number) => (
+      {sortedCoinsRates.map((coin, i: number) => (
         <LegendItem key={coin.market}>
           <div className="dot" style={{ backgroundColor: data.datasets[0].backgroundColor[i] }} />
           <span className="name">{coin.market}</span>

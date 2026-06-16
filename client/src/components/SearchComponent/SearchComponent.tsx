@@ -1,10 +1,10 @@
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { StyledBox, StyledCloseBtn, StyledCoinBox, StyledCoinContainer, StyledCoinContent, StyledCoinNameAndImg, StyledCoinNumber, StyledContainer, StyledInput, StyledNoResult } from './style'
 import useGetCoins from '../../hooks/useGetCoins'
 import { useNavigate } from 'react-router-dom'
 import usePostRecentCoin from '../../hooks/usePostRecentCoin'
-import { useRecoilState } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { CoinPrice } from '../../context/CoinPrice'
 
 interface SearchComponentProps {
@@ -12,15 +12,29 @@ interface SearchComponentProps {
 }
 
 const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
-  const [coins, setCoins] = useState<any[]>([])
   const [searchQuery, setSearchQuery] = useState<string>('')
+  const [debouncedQuery, setDebouncedQuery] = useState('')
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const [prices] = useRecoilState(CoinPrice);
+  const prices = useRecoilValue(CoinPrice);
 
   const navigate = useNavigate()
   const { mutate: addRecentCoin } = usePostRecentCoin();
+  // * 코인 이름 가져오는거임
+  const { data: coinData, isLoading, error } = useGetCoins()
 
+  useEffect(() => {
+    const searchTime = setTimeout(() => {
+      setDebouncedQuery(searchQuery)
+    },500)
+    return () => clearTimeout(searchTime)
+  },[searchQuery])
+  
+  const sortedAndFilteredCoins = useMemo(() => {
+    if(!coinData || !prices) return []
+    return [...coinData].sort((a, b) => (prices[b.market].acc_price || 0) - (prices[a.market].acc_price || 0))
+                        .filter(coin => coin.korean_name.toLowerCase().includes(debouncedQuery.toLowerCase()))
+  },[coinData, prices, debouncedQuery])
 
   useEffect(() => {
     if(inputRef.current){
@@ -33,25 +47,6 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
     addRecentCoin(coinId)
     handleSearchModalClose()
   }
-
-  
-  
-  const { data: coinData, isLoading, error } = useGetCoins()
-
-  useEffect(() => {
-    if (coinData && prices) {
-      const sortedCoins = [...coinData].sort((a, b) => {
-        const tradeVolumeA = prices[a.market]?.acc_price || 0;
-        const tradeVolumeB = prices[b.market]?.acc_price || 0;
-        return tradeVolumeB - tradeVolumeA;
-      });
-      setCoins(sortedCoins)
-    }
-  }, [prices])
-
-  const filteredCoins = coins.filter(coin => (
-    coin.korean_name.toLowerCase().includes(searchQuery.toLowerCase())
-  ))
 
 
   if (isLoading) return (
@@ -84,7 +79,7 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
         </StyledInput>
 
         <StyledCoinContainer>
-          {filteredCoins.length === 0 ? (
+          {sortedAndFilteredCoins.length === 0 ? (
             <StyledNoResult>
               <p className="mt-2 text-sm font-medium">검색 결과가 없습니다.</p>
             </StyledNoResult>
@@ -95,7 +90,7 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
                 <span>거래대금 순</span>
               </h1>
               <div className="flex flex-col">
-                {filteredCoins.slice(0, 20).map((coin, i) => {
+                {sortedAndFilteredCoins.slice(0, 20).map((coin, i) => {
                   const coinMarket = prices[coin.market]
                   const coinUnit = coin.market.split('-')[1]
                   const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`

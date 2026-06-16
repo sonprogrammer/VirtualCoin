@@ -1,40 +1,34 @@
 
 import { CoinModal } from "../CoinModal";
-import { useRecoilState } from "recoil";
-import { CoinPrice } from "../../context/CoinPrice";
 import useGetCoins from "../../hooks/useGetCoins";
 import useGetLikedCoins from "../../hooks/useGetLikeCoins";
+import { useMemo } from "react";
 
 
 
 interface InterestedCoinProps{
-    handleOutsideClick: () => void;
+    onClose: () => void;
 }
 
 
-const InterestedCoin = ({handleOutsideClick} : InterestedCoinProps) => {
-
-
-
+const InterestedCoin = ({onClose} : InterestedCoinProps) => {
     const { likedCoins } = useGetLikedCoins()
     const { data: coinName } = useGetCoins();    
-    const [prices] = useRecoilState(CoinPrice); 
 
+    console.log('interested')
     
-    
-    const coinSet = new Set(likedCoins);
-    const coinN = coinName?.filter((c:any) => coinSet.has(c.market));
-    
-
-    const coinData = coinN?.map((name: any) => ({
-      coinKoreanName : name.korean_name,
-      coinMarket: name.market,
-      price: prices[name.market]
-    }))
+    const coinData = useMemo(() => {
+        const coinSet = new Set(likedCoins);
+        return coinName?.filter((c) => coinSet.has(c.market))
+             .map((name) => ({
+                 coinKoreanName: name.korean_name,
+                 coinMarket: name.market
+             })) ?? [];
+    }, [likedCoins, coinName])
 
     
       return(
-         <CoinModal title="관심코인" coinData={coinData} onClickOutside={handleOutsideClick} />
+         <CoinModal title="관심코인" coinData={coinData} onClose={onClose} />
     )
 }
 

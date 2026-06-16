@@ -22,12 +22,14 @@ type Candle = {
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+type ChartType = 'minutes' | 'days' | 'weeks' | 'months'
+
 const CoinChartGraphComponent = () => {
-  const { coinId } = useParams()
+  const { coinEName } = useParams()
 
   const prevOldestTime = useRef<number | null>(null)
 
-  const [type, setType] = useState<'minutes' | 'days' | 'weeks' | 'months'>('minutes');
+  const [type, setType] = useState<ChartType>('minutes');
   const [unit, setUnit] = useState<number>(15) //minute 용
   const chartContainerRef = useRef<HTMLDivElement | null>(null)
   const chartRef = useRef<IChartApi | null>(null)
@@ -38,7 +40,7 @@ const CoinChartGraphComponent = () => {
     data,
     fetchNextPage,
     hasNextPage,
-  } = useGetChartData(coinId ?? '', type, unit);
+  } = useGetChartData(coinEName ?? '', type, unit);
 
 
 
@@ -52,17 +54,17 @@ const CoinChartGraphComponent = () => {
       width: chartContainerRef.current.clientWidth,
       height: 500,
       layout: {
-        background: { color: "#09090b" }, 
-        textColor: "#a1a1aa", 
+        background: { color: "#09090b" },
+        textColor: "#a1a1aa",
       },
       grid: {
-        vertLines: { color: "#18181b" }, 
+        vertLines: { color: "#18181b" },
         horzLines: { color: "#18181b" },
       },
       timeScale: {
         timeVisible: true,
         secondsVisible: false,
-        borderColor: "#27272a", 
+        borderColor: "#27272a",
       },
       rightPriceScale: {
         borderColor: "#27272a",
@@ -70,8 +72,8 @@ const CoinChartGraphComponent = () => {
     })
 
     const series = chart.addSeries(CandlestickSeries, {
-      upColor: "#ef4444",       
-      downColor: "#38bdf8",   
+      upColor: "#ef4444",
+      downColor: "#38bdf8",
       borderUpColor: "#ef4444",
       borderDownColor: "#38bdf8",
       wickUpColor: "#ef4444",
@@ -109,7 +111,7 @@ const CoinChartGraphComponent = () => {
       timeScale.unsubscribeVisibleTimeRangeChange(onVisibleRangeChange)
       chart.remove()
     }
-  }, [hasNextPage]);
+  }, [fetchNextPage, hasNextPage]);
 
 
   useEffect(() => {
@@ -138,14 +140,14 @@ const CoinChartGraphComponent = () => {
 
         const updatedCandle = {
           ...candle,
-          time: adjustedTime ,
+          time: adjustedTime as Time,
         };
 
         return updatedCandle;
       })
-      .sort((a, b) => a.time - b.time);
+      .sort((a, b) => (a.time as number) - (b.time as number));
 
-   
+
 
     candleSeriesRef.current.setData(filtered)
   }, [data])
@@ -171,10 +173,10 @@ const CoinChartGraphComponent = () => {
       <div className="flex items-center gap-4 p-3 bg-zinc-900/50 border-b border-zinc-900">
         <div className="flex items-center gap-2">
           <label htmlFor="type" className="text-xs font-bold text-zinc-500">차트</label>
-          <select 
-            id="type" 
+          <select
+            id="type"
             value={type}
-            onChange={(e) => setType(e.target.value as any)}
+            onChange={(e) => setType(e.target.value as ChartType)}
             className="bg-zinc-800 text-zinc-200 text-xs p-1 px-2 rounded border border-zinc-700 outline-none"
           >
             <option value="minutes">분</option>
@@ -187,9 +189,9 @@ const CoinChartGraphComponent = () => {
         {type === 'minutes' && (
           <div className="flex items-center gap-2">
             <label htmlFor="unit" className="text-xs font-bold text-zinc-500">단위</label>
-            <select 
-              id="unit" 
-              value={unit} 
+            <select
+              id="unit"
+              value={unit}
               onChange={(e) => setUnit(Number(e.target.value))}
               className="bg-zinc-800 text-zinc-200 text-xs p-1 px-2 rounded border border-zinc-700 outline-none"
             >

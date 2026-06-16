@@ -1,15 +1,25 @@
+import { PriceData } from "../context/CoinPrice"
+import { UserAsset, UserCoins } from "../type"
 
-const calculateAllUserAsset = ((users: any, prices: any) => {
+interface RankData {
+    name?: string;
+    totalAsset: number;
+    totalProfit: number;
+    profitRate: number;
+    id?: string;
+}
+
+const calculateAllUserAsset = ((users: UserAsset[], prices: { [key: string]: PriceData }): RankData[] => {
     return users
-        .filter((user: any) => user.userId)
-        .map((user: any) => {
+        .filter((user) => user._id)
+        .map((user) => {
         const { coins, cash, userId } = user
 
-        const totalBuy = coins.reduce((acc: any, coin: any) => {
+        const totalBuy = coins.reduce((acc: number, coin: UserCoins) => {
             return acc + (coin.avgBuyPrice * coin.amount)
         },0)
 
-        const totalValuationAmount = coins.reduce((acc: any, coin: any) => {
+        const totalValuationAmount = coins.reduce((acc: number, coin: UserCoins) => {
             const currentPrice = prices[coin.market]?.trade_price || 0
             return acc + (currentPrice * coin.amount)
         },0)
