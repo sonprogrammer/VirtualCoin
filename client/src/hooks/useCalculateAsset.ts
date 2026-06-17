@@ -1,7 +1,7 @@
 
-import { useRecoilState } from "recoil"
-import { CoinPrice } from "../context/CoinPrice"
+import { useRecoilValue } from "recoil"
 import { useMemo } from 'react';
+import { selectedCoinPrice } from "../context/selectedCoinPrice";
 export interface AssetCoinsData {
     market: string;
     name: string;
@@ -35,7 +35,11 @@ interface CalculateAssets {
 }
 
 const useCalculateAsset = (assetData: AssetData | undefined) => {
-    const [prices] = useRecoilState(CoinPrice); 
+
+    const marketNames = useMemo(() => {
+        return assetData?.coins.filter(coin => coin.amount !== 0).map(coin => coin.market) || []
+    },[assetData])
+    const prices = useRecoilValue(selectedCoinPrice(marketNames))
 
     const calculateAssets = useMemo<CalculateAssets>(() => {
         if (!assetData || !assetData.coins) return {
@@ -86,7 +90,8 @@ const useCalculateAsset = (assetData: AssetData | undefined) => {
 
         // *코인 현재 가격
         const currentCoinPrice = filteredCoins.map((coin) => {
-            return prices[coin.market]?.trade_price}
+            return prices[coin.market]?.trade_price ?? 0
+        }
         )
 
         // * 코인별 평가금액, 평가 손익

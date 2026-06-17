@@ -16,7 +16,6 @@ interface CoinModalProps {
 }
 const CoinModal = ({ title, coinData, onClose }: CoinModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null)
-  // console.log('coinData fro mmodal', coinData)
 
   const navigate = useNavigate()
 

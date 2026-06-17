@@ -1,15 +1,15 @@
 
 
 import Skeleton from '@mui/material/Skeleton';
-import useCalculateAsset from '../../hooks/useCalculateAsset';
 import useGetAssetData from '../../hooks/useGetAssetData';
 
-import { ProfitBox, StyledContainer, StyledImage, StyledTable, StyledTableBody, StyledTableHead, StyledTableTr } from './style';
+import { StyledContainer, StyledTable, StyledTableBody, StyledTableHead} from './style';
+import { AssetRow } from './AssetRow';
 
 
 const AssetList = () => {
     const { data: assetData, isLoading } = useGetAssetData()
-    const calculatedData = useCalculateAsset(assetData)
+
     if (isLoading) {
         return (
             <div className='w-full space-y-2'>
@@ -22,7 +22,6 @@ const AssetList = () => {
 
     const coins = assetData?.coins.filter((c) => c.amount !== 0) || []
 
-    const { coinDetailPrice } = calculatedData || {};
 
     return (
         <StyledContainer>
@@ -37,40 +36,10 @@ const AssetList = () => {
                     </tr>
                 </StyledTableHead>
                 <StyledTableBody>
-                    {coins.map((coin, i: number) => {
-                        const market = coin.market.split('-')[1]
-                        const coinImage = `https://static.upbit.com/logos/${market}.png`
-                        const detail = coinDetailPrice?.[i] || {}
-                        const isPlus = Number(detail.profitLoss) >= 0
-                        return (
-                            <StyledTableTr key={coin._id || i}>
-                                <td>
-                                    <StyledImage>
-                                        <img src={coinImage} alt={market} />
-                                        <p>{coin.name}</p>
-                                    </StyledImage>
-                                </td>
-                                <td>{coin.amount?.toLocaleString()}</td>
-                                <td className="text-zinc-400">
-                                    {Number(coin.avgBuyPrice)?.toLocaleString()}
-                                </td>
-                                <td className="font-bold">
-                                    {Math.round(Number(detail.coinValue || 0)).toLocaleString()}
-                                </td>
-                                <td>
-                                    <ProfitBox>
-                                        <p className={isPlus ? '!text-red-500' : '!text-sky-400'}>
-                                            {isPlus && '+'}
-                                            {detail.profitRate}%
-                                        </p>
-                                        <p className={isPlus ? '!text-red-500' : '!text-sky-400'}>
-                                            {Math.round(Number(detail.profitLoss || 0)).toLocaleString()}
-                                        </p>
-                                    </ProfitBox>
-                                </td>
-                            </StyledTableTr>
-                        )
-                    })}
+                    {coins.map(coin => 
+                        <AssetRow key={coin.market} coin={coin}/>
+                    )}
+                  
                 </StyledTableBody>
             </StyledTable>
         </StyledContainer>

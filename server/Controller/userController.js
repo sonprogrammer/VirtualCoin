@@ -64,7 +64,6 @@ const kakaoLogin = async (req, res) => {
     });
     const kakaoId = userInfoRes.data.id;
     const name = userInfoRes.data.kakao_account.profile.nickname
-    console.log('name', name)
 
     let user = await User.findOne({ kakaoId });
 
@@ -129,7 +128,7 @@ const regularLogout = async(req, res) => {
   })
   res.status(200).json({message: 'logout'})
   }catch(error){
-    console.log(error)
+    // console.log(error)
     res.status(500).json({message: 'interval server errro'})
   }
 }
@@ -138,10 +137,7 @@ const regularLogout = async(req, res) => {
 const kakaoLikeToggle = async (req, res) => {
   try {
     const kakaoId = req.user.kakaoId;
-    console.log('kakaoId', kakaoId)
     const { coinId } = req.params;
-    console.log('coin', coinId)
-    console.log('coin')
 
     const user = await User.findOne({ kakaoId });
     if (!user) {

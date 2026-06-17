@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { StyledAmountInput, StyledAmountRate, StyledAsset, StyledBtns, StyledCoinAmount, StyledCoinPrice, StyledContainer, StyledTotalOrder, StyledTradeInput } from './style'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
@@ -22,42 +22,45 @@ interface CoinTradeFormProps {
 const CoinTradeForm = ({ name }: CoinTradeFormProps) => {
   const { coinEName } = useParams() // KRW-XRP이런식으로 나옴
   const user = useRecoilValue(userState)
-
+  const marketArray = useMemo(() => (coinEName ? [coinEName] : []), [coinEName]);
+  // * 현재 페이지의 코인 실시간 가격
+  const coinInfoMaps = useRecoilValue(selectedCoinPrice(marketArray));
+  const currentPrice = coinEName ? coinInfoMaps[coinEName]?.trade_price : undefined;
   //* 코인 이름
-  const { coinData: coinName} = useSelectedCoinInfo(coinEName ?? '')
+  const { coinData: coinName } = useSelectedCoinInfo(coinEName ?? '')
 
 
   const { mutate: postBuyTrade } = usePostBuyTrade()
   const { mutate: postSellTrade } = usePostSellTrade()
 
   // * 사용자가 보유하고 있는 자산 + 코인정보
-  const { data: asssetData, isLoading, refetch } = useGetAssetData()
+  const { data: assetData, isLoading, refetch } = useGetAssetData()
 
   // * 주문수량
   const [orderAmount, setOrderAmount] = useState<number>(0);
   // * 팔수 있는양(갖고 있는 코인수량) - 매도용
 
-  // * 코인 현재 가
-  const currentCoinPrice = useRecoilValue(selectedCoinPrice(coinEName ?? ''))
 
-  const isInitialized = useRef(false);
 
   //*트레이드 가격(매도/매수)
   const [tradePrice, setTradePrice] = useState<number>(0)
+  const isInitialized = useRef(false)
 
+  // * 초기 가격 설정 - 실시간 가격에 따라 계속 변경되면 안되니깐 for ux
   useEffect(() => {
-    if (currentCoinPrice?.trade_price && !isInitialized.current) {
-      setTradePrice(currentCoinPrice.trade_price);
+    if (currentPrice && !isInitialized.current) {
+      setTradePrice(currentPrice);
       isInitialized.current = true;
     }
-  }, [currentCoinPrice?.trade_price]);
+  }, [currentPrice]);
 
-  const cash = asssetData?.cash || 0
-  // * 현재 보유하고 있는 코인들중 현재 들어와있는 코인 페이지의 코인에 대한 데이터 
-  const coinData = asssetData?.coins.find(c => c.market === coinEName)
-  const availableAmount = coinData?.amount ?? 0
+  // * 현재 보유하고 있는 코인들중 현재 들어와있는 코인 페이지의 코인에 대한 데이터 및 캐시
+  const { cash, availableAmount } = useMemo(() => ({
+    cash: assetData?.cash ?? 0,
+    availableAmount: assetData?.coins.find(c => c.market === coinEName)?.amount ?? 0
+  }), [assetData, coinEName])
 
-  if (!currentCoinPrice) {
+  if (!currentPrice) {
     return <div>데이터 불러오는 중...</div>;
   }
 
@@ -148,7 +151,6 @@ const CoinTradeForm = ({ name }: CoinTradeFormProps) => {
       setOrderAmount(calculatedAmount)
     }
   };
-  // console.log('order', orderAmount)
 
 
   return (
@@ -195,7 +197,7 @@ const CoinTradeForm = ({ name }: CoinTradeFormProps) => {
       </StyledTotalOrder>
 
       <StyledBtns>
-        <button onClick={() => { setOrderAmount(0); setTradePrice(currentCoinPrice?.trade_price ?? 0); }}>
+        <button onClick={() => { setOrderAmount(0); setTradePrice(currentPrice ?? 0); }}>
           <FontAwesomeIcon icon={faRotateRight} />
           <span>초기화</span>
         </button>

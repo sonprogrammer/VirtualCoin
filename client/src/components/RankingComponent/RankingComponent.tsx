@@ -1,15 +1,16 @@
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { StyledBox, StyledBtns, StyledContainer, StyledTable, StyledTableBody, StyledTableHead, StyledTitle } from './style'
 import useGetAllUserAssetData from '../../hooks/useGetAllUserAssetData'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../../context/userState'
 import { CoinPrice } from '../../context/CoinPrice'
 import calculateAllUserAsset from '../../utils/calculateAllUsersAsset'
+import { useWindowWidth } from '../../hooks/useWindowWidth'
 
 const RankingComponent = () => {
     const [page, setPage] = useState<number>(1)
-    const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
+
     const prices = useRecoilValue(CoinPrice)
 
     const user = useRecoilValue(userState)
@@ -18,22 +19,15 @@ const RankingComponent = () => {
     // *이거로 모든 유저의 정보를 가져옴
     const { data, isLoading } = useGetAllUserAssetData(userId)
 
+    const windowWidth = useWindowWidth()
+    
+
     const allUser = data || []
     const rankData = calculateAllUserAsset(allUser, prices)?.sort((a, b) => b.profitRate - a.profitRate)
 
     const safeRankgData = Array.isArray(rankData) ? rankData : [];
 
-    // console.log('rankdat', rankData)
 
-    // TODO 훅으로 만들어논거 가져오기
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth)
-        }
-        window.addEventListener('resize', handleResize)
-
-        return () => window.removeEventListener('resize', handleResize)
-    }, [])
 
     const myRank = rankData.findIndex((data) => data.id === userId) + 1
 

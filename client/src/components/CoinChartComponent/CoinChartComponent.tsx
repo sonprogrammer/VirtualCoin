@@ -4,13 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { CoinPrice } from "../../context/CoinPrice";
 import useLikeToggle from "../../hooks/useLikeToggle";
 import usePostRecentCoin from "../../hooks/usePostRecentCoin";
 import useGetLikedCoins from "../../hooks/useGetLikeCoins";
 import Skeleton from "@mui/material/Skeleton";
 import useGetCoins from "../../hooks/useGetCoins";
+import { useWindowWidth } from "../../hooks/useWindowWidth";
 
 
 const CoinChartComponent = () => {
@@ -19,8 +20,9 @@ const CoinChartComponent = () => {
 
   const [page, setPage] = useState(1)
   const [star, setStar] = useState<string[]>([]) //*관심코인 관리 
-  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
+
+  const windowWidth = useWindowWidth()
 
 
   const { data: coins =[]} = useGetCoins()
@@ -29,7 +31,7 @@ const CoinChartComponent = () => {
 
   const { mutate: addRecentCoin } = usePostRecentCoin();
 
-  const [prices] = useRecoilState(CoinPrice)
+  const prices = useRecoilValue(CoinPrice)
 
   const handleCoinClick = (coinEName: string) => {
     addRecentCoin(coinEName)
@@ -46,18 +48,6 @@ const CoinChartComponent = () => {
   return sorted;
 }, [coins, prices, sortOrder])
 
-
-
-  
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    }
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    }
-  }, [])
 
   useEffect(() => {
     setStar(likedCoins||[])

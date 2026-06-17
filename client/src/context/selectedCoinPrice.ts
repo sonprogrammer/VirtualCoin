@@ -1,12 +1,16 @@
 import { selectorFamily } from "recoil";
-import { CoinPrice } from "./CoinPrice";
+import { CoinPrice, PriceData } from "./CoinPrice";
 //! 선택된 코인 가격 데이터 가져오는거임
 
 
 export const selectedCoinPrice = selectorFamily({
     key: 'selectedCoinPrice',
-    get: (coinEName: string) => ({get}) => {
+    get: (coinENames: string[]) => ({get}) => {
         const allPrice = get(CoinPrice)
-        return allPrice[coinEName]
+        const res:Record<string, PriceData | undefined> ={}
+        coinENames.forEach((name) => {
+            res[name] = allPrice[name]
+        })
+        return res
     }
 })

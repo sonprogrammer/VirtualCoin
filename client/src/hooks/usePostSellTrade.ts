@@ -32,8 +32,7 @@ const usePostSellTrade = () => {
         mutationFn: async(order: SellOrder) => {
                 return postHolding(order)
         },
-        onSuccess: (data) => {
-            console.log('usePostSellTrade훅 성공',data)
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['asset', userData._id] });
         },
         onError: (error) => {

@@ -19,13 +19,13 @@ const usePostDeleteOrder = () => {
         mutationFn: ({userId, orderId}: {userId: string; orderId: string[]}) => {
             return deleteOrder(userId, orderId)
         },
-        onSuccess: (variable) => {
+        onSuccess: (_,variable) => {
             const userId = variable.userId
             queryClient.invalidateQueries({queryKey: ["pendingCoins", userId]})
             queryClient.invalidateQueries({queryKey: ["asset", userId]})
         },
-        onError: (error) => {
-            console.log('미체결 삭제 실패', error)
+        onError: () => {
+            // console.log('미체결 삭제 실패', error)
         }
     })
 }

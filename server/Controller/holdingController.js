@@ -24,13 +24,13 @@ const checkOrder = async(userId, market, avgTradePrice, amount, type) => {
     }
 
     if(!currentPrice) {
-      console.log('can not get currentPrice')
+      // console.log('can not get currentPrice')
       return
     }
     
 
     if(!currentPrice){
-      console.log('there is no currentprice')
+      // console.log('there is no currentprice')
       return
 
     }
@@ -46,7 +46,7 @@ const checkOrder = async(userId, market, avgTradePrice, amount, type) => {
     }
    
   } catch (error) {
-    console.log(error)
+    // console.log(error)
   }
 }
 
@@ -57,14 +57,14 @@ const processOrder = async(userId, market, orderPrice, amount, type, currentPric
   try {
     const holdingOrders = await Hold.findOne({userId})
     if(!holdingOrders){
-      console.log('there is no holding coins')
+      // console.log('there is no holding coins')
       return 
     }
 
     const orderIndex = holdingOrders.orders.findIndex(order => order.coinMarket === market && order.status === 'PENDING' && order.type === type)
 
     if(orderIndex === -1){
-      console.log('can not find order')
+      // console.log('can not find order')
       return 
     }
 
@@ -104,12 +104,12 @@ const processOrder = async(userId, market, orderPrice, amount, type, currentPric
       }
     }else if(type === 'SELL'){
       if(!userAsset){
-        console.log('there is no coins')
+        // console.log('there is no coins')
         return 
       }
       const coinIndex = userAsset.coins.findIndex(c => c.market === market)
       if(coinIndex === -1){
-        console.log('there is no coin for selling')
+        // console.log('there is no coin for selling')
         return
       }
       //*코인량 감소
@@ -171,7 +171,7 @@ const realTimeCheckOrder = async() => {
   try {
     const allOrders = await Hold.find()
     if(!allOrders) {
-      console.log('there is no ordres')
+      // console.log('there is no ordres')
       return
     }
 
@@ -186,7 +186,7 @@ const realTimeCheckOrder = async() => {
     }
 
     if(allPendingCoins.length === 0){
-      console.log('there is no coins ')
+      // console.log('there is no coins ')
       return
     }
 
@@ -198,7 +198,7 @@ const realTimeCheckOrder = async() => {
       try {
         const orders = await Hold.find()
         if(!orders){
-          console.log('there is no orders')
+          // console.log('there is no orders')
           clearInterval(checkInterval)
           realTimeCheckOrder()
           return
@@ -405,7 +405,7 @@ const postDeleteOrder = async(req, res) => {
       return res.status(200).json({message: 'success', pending})
       
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       return res.status(500).json({message: 'internal server errro'})
     }
 
@@ -426,7 +426,7 @@ const getTransactionCoins = async(req, res) => {
       return res.status(200).json({message:'succes',allTransaction})
       
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       return res.status(500).json({message: 'internal server error'})
     }
 }

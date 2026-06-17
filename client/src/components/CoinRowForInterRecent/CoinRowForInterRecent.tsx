@@ -12,9 +12,11 @@ interface CoinRowForInterRecentProps {
 }
 
 function CoinRowForInterRecentInner({ coin, onClick }: CoinRowForInterRecentProps) {
-    const priceData = useRecoilValue(selectedCoinPrice(coin.coinMarket))
-
-    if (!priceData) {
+    const coinPriceInfoMap = useRecoilValue(selectedCoinPrice([coin.coinMarket]))
+    const priceInfo = coinPriceInfoMap[coin.coinMarket]
+    const currentPrice = priceInfo?.trade_price ?? 0
+    const changeRate = priceInfo?.change_rate
+    if (!priceInfo) {
         return (
             <StyledCoin>
                 <p>{coin.coinKoreanName}</p>
@@ -23,16 +25,16 @@ function CoinRowForInterRecentInner({ coin, onClick }: CoinRowForInterRecentProp
         )
     }
 
-    const isPositive = Number(priceData.change_rate) > 0
+    const isPositive = Number(changeRate) > 0
     const colorClass = isPositive ? 'text-red-500' : 'text-blue-600'
 
 
     return (
         <StyledCoin onClick={onClick}>
             <p>{coin.coinKoreanName}</p>
-            <p className={colorClass}>{Number(priceData.trade_price).toLocaleString()}</p>
+            <p className={colorClass}>{Number(currentPrice).toLocaleString()}</p>
             <p className={colorClass}>
-                {isPositive ? '+' : ''}{(Number(priceData.change_rate) * 100).toLocaleString()}%
+                {isPositive ? '+' : ''}{(Number(changeRate) * 100).toLocaleString()}%
             </p>
         </StyledCoin>
     )

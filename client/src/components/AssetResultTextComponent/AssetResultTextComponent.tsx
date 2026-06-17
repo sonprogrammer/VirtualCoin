@@ -24,7 +24,7 @@ const AssetResultTextComponent = () => {
         totalBuy,
     } =  calculatedData || {};
 
-   
+   if (!data) return <Skeleton variant="rectangular" height={300} />
     return (
         <StyledContainer>
             <StyledTopBox>

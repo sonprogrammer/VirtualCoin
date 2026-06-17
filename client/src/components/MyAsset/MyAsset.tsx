@@ -4,24 +4,16 @@ import { AssetList } from "../AssetList"
 import { AssetResultTextComponent } from "../AssetResultTextComponent"
 import { StyledAssetGraph, StyledAssetGraphToggle, StyledContainer, StyledTotalAsset } from "./style"
 import AssetListTb from "../AssetList/AssetListTb"
+import { useWindowWidth } from "../../hooks/useWindowWidth"
 
 
 
 
 const MyAsset = () => {
-  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [showGraph, setShowGraph] = useState<boolean>(true);
   const [graphToggle, setGraphToggle] = useState<boolean>(false);
 
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth)
-    }
-    window.addEventListener('resize', handleResize)
-
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const windowWidth = useWindowWidth()
 
   const handleGraphToggle = () => {
     setGraphToggle(!graphToggle)

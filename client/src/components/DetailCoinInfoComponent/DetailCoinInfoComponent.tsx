@@ -1,6 +1,6 @@
-import { useMemo } from "react"
+
 import { StyledCLogoImg, StyledCoinInfo, StyledConInfoWrapper, StyledContainer, StyledLeftInfo, StyledLikedBtn, StyledPrices, StyledRateNumbers, StyledRates, StyledTitlePrice } from "./style";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { faStar as fullStar } from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +8,7 @@ import useLikeToggle from "../../hooks/useLikeToggle";
 import useGetLikedCoins from "../../hooks/useGetLikeCoins";
 import Skeleton from "@mui/material/Skeleton";
 import { useSelectedCoinInfo } from "../../hooks/useGetSelectedCoinInfo";
-import { CoinPrice } from "../../context/CoinPrice";
+import { selectedCoinPrice } from "../../context/selectedCoinPrice";
 
 
 interface DetailCoinInfoComponentProps {
@@ -20,24 +20,12 @@ interface DetailCoinInfoComponentProps {
 
 const DetailCoinInfoComponent = ({ coinEName }: DetailCoinInfoComponentProps) => {
     //* 코인 이름
-    const { coinData, isLoading, error } = useSelectedCoinInfo(coinEName)
+    const { coinData, isLoading } = useSelectedCoinInfo(coinEName)
     const { likeToggle } = useLikeToggle();
     const { likedCoins = [] } = useGetLikedCoins()
-    // console.log('likedCoins', likedCoins)
-
-    const [coinPrice] = useRecoilState(CoinPrice)
-
+    const coinInfoMap = useRecoilValue(selectedCoinPrice([coinEName]))
     // * 현재 페이지 코인 가격 데이터
-    const coinInfo = useMemo(() => {
-        return coinEName ? coinPrice[coinEName] : null;
-    }, [coinEName, coinPrice])
-
-    // console.log('coininfo', coinInfo)
-
-    // console.log('hi',coinData)
-
-
-
+    const coinInfo = coinInfoMap[coinEName]
 
     // 좋아요 등록, 취소 
     const handleLikedCoin = () => {
@@ -46,14 +34,17 @@ const DetailCoinInfoComponent = ({ coinEName }: DetailCoinInfoComponentProps) =>
 
     const isStar = likedCoins.includes(coinEName)
 
-    // TODO 수정
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
-
-
-    if (!coinInfo || !coinData) {
+    if (isLoading || !coinData) {
         return <Skeleton variant="rectangular" width='100%' height={100} sx={{ bgcolor: '#18181b' }} />;
     }
+
+    if (!coinInfo) {
+    return (
+        <div className="w-full flex items-center justify-center p-4">
+            <Skeleton variant="text" width="60%" height={30} sx={{ bgcolor: '#27272a' }} />
+        </div>
+    );
+}
 
     const isPlus = coinInfo.change_rate > 0
     const coinUnit = coinEName?.split('-')[1];
@@ -79,11 +70,11 @@ const DetailCoinInfoComponent = ({ coinEName }: DetailCoinInfoComponentProps) =>
 
                 <StyledTitlePrice>
                     <p className={isPlus ? '!text-red-500' : '!text-blue-500'}>
-                        {coinInfo?.trade_price?.toLocaleString()}
+                        {coinInfo?.trade_price?.toLocaleString() ?? 0}
                         <span className="text-xs ml-1 font-normal opacity-70">KRW</span>
                     </p>
                     <p className={isPlus ? '!text-red-500' : '!text-blue-500'}>
-                        <span>{isPlus ? '+' : ''}{(coinInfo?.change_rate * 100).toFixed(2)}%</span>
+                        <span>{isPlus ? '+' : ''}{(coinInfo?.change_rate * 100).toFixed(2)?? 0}%</span>
                         <span className="ml-2">{isPlus ? '▲' : '▼'} {coinInfo?.change_price?.toLocaleString()}</span>
                     </p>
                 </StyledTitlePrice>

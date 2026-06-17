@@ -23,7 +23,7 @@ const getRestCoinsTicker = async(req, res) => {
         res.status(200).json(tickerMap)
 
     } catch (error) {
-        console.log('error', error)
+        // console.log('error', error)
         res.status(500).json({message:'internal server error'})
     }
 }

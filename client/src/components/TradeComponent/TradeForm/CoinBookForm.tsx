@@ -8,6 +8,7 @@ import { useRecoilValue } from "recoil";
 import usePostDeleteOrder from "../../../hooks/usePostDeleteOrder";
 import useGetAllTransaction from "../../../hooks/useGetAllTransaction";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 interface Order {
@@ -32,7 +33,7 @@ const CoinBookForm = () => {
   const user = useRecoilValue(userState);
 
 
-  const { data , refetch } = useGetAllTransaction(user._id)
+  const { data, refetch } = useGetAllTransaction(user._id)
   const coins = data?.allTransaction?.orders || [];
 
 
@@ -68,6 +69,10 @@ const CoinBookForm = () => {
         onSuccess: () => {
           refetch();
           setCheckedItems({})
+          toast.success(`주문 취소 완료`, {
+            autoClose: 1000,
+            hideProgressBar: true,
+          });
         }
       }
     )
@@ -81,6 +86,10 @@ const CoinBookForm = () => {
         onSuccess: () => {
           refetch();
           setCheckedItems({})
+          toast.success(`주문 취소 완료`, {
+            autoClose: 1000,
+            hideProgressBar: true,
+          });
         }
       }
     )

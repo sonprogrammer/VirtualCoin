@@ -16,7 +16,7 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const prices = useRecoilValue(CoinPrice);
+  const prices = useRecoilValue(CoinPrice)
 
   const navigate = useNavigate()
   const { mutate: addRecentCoin } = usePostRecentCoin();
