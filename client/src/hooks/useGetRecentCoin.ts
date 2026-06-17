@@ -24,7 +24,7 @@ const useGetRecentCoin = () => {
     };
 
     return useQuery({
-        queryKey: ['recentCoin'],
+        queryKey: ['recentCoin', userData._id],
         queryFn: async() => {
             if(userData.isGuest) return getGuestCoins()
             return await getRecentCoin()

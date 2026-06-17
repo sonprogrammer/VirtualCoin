@@ -168,7 +168,6 @@ const kakaoLikeToggle = async (req, res) => {
 const kakaoGetLikeCoins = async (req, res) => {
   try {
     const kakaoId = req.user.kakaoId;
-    console.log('req.user', req.user)
 
     const user = await User.findOne({ kakaoId });
     if (!user) {

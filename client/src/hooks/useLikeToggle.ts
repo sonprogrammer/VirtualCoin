@@ -21,7 +21,8 @@ const useLikeToggle = () => {
   const { mutate } = useMutation({
     mutationFn: likeToggleKakao,
     onSuccess: (_, variable) => {
-      queryClient.invalidateQueries({ queryKey: ['likedCoins', variable] })
+      console.log('vair', variable)
+      queryClient.invalidateQueries({ queryKey: ['likedCoins', userData._id] })
     },
     onError: (error) => {
       console.error('error while toggling', error)

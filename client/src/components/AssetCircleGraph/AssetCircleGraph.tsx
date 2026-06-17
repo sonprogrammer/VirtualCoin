@@ -14,6 +14,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 
 
 function AssetCircleGraph() {
+  
   const assetData = useGetAssetData()
   
   if (!assetData || !assetData.data) {

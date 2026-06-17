@@ -1,5 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "./useGetRefresh";
+import { useRecoilValue } from "recoil";
+import { userState } from "../context/userState";
 
 
 
@@ -23,6 +25,8 @@ const postHolding = async({market, name, amount, avgSellPrice, userId}: {market:
 }
 
 const usePostSellTrade = () => {
+    const userData = useRecoilValue(userState)
+    const queryClient = useQueryClient()
 
     const mutation =  useMutation({
         mutationFn: async(order: SellOrder) => {
@@ -30,6 +34,7 @@ const usePostSellTrade = () => {
         },
         onSuccess: (data) => {
             console.log('usePostSellTrade훅 성공',data)
+            queryClient.invalidateQueries({ queryKey: ['asset', userData._id] });
         },
         onError: (error) => {
             console.error('usePostSellTrade훅 실패', error)

@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../context/userState';
 import axiosInstance from './useGetRefresh';
@@ -12,6 +12,7 @@ const postRecentCoin = async (coinId: string) => {
 
 const usePostRecentCoin = () => {
     const userData = useRecoilValue(userState)
+    const queryClient = useQueryClient()    
     return useMutation({
         mutationFn: (coinId: string) => {
             if (!userData.isGuest) {
@@ -33,6 +34,19 @@ const usePostRecentCoin = () => {
 
             }
         },
+        onSuccess: () => {
+            if (!userData.isGuest) {
+                queryClient.invalidateQueries({ queryKey: ['recentCoin', userData._id] });
+            } else {
+                queryClient.setQueryData(['recentCoin'], (_old: string[] = []) => {
+                    const guestData = JSON.parse(localStorage.getItem('user') || '{}');
+                    return guestData.recentCoins || [];
+                });
+            }
+        },
+        onError: (error) => {
+            console.error('Failed to update recent coin:', error);
+        }
     })
 }
 

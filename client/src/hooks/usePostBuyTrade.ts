@@ -7,7 +7,7 @@ import axiosInstance from "./useGetRefresh"
 
 
 const postHolding = async({market, name, amount, avgBuyPrice, userId}: {market: string, name: string, amount: number, avgBuyPrice: number, userId: string}) => {
-    // console.log('market', market, name, amount, avgBuyPrice, userId)
+    //* 우선 바로 홀딩으로 갔다가 서버에서 구매가가 현재 가보다 같거나 크면 서버에서 바로 구매 처리됨
     const res = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/api/holding/${market}/buy-reserve`,{
         amount, //거래량
         avgBuyPrice, //지정가
@@ -25,7 +25,6 @@ const usePostBuyTrade = () => {
 
             const { userId} = variable
 
-            await queryClient.invalidateQueries({ queryKey : ['holdingOrders']})
             await queryClient.invalidateQueries({queryKey :['asset', userId]})
         },
         onError: (error) => {

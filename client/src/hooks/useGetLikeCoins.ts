@@ -22,7 +22,7 @@ const useGetLikedCoins = () => {
        
 
     const { data: likedCoins, isLoading, isError} = useQuery({
-        queryKey: ['likedCoins'],
+        queryKey: ['likedCoins', userData._id],
         queryFn: fetchLikedCoins,
     })
 
