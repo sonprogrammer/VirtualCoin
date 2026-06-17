@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Styledcontainer, StyledNavbar, StyledTradeSection } from "./style"
 import { CoinBookForm } from './TradeForm';
-import CoinTradeForm from "./TradeForm/CoinTradeForm";
+import {CoinTradeForm} from "./TradeForm";
 
 
 const TradeComponent = () => {
@@ -38,9 +38,7 @@ const TradeComponent = () => {
       </StyledNavbar>
 
       <StyledTradeSection>
-        {/* {selection === 'buy' && <CoinBuyForm />} */}
         {selection === 'buy' && <CoinTradeForm name='매수' />}
-        {/* {selection === 'sell' && <CoinSellForm />} */}
         {selection === 'sell' && <CoinTradeForm name='매도'/>}
         {selection === 'book' && <CoinBookForm />}
       </StyledTradeSection>

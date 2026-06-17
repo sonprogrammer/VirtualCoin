@@ -17,15 +17,15 @@ const CoinDetailPage = () => {
       <DetailCoinInfoComponent coinEName={coinEName || ''} />
 
 
-      <StyledChart>
+      {/* <StyledChart>
         <CoinChartGraphComponent />
-      </StyledChart>
+      </StyledChart> */}
 
 
       <StyledOrderBookAndTrade>
-        <StyledOrderBook>
+        {/* <StyledOrderBook>
           <CoinVoiceComponent coinEName={coinEName || ''}/>
-        </StyledOrderBook>
+        </StyledOrderBook> */}
 
         <StyledTrade>
           <TradeComponent />

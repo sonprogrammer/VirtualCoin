@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { StyledAmountInput, StyledAmountRate, StyledAsset, StyledBtns, StyledCoinAmount, StyledCoinPrice, StyledContainer, StyledTotalOrder, StyledTradeInput } from './style'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateRight } from '@fortawesome/free-solid-svg-icons';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useGetAssetData from '../../../hooks/useGetAssetData';
 import { useParams } from 'react-router-dom';
@@ -205,7 +205,6 @@ const CoinTradeForm = ({ name }: CoinTradeFormProps) => {
         >{name}</button>
       </StyledBtns>
 
-      <ToastContainer position="top-center" theme="dark" />
     </StyledContainer>
   )
 }
