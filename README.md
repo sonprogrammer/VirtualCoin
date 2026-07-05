@@ -1,10 +1,6 @@
 # VC(Virtual Coin)
 
 
-This project is hosted on a free-tier server. 
-Please note that the initial loading may take 1~2 minutes as the server wakes up from inactivity.
-Thank you for your patience
-
 ## 👀 let's going to coin world!
 <a href="https://virtualcoinn.onrender.com/" target="_blank">VirtualCoin</a>
 
