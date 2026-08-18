@@ -38,12 +38,12 @@ export function UserInfo({
             </p>
             <hr />
             <StyledCoins>
-                <span onClick={onInterestedClick}>관심 코인</span>
-                <span onClick={onRecentClick}>최근 본 코인</span>
+                <button type="button" onClick={onInterestedClick}>관심 코인</button>
+                <button type="button" onClick={onRecentClick}>최근 본 코인</button>
             </StyledCoins>
             <hr />
-            <StyledLogout onClick={onLogoutClick}>
-                <p>로그아웃</p>
+            <StyledLogout onClick={onLogoutClick} >
+                로그아웃
             </StyledLogout>
             
         </StyledUserInfo>

@@ -20,5 +20,5 @@ const useGetCoins = () => {
     })
 }
 
- 
+
 export default useGetCoins

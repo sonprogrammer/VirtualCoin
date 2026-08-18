@@ -137,7 +137,7 @@ ${tw`
 
 export const StyledCoins = styled.div`
     ${tw`flex gap-2`}
-    span {
+    button {
         ${tw`
             flex-1 text-center py-2 px-2 rounded-lg text-xs
             bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-all
@@ -147,10 +147,13 @@ export const StyledCoins = styled.div`
 
 export const StyledLogout = styled.div`
     ${tw`
-        flex justify-center cursor-pointer
-        bg-red-600 text-white py-2.5 rounded-xl
-        font-bold text-sm mt-4 hover:bg-red-500 transition-colors
+        w-full flex justify-center cursor-pointer
+        bg-red-600  text-white py-2.5 rounded-xl
+        font-bold text-sm mt-4  transition-colors
     `}
+    &:hover{
+    ${tw`bg-blue-500 transition-colors duration-500`}
+    }
 `;
 
 export const StyledAngle = styled.div`

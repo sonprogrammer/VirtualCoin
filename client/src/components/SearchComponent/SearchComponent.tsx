@@ -63,7 +63,7 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
     setSearchQuery(e.target.value)
   }
 
-
+console.log('search component rendering')
   return (
     <StyledContainer onClick={handleSearchModalClose}>
       <StyledBox onClick={e => e.stopPropagation()}>

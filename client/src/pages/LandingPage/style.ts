@@ -72,7 +72,7 @@ const ButtonBase = tw.button`
 `;
 
 export const StyledLoginBtn = styled(ButtonBase)`
-  ${tw`bg-red-600 text-white hover:bg-red-700 shadow-red-900/20`}
+  ${tw`bg-red-600 text-white shadow-red-900/20`}
   
   img {
     ${tw`w-6 h-6 object-contain`}

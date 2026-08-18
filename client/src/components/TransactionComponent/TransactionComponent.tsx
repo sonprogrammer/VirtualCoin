@@ -31,13 +31,13 @@ const TransactionComponent = () => {
     }
     if (error) return <p>{error.message}</p>;
     const coins = data?.coins
-    
- 
-    
-const formatDateTime = (dateString: string) => {
-    return dayjs(dateString).format('YY.MM.DD HH:mm');
-};
-    
+
+
+
+    const formatDateTime = (dateString: string) => {
+        return dayjs(dateString).format('YY.MM.DD HH:mm');
+    };
+
     const formatDate = (date: Date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -81,20 +81,20 @@ const formatDateTime = (dateString: string) => {
         endingDate.setHours(now.getHours() + 23)
         setEndDate(formatDate(endingDate))
     }
-    
+
     const handleTypeSelect = (selectedType: '매도' | '매수' | '전체') => {
         setType(selectedType)
         setShowTypeMenu(false)
     }
-    
+
     const filterByPeriod = (transactionTime: string) => {
         if (period === '전체') return true;
         if (!startDate || !endDate) return false;
-        
+
         const transactionDate = new Date(transactionTime);
         return transactionDate >= new Date(startDate) && transactionDate <= new Date(endDate);
     };
-    
+
     const filteredData = coins?.filter((item) => {
         const periodMatch = filterByPeriod((item.completedTime));
         const typeMatch = type === '전체' || item.type === (type === '매수' ? 'BUY' : 'SELL');
@@ -102,7 +102,7 @@ const formatDateTime = (dateString: string) => {
     });
 
     return (
-<StyledContainer>
+        <StyledContainer>
             <StyledPeriodAndType>
                 <StyledDetail>
                     <StyledSelect>
@@ -110,7 +110,7 @@ const formatDateTime = (dateString: string) => {
                             <h2 onClick={handlePeriodClick}>기간 설정</h2>
                             <h2 onClick={handleTypeClick}>거래 유형</h2>
                         </div>
-                        
+
                         {showPeriodMenu && (
                             <StyledPeriodBurgerMenu>
                                 {(['1주일', '1개월', '6개월', '전체'] as const).map(p => (
@@ -126,7 +126,7 @@ const formatDateTime = (dateString: string) => {
                             </StyledTypeMenu>
                         )}
                     </StyledSelect>
-                    
+
                     <h1 onClick={() => { handlePeriodSelect('전체'); handleTypeSelect('전체') }}>
                         초기화
                     </h1>
