@@ -35,10 +35,10 @@ function AssetRowInner({ coin }: AssetRowProps) {
             <td className="font-bold">{Math.round(coinValue).toLocaleString()}</td>
             <td>
                 <ProfitBox>
-                    <p className={isPlus ? '!text-red-500' : '!text-sky-400'}>
+                    <p className={isPlus ? '!text-red-500' : '!text-blue-500'}>
                         {isPlus && '+'}{profitRate.toFixed(2)}%
                     </p>
-                    <p className={isPlus ? '!text-red-500' : '!text-sky-400'}>
+                    <p className={isPlus ? '!text-red-500' : '!text-blue-500'}>
                         {Math.round(profitLoss).toLocaleString()}
                     </p>
                 </ProfitBox>

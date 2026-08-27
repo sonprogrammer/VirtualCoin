@@ -7,23 +7,36 @@ import {
   Colors,
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import {  ChartSide, GraphWrapper, LegendItem, LegendSide, StyledText } from './style';
+import { ChartSide, GraphWrapper, LegendItem, LegendSide, StyledText } from './style';
 import useGetAssetData from '../../hooks/useGetAssetData';
+import Skeleton from '@mui/material/Skeleton';
+
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 
 
 function AssetCircleGraph() {
-  
-  const assetData = useGetAssetData()
-  
-  if (!assetData || !assetData.data) {
-    return <div>Loading...</div>; 
-  }
-  
-  const coins = assetData?.data.coins.filter((c) => c.amount !== 0) || []
 
-  
+  const assetData = useGetAssetData()
+
+  if (assetData.isPending) {
+    return (
+      <div className='flex items-center h-full justify-center'>
+        <Skeleton
+          variant="circular"
+          width={220}
+          height={220}
+          animation="wave"
+          sx={{
+            bgcolor: '#27272a',
+          }}
+        />
+      </div>
+    );
+  }
+
+  const coins = assetData.data?.coins.filter((c) => c.amount !== 0) || []
+
 
   // *코인별 평가금액
   const coinValue = coins.map((coin) => ({
@@ -31,20 +44,20 @@ function AssetCircleGraph() {
     value: coin.amount * coin.avgBuyPrice
   }))
 
-  const totalCoinValue = coinValue.reduce((sum: number, coin) => sum+coin.value, 0)
+  const totalCoinValue = coinValue.reduce((sum: number, coin) => sum + coin.value, 0)
 
   const coinsRate = totalCoinValue > 0 ? coinValue.map((coin) => ({
     market: coin.market,
     value: Number(((coin.value / totalCoinValue) * 100).toFixed(2))
   })) : []
 
-  
+
 
   const sortedCoinsRates = coinsRate.sort((a, b) => b.value - a.value)
 
 
   const generatedColors = (count: number) => {
-    return Array.from({length: count}, (_, i) => `hsla(${(i * 137.5) % 360}, 65%, 65%, 0.8)`);
+    return Array.from({ length: count }, (_, i) => `hsla(${(i * 137.5) % 360}, 65%, 65%, 0.8)`);
   }
 
   const data = coins.length === 0 ? {
@@ -61,20 +74,21 @@ function AssetCircleGraph() {
       backgroundColor: generatedColors(sortedCoinsRates.length),
       hoverOffset: 10,
       borderWidth: 2,
-      borderColor: '#09090b', 
+      borderColor: '#09090b',
     }]
   }
 
   const options = {
-    cutout: '70%', 
+    cutout: '70%',
     plugins: {
-      legend: { display: false
+      legend: {
+        display: false
       },
       tooltip: {
-        backgroundColor: '#18181b', 
+        backgroundColor: '#18181b',
         titleColor: '#ffffff',
         bodyColor: '#d4d4d8',
-        borderColor: '#3f3f46', 
+        borderColor: '#3f3f46',
         borderWidth: 1,
         displayColors: true,
       },
@@ -86,24 +100,24 @@ function AssetCircleGraph() {
 
   return (
     <GraphWrapper>
-    <ChartSide>
-      <Doughnut data={data} options={options} />
-      <StyledText>
-        <p>보유 자산</p>
-        <p>비중 (%)</p>
-      </StyledText>
-    </ChartSide>
+      <ChartSide>
+        <Doughnut data={data} options={options} />
+        <StyledText>
+          <p>보유 자산</p>
+          <p>비중 (%)</p>
+        </StyledText>
+      </ChartSide>
 
-    <LegendSide>
-      {sortedCoinsRates.map((coin, i: number) => (
-        <LegendItem key={coin.market}>
-          <div className="dot" style={{ backgroundColor: data.datasets[0].backgroundColor[i] }} />
-          <span className="name">{coin.market}</span>
-          <span>{coin.value}%</span>
-        </LegendItem>
-      ))}
-    </LegendSide>
-  </GraphWrapper>
+      <LegendSide>
+        {sortedCoinsRates.map((coin, i: number) => (
+          <LegendItem key={coin.market}>
+            <div className="dot" style={{ backgroundColor: data.datasets[0].backgroundColor[i] }} />
+            <span className="name">{coin.market}</span>
+            <span>{coin.value}%</span>
+          </LegendItem>
+        ))}
+      </LegendSide>
+    </GraphWrapper>
   );
 }
 

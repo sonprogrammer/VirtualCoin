@@ -16,6 +16,14 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const inputRef = useRef<HTMLInputElement | null>(null)
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow =''
+    }
+  },[])
+
   const prices = useRecoilValue(CoinPrice)
 
   const navigate = useNavigate()
@@ -26,21 +34,21 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
   useEffect(() => {
     const searchTime = setTimeout(() => {
       setDebouncedQuery(searchQuery)
-    },500)
+    }, 500)
     return () => clearTimeout(searchTime)
-  },[searchQuery])
-  
+  }, [searchQuery])
+
   const sortedAndFilteredCoins = useMemo(() => {
-    if(!coinData || !prices) return []
+    if (!coinData || !prices) return []
     return [...coinData].sort((a, b) => (prices[b.market].acc_price || 0) - (prices[a.market].acc_price || 0))
-                        .filter(coin => coin.korean_name.toLowerCase().includes(debouncedQuery.toLowerCase()))
-  },[coinData, prices, debouncedQuery])
+      .filter(coin => coin.korean_name.toLowerCase().includes(debouncedQuery.toLowerCase()))
+  }, [coinData, prices, debouncedQuery])
 
   useEffect(() => {
-    if(inputRef.current){
+    if (inputRef.current) {
       inputRef.current.focus()
     }
-  },[])
+  }, [])
 
   const handleCoinClick = (coinId: string) => {
     navigate(`/coin/${coinId}`)
@@ -63,7 +71,7 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
     setSearchQuery(e.target.value)
   }
 
-console.log('search component rendering')
+
   return (
     <StyledContainer onClick={handleSearchModalClose}>
       <StyledBox onClick={e => e.stopPropagation()}>
@@ -81,7 +89,12 @@ console.log('search component rendering')
         <StyledCoinContainer>
           {sortedAndFilteredCoins.length === 0 ? (
             <StyledNoResult>
-              <p className="mt-2 text-sm font-medium">검색 결과가 없습니다.</p>
+              <div className='h-full flex flex-col w-full items-center justify-center'>
+                <img src="/emptyCoin.gif" alt="코인" />
+                <p className="mt-3 text-sm text-zinc-500">
+                  검색 결과가 없습니다.
+                </p>
+              </div>
             </StyledNoResult>
           ) : (
             <>
@@ -94,7 +107,7 @@ console.log('search component rendering')
                   const coinMarket = prices[coin.market]
                   const coinUnit = coin.market.split('-')[1]
                   const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
-                  
+
                   if (!coinMarket) return null;
 
                   return (

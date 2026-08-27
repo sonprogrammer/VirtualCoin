@@ -1,5 +1,5 @@
 
-import { useRef } from 'react';
+import { useEffect } from 'react';
 import usePostRecentCoin from '../../hooks/usePostRecentCoin';
 import { CoinRowForInterRecent } from '../CoinRowForInterRecent';
 import { StyledContainer, StyledContent, StyledContentTitle, StyledModal } from './style';
@@ -15,7 +15,15 @@ interface CoinModalProps {
   onClose: () => void;
 }
 const CoinModal = ({ title, coinData, onClose }: CoinModalProps) => {
-  const modalRef = useRef<HTMLDivElement>(null)
+
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
 
   const navigate = useNavigate()
 
@@ -31,8 +39,19 @@ const CoinModal = ({ title, coinData, onClose }: CoinModalProps) => {
 
   return (
     <StyledContainer className='modal-overlay' onClick={onClose}>
-      <StyledModal ref={modalRef} onClick={e => e.stopPropagation()}>
-        <p>{title}</p>
+      <StyledModal onClick={e => e.stopPropagation()}>
+        <div className="flex w-full items-center justify-between border-b border-zinc-800 px-5 py-4">
+
+          <h2 className="text-base font-bold text-zinc-100">
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-xl text-zinc-500 transition-colors hover:text-white"
+          >
+            ×
+          </button>
+        </div>
         <StyledContentTitle>
           <p>코인</p>
           <p>현재가</p>
@@ -43,16 +62,23 @@ const CoinModal = ({ title, coinData, onClose }: CoinModalProps) => {
         {!coinData || coinData?.length === 0 &&
           <div className='h-full flex flex-col w-full items-center justify-center'>
             <img src="/emptyCoin.gif" alt="코인" />
+            <p className="mt-3 text-sm text-zinc-500">
+              코인 내역이 없습니다.
+            </p>
           </div>
         }
         <StyledContent>
-          {coinData?.map((a) => (
-            <CoinRowForInterRecent 
+          {coinData?.map((a) => {
+            const coinUnit = a.coinMarket.split('-')[1]
+            const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
+            return (
+            <CoinRowForInterRecent
               key={a.coinMarket}
               coin={a}
+              coinLogo={coinLogo}
               onClick={() => handleCoinClick(a.coinMarket)}
             />
-          ))}
+          )})}
         </StyledContent>
 
       </StyledModal>

@@ -77,5 +77,4 @@ export const StyledCoinContent = styled.div`
 
 export const StyledNoResult = styled.div`
     ${tw`py-20 text-center text-zinc-600 flex flex-col items-center gap-2`}
-    &::before { content: "🔍"; font-size: 2rem; }
 `;

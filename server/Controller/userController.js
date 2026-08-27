@@ -81,7 +81,7 @@ const kakaoLogin = async (req, res) => {
     const token = jwt.sign(
       { kakaoId: user.kakaoId, name: user.name },
       process.env.JWT_SECRET,
-      { expiresIn: "1m" }
+      { expiresIn: "1h" }
     )
     const refreshToken = jwt.sign(
       { kakaoId: user.kakaoId },

@@ -165,7 +165,7 @@ const TransactionComponent = () => {
                                     <tr key={i}>
                                         <td>{formatDateTime(a.completedTime)}</td>
                                         <td className="font-bold text-zinc-100">{a.kName}</td>
-                                        <td className={isBuy ? '!text-red-500 font-bold' : '!text-sky-400 font-bold'}>
+                                        <td className={isBuy ? '!text-red-500 font-bold' : '!text-blue-500 font-bold'}>
                                             {isBuy ? '매수' : '매도'}
                                         </td>
                                         <td>{a.amount.toFixed(3)}</td>

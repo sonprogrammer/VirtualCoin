@@ -11,7 +11,7 @@ const refreshAccessToken = (req, res) => {
             const newAccessToken = jwt.sign(
                 { kakaoId: user.kakaoId, name: user.name },
                 process.env.JWT_SECRET,
-                { expiresIn: '1m' }
+                { expiresIn: '1h' }
             );
 
 

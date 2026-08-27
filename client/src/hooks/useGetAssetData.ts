@@ -27,7 +27,7 @@ const useGetAssetData = () => {
 
 
     }
-    const { data, isLoading, error, refetch } = useQuery({
+    const { data, isLoading, isPending, error, refetch } = useQuery({
         queryKey: ['asset', user._id],
         queryFn: fetchData,
         enabled: !!user._id,
@@ -35,7 +35,7 @@ const useGetAssetData = () => {
         gcTime: 1000 * 60 * 5
     })
 
-    return { data, isLoading, error, refetch }
+    return { data, isLoading, error, refetch, isPending }
 
 
 }

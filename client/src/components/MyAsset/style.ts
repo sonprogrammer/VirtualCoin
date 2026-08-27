@@ -25,11 +25,6 @@ export const StyledTotalAsset = styled.div`
 `;
 
 
-export const InfoSection = styled.div<{ showGraph: boolean }>`
-  ${props => props.showGraph ? tw`w-[60%] border-r border-zinc-800` : tw`w-full`}
-  ${tw`transition-all duration-300`}
-`;
-
 
 export const GraphSection = styled.div`
   ${tw`w-[40%] flex items-center justify-center p-6`}

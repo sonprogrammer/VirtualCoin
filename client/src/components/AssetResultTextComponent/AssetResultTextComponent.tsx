@@ -6,7 +6,7 @@ import Skeleton from '@mui/material/Skeleton'
 
 
 const AssetResultTextComponent = () => {
-    const {data} = useGetAssetData()
+    const { data, isPending } = useGetAssetData()
     const calculatedData = useCalculateAsset(data)
 
     const {
@@ -22,9 +22,18 @@ const AssetResultTextComponent = () => {
         totalProfitRate,
         // *총 매수
         totalBuy,
-    } =  calculatedData || {};
+    } = calculatedData || {};
 
-   if (!data) return <Skeleton variant="rectangular" height={300} />
+    if (isPending) return (
+        <Skeleton 
+            variant="rectangular"
+            height={300}
+            animation="wave"
+            sx={{
+                bgcolor: '#27272a',
+                borderRadius: '12px',
+            }} />
+    )
     return (
         <StyledContainer>
             <StyledTopBox>
@@ -59,7 +68,7 @@ const AssetResultTextComponent = () => {
                         <p>KRW</p>
                     </StyledBottomContentBox>
                 </StyledBottomBoxContents>
-                
+
                 <StyledBottomBoxContents>
                     <h2>총 평가</h2>
                     <StyledBottomContentBox>

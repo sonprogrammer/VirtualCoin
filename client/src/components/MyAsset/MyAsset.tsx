@@ -24,14 +24,16 @@ const MyAsset = () => {
   }, [windowWidth])
   
   return (
-    <StyledContainer className="myAsset">
+    <StyledContainer className="myAssedfdt">
+
         <StyledTotalAsset className={`${showGraph === false ? 'flex flex-col' : ''}`}>
-            
+
             <div
-                 className={`${showGraph === false ? 'w-full' : 'w-[60%] border-r-2'}`}
+                 className={`${showGraph === false ? 'w-full' : 'w-[60%]'}`}
             >
                 <AssetResultTextComponent />
             </div>
+            {showGraph && <div className="border border-zinc-800"></div>}
 
             
             {
