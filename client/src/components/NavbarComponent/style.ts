@@ -19,7 +19,10 @@ export const StyledLogo = styled.div`
 export const StyledDeskMenus = styled.div`
     ${tw`flex gap-10 items-center w-full`}
     h3 {
-        ${tw`cursor-pointer text-sm font-medium text-zinc-400 hover:text-white transition-colors`}
+        ${tw`cursor-pointer text-sm font-medium text-zinc-400  transition-colors`}
+        &:hover{
+            color: white
+        }
     }
 `;
 
@@ -86,10 +89,10 @@ export const StyledSearchIcon = styled.div`
 
 export const StyledMobileMenu = styled.div`
     ${tw`
-        fixed bottom-0 left-0 w-full flex justify-around items-center
+        fixed bottom-0 left-0 w-full py-1 flex justify-around items-center
         bg-zinc-900 border-t border-zinc-800 text-zinc-400 z-50
     `}
-    p { ${tw`py-4 text-xs font-bold transition-colors w-full text-center hover:bg-zinc-800`} }
+    p { ${tw`py-4 text-sm font-bold transition-colors w-full text-center hover:bg-zinc-800`} }
 `;
 
 export const StyledUserIcon = styled.div`

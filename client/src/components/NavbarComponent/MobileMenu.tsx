@@ -16,13 +16,13 @@ export function MobileMenu({menus, page, onPageClick}: MobileMenuProps) {
     return (
         <StyledMobileMenu>
             {menus.map(item => (
-                <Link to={item.path} key={item.name} onClick={() => onPageClick(item.path)}
+                <Link to={item.path} key={item.name} onClick={() => onPageClick(item.path)}>
+                    <p
                     style={{
                         fontWeight: page === item.path ? 'bold' : 'normal',
                         color: page === item.path ? '#ffffff' : '#71717a'
                     }}
-                >
-                    <p>{item.name}</p>
+                    >{item.name}</p>
                 </Link>
             ))}
         </StyledMobileMenu>

@@ -19,8 +19,8 @@ import { useNavBarState } from '../../hooks/useNavBarState';
 
 
 const NavbarComponent = () => {
-    const { 
-        page, windowWidth, searchModal, info, burgerTab, interestedCoin, recentCoin,logoutModal,
+    const {
+        page, windowWidth, searchModal, info, burgerTab, interestedCoin, recentCoin, logoutModal,
         userRef, iconRef, tabRef, tabMenuRef, setPage,
         setSearchModal, setInfo, setBurgerTab, setInterestedCoin, setRecentCoin, setLogoutModal
     } = useNavBarState()
@@ -28,7 +28,7 @@ const NavbarComponent = () => {
 
     const [user, setUser] = useRecoilState(userState);
 
-   
+
     const { mutate: logoutMutate } = useLogout()
 
 
@@ -44,11 +44,11 @@ const NavbarComponent = () => {
         { name: '거래소', path: '/browse' },
         { name: '투자내역', path: '/asset' },
         { name: '랭킹', path: '/rank' },
-    ],[]);
+    ], []);
 
 
     const handleClickSearch = () => {
-        setSearchModal((prev:boolean) => !prev)
+        setSearchModal((prev: boolean) => !prev)
     }
 
     useEffect(() => {
@@ -73,7 +73,7 @@ const NavbarComponent = () => {
 
     const handleUserClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        setInfo((prev:boolean) => !prev);
+        setInfo((prev: boolean) => !prev);
     }
 
     const handleLogoutClick = (e: React.MouseEvent) => {
@@ -120,7 +120,7 @@ const NavbarComponent = () => {
                 <>
                     <TabletMenu
                         onSearchClick={() => setSearchModal(true)}
-                        onBurgerClick={() => setBurgerTab((prev:boolean) => !prev)}
+                        onBurgerClick={() => setBurgerTab((prev: boolean) => !prev)}
                         tabRef={tabRef}
                     />
                     <StyledUserIcon onClick={handleUserClick} ref={iconRef}>
@@ -130,12 +130,13 @@ const NavbarComponent = () => {
                     {burgerTab && (
                         <StyledTabletMenu ref={tabMenuRef}>
                             {menus.map(item => (
-                                <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)}
-                                    style={{
-                                        fontWeight: page === item.path ? 'bold' : 'normal',
-                                        color: page === item.path ? '#ef4444' : '#d4d4d8'
-                                    }}>
-                                    <p>{item.name}</p>
+                                <Link to={item.path} key={item.name} onClick={() => handlePageClick(item.path)}>
+                                    <p
+                                        style={{
+                                            fontWeight: page === item.path ? 'bold' : 'normal',
+                                            color: page === item.path ? '#ef4444' : '#d4d4d8'
+                                        }}
+                                    >{item.name}</p>
                                 </Link>
                             ))}
                         </StyledTabletMenu>
@@ -180,7 +181,7 @@ const NavbarComponent = () => {
                     <SearchComponent handleSearchModalClose={handleSearchModalClose} />
                 </div>
             }
-            {interestedCoin && <InterestedCoin onClose={() => setInterestedCoin(false) } />}
+            {interestedCoin && <InterestedCoin onClose={() => setInterestedCoin(false)} />}
             {recentCoin && <RecentCoin onClose={() => setRecentCoin(false)} />}
 
             {/* //* 로그아웃 모달 */}

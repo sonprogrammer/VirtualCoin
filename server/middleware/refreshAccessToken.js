@@ -11,15 +11,9 @@ const refreshAccessToken = (req, res) => {
             const newAccessToken = jwt.sign(
                 { kakaoId: user.kakaoId, name: user.name },
                 process.env.JWT_SECRET,
-                { expiresIn: '1h' }
+                { expiresIn: '1m' }
             );
 
-            res.cookie('token', newAccessToken, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === "production" ? "None" : "LAX",
-                maxAge: 3600000,
-            });
 
             res.status(200).json({ token: newAccessToken });
         });

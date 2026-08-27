@@ -16,9 +16,10 @@ export function DesktopMenu({ menus, page, onPageClick, onSearchClick }: Desktop
     return (
         <StyledDeskMenus>
             {menus.map(item => (
-                <Link to={item.path} key={item.name} onClick={() => onPageClick(item.path)}
-                    style={{ fontWeight: page === item.path ? 'bold' : 'normal' }}>
-                    <h3>{item.name}</h3>
+                <Link to={item.path} key={item.name} onClick={() => onPageClick(item.path)}>
+                    <h3
+                    style={{ color: page === item.path ? '#ef4444' : '#d4d4d8' }}
+                    >{item.name}</h3>
                 </Link>
             ))}
             <StyledDeskInput>

@@ -9,11 +9,29 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+let isRefreshing = false
+
+let failedQueue: {
+  res: (token: string) => void
+  rej: (error: unknown) => void
+}[] = []
+
+const processQueue = (error: unknown, token: string | null = null): void => {
+  failedQueue.forEach(({ res, rej }) => {
+    if (error) {
+      rej(error)
+    } else if (token) {
+      res(token)
+    }
+  })
+  failedQueue = []
+}
+
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = getAccessToken()
 
-    if(token) config.headers.Authorization = `Bearer ${token}`
+    if (token) config.headers.Authorization = `Bearer ${token}`
 
     return config
   },
@@ -21,35 +39,58 @@ axiosInstance.interceptors.request.use(
 )
 
 
-  axiosInstance.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const originalRequest = error.config;
-      
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true
-        try {
-          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/refresh`, {
-            withCredentials: true,
-          });
-          const newAccessToken = response.data.token
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
 
-          if (newAccessToken) {
-            saveAccessToken(newAccessToken)
-            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-            originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-            return axiosInstance(originalRequest);
-          } 
-        }catch(error){
-          // console.log(error)
-          localStorage.clear()
-          toast.error('토큰 만료 재로그인해주세요')
-        }
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
+
+
+      if (isRefreshing) {
+        return new Promise<string>((res, rej) => {
+          failedQueue.push({ res, rej })
+        }).then(newAccessToken => {
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+
+          return axiosInstance(originalRequest)
+        })
       }
 
-      return Promise.reject(error);
+      isRefreshing = true
+
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/refresh`, {
+          withCredentials: true,
+        });
+        const newAccessToken = response.data.token
+
+        if (!newAccessToken) {
+          throw new Error('Access Token 재발급 실패')
+        }
+
+
+        saveAccessToken(newAccessToken)
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+        processQueue(null, newAccessToken)
+        return axiosInstance(originalRequest)
+
+      } catch (error) {
+        processQueue(error)
+        console.log(error)
+        localStorage.clear()
+        toast.error('토큰 만료 재로그인해주세요')
+        return Promise.reject(error)
+      }finally{
+        isRefreshing = false
+      }
     }
-  );
+
+    return Promise.reject(error);
+  }
+);
 
 
 export default axiosInstance;
