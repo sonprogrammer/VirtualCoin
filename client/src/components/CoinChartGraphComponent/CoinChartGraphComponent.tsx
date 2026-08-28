@@ -73,11 +73,11 @@ const CoinChartGraphComponent = () => {
 
     const series = chart.addSeries(CandlestickSeries, {
       upColor: "#ef4444",
-      downColor: "#38bdf8",
+      downColor: "#3B82F6",
       borderUpColor: "#ef4444",
-      borderDownColor: "#38bdf8",
+      borderDownColor: "#3B82F6",
       wickUpColor: "#ef4444",
-      wickDownColor: "#38bdf8",
+      wickDownColor: "#3B82F6",
     })
 
     chartRef.current = chart;
