@@ -14,22 +14,18 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    //30분동안 아무것도 하지 않으면 자동로그아웃되고 2차비밀번호 입력창 나옴 - 카카오계정에서만 
     secondPassword: {
         type: String,
     },
 
-    //게스트인지 여부 확인
     isGuest: {
         type: Boolean,
         default: true
     },
 
-    //관심코인
     interestedCoins:[String]
     ,
 
-    //최근 본 코인 - 카톡이면 디비에 저장, 게스트면 로컬스토리지에 저장
     recentCoins:[String]
     ,
 

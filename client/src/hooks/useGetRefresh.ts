@@ -1,13 +1,13 @@
-import axios from 'axios';
-import { getAccessToken, saveAccessToken } from '../context/saveAccessToken';
-import { toast } from 'react-toastify';
-
-
+import { useEffect, useRef } from 'react'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { accessTokenState } from '../context/userState'
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true,
-});
+  withCredentials: true
+})
 
 let isRefreshing = false
 
@@ -16,7 +16,7 @@ let failedQueue: {
   rej: (error: unknown) => void
 }[] = []
 
-const processQueue = (error: unknown, token: string | null = null): void => {
+const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach(({ res, rej }) => {
     if (error) {
       rej(error)
@@ -27,70 +27,78 @@ const processQueue = (error: unknown, token: string | null = null): void => {
   failedQueue = []
 }
 
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = getAccessToken()
+export const useAxiosInterceptor = () => {
+  const accessToken = useRecoilValue(accessTokenState)
+  const setAccessToken = useSetRecoilState(accessTokenState)
+  const tokenRef = useRef(accessToken)
+  console.log('accesstoken', accessToken)
 
-    if (token) config.headers.Authorization = `Bearer ${token}`
+  tokenRef.current = accessToken
 
-    return config
-  },
-  (err) => Promise.reject(err)
-)
-
-
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true
-
-
-      if (isRefreshing) {
-        return new Promise<string>((res, rej) => {
-          failedQueue.push({ res, rej })
-        }).then(newAccessToken => {
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
-
-          return axiosInstance(originalRequest)
-        })
+  useEffect(() => {
+    const requestInterceptor = axiosInstance.interceptors.request.use((config) => {
+      const token = tokenRef.current
+      if (token && !config.headers.Authorization) {
+        config.headers.Authorization = `Bearer ${token}`
       }
+      return config
+    })
 
-      isRefreshing = true
+    const responseInterceptor = axiosInstance.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config
 
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/refresh`, {
-          withCredentials: true,
-        });
-        const newAccessToken = response.data.token
-
-        if (!newAccessToken) {
-          throw new Error('Access Token 재발급 실패')
+        if (!originalRequest || error.response?.status !== 401 || originalRequest._retry) {
+          return Promise.reject(error)
         }
 
+        originalRequest._retry = true
 
-        saveAccessToken(newAccessToken)
-        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-        processQueue(null, newAccessToken)
-        return axiosInstance(originalRequest)
+        if (isRefreshing) {
+          return new Promise<string>((res, rej) => {
+            failedQueue.push({ res, rej })
+          }).then((newAccessToken) => {
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+            return axiosInstance(originalRequest)
+          })
+        }
 
-      } catch (error) {
-        processQueue(error)
-        console.log(error)
-        localStorage.clear()
-        toast.error('토큰 만료 재로그인해주세요')
-        return Promise.reject(error)
-      }finally{
-        isRefreshing = false
+        isRefreshing = true
+
+        try {
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/refresh`, {
+            withCredentials: true
+          })
+          const newAccessToken = response.data.token
+
+          if (!newAccessToken) {
+            throw new Error('Access Token 재발급 실패')
+          }
+
+          tokenRef.current = newAccessToken
+          setAccessToken(newAccessToken)
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+          processQueue(null, newAccessToken)
+
+          return axiosInstance(originalRequest)
+        } catch (refreshError) {
+          processQueue(refreshError)
+          tokenRef.current = null
+          setAccessToken(null)
+          toast.error('토큰 만료 재로그인해주세요')
+          return Promise.reject(refreshError)
+        } finally {
+          isRefreshing = false
+        }
       }
+    )
+
+    return () => {
+      axiosInstance.interceptors.request.eject(requestInterceptor)
+      axiosInstance.interceptors.response.eject(responseInterceptor)
     }
+  }, [setAccessToken])
+}
 
-    return Promise.reject(error);
-  }
-);
-
-
-export default axiosInstance;
+export default axiosInstance

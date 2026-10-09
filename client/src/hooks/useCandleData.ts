@@ -16,8 +16,7 @@ const useCandleData = (market: string, interval: string) => {
   return useQuery({
     queryKey: ['coinData', market, interval],
     queryFn: () => fetchData(market, interval),
-    staleTime: 5 * 60 * 1000, // 데이터가 5분 동안 유효
-    // cacheTime: 10 * 60 * 1000, // 캐시된 데이터가 10분 동안 유효
+    staleTime: 5 * 60 * 1000, 
     refetchOnWindowFocus: false, 
   }
   );

@@ -37,6 +37,8 @@ const useWebSocket = () => {
 
   useEffect(() => {
 
+  
+
     const fetchRestPrice = async () => {
       try {
         const res = await axiosInstance.get('/api/coins/tickers')
@@ -59,6 +61,8 @@ const useWebSocket = () => {
       try {
         const data = JSON.parse(e.data);
         if (data.type === "ticker") {
+
+          
           throttledSetPrices(data)
         }
       } catch (error) {

@@ -14,9 +14,11 @@ import useGetCoins from "../../hooks/useGetCoins";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 
 
+
 const CoinChartComponent = () => {
   const { likeToggle } = useLikeToggle();
   const { likedCoins } = useGetLikedCoins()
+
 
   const [page, setPage] = useState(1)
   const [star, setStar] = useState<string[]>([]) //*관심코인 관리 
@@ -32,6 +34,8 @@ const CoinChartComponent = () => {
   const { mutate: addRecentCoin } = usePostRecentCoin();
 
   const prices = useRecoilValue(CoinPrice)
+ 
+
 
   const handleCoinClick = (coinEName: string) => {
     addRecentCoin(coinEName)
@@ -77,6 +81,8 @@ const CoinChartComponent = () => {
   const firstPage = (page - 1) * CoinPage
   const coinPerPage = sortedCoins.slice(firstPage, firstPage + CoinPage)
 
+ 
+  
 
   const time = new Date().toLocaleString()
 

@@ -1,60 +1,23 @@
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useSetRecoilState } from 'recoil';
-import { userState } from '../context/userState'; 
-import { saveUserToLocalStorage } from '../context/localStorage';
-import { saveAccessToken } from '../context/saveAccessToken';
-import axiosInstance from './useGetRefresh';
 
-interface KakaoLoginData {
-  response: {
-    access_token: string;
-  };
-}
-interface KakaoError {
-  error: string;
-  error_description: string;
-}
+
+import { toast } from 'react-toastify';
 
 const useKakaoLogin = () => {
-  const navigate = useNavigate();
-  const setUser = useSetRecoilState(userState); 
 
-  const handleKakaoSuccess = async (data:KakaoLoginData) => {
-    const accessToken = data.response.access_token
-
-    try {
-      const res = await axiosInstance.post(`api/user/kakao-login`, {
-        accessToken,
-      })
-
-      if (res.status === 200) { 
-        const userData = res.data.user
-        setUser(userData)
-        saveAccessToken(res.data.token)
-        saveUserToLocalStorage(userData)
-
-        toast.success('로그인 성공!', {
-          autoClose: 1000,
-          hideProgressBar: true,
-        })
-
-        setTimeout(() => {
-          navigate('/browse');
-        }, 1000);
-      }
-    } catch (error) {
-      console.error('카카오 로그인 실패:', error);
-      toast.error('로그인 중 문제가 발생했습니다.');
+  const handleKakaoLogin = () => {
+    if (!window.Kakao || !window.Kakao.isInitialized()) {
+      toast.error('카카오 로그인을 준비 중입니다.')
+      return
     }
-  };
 
-  const handleKakaoFailure = (error: KakaoError) => {
-    console.error('카카오 로그인 오류:', error);
-    toast.error('카카오 로그인에 실패했습니다.');
-  };
+    console.log('kakaologin click')
+    window.Kakao.Auth.authorize({
+      redirectUri: `${window.location.origin}/callback`,
+      throughTalk: false
+    })
+  }
 
-  return { handleKakaoSuccess, handleKakaoFailure };
+  return { handleKakaoLogin };
 };
 
 export default useKakaoLogin;

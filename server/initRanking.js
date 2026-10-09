@@ -9,7 +9,6 @@ console.log("Redis URL 확인:", process.env.UPSTASH_REDIS_REST_URL);
 
 const initRanking = async () => {
     try {
-        // 1. DB 연결 대기
         await mongoose.connect(process.env.MONGO_URI);
         console.log("DB 연결 성공");
 

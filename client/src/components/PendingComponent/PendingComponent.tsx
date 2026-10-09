@@ -12,8 +12,6 @@ const PendingComponent = () => {
     const [selectedAll, setSelectedAll] = useState<boolean>(false)
 
     const user = useRecoilValue(userState);
-
-
     const { data = [] } = useGetPendingCoins(user._id)
     const { mutate: deleteOrder } = usePostDeleteOrder()
 

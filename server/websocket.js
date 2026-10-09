@@ -16,7 +16,6 @@ const webSocket = (server) => {
       upbitSocket = new WebSocket('wss://api.upbit.com/websocket/v1');
 
       upbitSocket.on('open', () => {
-        // console.log('Upbit WebSocket connected');
 
         const subscribeMessage = [
           { ticket: "coin-ticker" },
@@ -36,7 +35,6 @@ const webSocket = (server) => {
       });
 
       upbitSocket.on('close', () => {
-        // console.log('Upbit WebSocket closed.');
         setTimeout(createUpbitSocket, 2000);
       });
 
@@ -54,14 +52,11 @@ const webSocket = (server) => {
   createUpbitSocket();
 
   wss.on('connection', (clientSocket) => {
-    // console.log('클라이언트 WebSocket 연결됨');
 
     clientSocket.on('close', () => {
-      // console.log('클라이언트 연결 종료');
     });
 
     clientSocket.on('message', (msg) => {
-      // console.log(' 라이언트 메시지(무시):');
     });
   });
 };

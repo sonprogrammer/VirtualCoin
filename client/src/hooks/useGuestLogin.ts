@@ -3,7 +3,6 @@ import { useRecoilState } from 'recoil';
 import { userState } from '../context/userState';
 import axiosInstance from './useGetRefresh';
 import { saveUserToLocalStorage } from '../context/localStorage';
-import { saveAccessToken } from '../context/saveAccessToken';
 
 
 
@@ -23,7 +22,6 @@ const useGuestLogin = () => {
         onSuccess: (data) => {
             if (data) {
                 saveUserToLocalStorage(data.user)
-                saveAccessToken(data.token)
                 setUser(data.user)
                 queryClient.invalidateQueries({ queryKey: ['guestUser'] });
             }

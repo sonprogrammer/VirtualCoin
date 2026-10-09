@@ -14,7 +14,7 @@ const useGetLikedCoins = () => {
             const storedUser = JSON.parse(localStorage.getItem('user') || '{}')
             return storedUser.interestedCoins || []
         }else{
-            const res = await axiosInstance.get(`${import.meta.env.VITE_API_URL}/api/user/liked-coins`)
+            const res = await axiosInstance.get(`/api/user/liked-coins`)
             return res.data.likedCoins
         }
     }

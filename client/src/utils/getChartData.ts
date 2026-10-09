@@ -7,7 +7,7 @@ export type CandleType = 'minutes' | 'days' | 'weeks' | 'months' | 'years';
 interface getChartParams {
   market: string;
   type: CandleType;
-  unit?: number; // 분봉 차트일 때만
+  unit?: number; 
   to?: string;
   count?: number;
 }

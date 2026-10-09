@@ -1,21 +1,24 @@
 import { Route, Routes } from "react-router-dom"
-import { AssetPage, CoinDetailPage, LandingPage, LayoutPage, MainPage, NotfoundPage, RankingPage } from "./pages"
+import { AssetPage, CoinDetailPage, KakaoCallbackPage, LandingPage, LayoutPage, MainPage, NotfoundPage, RankingPage } from "./pages"
 import ProtectNoUser from "./utils/ProtectNoUser"
 import 'react-toastify/dist/ReactToastify.css';
+import { KakaoInitializer } from "./components";
+import { useAxiosInterceptor } from "./hooks/useGetRefresh";
 
 
 
 
 function App() {
-
+  useAxiosInterceptor()
 
   return (
     <>
-
+      <KakaoInitializer />
       <Routes>
         <Route path="/" element={
           <LandingPage />
         } />
+        <Route path="/callback" element={<KakaoCallbackPage />} />
         <Route element={
           <LayoutPage />
         }>

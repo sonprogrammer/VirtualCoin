@@ -15,5 +15,4 @@ export * from './CoinChartGraphComponent'
 export * from './CoinVoiceComponent'
 export * from './DetailCoinInfoComponent'
 export * from './LoginRequestComponent'
-
-
+export * from './KakaoLogin'

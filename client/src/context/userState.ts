@@ -1,14 +1,13 @@
 import { atom } from "recoil";
 import { getUserFromLocalStorage } from "./localStorage";
-import { getAccessToken } from "./saveAccessToken";
 
 const user = getUserFromLocalStorage()
-const accessToken = getAccessToken()
+
 
 
 export const userState = atom({
     key: 'userState',
-    default: user && accessToken ? user : 
+    default: user ? user : 
     {
         _id: null,
         name: "",
@@ -24,4 +23,9 @@ export const userState = atom({
         createdAt: "",
         updatedAt: "",
     }
+})
+
+export const accessTokenState = atom<string | null>({
+    key: 'accessTokenState',
+    default: null
 })

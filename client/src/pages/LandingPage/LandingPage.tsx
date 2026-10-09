@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react'
 import { StyledBox, StyledBtns, StyledContainer, StyledGuestBtn, StyledLoginBtn, StyledLogo, StyledText } from './style'
 import { GuidComponent } from '../../components';
-import KakaoLogin from 'react-kakao-login';
 import useKakaoLogin from '../../hooks/useKakaoLogin';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -17,16 +16,15 @@ const LandingPage = () => {
   const navigate = useNavigate()
 
   const user = useRecoilValue(userState)
-  
-  const kakaoClientId = import.meta.env.VITE_KAKAO_CLIENT_ID || '';
 
-  const { handleKakaoSuccess, handleKakaoFailure } = useKakaoLogin();
+
+  const { handleKakaoLogin } = useKakaoLogin()
 
   useEffect(() => {
 
-   if(user?._id){
+    if (user?._id) {
       navigate('/browse')
-   } 
+    }
   }, [navigate, user])
 
 
@@ -58,20 +56,15 @@ const LandingPage = () => {
         </StyledText>
 
         <StyledBtns>
-         <StyledGuestBtn onClick={() => setGuestModal(true)}>
+          <StyledGuestBtn onClick={() => setGuestModal(true)}>
             게스트로 시작하기
-          </StyledGuestBtn> 
-          <KakaoLogin
-            token={kakaoClientId}
-            onSuccess={handleKakaoSuccess}
-            onFail={handleKakaoFailure}
-            render={(props) => (
-              <StyledLoginBtn onClick={props.onClick} type="button">
-              <img src="./kakao.png" alt="kakao" />
-              <span>카카오 로그인</span>
-            </StyledLoginBtn>
-              )}
-            />
+          </StyledGuestBtn>
+
+
+          <StyledLoginBtn onClick={handleKakaoLogin} type="button">
+            <img src="./kakao.png" alt="kakao" />
+            <span>카카오 로그인</span>
+          </StyledLoginBtn>
         </StyledBtns>
 
         {guestModal && <GuidComponent handleCloseModal={() => setGuestModal(false)} />}

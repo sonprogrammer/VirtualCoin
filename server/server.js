@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser');
 const { default: axios } = require('axios');
 const { webSocket } = require('./websocket');
 const getRestCoinsTicker = require('./Controller/coinController');
-// const redis = require('./redisClient')
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -86,14 +86,5 @@ webSocket(server)
 server.listen(port, async () => {
   console.log(`Server running on http://localhost:${port}`);
   
-  // try {
-  //   // await redis.set('connection-test', 'success');
-  //   // const status = await redis.get('connection-test');
-    
-  //   if (status === 'success') {
-  //     console.log('✅ Redis 연결 및 테스트 성공!');
-  //   }
-  // } catch (error) {
-  //   console.error('❌ Redis 연결 실패:', error.message);
-  // }
+  
 });

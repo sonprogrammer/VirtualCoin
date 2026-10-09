@@ -120,7 +120,7 @@ const CoinChartGraphComponent = () => {
 
     const combinedData = data?.pages.flat() ?? []
 
-    // 중복 제거
+
     const uniqueDataMap = new Map<number, Candle>()
     for (const candle of combinedData) {
       uniqueDataMap.set(candle.time, candle)

@@ -13,14 +13,13 @@ export interface Order {
   type: 'BUY' | 'SELL';
 }
 
-// API 전체 응답의 타입
 export interface AllTransactionResponse {
   message: string;
   allTransaction: {
     createdAt: string;
     updatedAt: string;
     userId: string;
-    orders: Order[]; // 위에서 만든 Order 배열
+    orders: Order[]; 
     _id: string;
     __v: number;
   };
