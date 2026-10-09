@@ -31,7 +31,6 @@ export const useAxiosInterceptor = () => {
   const accessToken = useRecoilValue(accessTokenState)
   const setAccessToken = useSetRecoilState(accessTokenState)
   const tokenRef = useRef(accessToken)
-  console.log('accesstoken', accessToken)
 
   tokenRef.current = accessToken
 

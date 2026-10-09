@@ -10,7 +10,6 @@ const useKakaoLogin = () => {
       return
     }
 
-    console.log('kakaologin click')
     window.Kakao.Auth.authorize({
       redirectUri: `${window.location.origin}/callback`,
       throughTalk: false
