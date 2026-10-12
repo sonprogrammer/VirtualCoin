@@ -12,6 +12,7 @@ import useGetLikedCoins from "../../hooks/useGetLikeCoins";
 import Skeleton from "@mui/material/Skeleton";
 import useGetCoins from "../../hooks/useGetCoins";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
+import { PriceSkeleton } from "../PriceSkeleton";
 
 
 
@@ -22,19 +23,19 @@ const CoinChartComponent = () => {
 
   const [page, setPage] = useState(1)
   const [star, setStar] = useState<string[]>([]) //*관심코인 관리 
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); 
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   const windowWidth = useWindowWidth()
 
 
-  const { data: coins =[]} = useGetCoins()
+  const { data: coins = [] } = useGetCoins()
 
   const navigate = useNavigate()
 
   const { mutate: addRecentCoin } = usePostRecentCoin();
 
   const prices = useRecoilValue(CoinPrice)
- 
+
 
 
   const handleCoinClick = (coinEName: string) => {
@@ -42,36 +43,36 @@ const CoinChartComponent = () => {
     navigate(`/coin/${coinEName}`)
   }
 
-  
+
   const sortedCoins = useMemo(() => {
-  const sorted = [...coins].sort((a, b) => {
-    const tradeVolumeA = prices[a.market]?.acc_price || 0;
-    const tradeVolumeB = prices[b.market]?.acc_price || 0;
-    return sortOrder === 'asc' ? tradeVolumeA - tradeVolumeB : tradeVolumeB - tradeVolumeA;
-  });
-  return sorted;
-}, [coins, prices, sortOrder])
+    const sorted = [...coins].sort((a, b) => {
+      const tradeVolumeA = prices[a.market]?.acc_price || 0;
+      const tradeVolumeB = prices[b.market]?.acc_price || 0;
+      return sortOrder === 'asc' ? tradeVolumeA - tradeVolumeB : tradeVolumeB - tradeVolumeA;
+    });
+    return sorted;
+  }, [coins, prices, sortOrder])
 
 
   useEffect(() => {
-    setStar(likedCoins||[])
-  },[likedCoins])
+    setStar(likedCoins || [])
+  }, [likedCoins])
 
-  
+
 
 
   const handleStarClick = (coinMarket: string) => {
     likeToggle(coinMarket);
     setStar((prev) => {
-      if(prev.includes(coinMarket)){
-          return prev.filter(coin => coin !== coinMarket)
-        }else{
-            return [...prev, coinMarket]
-          }
-        })
-      
+      if (prev.includes(coinMarket)) {
+        return prev.filter(coin => coin !== coinMarket)
+      } else {
+        return [...prev, coinMarket]
       }
-      
+    })
+
+  }
+
 
 
   const isStar = (coinMarket: string) => star.includes(coinMarket)
@@ -81,8 +82,8 @@ const CoinChartComponent = () => {
   const firstPage = (page - 1) * CoinPage
   const coinPerPage = sortedCoins.slice(firstPage, firstPage + CoinPage)
 
- 
-  
+
+
 
   const time = new Date().toLocaleString()
 
@@ -94,118 +95,122 @@ const CoinChartComponent = () => {
       </StyledTitle>
 
       {coins.length === 0 ?
-       <Skeleton variant="rectangular" width='80%' height='100vh' />
-      
-       :(
-       
-      <StyledTable>
-        <StyledTableHead>
-          <tr>
-            <th className={`text-center ${windowWidth > 570 ? 'w-[70px]' : 'w-[40px]'}`} style={{ width: windowWidth > 570 ? '70px' : '40px' }}>관심</th>
-            <th className="text-left">코인</th>
-            <th className="text-right">현재가</th>
-            <th className="text-right">전일대비</th>
-              <th className="text-right">
-                <button onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')}>
-                  {sortOrder === 'asc' ? '▲' : '▼'} 거래대금(24H)
-                </button>
-              </th>
-          </tr>
-        </StyledTableHead>
-        <StyledTableBody>
+        <Skeleton variant="rectangular" width='80%' height='100vh' />
 
-          {(windowWidth > 630 ? coinPerPage : coins).map(coin => {
-            const priceData = prices[coin.market]
-            const coinUnit = coin.market.split('-')[1]
-            const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
+        : (
 
-            return (
-              <tr key={coin.market} onClick={()=>handleCoinClick(coin.market)}>
-                {/* //*관심 */}
-                <td className="text-center" onClick={(e) => e.stopPropagation()}>
-                  {isStar(coin.market) ? (
-                    <FontAwesomeIcon
-                      icon={fullStar}
-                      onClick={() => handleStarClick(coin.market)}
-                      className="text-yellow-400"
-                    />
-                  ) : (
-                    <FontAwesomeIcon
-                      icon={faStar}
-                      onClick={() => handleStarClick(coin.market)}
-                    />
-                  )
-                  }
-                </td>
-
-                {/* //*코인 이름&로고 */}
-                <td>
-                  <div className="flex text-left gap-2 items-center">
-                    {windowWidth > 570 &&
-                      <img src={coinLogo} alt="로고" width='30' height='30' />
-                    }
-                    <span className="text-left">{coin.korean_name}</span>
-                  </div>
-                </td>
-
-                {/* //* 현재가 */}
-                <td className="text-right">
-                  {priceData ? (
-                    <p
-                      className={`${priceData.change_rate > 0 ? "text-red-500" : "text-blue-600"
-                        } ${windowWidth <= 570 ? "text-[12px] font-bold" : ""}`}
-                    >
-                      {priceData.trade_price?.toLocaleString()}
-                      {windowWidth > 570 && "krw"}
-                    </p>
-                  ) : (
-                    "Loading..."
-                  )}
-                </td>
-                  
-
-                {/* //* 전일대비 */}
-                <td className="text-right">
-                  {priceData ? (
-                    <div
-                      className={`${priceData.change_rate > 0 ? "text-red-500" : "text-blue-600"
-                        } ${windowWidth > 570 ? "" : "text-[12px]"}`}
-                    >
-                      <p>
-                        {priceData.change_rate > 0 ? "+" : ""}
-                        {(priceData.change_rate * 100)?.toLocaleString()}%
-                      </p>
-                      <p>
-                        {priceData.change_rate > 0 ? "+" : ""}
-                        {priceData.change_price?.toLocaleString()}
-                      </p>
-                    </div>
-                  ) : (
-                    "Loading..."
-                  )}
-                </td>
-                {/* //*거래대금 */}
-                <td className="text-right">
-                  {priceData ?
-                    <p className={`${windowWidth > 570 ? '' : 'text-[12px]'}`}
-                    >
-                      {Math.floor(priceData.acc_price / 1000000)?.toLocaleString()}백만
-                    </p>
-                    : "Loading..."
-                  }
-                </td>
-
-
+          <StyledTable>
+            <StyledTableHead>
+              <tr>
+                <th className={`text-center ${windowWidth > 570 ? 'w-[70px]' : 'w-[40px]'}`} style={{ width: windowWidth > 570 ? '70px' : '40px' }}>관심</th>
+                <th className="text-left">코인</th>
+                <th className="text-right">현재가</th>
+                <th className="text-right">전일대비</th>
+                <th className="text-right">
+                  <button onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')}>
+                    {sortOrder === 'asc' ? '▲' : '▼'} 거래대금(24H)
+                  </button>
+                </th>
               </tr>
-            )
-          })}
+            </StyledTableHead>
+            <StyledTableBody>
 
-        </StyledTableBody>
-      </StyledTable>
+              {(windowWidth > 630 ? coinPerPage : coins).map(coin => {
+                const priceData = prices[coin.market]
+                const coinUnit = coin.market.split('-')[1]
+                const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
+
+                return (
+                  <tr key={coin.market} onClick={() => handleCoinClick(coin.market)}>
+                    {/* //*관심 */}
+                    <td className="text-center" onClick={(e) => e.stopPropagation()}>
+                      {isStar(coin.market) ? (
+                        <FontAwesomeIcon
+                          icon={fullStar}
+                          onClick={() => handleStarClick(coin.market)}
+                          className="text-yellow-400"
+                        />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={faStar}
+                          onClick={() => handleStarClick(coin.market)}
+                        />
+                      )
+                      }
+                    </td>
+
+                    {/* //*코인 이름&로고 */}
+                    <td>
+                      <div className="flex text-left gap-2 items-center">
+                        {windowWidth > 570 &&
+                          <img src={coinLogo} alt="로고" width='30' height='30' />
+                        }
+                        <span className="text-left">{coin.korean_name}</span>
+                      </div>
+                    </td>
+
+                    {/* //* 현재가 */}
+                    <td className="text-right">
+                      {priceData ? (
+                        <p
+                          className={`${priceData.change_rate > 0 ? "text-red-500" : "text-blue-600"
+                            } ${windowWidth <= 570 ? "text-[12px] font-bold" : ""}`}
+                        >
+                          {priceData.trade_price?.toLocaleString()}
+                          {windowWidth > 570 && "krw"}
+                        </p>
+                      ) : (
+
+                        <PriceSkeleton width={85} />
+                      )}
+                    </td>
 
 
-      )}
-      
+                    {/* //* 전일대비 */}
+                    <td className="text-right">
+                      {priceData ? (
+                        <div
+                          className={`${priceData.change_rate > 0 ? "text-red-500" : "text-blue-600"
+                            } ${windowWidth > 570 ? "" : "text-[12px]"}`}
+                        >
+                          <p>
+                            {priceData.change_rate > 0 ? "+" : ""}
+                            {(priceData.change_rate * 100)?.toLocaleString()}%
+                          </p>
+                          <p>
+                            {priceData.change_rate > 0 ? "+" : ""}
+                            {priceData.change_price?.toLocaleString()}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-2">
+                          <PriceSkeleton width={55} />
+                          <PriceSkeleton width={70} />
+                        </div>
+                      )}
+                    </td>
+                    {/* //*거래대금 */}
+                    <td className="text-right">
+                      {priceData ?
+                        <p className={`${windowWidth > 570 ? '' : 'text-[12px]'}`}
+                        >
+                          {Math.floor(priceData.acc_price / 1000000)?.toLocaleString()}백만
+                        </p>
+                        : <PriceSkeleton width={75} />
+                      }
+                    </td>
+
+
+                  </tr>
+                )
+              })}
+
+            </StyledTableBody>
+          </StyledTable>
+
+
+        )}
+
       {windowWidth > 630 && coins.length > 0 && (
         <StyledPageBtns>
           {Array.from({ length: Math.ceil(coins.length / CoinPage) }, (_, i) => (

@@ -11,6 +11,7 @@ export interface PriceData {
     trade_volume: number; // 거래량
     high_price: number; // 고가
     low_price: number; // 저가
+    timestamp: number
   }
 
 

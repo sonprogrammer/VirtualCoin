@@ -16,7 +16,8 @@ const getRestCoinsTicker = async(req, res) => {
                 trade_volume: cur.acc_trade_volume_24h,
                 high_price: cur.high_price,
                 low_price: cur.low_price,
-                prev_closing_price: cur.prev_closing_price
+                prev_closing_price: cur.prev_closing_price,
+                timestamp: cur.timestamp //최신 시간 현재가 정보가 반영된 시각 
             }
             return acc
         },{})
