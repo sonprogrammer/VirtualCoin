@@ -20,9 +20,9 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
     document.body.style.overflow = 'hidden'
 
     return () => {
-      document.body.style.overflow =''
+      document.body.style.overflow = ''
     }
-  },[])
+  }, [])
 
   const prices = useRecoilValue(CoinPrice)
 
@@ -39,9 +39,14 @@ const SearchComponent = ({ handleSearchModalClose }: SearchComponentProps) => {
   }, [searchQuery])
 
   const sortedAndFilteredCoins = useMemo(() => {
-    if (!coinData || !prices) return []
-    return [...coinData].sort((a, b) => (prices[b.market].acc_price || 0) - (prices[a.market].acc_price || 0))
-      .filter(coin => coin.korean_name.toLowerCase().includes(debouncedQuery.toLowerCase()))
+    if (!coinData) return []
+
+    return [...coinData]
+      .filter(coin =>
+        coin.korean_name.toLowerCase().includes(debouncedQuery.toLowerCase())
+      )
+      .filter(coin => prices[coin.market] !== undefined)
+      .sort((a, b) => (prices[b.market]?.acc_price ?? 0) - (prices[a.market]?.acc_price ?? 0))
   }, [coinData, prices, debouncedQuery])
 
   useEffect(() => {

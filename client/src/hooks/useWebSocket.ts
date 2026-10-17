@@ -72,7 +72,8 @@ const useWebSocket = () => {
       syncUpdates = currentSyncUpdates
 
       try {
-        const res = await axiosInstance.get<Record<string, PriceData>>('/api/coins/tickers')
+        const res = await axiosInstance.get<Record<string, PriceData>>('/coins/tickers')
+
         if (isUnmounted || requestId !== syncRequestId) return
         setPrices(prev => {
           const next = { ...prev }

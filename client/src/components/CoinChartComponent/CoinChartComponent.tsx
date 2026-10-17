@@ -54,8 +54,7 @@ const CoinChartComponent = () => {
     });
     return sorted;
   }, [coins, prices, sortOrder])
-
-
+  
   useEffect(() => {
     setStar(likedCoins || [])
   }, [likedCoins])
@@ -117,7 +116,7 @@ const CoinChartComponent = () => {
             </StyledTableHead>
             <StyledTableBody>
 
-              {(windowWidth > 630 ? coinPerPage : coins).map(coin => {
+              {(windowWidth > 630 ? coinPerPage : sortedCoins).map(coin => {
                 const priceData = prices[coin.market]
                 const coinUnit = coin.market.split('-')[1]
                 const coinLogo = `https://static.upbit.com/logos/${coinUnit}.png`
