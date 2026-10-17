@@ -1,19 +1,16 @@
 import dayjs from 'dayjs'
 import { StyledContainer, StyledTable, StyledTableBody, StyledTableHead, StyledTop } from './style'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import useGetPendingCoins from '../../hooks/useGetPendingCoins'
-import { useRecoilValue } from 'recoil'
-import { userState } from '../../context/userState'
 import usePostDeleteOrder from '../../hooks/usePostDeleteOrder'
 
 const PendingComponent = () => {
     const [selectedOrder, setSelectedOrder] = useState<Set<string>>(new Set())
-    const [cancleOrder, setCancleOrder] = useState<Set<string>>(new Set())
-    const [selectedAll, setSelectedAll] = useState<boolean>(false)
 
-    const user = useRecoilValue(userState);
-    const { data = [] } = useGetPendingCoins(user._id)
-    const { mutate: deleteOrder } = usePostDeleteOrder()
+    const { data = [], isLoading } = useGetPendingCoins()
+    const { mutate: deleteOrder, isPending: isDeleting } = usePostDeleteOrder()
+
+    const selectedAll = data.length > 0 && data.every(order => selectedOrder.has(order._id))
 
 
     const handleRadioChange = (orderId: string) => {
@@ -28,37 +25,43 @@ const PendingComponent = () => {
         })
     }
 
+
+    //* 선택한거 삭제 
     const handleCancleClick = () => {
-        if (selectedOrder.size === 0) return
-        deleteOrder({ userId: user._id, orderId: Array.from(selectedOrder) }, {
+        const orderIds = data.filter(order => selectedOrder.has(order._id)).map(order => order._id)
+
+        if (orderIds.length === 0 || isDeleting) return
+
+        deleteOrder(orderIds, {
             onSuccess: () => {
-                setCancleOrder(prev => new Set([...prev, ...selectedOrder]))
                 setSelectedOrder(new Set())
             }
         })
     }
 
+    //* 개별 삭제 
     const handleCancleBtnClick = (orderId: string, e: React.MouseEvent) => {
-        deleteOrder({ userId: user._id, orderId: [orderId] }, {
+        e.stopPropagation()
+
+        if (isDeleting) return
+
+        deleteOrder([orderId], {
             onSuccess: () => {
-                setCancleOrder(prev => new Set([...prev, orderId]))
+                setSelectedOrder(prev => {
+                    const next = new Set(prev)
+                    next.delete(orderId)
+                    return next
+                })
             }
         })
-        e.stopPropagation();
     }
-
-    const filteredData = useMemo(() => {
-        return data.filter((a) => !cancleOrder.has(a._id))
-    }, [cancleOrder, data]);
 
 
     const handleAllClick = () => {
         if (selectedAll) {
             setSelectedOrder(new Set())
-            setSelectedAll(false)
         } else {
-            setSelectedOrder(new Set(filteredData.map((a) => a._id)))
-            setSelectedAll(true)
+            setSelectedOrder(new Set(data.map((o) => o._id)))
         }
     }
 
@@ -88,7 +91,7 @@ const PendingComponent = () => {
                 </StyledTableHead>
 
                 <StyledTableBody>
-                    {filteredData?.map((a) => {
+                    {data.map((a) => {
                         const formattedDays = dayjs(a.orderTime).format('YY.MM.DD');
                         const formattedTime = dayjs(a.orderTime).format('HH:mm');
                         const isSelected = selectedOrder.has(a._id);
@@ -137,7 +140,7 @@ const PendingComponent = () => {
                 </StyledTableBody>
             </StyledTable>
 
-            {filteredData.length === 0 && (
+            {!isLoading && data.length === 0 && (
                 <div className='flex flex-col justify-center items-center py-20'>
                     <p className='text-zinc-600 text-sm'>미체결 중인 주문이 없습니다.</p>
                 </div>

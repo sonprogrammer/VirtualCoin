@@ -7,14 +7,13 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { InterestedCoin } from '../InterestedCoin';
 import { RecentCoin } from '../RecentCoin';
 import { SearchComponent } from '../SearchComponent';
-import { useRecoilState } from 'recoil';
-import { userState } from '../../context/userState';
-import useLogout from '../../hooks/useLogout';
+
 import { DesktopMenu } from './DesktopMenu';
 import { TabletMenu } from './TabletMenu';
 import { MobileMenu } from './MobileMenu';
 import { UserInfo } from './UserInfo';
 import { useNavBarState } from '../../hooks/useNavBarState';
+import useLogout from '../../hooks/auth/useLogout';
 
 
 
@@ -25,8 +24,6 @@ const NavbarComponent = () => {
         setSearchModal, setInfo, setBurgerTab, setInterestedCoin, setRecentCoin, setLogoutModal
     } = useNavBarState()
 
-
-    const [user, setUser] = useRecoilState(userState);
 
 
     const { mutate: logoutMutate } = useLogout()
@@ -84,10 +81,7 @@ const NavbarComponent = () => {
 
     const handleLogout = () => {
         logoutMutate()
-        localStorage.clear()
-        setUser(null)
         setLogoutModal(false);
-        navigate('/')
     }
 
     return (
@@ -147,7 +141,6 @@ const NavbarComponent = () => {
 
             {info && (
                 <UserInfo
-                    userName={user.name}
                     onLogoutClick={handleLogoutClick}
                     onInterestedClick={() => setInterestedCoin(true)}
                     onRecentClick={() => setRecentCoin(true)}

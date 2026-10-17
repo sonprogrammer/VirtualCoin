@@ -2,10 +2,11 @@ import { useEffect, useRef } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { accessTokenState } from '../context/userState'
+import { accessTokenState } from '../../context/userState'
+
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: `${import.meta.env.VITE_API_URL}/api`,
   withCredentials: true
 })
 
@@ -26,6 +27,8 @@ const processQueue = (error: unknown, token: string | null = null) => {
   })
   failedQueue = []
 }
+
+
 
 export const useAxiosInterceptor = () => {
   const accessToken = useRecoilValue(accessTokenState)
@@ -85,7 +88,16 @@ export const useAxiosInterceptor = () => {
           processQueue(refreshError)
           tokenRef.current = null
           setAccessToken(null)
-          toast.error('토큰 만료 재로그인해주세요')
+
+          const isInitializing = originalRequest.url === '/user/me'
+
+          if (!isInitializing) {
+            toast.error('토큰 만료 재로그인해주세요')
+            window.location.replace('/')
+            if (window.location.pathname !== '/') {
+              window.location.replace('/')
+            }
+          }
           return Promise.reject(refreshError)
         } finally {
           isRefreshing = false

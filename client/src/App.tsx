@@ -3,13 +3,24 @@ import { AssetPage, CoinDetailPage, KakaoCallbackPage, LandingPage, LayoutPage, 
 import ProtectNoUser from "./utils/ProtectNoUser"
 import 'react-toastify/dist/ReactToastify.css';
 import { KakaoInitializer } from "./components";
-import { useAxiosInterceptor } from "./hooks/useGetRefresh";
+import { useAxiosInterceptor } from "./hooks/auth/useGetRefresh";
+import { useInitializeAuth } from "./hooks/auth/useInitializeAuth";
+
 
 
 
 
 function App() {
   useAxiosInterceptor()
+  const { isLoading } = useInitializeAuth()
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p>로그인 상태를 확인하고 있습니다...</p>
+      </div>
+    )
+  }
 
   return (
     <>

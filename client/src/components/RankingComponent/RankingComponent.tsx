@@ -14,10 +14,10 @@ const RankingComponent = () => {
     const prices = useRecoilValue(CoinPrice)
 
     const user = useRecoilValue(userState)
-    const userId = user._id
+    const userId = user?._id
 
     // *이거로 모든 유저의 정보를 가져옴
-    const { data, isLoading } = useGetAllUserAssetData(userId)
+    const { data, isLoading } = useGetAllUserAssetData()
 
     const windowWidth = useWindowWidth()
     

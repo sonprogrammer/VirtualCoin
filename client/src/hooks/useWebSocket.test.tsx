@@ -7,8 +7,9 @@ import { RecoilRoot, useRecoilValue } from "recoil";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { AxiosResponse } from "axios";
 import { CoinPrice } from "../context/CoinPrice";
-import axiosInstance from "./useGetRefresh";
+
 import useWebSocket from "./useWebSocket";
+import axiosInstance from "./auth/useGetRefresh";
 
 vi.mock("./useGetRefresh", () => ({
   default: { get: vi.fn() }

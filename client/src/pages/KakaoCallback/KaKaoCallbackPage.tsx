@@ -4,7 +4,6 @@ import { useSetRecoilState } from 'recoil'
 import { toast } from 'react-toastify'
 import { accessTokenState, userState } from '../../context/userState'
 import axios from 'axios'
-import { saveUserToLocalStorage } from '../../context/localStorage'
 
 
 export function KakaoCallbackPage() {
@@ -35,7 +34,6 @@ export function KakaoCallbackPage() {
                     setUser(userData)
                     setAccessToken(res.data.token)
 
-                    saveUserToLocalStorage(userData)
 
                     toast.success('로그인 성공!')
                     navigate('/browse', { replace: true })

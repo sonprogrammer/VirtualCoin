@@ -1,31 +1,29 @@
-
-
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import axiosInstance from "./useGetRefresh"
+import axiosInstance from "./auth/useGetRefresh"
+import { useRecoilValue } from "recoil"
+import { userState } from "../context/userState"
 
 
 
 
-const postHolding = async({market, name, amount, avgBuyPrice, userId}: {market: string, name: string, amount: number, avgBuyPrice: number, userId: string}) => {
+
+const postHolding = async({market, name, amount, avgBuyPrice}: {market: string, name: string, amount: number, avgBuyPrice: number}) => {
     //* 우선 바로 홀딩으로 갔다가 서버에서 구매가가 현재 가보다 같거나 크면 서버에서 바로 구매 처리됨
-    const res = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/api/holding/${market}/buy-reserve`,{
+    const res = await axiosInstance.post(`/holding/${market}/buy-reserve`,{
         amount, //거래량
         avgBuyPrice, //지정가
         name, //코인 한국이름
-        userId //유저 오브젝트 아이디
     })
     return res.data
 }
 const usePostBuyTrade = () => {
     const queryClient = useQueryClient()
+    const user = useRecoilValue(userState)
 
     return useMutation({
         mutationFn: postHolding,
-        onSuccess: async (_, variable) => {
-
-            const { userId} = variable
-
-            await queryClient.invalidateQueries({queryKey :['asset', userId]})
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey :['asset', user?._id]})
         },
         onError: (error) => {
             console.error('usePostBuyTrade훅 실패', error)

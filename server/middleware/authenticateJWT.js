@@ -5,7 +5,7 @@ const authenticateJWT = (req, res, next) => {
     if(!header) return res.status(401).json({message: 'no token provided from authenticate'})
     const token = header.split(' ')[1]
 
-    jwt.verify(token, process.env.JWT_SECRET,(err, decoded) => {
+    jwt.verify(token, process.env.JWT_ACESS_TOKEN_SECRET,(err, decoded) => {
         if(err) {
             return res.status(401).json({message: 'invalid token'})
         }

@@ -7,12 +7,13 @@ const Hold = require("../Models/holdingModel");
 
 // *거래된내역 가져오기
 const getTransactions = async(req, res) => {
-    try {
-        const userId = req.params.userId
+    const userId = req.user?.id
 
-        if(!userId){
-            return res.status(404).json({message: 'userId not found'})
-        }
+    if(!userId){
+        return res.status(401).json({message: 'login reqruired'})
+    }
+    
+    try {
 
         const transaction = await Transaction.findOne({userId})
 

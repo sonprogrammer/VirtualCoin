@@ -1,11 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import axiosInstance from "./useGetRefresh"
+import axiosInstance from "./auth/useGetRefresh"
+import { useRecoilValue } from "recoil"
+import { userState } from "../context/userState"
 
 
 
 
-const deleteOrder = async(userId: string, orderId: string[]) => {
-    const res = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/api/holding/pending-delete/${userId}`,{
+
+const deleteOrder = async(orderId: string[]) => {
+    const res = await axiosInstance.post(`/holding/pending-delete`,{
         orderId
     })
     return res.data
@@ -14,18 +17,16 @@ const deleteOrder = async(userId: string, orderId: string[]) => {
 
 const usePostDeleteOrder = () => {
     const queryClient = useQueryClient();
-
+    const user = useRecoilValue(userState)
     return useMutation({
-        mutationFn: ({userId, orderId}: {userId: string; orderId: string[]}) => {
-            return deleteOrder(userId, orderId)
-        },
-        onSuccess: (_,variable) => {
-            const userId = variable.userId
+        mutationFn: deleteOrder,
+        onSuccess: () => {
+            const userId = user?._id
             queryClient.invalidateQueries({queryKey: ["pendingCoins", userId]})
             queryClient.invalidateQueries({queryKey: ["asset", userId]})
         },
-        onError: () => {
-            // console.log('미체결 삭제 실패', error)
+        onError: (error) => {
+            console.log('미체결 삭제 실패', error)
         }
     })
 }

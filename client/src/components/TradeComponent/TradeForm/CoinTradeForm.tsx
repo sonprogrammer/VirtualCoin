@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import useGetAssetData from '../../../hooks/useGetAssetData';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { userState } from '../../../context/userState';
 import usePostBuyTrade from '../../../hooks/usePostBuyTrade';
 import usePostSellTrade from '../../../hooks/usePostSellTrade';
 import { selectedCoinPrice } from '../../../context/selectedCoinPrice';
@@ -21,7 +20,6 @@ interface CoinTradeFormProps {
 
 const CoinTradeForm = ({ name }: CoinTradeFormProps) => {
   const { coinEName } = useParams() // KRW-XRP이런식으로 나옴
-  const user = useRecoilValue(userState)
   const marketArray = useMemo(() => (coinEName ? [coinEName] : []), [coinEName]);
   // * 현재 페이지의 코인 실시간 가격
   const coinInfoMaps = useRecoilValue(selectedCoinPrice(marketArray));
@@ -92,7 +90,7 @@ const CoinTradeForm = ({ name }: CoinTradeFormProps) => {
         toast.error('주문수량을 확인하세요')
         return
       }
-      if (coinEName && coinName && user._id && orderAmount <= availableAmount) {
+      if (coinEName && coinName  && orderAmount <= availableAmount) {
         toast.success(`매도 주문 완료`, {
           autoClose: 1000,
           hideProgressBar: true,
@@ -103,7 +101,6 @@ const CoinTradeForm = ({ name }: CoinTradeFormProps) => {
           name: coinName.korean_name,
           amount: orderAmount,
           avgSellPrice: tradePrice,
-          userId: user._id,
         })
         refetch()
       }
@@ -116,7 +113,7 @@ const CoinTradeForm = ({ name }: CoinTradeFormProps) => {
         toast.error('주문수량을 확인하세요')
         return
       }
-      if (coinEName && coinName?.korean_name && user._id && orderAmount > 0) {
+      if (coinEName && coinName?.korean_name  && orderAmount > 0) {
         toast.success(`매수 주문 완료`, {
           autoClose: 1000,
           hideProgressBar: true,
@@ -126,7 +123,6 @@ const CoinTradeForm = ({ name }: CoinTradeFormProps) => {
           name: coinName.korean_name,
           amount: orderAmount,
           avgBuyPrice: tradePrice,
-          userId: user._id,
         });
         refetch()
       } else {

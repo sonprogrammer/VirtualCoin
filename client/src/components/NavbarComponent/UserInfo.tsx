@@ -1,10 +1,11 @@
 
+import { useRecoilValue } from "recoil";
 import useCalculateAsset from "../../hooks/useCalculateAsset";
 import useGetAssetData from "../../hooks/useGetAssetData";
 import { StyledAngle, StyledCoins, StyledLogout, StyledUserInfo } from "./style";
+import { userState } from "../../context/userState";
 
 interface UserInfoProps{
-    userName: string;
     onLogoutClick: (e: React.MouseEvent) => void;
     onInterestedClick: () => void;
     onRecentClick: () => void
@@ -12,10 +13,11 @@ interface UserInfoProps{
 }
 
 export function UserInfo({ 
-    userName, onLogoutClick, onInterestedClick, onRecentClick, userRef
+ onLogoutClick, onInterestedClick, onRecentClick, userRef
 }: UserInfoProps) {
      const { data } = useGetAssetData()
         const calculatedData = useCalculateAsset(data)
+        const user = useRecoilValue(userState)
     
         const {
             // *총 자산
@@ -30,7 +32,7 @@ export function UserInfo({
     return (
         <StyledUserInfo ref={userRef}>
             <StyledAngle />
-            <h1 className='font-bold text-center pb-2'>Welcome {userName}</h1>
+            <h1 className='font-bold text-center pb-2'>Welcome {user?.name}</h1>
             <p><strong>보유 현금</strong> <span>{Math.round(availableOrder)?.toLocaleString()}</span></p>
             <p><strong>보유 자산</strong> <span>{Math.round(totalAssets)?.toLocaleString()}</span></p>
             <p><strong>평가 손익</strong>

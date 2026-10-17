@@ -3,8 +3,6 @@ import { StyledAllCancleBtn, StyledAmount, StyledBookBox, StyledBookBoxTitle, St
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import dayjs from 'dayjs';
-import { userState } from "../../../context/userState";
-import { useRecoilValue } from "recoil";
 import usePostDeleteOrder from "../../../hooks/usePostDeleteOrder";
 import useGetAllTransaction from "../../../hooks/useGetAllTransaction";
 import { useParams } from "react-router-dom";
@@ -30,10 +28,7 @@ const CoinBookForm = () => {
   const coinUnit = coinEName?.split('-')[1]
 
 
-  const user = useRecoilValue(userState);
-
-
-  const { data, refetch } = useGetAllTransaction(user._id)
+  const { data, refetch } = useGetAllTransaction()
   const coins = data?.allTransaction?.orders || [];
 
 
@@ -63,8 +58,7 @@ const CoinBookForm = () => {
 
     if (selectedIds.length === 0) return
 
-    deleteOrder(
-      { userId: user._id, orderId: selectedIds },
+    deleteOrder(selectedIds,
       {
         onSuccess: () => {
           refetch();
@@ -80,8 +74,7 @@ const CoinBookForm = () => {
   }
 
   const handleDeleteClick = (id: string) => {
-    deleteOrder(
-      { userId: user._id, orderId: [id] },
+    deleteOrder([id],
       {
         onSuccess: () => {
           refetch();

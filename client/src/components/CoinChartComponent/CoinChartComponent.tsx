@@ -16,6 +16,7 @@ import { PriceSkeleton } from "../PriceSkeleton";
 
 
 
+
 const CoinChartComponent = () => {
   const { likeToggle } = useLikeToggle();
   const { likedCoins } = useGetLikedCoins()
@@ -26,6 +27,7 @@ const CoinChartComponent = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   const windowWidth = useWindowWidth()
+
 
 
   const { data: coins = [] } = useGetCoins()

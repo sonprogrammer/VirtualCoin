@@ -5,8 +5,13 @@ const Transaction = require("../Models/transactionModel");
 
 // *전체 유저자산 정보 가져오기 - 랭킹페이지 - User모델에서 이름 가져오고 Asset모델에서 코인데이터, 현금 데이터 가져오면됨
 const getAllAssetData = async(req, res) => {
+    const userId = req.user?.id
+
+    if(!userId){
+        return res.status(401).json({message: 'login required'})
+    }
+    
     try {
-        const userId = req.params.userId
         let userAsset = await Asset.findOne({userId})
         if(!userAsset){
             userAsset = new Asset({
@@ -29,12 +34,11 @@ const getAllAssetData = async(req, res) => {
 
 //* 해당 유저의자산 정보 가져오기
 const getAssetData = async(req, res) => {
+    const userId = req.user?.id
+    if(!userId){
+        return res.status(401).json({message: 'logoin required'})
+    }
     try {
-        const { userId } = req.query
-
-        if(!userId){
-            return res.status(400).json({error: 'there is no userId'})
-        }
 
         let asset = await Asset.findOne({userId}).populate('userId',  'name')
         if(!asset){

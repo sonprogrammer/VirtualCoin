@@ -227,16 +227,18 @@ realTimeCheckOrder()
 
 // *매수 예약
 const postBuyReserve = async (req, res) => {
+  const userId = req.user?.id
+
+  if(!userId){
+    return res.status(401).json({message: 'login required'})
+  }
+  
   try {
-    const { amount, avgBuyPrice, name, userId } = req.body;
+    const { amount, avgBuyPrice, name } = req.body;
 
     const market = req.params.coinId;
     const avgTradePrice = avgBuyPrice
     const totalCost = amount * avgBuyPrice
-
-    if (!userId) {
-      return res.status(400).json({ error: "there is no userId" });
-    }
 
     const userAsset = await Asset.findOne({userId})
 
@@ -282,15 +284,18 @@ const postBuyReserve = async (req, res) => {
 
 // *매도 예약
 const postSellReserve = async (req, res) => {
+  const userId = req.user?.id
+
+  if(!userId){
+    return res.status(401).json({message: 'login required'})
+  }
+  
   try {
-    const { name, amount, avgSellPrice, userId } = req.body;
+    const { name, amount, avgSellPrice } = req.body;
     const market = req.params.coinId;
 
     const avgTradePrice = avgSellPrice
 
-    if (!userId) {
-      return res.status(400).json({ error: "there is no userId" });
-    }
     let reserve = await Hold.findOne({ userId }).populate('userId')
     
     if (!reserve) {
@@ -321,8 +326,12 @@ const postSellReserve = async (req, res) => {
 
 // *미체결 내역 가져오기 
 const getPendingCoins = async(req, res) => {
+  const userId = req.user?.id
+  if(!userId){ 
+    return res.status(401).json({message: 'login rquired'})
+  }
+  
   try {
-      const userId = req.params.userId
 
       const pending = await Hold.findOne({userId})
 
@@ -345,9 +354,12 @@ const getPendingCoins = async(req, res) => {
 
 // *미체결 내역 주문 취소
 const postDeleteOrder = async(req, res) => {
+  const userId = req.user?.id
+  if(!userId){
+    return res.status(401).json({message: 'login required'})
+  }
     try {
       const { orderId } = req.body
-      const userId = req.params.userId
 
       if (!Array.isArray(orderId)) {
         return res.status(400).json({ message: "orderId must be an array" });
@@ -394,8 +406,12 @@ const postDeleteOrder = async(req, res) => {
 
 // * 코인 거래내역 다 가져오기 - 체결이든 미체결이든 -> 디테일페이지내 예약확인에서 확인
 const getTransactionCoins = async(req, res) => {
+  const userId = req.user?.id
+  if(!userId){
+    return res.status(401).json({message: 'login required'})
+  }
+  
     try {
-      const userId = req.params.userId
 
       const allTransaction = await Hold.findOne({userId})
 

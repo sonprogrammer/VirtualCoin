@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
-import axiosInstance from "./useGetRefresh"
+import axiosInstance from "./auth/useGetRefresh";
+import { useRecoilValue } from "recoil";
+import { userState } from "../context/userState";
+
 
 
 export interface PendingOrder {
@@ -14,16 +17,18 @@ export interface PendingOrder {
   completedTime?: string; 
 }
 
-const getPendingCoins = async(userId: string):Promise<PendingOrder[]> => {
-    const res = await axiosInstance.get<PendingOrder[]>(`${import.meta.env.VITE_API_URL}/api/holding/pending/${userId}`)
+const getPendingCoins = async():Promise<PendingOrder[]> => {
+    const res = await axiosInstance.get<PendingOrder[]>(`/holding/pending/`)
     return res.data
 }
 
 
-const useGetPendingCoins = (userId: string) => {
+const useGetPendingCoins = () => {
+    const user = useRecoilValue(userState)
     return useQuery({
-        queryKey: ['pendingCoins', userId],
-        queryFn: () => getPendingCoins(userId)
+        queryKey: ['pendingCoins', user?._id],
+        queryFn: getPendingCoins,
+        enabled: !!user && !!user._id
     })
 }
 

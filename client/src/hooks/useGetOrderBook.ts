@@ -33,13 +33,13 @@ const useGetOrderBook = (market: string) => {
     if (!prevClosingPrice || !market) return
     const ws = new WebSocket(import.meta.env.VITE_WS_URL)
     ws.onopen = () => {
-      // console.log(`websocket connected from orderbook ${market}`)
+      console.log(`websocket connected from orderbook ${market}`)
     }
     ws.onerror = (err) => {
-      // console.error("WebSocket error:", err);
+      console.error("WebSocket error", err);
     };
     ws.onclose = () => {
-      // console.log(`websocket connection is closed from ${market} `)
+      console.log(`websocket connection is closed from ${market} `)
     }
 
     ws.onmessage = (e) => {
@@ -72,7 +72,7 @@ const useGetOrderBook = (market: string) => {
           lastUpdate.current = now
         }
       } catch (error) {
-        // console.log('orderbook websocket error', error)
+        console.log('orderbook websocket error', error)
       }
 
     }

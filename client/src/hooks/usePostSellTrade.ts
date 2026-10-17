@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axiosInstance from "./useGetRefresh";
+
 import { useRecoilValue } from "recoil";
 import { userState } from "../context/userState";
+import axiosInstance from "./auth/useGetRefresh";
 
 
 
@@ -10,16 +11,14 @@ interface SellOrder {
     name: string; // 한국이름
     amount: number; // 매도 양
     avgSellPrice: number; //매도 코인 금액
-    userId: string;
   }
 
 
-const postHolding = async({market, name, amount, avgSellPrice, userId}: {market: string, name: string, amount: number, avgSellPrice: number, userId: string}) => {
-    const res = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/api/holding/${market}/sell-reserve`,{
+const postHolding = async({market, name, amount, avgSellPrice}: SellOrder) => {
+    const res = await axiosInstance.post(`holding/${market}/sell-reserve`,{
         amount,
         avgSellPrice,
         name, // 한국 이름
-        userId
     })
     return res.data
 }
@@ -29,11 +28,9 @@ const usePostSellTrade = () => {
     const queryClient = useQueryClient()
 
     const mutation =  useMutation({
-        mutationFn: async(order: SellOrder) => {
-                return postHolding(order)
-        },
+        mutationFn:  postHolding,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['asset', userData._id] });
+            queryClient.invalidateQueries({ queryKey: ['asset', userData?._id] });
         },
         onError: (error) => {
             console.error('usePostSellTrade훅 실패', error)

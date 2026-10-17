@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { StyledBody, StyledContainer, StyledDate, StyledDetail, StyledHead, StyledPeriodAndType, StyledPeriodBurgerMenu, StyledSelect, StyledTable, StyledTableContainer, StyledTypeMenu } from './style'
 import useGetTransaction from '../../hooks/useGetTransaction'
-import { userState } from '../../context/userState'
-import { useRecoilValue } from 'recoil'
 import dayjs from 'dayjs'
 import Skeleton from '@mui/material/Skeleton'
 
@@ -16,10 +14,7 @@ const TransactionComponent = () => {
     const [startDate, setStartDate] = useState<string>('')
     const [endDate, setEndDate] = useState<string>('')
 
-    const user = useRecoilValue(userState);
-    const userId = user._id
-
-    const { data, isLoading, error } = useGetTransaction(userId);
+    const { data, isLoading, error } = useGetTransaction();
 
     if (isLoading) {
         return (

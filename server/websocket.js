@@ -29,12 +29,13 @@ const webSocket = (server) => {
       return;
 
     if (reconnectTimer) return;
+
     isConnecting = true;
     try {
       const res = await axios.get("https://api.upbit.com/v1/market/all");
       const krwMarkets = res.data
-        .filter((item) => item.market.startsWith("KRW-"))
-        .map((item) => item.market);
+                            .filter((item) => item.market.startsWith("KRW-"))
+                            .map((item) => item.market);
 
       const socket = new WebSocket("wss://api.upbit.com/websocket/v1");
       let socketOpenedAt = null;
@@ -49,7 +50,9 @@ const webSocket = (server) => {
 
       socket.on("open", () => {
         if (upbitSocket !== socket) return;
+
         socketOpenedAt = Date.now();
+
         const subscribeMessage = [
           { ticket: "coin-ticker" },
           { type: "ticker", codes: krwMarkets },
@@ -93,7 +96,7 @@ const webSocket = (server) => {
             lastTickerAt = Date.now();
           }
         } catch (error) {
-          console.warn("Upbit 메시지 파싱 실패:", error);
+          console.warn("Upbit 메시지 파싱 실패", error);
         }
 
         wss.clients.forEach((client) => {
@@ -128,7 +131,7 @@ const webSocket = (server) => {
       });
 
       socket.on("error", (error) => {
-        console.error("Upbit WebSocket error:", error);
+        console.error("Upbit WebSocket error", error);
         if (socket.readyState !== WebSocket.CLOSED) {
           socket.terminate();
         }

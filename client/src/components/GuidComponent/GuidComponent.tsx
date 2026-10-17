@@ -1,7 +1,7 @@
 import { StyledBtn, StyledContainer, StyledImage, StyledModalBox, StyledModalContent, StyledCloseBtn } from "./style"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import useGuestLogin from "../../hooks/useGuestLogin";
+import useGuestLogin from "../../hooks/auth/useGuestLogin";
 import { toast } from "react-toastify";
 import { useState } from "react";
 

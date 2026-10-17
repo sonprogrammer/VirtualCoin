@@ -1,28 +1,38 @@
 import { atom } from "recoil";
-import { getUserFromLocalStorage } from "./localStorage";
 
-const user = getUserFromLocalStorage()
+export interface UserInfo {
+    _id: string;
+    name: string;
+    isGuest: boolean;
+    availableBalance: number;
+    interestedCoins: string[];
+    recentCoins: string[];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
 
 
+export const initialUserState = {
+  _id: null,
+  name: '',
+  isGuest: false,
+  totalAssets: 0,
+  totalCash: 0,
+  availableBalance: 0,
+  holdings: [],
+  transactions: [],
+  interestedCoins: [],
+  recentCoins: [],
+  sessionExpires: null,
+  createdAt: '',
+  updatedAt: '',
+}
 
-export const userState = atom({
+
+export const userState = atom<UserInfo | null>({
     key: 'userState',
-    default: user ? user : 
-    {
-        _id: null,
-        name: "",
-        isGuest: false,
-        totalAssets: 0,
-        totalCash: 0,
-        availableBalance: 0, // 사용 가능 잔액
-        holdings: [], // 보유 자산
-        transactions: [], // 거래 내역
-        interestedCoins: [], // 관심 코인
-        recentCoins: [], // 최근 조회 코인
-        sessionExpires: null, // 세션 만료 정보 (추후 사용 가능)
-        createdAt: "",
-        updatedAt: "",
-    }
+    default: null
 })
 
 export const accessTokenState = atom<string | null>({

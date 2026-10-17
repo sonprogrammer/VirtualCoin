@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
-import axiosInstance from "./useGetRefresh"
+import axiosInstance from "./auth/useGetRefresh";
+import { useRecoilValue } from "recoil";
+import { userState } from "../context/userState";
+
 
 export interface Order {
   _id: string;
@@ -25,17 +28,18 @@ export interface AllTransactionResponse {
   };
 }
 
-const getTransaction = async(userId:string): Promise<AllTransactionResponse> => {
-    const res = await axiosInstance.get<AllTransactionResponse>(`${import.meta.env.VITE_API_URL}/api/holding/all-transaction/${userId}`)
+const getTransaction = async(): Promise<AllTransactionResponse> => {
+    const res = await axiosInstance.get<AllTransactionResponse>(`/holding/all-transaction`)
     return res.data
 }
 
 
-const useGetAllTransaction = (userId: string) => {
+const useGetAllTransaction = () => {
+  const user = useRecoilValue(userState)
     return useQuery({
-        queryKey: ['allTransaction', userId],
-        queryFn: () => getTransaction(userId),
-        enabled: !!userId
+        queryKey: ['allTransaction', user?._id],
+        queryFn: getTransaction,
+        enabled: !!user && !!user._id
     })
 }
 

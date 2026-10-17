@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useSetRecoilState } from "recoil";
 import { CoinPrice } from "../context/CoinPrice";
-import axiosInstance from "./useGetRefresh";
+
 import { throttle } from "lodash";
 import { getLatestPrice } from "../utils/getLatestPrice";
+import axiosInstance from "./auth/useGetRefresh";
 
 export interface PriceData {
   trade_price: number;
@@ -76,7 +77,7 @@ const useWebSocket = () => {
         setPrices(prev => {
           const next = { ...prev }
 
-          // Rest, 기존 전역상태 데이터 비교
+          // Rest 기존 전역상태 데이터 비교
           for (const [code, price] of Object.entries(res.data)) {
             next[code] = getLatestPrice(next[code], price)
           }
@@ -177,12 +178,12 @@ const useWebSocket = () => {
       ws.onclose = () => {
         if (isUnmounted) return;
 
+        upstreamStatus = null
         syncRequestId++;
         syncUpdates = null;
         const delay = Math.min(1000 * 2 ** reconnectAttempts, 30000);
         reconnectAttempts++;
 
-        console.log(`WebSocket 종료, ${delay}ms 후 재연결`)
         reconnectTimer = setTimeout(() => {
           reconnectTimer = null;
           connect();

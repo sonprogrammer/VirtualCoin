@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
-import axiosInstance from "./useGetRefresh"
+import axiosInstance from "./auth/useGetRefresh";
+import { useRecoilValue } from "recoil";
+import { userState } from "../context/userState";
 
 interface TransactionCoinData {
     amount : number;
@@ -22,15 +24,18 @@ interface TransactionResponse {
 }
 
 
-const getTransaction = async(userId: string): Promise<TransactionData | null> => {
-    const res = await axiosInstance.get<TransactionResponse>(`${import.meta.env.VITE_API_URL}/api/transaction/${userId}`)
+const getTransaction = async(): Promise<TransactionData | null> => {
+    const res = await axiosInstance.get<TransactionResponse>(`/transaction`)
     return res.data.transaction
 }
 
-const useGetTransaction = (userId: string) => {
+const useGetTransaction = () => {
+    const user = useRecoilValue(userState)
+
     return useQuery({
-        queryKey: ['transactions', userId],
-        queryFn: () => getTransaction(userId)
+        queryKey: ['transactions', user?._id],
+        queryFn: getTransaction,
+        enabled: !!user && !!user._id
     })
 }
 
