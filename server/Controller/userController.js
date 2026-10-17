@@ -33,7 +33,6 @@ const createGuestUser = async (req, res) => {
       { expiresIn: "1h" },
     );
 
-
     const refreshToken = jwt.sign(
       { id: newGuestUser._id.toString() },
       process.env.JWT_REFRESH_TOKEN_SECRET,
@@ -58,40 +57,45 @@ const kakaoLogin = async (req, res) => {
   try {
     const { code } = req.body;
 
+    if (typeof code !== "string" || !code.trim()) {
+      return res
+        .status(400)
+        .json({ message: "인가 코드가 필요합니다.", success: false });
+    }
+
+
     const params = new URLSearchParams({
       grant_type: "authorization_code",
       client_id: process.env.KAKAO_REST_API_KEY,
       redirect_uri: process.env.KAKAO_REDIRECT_URI,
       code,
-    })
+    });
 
-    const tokenRes = await fetch('https://kauth.kakao.com/oauth/token', {
+    const tokenRes = await fetch("https://kauth.kakao.com/oauth/token", {
       method: "POST",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
       },
-      body: params
-    })
+      body: params,
+    });
 
-    const tokenData = await tokenRes.json()
+    const tokenData = await tokenRes.json();
 
-
-    if(!tokenRes.ok){
-      return res.status(400).json({message: 'failed to issue kakao token'})
+    if (!tokenRes.ok) {
+      return res.status(400).json({ message: "failed to issue kakao token" });
     }
 
-    const kakaoAccessToken = tokenData.access_token
+    const kakaoAccessToken = tokenData.access_token;
 
-    const kakaoUser = await axios.get('https://kapi.kakao.com/v2/user/me', {
+    const kakaoUser = await axios.get("https://kapi.kakao.com/v2/user/me", {
       headers: {
-        Authorization: `Bearer ${kakaoAccessToken}`
-      }
-    })
-
+        Authorization: `Bearer ${kakaoAccessToken}`,
+      },
+    });
 
     const kakaoId = kakaoUser.data.id;
+    console.log('kakao', kakaoUser.data)
     const name = kakaoUser.data.properties.nickname;
-
 
     let user = await User.findOne({ kakaoId });
 
@@ -105,10 +109,10 @@ const kakaoLogin = async (req, res) => {
       });
       await user.save();
     }
-    
+
     const token = jwt.sign(
       { id: user._id.toString() },
-      process.env.JW_ACESS_TOKEN_SECRET,
+      process.env.JWT_ACESS_TOKEN_SECRET,
       { expiresIn: "1h" },
     );
     const refreshToken = jwt.sign(
@@ -147,13 +151,12 @@ const logout = async (req, res) => {
 
 // * 관심코인 토글
 const likeToggle = async (req, res) => {
-  const userId = req.user?.id
-  if(!userId){
-    return res.status(401).json({message:'logoin required'})
+  const userId = req.user?.id;
+  if (!userId) {
+    return res.status(401).json({ message: "logoin required" });
   }
-  
-  try {
 
+  try {
     const { coinId } = req.params;
 
     const user = await User.findById(userId);
@@ -179,12 +182,11 @@ const likeToggle = async (req, res) => {
 
 // *  관심코인 가져오기
 const getLikeCoins = async (req, res) => {
-  const userId = req.user?.id
-  if(!userId){
-    return res.status(401).json({message:'logoin required'})
+  const userId = req.user?.id;
+  if (!userId) {
+    return res.status(401).json({ message: "logoin required" });
   }
   try {
-
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "user not found" });
@@ -202,12 +204,11 @@ const getLikeCoins = async (req, res) => {
 
 // *최근 본 코인 가져오기 최대 10개
 const getRecentCoins = async (req, res) => {
-  const userId = req.user?.id
-  if(!userId){
-    return res.status(401).json({message:'logoin required'})
+  const userId = req.user?.id;
+  if (!userId) {
+    return res.status(401).json({ message: "logoin required" });
   }
   try {
-
     const user = await User.findById(userId);
 
     if (!user) {
@@ -224,9 +225,9 @@ const getRecentCoins = async (req, res) => {
 
 // *최근 본 코인 추가하기
 const postRecentCoins = async (req, res) => {
-  const userId = req.user?.id
-  if(!userId){
-    return res.status(401).json({message:'logoin required'})
+  const userId = req.user?.id;
+  if (!userId) {
+    return res.status(401).json({ message: "logoin required" });
   }
   try {
     const { coinId } = req.params;
@@ -257,24 +258,24 @@ const postRecentCoins = async (req, res) => {
   }
 };
 
-const getMe = async(req, res) => {
-  const userId = req.user?.id
-  if(!userId){
-    return res.status(401).json({message:'login required'})
+const getMe = async (req, res) => {
+  const userId = req.user?.id;
+  if (!userId) {
+    return res.status(401).json({ message: "login required" });
   }
 
   try {
-    const user = await User.findById(userId)
-    if(!user){
-      return res.status(404).json({message: 'user not found'})
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
     }
 
-    return res.status(200).json({user})
+    return res.status(200).json({ user });
   } catch (error) {
-    console.error('getMe error', error)
-    return res.status(500).json({message:' internal server error'})
+    console.error("getMe error", error);
+    return res.status(500).json({ message: " internal server error" });
   }
-}
+};
 
 module.exports = {
   createGuestUser,
@@ -284,5 +285,5 @@ module.exports = {
   getRecentCoins,
   postRecentCoins,
   logout,
-  getMe
+  getMe,
 };

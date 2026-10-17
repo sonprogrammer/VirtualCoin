@@ -9,7 +9,7 @@ const userRouter = express.Router()
 userRouter.post('/guest-login', createGuestUser)
 userRouter.post('/kakao-login', kakaoLogin)
 
-userRouter.post('/guest-logout', logout)
+userRouter.post('/logout', logout)
 
 userRouter.get('/liked-coins', authenticateJWT, getLikeCoins)
 userRouter.post('/:coinId/like', authenticateJWT, likeToggle)
