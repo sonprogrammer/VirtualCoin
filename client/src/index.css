@@ -5,3 +5,12 @@
 button{
     cursor: pointer;
 }
+
+ html {
+        background-color: #09090b;
+        overscroll-behavior-y: none;
+    }
+    body {
+        margin: 0;
+        background-color: #09090b;
+    }

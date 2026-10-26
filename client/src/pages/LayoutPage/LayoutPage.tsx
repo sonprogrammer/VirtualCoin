@@ -9,7 +9,7 @@ import useWebSocket from '../../hooks/useWebSocket'
 const LayoutPage = () => {
   useWebSocket()
   return (
-    <StyledContaier className='전체최종'>
+    <StyledContaier className='전체최종 bg-zinc-950'>
 
       <StyledNavbarWrapper className='nabarwrapper'>
         <NavbarComponent />
