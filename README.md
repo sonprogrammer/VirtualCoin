@@ -4,6 +4,8 @@
 ## 👀 let's going to coin world!
 <a href="https://virtualcoinn.onrender.com/" target="_blank">VirtualCoin</a>
 
+⚠️ 2026년 10월 기준, Render 무료 사용량 소진으로 프론트엔드 및 백엔드 서버가 일시 중단(Suspended)되어 현재 서비스 이용이 불가능합니다. ⚠️
+
 # 👤 Persona
 - to help beginners experience and learn about coin world.
 - 코인을 처음 접하는 사람들에게 친숙하고 직관적인 경험을 제공하고 싶어서 이 프로젝트를 시작했습니다.
