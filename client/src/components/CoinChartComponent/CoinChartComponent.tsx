@@ -89,7 +89,7 @@ const CoinChartComponent = () => {
   const time = new Date().toLocaleString()
 
   return (
-    <StyledContainer className="chart">
+    <StyledContainer className="chart max-[630px]:pb-[80px]">
       <StyledTitle>
         <h2>실시간 코인</h2>
         <p>{time}</p>
